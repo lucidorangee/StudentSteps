@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Project Scope Document.md",
+                "file": "Project Vision and Scope Document.md",
                 "mode": "source",
                 "source": false
               }
@@ -99,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Project Scope Document.md",
+                "file": "Project Vision and Scope Document.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -116,7 +116,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Project Scope Document.md",
+                "file": "Project Vision and Scope Document.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -139,7 +139,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Project Scope Document.md"
+                "file": "Project Vision and Scope Document.md"
               }
             }
           }
@@ -162,6 +162,6 @@
   },
   "active": "fec3711308bc8571",
   "lastOpenFiles": [
-    "Project Scope Document.md"
+    "Project Vision and Scope Document.md"
   ]
 }
