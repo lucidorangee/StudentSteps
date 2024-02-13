@@ -13,8 +13,8 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Project Vision and Scope Document.md",
-                "mode": "source",
+                "file": "System Design Document.md",
+                "mode": "preview",
                 "source": false
               }
             }
@@ -99,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Project Vision and Scope Document.md",
+                "file": "System Design Document.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -116,7 +116,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Project Vision and Scope Document.md",
+                "file": "System Design Document.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -139,7 +139,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Project Vision and Scope Document.md"
+                "file": "System Design Document.md"
               }
             }
           }
@@ -162,6 +162,6 @@
   },
   "active": "fec3711308bc8571",
   "lastOpenFiles": [
-    "Project Vision and Scope Document.md"
+    "System Design Document.md"
   ]
 }
