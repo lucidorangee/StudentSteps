@@ -1,10 +1,8 @@
 
-# System Design Document
-
 ## Table of Contents
 
-1. [Introduction][1]
-2. [System Overview][2]
+1. Introduction
+2. System Overview
 3. Architecture Overview
 4. Component Descriptions
 5. Data Design
@@ -16,17 +14,15 @@
 11. Glossary
 12. References
 
-[1]: introduction
 ## 1. Introduction
 
 - **Purpose:** This document provides a detailed overview of the system design for StudentSteps. It describes the architecture, components, interfaces, and data design of the system.
 - **Scope:** The system design covers the technical implementation aspects of StudentSteps and serves as a guide for developers, architects, and stakeholders involved in the project.
 
-[2]: System
 ## 2. System Overview
 
-- **System Goals:** Describe the high-level goals and objectives of the system.
-- **System Features:** Provide an overview of the key features and functionalities of the system.
+- **System Goals:** StudentSteps aims to reduce the amount of complexity in writing and leaving comments, facilitate the communication between [the teachers/tutors and the parents/students], and allow students to be more self-reliant with how they study based on comments and making their own schedules.
+- **System Features:** Key features include the ability to efficiently write, read, and approve comments for different audiences, as well as schedule tutors and homework.
 - **Stakeholders:** Identify the primary stakeholders and their roles in the system.
 
 ## 3. Architecture Overview

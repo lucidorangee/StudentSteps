@@ -14,7 +14,7 @@
               "type": "markdown",
               "state": {
                 "file": "System Design Document.md",
-                "mode": "preview",
+                "mode": "source",
                 "source": false
               }
             }
@@ -99,7 +99,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "System Design Document.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -116,7 +115,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "System Design Document.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -138,9 +136,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "System Design Document.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -160,8 +156,9 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "fec3711308bc8571",
+  "active": "b599e7282cbadeac",
   "lastOpenFiles": [
+    "[.md",
     "System Design Document.md"
   ]
 }
