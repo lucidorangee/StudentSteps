@@ -23,21 +23,34 @@
 
 - **System Goals:** StudentSteps aims to reduce the amount of complexity in writing and leaving comments, facilitate the communication between [the teachers/tutors and the parents/students], and allow students to be more self-reliant with how they study based on comments and making their own schedules.
 - **System Features:** Key features include the ability to efficiently write, read, and approve comments for different audiences, as well as schedule tutors and homework.
-- **Stakeholders:** Identify the primary stakeholders and their roles in the system.
+- **Stakeholders:** Primary stakeholders include administrators, tutors, parents, and students.
 
 ## 3. Architecture Overview
 
-- **Architecture Style:** Describe the architectural style or pattern used in the system (e.g., client-server, microservices, monolithic).
-- **Component Overview:** Provide a high-level overview of the major components and subsystems of the system.
-- **Deployment Architecture:** Describe the deployment architecture, including hardware infrastructure, networking, and hosting environments.
+- **Architecture Style:** Client-server Architecture will be used
+- **Component Overview:** The main components of this application will be the server-side, the client-side, and the database.
+- **Deployment Architecture:** This application is to be deployed on cloud infrastructure on Heroku with seperate environments for product, staging, and production.
 
 ## 4. Component Descriptions
 
-- **Component 1:**
+- **Front-End Component:**
     - **Description:** Describe the purpose and functionality of the component.
     - **Dependencies:** List any dependencies or interactions with other components.
     - **Interfaces:** Describe the interfaces exposed by the component (e.g., APIs, libraries).
-    - **Technologies:** Specify the technologies, frameworks, and tools used in implementing the component.
+    - **Technologies:** React.js, Redux, React Router
+    
+- **Back-End Component:**
+    - **Description:** Describe the purpose and functionality of the component.
+    - **Dependencies:** List any dependencies or interactions with other components.
+    - **Interfaces:** Describe the interfaces exposed by the component (e.g., APIs, libraries).
+    - **Technologies:** React.js, Redux, React Router
+    
+- **Database Component:**
+    - **Description:** Describe the purpose and functionality of the component.
+    - **Dependencies:** List any dependencies or interactions with other components.
+    - **Interfaces:** Describe the interfaces exposed by the component (e.g., APIs, libraries).
+    - **Technologies:** React.js, Redux, React Router
+
 
 (Repeat for each major component)
 
