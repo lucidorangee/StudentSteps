@@ -34,29 +34,22 @@
 ## 4. Component Descriptions
 
 - **Front-End Component:**
-    - **Description:** Describe the purpose and functionality of the component.
-    - **Dependencies:** List any dependencies or interactions with other components.
-    - **Interfaces:** Describe the interfaces exposed by the component (e.g., APIs, libraries).
+    - **Description:** The frontend component is responsible for the user interface and interactions. It is implemented using React.js, a JavaScript library for building UI components.
+    - **Dependencies:** React Router for client-side routing, Redux for state management.
     - **Technologies:** React.js, Redux, React Router
     
 - **Back-End Component:**
-    - **Description:** Describe the purpose and functionality of the component.
-    - **Dependencies:** List any dependencies or interactions with other components.
-    - **Interfaces:** Describe the interfaces exposed by the component (e.g., APIs, libraries).
-    - **Technologies:** React.js, Redux, React Router
+    - **Description:** The backend component handles business logic and data processing. It is implemented using Node.js with Express.js, providing a scalable API server.
+    - **Dependencies:** Express.js for web server, Mongoose.js for MongoDB object modeling.
+    - **Technologies:** Node.js, Express.js, MongoDB, Mongoose.js
     
 - **Database Component:**
-    - **Description:** Describe the purpose and functionality of the component.
-    - **Dependencies:** List any dependencies or interactions with other components.
-    - **Interfaces:** Describe the interfaces exposed by the component (e.g., APIs, libraries).
-    - **Technologies:** React.js, Redux, React Router
-
-
-(Repeat for each major component)
-
+    - **Description:** The database component stores application data. MongoDB is used as the primary database system, offering flexibility and scalability for storing documents.
+    - **Dependencies:** N/A
+    - **Technologies:** MongoDB, MongoDB Atlas.
 ## 5. Data Design
 
-- **Data Model:** Provide an overview of the data model, including entities, attributes, and relationships.
+- **Data Model:**  Document Data Model will be used to store student and tutors data
 - **Database Design:** Describe the database schema, tables, indexes, and constraints.
 - **Data Storage:** Discuss data storage options, including databases, file systems, caches, etc.
 
