@@ -6,6 +6,7 @@
       {
         "id": "cf1787fae1e5209b",
         "type": "tabs",
+        "dimension": 52.28426395939086,
         "children": [
           {
             "id": "fec3711308bc8571",
@@ -18,12 +19,38 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "cf3ada31b8892488",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "System Design Document.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "7a3e31ca80ec8070",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "System Design Document.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 2
       },
       {
         "id": "a7e2301b37fde742",
         "type": "tabs",
+        "dimension": 47.71573604060914,
         "children": [
           {
             "id": "b599e7282cbadeac",
@@ -160,9 +187,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "fec3711308bc8571",
+  "active": "7a3e31ca80ec8070",
   "lastOpenFiles": [
+    "2024-03-11.md",
     "System Design Document.md",
+    "Untitled.md",
     "[.md"
   ]
 }
