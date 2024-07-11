@@ -58,7 +58,7 @@ const CreateTutoringSession = () => {
 
 useEffect(() => {
   //Fetch authentication status
-  fetch(`${process.env.REACT_APP_API_BASE_URL}/api/v1/tutors`, {
+  fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
     credentials: 'include',
     method: 'GET',
     headers: {
@@ -108,7 +108,7 @@ const handleSubmit = async (e) => {
   };
 
   try {
-    const response = await fetch('http://localhost:4000/api/v1/tutoringsessions/add', {
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/add`, {
       credentials: 'include',
       method: 'post',
       headers: {
