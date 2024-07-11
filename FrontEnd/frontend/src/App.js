@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Home from './pages/Home.js';
 import Login from './pages/Login.js';
+import Logout from './pages/Logout.js';
 import Register from './pages/Register.js';
 import ManageUsers from './pages/ManageUsers.js';
 import ManageTutoringSessions from './pages/ManageTutoringSessions.js';
