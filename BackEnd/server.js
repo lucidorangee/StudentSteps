@@ -18,6 +18,7 @@ const roleRoutes = require('./routes/roleRoutes.js');
 const tutoringSessionRoutes = require('./routes/tutoringSessionRoutes.js');
 
 console.log("CORS_ORIGIN:", process.env.CORS_ORIGIN);
+console.log("environment: ", process.env.NODE_ENV);
 initializePassport(passport);
 
 app.use(cors({
@@ -40,6 +41,7 @@ app.use(
   })
 );
 
+app.enable('trust proxy')
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
