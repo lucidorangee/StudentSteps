@@ -65,9 +65,11 @@ app.use('/api/v1/tutors', authMiddleware, tutorRoutes);
 app.use('/api/v1/roles', authMiddleware, roleRoutes);
 app.use('/api/v1/tutoringsessions', authMiddleware, tutoringSessionRoutes);
 
+
 // Catch-all handler for any request that doesn't match the above (production only)
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../FrontEnd/frontend/build')));
+  console.log('prod');
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../FrontEnd/frontend/build/index.html'));
   });
