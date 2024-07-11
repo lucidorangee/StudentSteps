@@ -102,9 +102,14 @@ const registerUser = async (req, res) => {
 
 const checkAuthenticated = (req, res) => {
   if (req.isAuthenticated()) {
+    console.log("userController.js: Authenticated");
     res.status(200).json({ message: "Confirmed!", isAuthenticated: true });
   }
-  else res.status(401).json({ message: "Unable to confirm authentication", isAuthenticated: false });
+  else 
+  {
+    console.log("userController.js: Unuthenticated");
+    res.status(401).json({ message: "Unable to confirm authentication", isAuthenticated: false });
+  }
 }
 
 /**
