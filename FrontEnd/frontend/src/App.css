@@ -1,1 +1,55 @@
+@import 'react-datepicker/dist/react-datepicker.css';
+
 label{margin-left: 20px;} 
+
+.bg-body-tertiary {
+    background-color: #ffffff !important; /* Override with your desired color */
+}
+.custom-shadow {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* 4px y-displacement, #000000 color, 25% opacity */
+}
+
+.mainbody {
+    background-color: #DBDBDB;
+}
+
+.custom-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.custom-table th, .custom-table td {
+    text-align: center; 
+    padding: 8px;
+    overflow-wrap: break-word; 
+}
+
+.custom-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .custom-table td.active {
+    background-color: #c3e6cb; /* Example color for active state */
+  }
+  
+  .custom-table td.inactive {
+    background-color: #f5c6cb; /* Example color for inactive state */
+  }
+  
+  .custom-table td:hover {
+    cursor: pointer;
+  }
+/* This targets the input area for text cursor */
+.react-select__input {
+  cursor: text;
+}
+
+/* Ensures the control retains its default cursor */
+.react-select__control {
+  cursor: default;
+}
+
+/* Targets only the value container for text cursor */
+.react-select__value-container {
+  cursor: text;
+}

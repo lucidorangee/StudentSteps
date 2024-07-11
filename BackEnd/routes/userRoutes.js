@@ -6,7 +6,7 @@ const router = Router();
 
 router.post("/login", passport.authenticate("local"), controller.login, controller.loginfail);
 router.post("/register", controller.registerUser);
-router.get("/users", controller.checkAuthenticated, controller.getUsers);
-router.post("/", controller.checkAuthenticated, controller.doNothing);
+router.get("/users", controller.getUsers);
+router.get("/", controller.checkAuthenticated);
 
 module.exports = router;

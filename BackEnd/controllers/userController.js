@@ -1,6 +1,5 @@
 const pool = require('../db.js');
 const queries = require("../models/userQueries.js");
-const passport = require("passport");
 const bcrypt = require("bcrypt");
 
 const login = (req, res) => {
@@ -9,7 +8,11 @@ const login = (req, res) => {
 }
 
 const getUsers = (req, res) => {
-  console.log(req.user);
+  if(req.user.role !== "admin")
+  {
+    if(req.user.role == "public") res.status(200).json({ message: "There is not sufficient permissions to access. You're a public." });
+    else res.status(200).json({ message: "There is not sufficient permissions to access." });
+  }
   pool.query(queries.getUsers, (error, results) => {
     if(error)
     {
@@ -37,18 +40,18 @@ const loginfail = (req, res) => {
 }
 
 const registerUser = async (req, res) => {
-  let { name, email, password, password2 } = req.body;
+  let { name, username, password, password2 } = req.body;
 
   let errors = [];
 
   console.log({
     name,
-    email,
+    username,
     password,
     password2
   });
 
-  if (!name || !email || !password || !password2) {
+  if (!name || !username || !password || !password2) {
     errors.push({ message: "Please enter all fields" });
   }
 
@@ -67,8 +70,8 @@ const registerUser = async (req, res) => {
     console.log(hashedPassword);
     // Validation passed
     pool.query(
-      `SELECT * FROM users WHERE email = $1`,
-      [email],
+      `SELECT * FROM users WHERE username = $1`,
+      [username],
       (err, results) => {
         if (err) {
           console.log(err);
@@ -76,13 +79,13 @@ const registerUser = async (req, res) => {
         console.log(results.rows);
 
         if (results.rows.length > 0) {
-          res.status(400).json({ message: "This email is already being used" });
+          res.status(400).json({ message: "This username is already being used" });
         } else {
           pool.query(
-            `INSERT INTO users (name, email, password)
+            `INSERT INTO users (name, username, password)
                 VALUES ($1, $2, $3)
                 RETURNING id, password`,
-            [name, email, hashedPassword],
+            [name, username, hashedPassword],
             (err, results) => {
               if (err) {
                 throw err;
@@ -97,25 +100,33 @@ const registerUser = async (req, res) => {
   }
 };
 
+const checkAuthenticated = (req, res) => {
+  if (req.isAuthenticated()) {
+    res.status(200).json({ message: "Confirmed!", isAuthenticated: true });
+  }
+  else res.status(401).json({ message: "Unable to confirm authentication", isAuthenticated: false });
+}
+
+/**
+
+const doNothing = (req, res) => {
+    console.log("A confirmation message");
+    res.status(200).json({ message: "Confirmed!", isAuthenticated: true });
+}
 const checkAuthenticated = (req, res, next) => {
   console.log("Authenticated: " + req.isAuthenticated());
   if (req.isAuthenticated()) {
     console.log("authenticated");
     next();
   }
-  else res.status(401).json({ message: "Unable to confirm authentication" });
+  else res.status(401).json({ message: "Unable to confirm authentication", isAuthenticated: false });
 }
-
-const doNothing = (req, res) => {
-    console.log("A confirmation message");
-    res.status(200).json({ message: "Confirmed!" });
-}
+*/
 
 module.exports = {
     login,
     loginfail,
     registerUser,
     checkAuthenticated,
-    doNothing,
     getUsers
 };

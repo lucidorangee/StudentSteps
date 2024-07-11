@@ -1,4 +1,4 @@
-# dependencies specific to frontend
+# dependencies specific to backend
 /node_modules
 
 # production build

@@ -5,11 +5,11 @@ const bcrypt = require("bcrypt");
 function initialize(passport) {
   console.log("Initialized");
 
-  const authenticateUser = (email, password, done) => {
-    console.log(email, password);
+  const authenticateUser = (username, password, done) => {
+    console.log(username, password);
     pool.query(
-      `SELECT * FROM users WHERE email = $1`,
-      [email],
+      `SELECT * FROM users WHERE username = $1`,
+      [username],
       (err, results) => {
         if (err) {
           throw err;
@@ -33,7 +33,7 @@ function initialize(passport) {
         } else {
           // No user
           return done(null, false, {
-            message: "No user with that email address"
+            message: "No user with that username address"
           });
         }
       }
@@ -42,7 +42,7 @@ function initialize(passport) {
 
   passport.use(
     new LocalStrategy(
-      { usernameField: "email", passwordField: "password" },
+      { usernameField: "username", passwordField: "password" },
       authenticateUser
     )
   );

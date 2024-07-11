@@ -6,7 +6,7 @@ import { Nav, Navbar } from 'react-bootstrap'
 
 const Login = () => {
 
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ const Login = () => {
       e.preventDefault();
 
       const formData = {
-        email: email,
+        username: username,
         password: password
       };
 
@@ -52,8 +52,8 @@ const Login = () => {
                   </div>
                   <form onSubmit={handleSubmit}>
                     <div className="container-fluid">
-                      <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
-                      <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)}></input>
+                      <label htmlFor="exampleFormControlInput1" className="form-label">Username address</label>
+                      <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" onChange={(e) => setUsername(e.target.value)}></input>
                       <label htmlFor="inputPassword5" className="form-label">Password</label>
                       <input type="password" id="inputPassword5" className="form-control" aria-describedby="passwordHelpBlock" onChange={(e) => setPassword(e.target.value)} />
                     </div>

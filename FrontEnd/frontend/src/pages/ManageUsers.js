@@ -46,14 +46,37 @@ const ManageUsers = () => {
   };
   
   const AuthenticatedOptions = (userData) => {
-    const userDataString = JSON.stringify(userData, null, 2);
+    const userDataString = JSON.stringify(userData.userData, null, 2);
     return (
       <div className="App">
         <h2>Welcome, User!</h2>
-        <table class="table">
-          <div>{userDataString}</div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Username</th>
+              <th>Encrypted Password</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+          {Array.isArray(userData.userData) && (userData.userData).length > 0 ? (
+            (userData.userData).map((user, index) => (
+              <tr key={index}>
+                <td>{user.id}</td>
+                <td>{user.name}</td>
+                <td>{user.username}</td>
+                <td>{user.password}</td>
+                <td>{user.role}</td>
+              </tr>
+            ))):(
+              <tr>
+                <td colSpan="5">No data available</td>
+              </tr>
+            )}
+          </tbody>
         </table>
-        <Nav.Link as={NavLink} to='/Login' exact>Login</Nav.Link>
       </div>
       
     );

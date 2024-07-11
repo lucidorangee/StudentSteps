@@ -18,7 +18,7 @@
 
 - **Purpose:** This document provides a detailed overview of the system design for StudentSteps. It describes the architecture, components, interfaces, and data design of the system.
 - **Scope:** The system design covers the technical implementation aspects of StudentSteps and serves as a guide for developers, architects, and stakeholders involved in the project.
-
+    
 ## 2. System Overview
 
 - **System Goals:** StudentSteps aims to reduce the amount of complexity in writing and leaving comments, facilitate the communication between [the teachers/tutors and the parents/students], and allow students to be more self-reliant with how they study based on comments and making their own schedules.

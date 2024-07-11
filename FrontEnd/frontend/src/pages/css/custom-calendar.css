@@ -1,0 +1,128 @@
+/* custom-calendar.css */
+.calendar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 120px); /* Adjust to fill the screen minus some padding */
+    padding: 20px;
+    background-color: #f4f6f8;
+}
+  
+.calendar {
+    width: 100%;
+    height: 100%;
+    max-width: 1400px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+  
+.react-calendar {
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-family: 'Arial', sans-serif;
+}
+  
+.react-calendar__navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    background: #007bff;
+    border-radius: 8px;
+    padding: 10px;
+    color: white;
+}
+  
+.react-calendar__navigation button {
+    color: white;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+  
+.react-calendar__navigation button:focus {
+    outline: none;
+}
+
+.react-calendar__month-view__days {
+display: grid;
+grid-template-columns: repeat(7, 1fr); /* Ensure 7 columns */
+background: #e9ecef; /* Background color */
+border-radius: 0 0 8px 8px; /* Rounded corners */
+}
+
+.react-calendar__month-view__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: bold;
+    padding: 10px 0;
+    background: #007bff;
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+  
+.react-calendar__tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 10px;
+  height: 100px; /* Adjust height as needed */
+  box-sizing: border-box;
+}
+
+.react-calendar__tile .event {
+  flex: 1;
+  width: 100%;
+  background-color: #fff; /* Event background color */
+  border: 1px solid #ddd; /* Event border */
+  padding: 5px;
+  margin: 2px 0;
+  box-sizing: border-box;
+  border-radius: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+  
+.react-calendar__tile--now {
+    background: #ffecb3;
+    box-shadow: inset 0 0 0 3px #ffca28;
+}
+  
+.react-calendar__tile--active {
+    background: #007bff;
+    color: white;
+    box-shadow: inset 0 0 0 3px #0056b3;
+}
+  
+.react-calendar__tile:hover {
+    background: #f8f9fa;
+    cursor: pointer;
+}
+  
+.event-list {
+    display: flex;
+    flex-direction: column;
+}
+  
+.event-item {
+    background: #007bff;
+    color: white;
+    border-radius: 4px;
+    padding: 2px 5px;
+    margin: 2px 0;
+    font-size: 12px;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+  

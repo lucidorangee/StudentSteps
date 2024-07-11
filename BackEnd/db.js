@@ -1,14 +1,15 @@
 require("dotenv").config();
 
-const Pool = require('pg').Pool;
+const { Pool } = require('pg');
 
 const isProduction = process.env.NODE_ENV === "production";
 
+// Connection string for local development
 const connectionString = `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`;
-console.log(process.env.DB_DATABASE + "  " + process.env.DB_PASSWORD);
 
+// Create a new Pool instance using the appropriate connection string based on environment
 const pool = new Pool({
   connectionString: isProduction ? process.env.DATABASE_URL : connectionString
 });
 
-module.exports = pool;  
+module.exports = pool;
