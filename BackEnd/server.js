@@ -60,9 +60,30 @@ app.use('/api/v1/tutors', authMiddleware, tutorRoutes);
 app.use('/api/v1/roles', authMiddleware, roleRoutes);
 app.use('/api/v1/tutoringsessions', authMiddleware, tutoringSessionRoutes);
 
+const fs = require('fs');
+const path = require('path');
+
+// Check if build directory exists
+const buildDirPath = path.join(__dirname, '../FrontEnd/frontend/build');
+console.log('Checking for build directory at:', buildDirPath);
+if (fs.existsSync(buildDirPath)) {
+  console.log('Build directory exists.');
+  
+  // Check if index.html exists
+  const indexPath = path.join(buildDirPath, 'index.html');
+  console.log('Checking for index.html at:', indexPath);
+  if (fs.existsSync(indexPath)) {
+    console.log('index.html file exists.');
+  } else {
+    console.log('index.html file does NOT exist.');
+  }
+} else {
+  console.log('Build directory does NOT exist.');
+}
 
 // Catch-all handler for any request that doesn't match the above (production only)
 if (process.env.NODE_ENV === 'production') {
+  console.log("Directory check ", path.join(__dirname, '../FrontEnd/frontend/build'));
   app.use(express.static(path.join(__dirname, '../FrontEnd/frontend/build')));
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../FrontEnd/frontend/build/index.html'));
