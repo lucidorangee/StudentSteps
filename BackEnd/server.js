@@ -17,6 +17,7 @@ const userRoutes = require('./routes/userRoutes.js');
 const roleRoutes = require('./routes/roleRoutes.js');
 const tutoringSessionRoutes = require('./routes/tutoringSessionRoutes.js');
 
+console.log("CORS_ORIGIN:", process.env.CORS_ORIGIN);
 initializePassport(passport);
 
 app.use(cors({
