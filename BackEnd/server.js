@@ -61,7 +61,6 @@ app.use('/api/v1/roles', authMiddleware, roleRoutes);
 app.use('/api/v1/tutoringsessions', authMiddleware, tutoringSessionRoutes);
 
 const fs = require('fs');
-const path = require('path');
 
 // Check if build directory exists
 const buildDirPath = path.join(__dirname, '../FrontEnd/frontend/build');
