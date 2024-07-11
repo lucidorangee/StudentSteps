@@ -57,7 +57,7 @@ const CreateStudent = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:4000/api/v1/students/', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
         credentials: 'include',
         method: 'post',
         headers: {

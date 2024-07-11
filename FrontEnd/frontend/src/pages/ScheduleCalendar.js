@@ -25,10 +25,10 @@ const CalendarPage = () => {
     const fetchTutorsAndStudents = async () => {
       try {
         const [tutorResponse, studentResponse] = await Promise.all([
-          fetch('http://localhost:4000/api/v1/tutors', {
+          fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
             credentials: 'include'
           }),
-          fetch('http://localhost:4000/api/v1/students', {
+          fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
             credentials: 'include'
           }),
         ]);
@@ -74,10 +74,10 @@ const CalendarPage = () => {
     const fetchTutoringSessionsAndAssessments = async () => {
       try {
         const [tutoringSessionsResponse, assessmentsResponse] = await Promise.all([
-          fetch(`http://localhost:4000/api/v1/tutoringsessions?${selectedStudentID===-1?0:"student_id="+selectedStudentID}`, {
+          fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions?${selectedStudentID===-1?0:"student_id="+selectedStudentID}`, {
             credentials: 'include'
           }),
-          fetch('http://localhost:4000/api/v1/assessments', {
+          fetch(`${process.env.REACT_APP_API_BASE_URL}/assessments`, {
             credentials: 'include'
           }),
         ]);

@@ -23,7 +23,7 @@ const ManageRoles = () => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/v1/roles', {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/roles`, {
           credentials: 'include',
           method: 'GET',
           headers: {
@@ -67,7 +67,7 @@ const ManageRoles = () => {
 
   const handleConfirmChanges = async (roleStates) => {
     try {
-      const response = await fetch('http://localhost:4000/api/v1/roles', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/roles`, {
         method: 'put',
         headers: {
           'Content-Type': 'application/json'

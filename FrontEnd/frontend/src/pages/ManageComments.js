@@ -33,7 +33,7 @@ const ManageUsers = () => {
   };
 
   const handleDelete = (comment_id) => {
-    fetch(`http://localhost:4000/api/v1/comments/${comment_id}`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${comment_id}`, {
       credentials: 'include',
       method: 'DELETE',
       headers: {

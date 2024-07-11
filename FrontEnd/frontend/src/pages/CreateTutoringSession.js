@@ -27,7 +27,7 @@ const CreateTutoringSession = () => {
 
   useEffect(() => {
     //Fetch authentication status
-    fetch('http://localhost:4000/api/v1/students', {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
       credentials: 'include',
       method: 'GET',
       headers: {
@@ -58,7 +58,7 @@ const CreateTutoringSession = () => {
 
 useEffect(() => {
   //Fetch authentication status
-  fetch('http://localhost:4000/api/v1/tutors', {
+  fetch(`${process.env.REACT_APP_API_BASE_URL}/api/v1/tutors`, {
     credentials: 'include',
     method: 'GET',
     headers: {

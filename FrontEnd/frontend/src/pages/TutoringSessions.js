@@ -8,7 +8,7 @@ const ManageTutoringSessions = () => {
 
   useEffect(() => {
     //Fetch authentication status
-    fetch('http://localhost:4000/api/v1/tutoringsessions', {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
       credentials: 'include'
     })
       .then(response => response.json())

@@ -13,7 +13,7 @@ const ScheduleList = () => {
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/v1/tutoringsessions', {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
       credentials: 'include'
     })
       .then(response => response.json())
@@ -73,7 +73,7 @@ const AuthenticatedOptions = (tutoringSessionData) => {
         return;
     }
 
-    fetch(`http://localhost:4000/api/v1/comments/${tutoringSession.session_id}`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${tutoringSession.session_id}`, {
       credentials: 'include',
       method: 'POST',
       headers: {

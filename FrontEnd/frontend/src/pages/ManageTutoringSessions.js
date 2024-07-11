@@ -8,7 +8,7 @@ const ManageUsers = () => {
 
   useEffect(() => {
     //Fetch authentication status
-    fetch('http://localhost:4000/api/v1/tutoringsessions', {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
       credentials: 'include'
     })
       .then(response => response.json())
@@ -33,7 +33,7 @@ const ManageUsers = () => {
   };
 
   const handleDelete = (session_id) => {
-    fetch(`http://localhost:4000/api/v1/tutoringsessions/${session_id}`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/${session_id}`, {
       credentials: 'include',
       method: 'DELETE',
       headers: {

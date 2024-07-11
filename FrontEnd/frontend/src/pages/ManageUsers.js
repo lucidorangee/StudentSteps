@@ -20,7 +20,7 @@ const ManageUsers = () => {
 
   useEffect(() => {
     //Fetch authentication status
-    fetch('http://localhost:4000/api/v1/auth/users', {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/users`, {
       credentials: 'include'
     })
       .then(response => response.json())

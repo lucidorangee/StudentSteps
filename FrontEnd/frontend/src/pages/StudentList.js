@@ -5,7 +5,7 @@ const StudentList = () => {
 
   useEffect(() => {
     //Fetch authentication status
-    fetch('http://localhost:4000/users/status')
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/users/status`)
       .then(response => response.json())
       .then(data => {
         setAuthenticated(data.isAuthenticated);
