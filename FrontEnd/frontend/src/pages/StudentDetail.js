@@ -11,7 +11,7 @@ const StudentList = () => {
 
   useEffect(() => {
     //Fetch authentication status
-    fetch(`http://localhost:4000/api/v1/students/${id}`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
       method: 'get',
       credentials: 'include',
     })
@@ -54,7 +54,7 @@ const StudentList = () => {
 
   const handleApply = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/api/v1/students/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
         credentials: 'include',
         method: 'put',
         headers: {
