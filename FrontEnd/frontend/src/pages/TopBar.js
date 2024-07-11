@@ -25,6 +25,7 @@ const Topbar = () => {
                 <div className="navbar-nav ms-auto">
                     <Nav.Link as={NavLink} to='/register' exact>Register</Nav.Link>
                     <Nav.Link as={NavLink} to='/login' exact>Login</Nav.Link>
+                    <Nav.Link as={NavLink} to='/logout' exact>Logout</Nav.Link>
                 </div>
             </div>
         </div>

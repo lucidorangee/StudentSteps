@@ -24,6 +24,11 @@ const getUsers = (req, res) => {
   
 }
 
+const logout = (req, res) => {
+  req.logout(); // Passport.js logout function
+  res.status(200).json({ message: "Logged out successfully" });
+};
+
 /*
 app.post(
     "/users/login",
@@ -130,6 +135,7 @@ const checkAuthenticated = (req, res, next) => {
 
 module.exports = {
     login,
+    logout,
     loginfail,
     registerUser,
     checkAuthenticated,
