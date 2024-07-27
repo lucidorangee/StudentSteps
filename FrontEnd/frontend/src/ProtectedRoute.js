@@ -8,7 +8,7 @@ const ProtectedRoute = ({ element: Component, ...rest }) => {
         const fetchAuthStatus = async () => {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth`, {
-                    credentials: 'include'
+                    credentials: 'include',
                 });
                 if (response.ok) {
                     const data = await response.json();

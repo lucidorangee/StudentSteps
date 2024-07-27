@@ -25,7 +25,7 @@ const getUsers = (req, res) => {
 }
 
 const logout = (req, res) => {
-  req.logout(); // Passport.js logout function
+  req.logout();
   res.status(200).json({ message: "Logged out successfully" });
 };
 

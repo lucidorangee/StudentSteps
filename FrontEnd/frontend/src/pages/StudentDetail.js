@@ -30,7 +30,7 @@ const StudentList = () => {
   };
 
   const handleBooleanChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; 
     setStudent({
       ...student,
       [name]: value==='true',

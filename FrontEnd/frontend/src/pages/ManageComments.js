@@ -8,7 +8,7 @@ const ManageUsers = () => {
 
   useEffect(() => {
     //Fetch authentication status
-    fetch('http://localhost:4000/api/v1/comments', {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
       credentials: 'include'
     })
       .then(response => response.json())

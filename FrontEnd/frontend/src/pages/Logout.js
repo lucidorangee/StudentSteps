@@ -7,10 +7,7 @@ const Logout = async () => {
   try {
     const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/logout`, {
       method: 'post',
-      credentials: 'include', // Include credentials if using sessions
-      headers: {
-        // 'Content-Type': 'application/json', // Optional: You may not need this header for logout
-      },
+      credentials: 'include',
     });
 
     if (response.ok) {

@@ -5,6 +5,7 @@ const passport = require("passport");
 const router = Router();
 
 router.post("/login", passport.authenticate("local"), controller.login, controller.loginfail);
+router.post("/logout", controller.logout);
 router.post("/register", controller.registerUser);
 router.get("/users", controller.getUsers);
 router.get("/", controller.checkAuthenticated);
