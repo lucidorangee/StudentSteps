@@ -31,7 +31,8 @@ const Login = () => {
         if (response.ok) {
           // Request was successful
           console.log('Login successful!');
-          navigate("/");
+          const currentDate = new Date().toISOString().substring(0, 10);
+          navigate(`/schedule/list/${currentDate}`);
         } else {
           // Request failed
           console.error('Login failed:', response.statusText);
