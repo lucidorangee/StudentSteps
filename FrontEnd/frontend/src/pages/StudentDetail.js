@@ -432,6 +432,32 @@ const StudentList = () => {
                     <p>{student.can_email?'Yes':'No'}</p>
                   )}
                 </div>
+                <div className="col-md-4">
+                  <p className="fw-bold">Academic Goal</p>
+                  {isEditing?(
+                    <input
+                      type="text"
+                      name="academic_goal"
+                      value={student.academic_goal}
+                      onChange={handleInputChange}
+                    />
+                  ):(
+                    <p>{student.behavioural_goal}</p>
+                  )}
+                </div>
+                <div className="col-md-4">
+                  <p className="fw-bold">Behavioural Goal</p>
+                  {isEditing?(
+                    <input
+                      type="text"
+                      name="behavioural_goal"
+                      value={student.behavioural_goal}
+                      onChange={handleInputChange}
+                    />
+                  ):(
+                    <p>{student.behavioural_goal}</p>
+                  )}
+                </div>
               </div>
               
             </div>
