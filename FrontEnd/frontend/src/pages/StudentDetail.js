@@ -152,320 +152,322 @@ const StudentList = () => {
         </div>
       )}
       <hr className="m-4" />
-      <div className="col-9">
-        <div className="card mt-3">
-          <div className="card-body">
-            <div className="container-fluid">
-              <div className="row g-3">
-                <div className="col-md-4">
-                  <p className="fw-bold">FIRST NAME</p>
-                  {isEditing?(
-                    <input
-                      type="text"
-                      name="first_name"
-                      value={student.first_name}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.first_name}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">LAST NAME</p>
-                  {isEditing?(
-                    <input
-                      type="text"
-                      name="last_name"
-                      value={student.last_name}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.last_name}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">ID</p>
-                  <p>{student.student_id}</p>
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">GRADE</p>
-                  {isEditing?(
-                    <input
-                      type="number"
-                      name="grade_level"
-                      value={student.grade_level}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.grade_level}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Date of Birth</p>
-                  {isEditing?(
-                    <div className="d-flex align-items-center">
-                    <DatePicker
-                      selected={student.date_of_birth}
-                      onChange={setDate}
-                      dateFormat="yyyy/MM/dd"
-                      className="form-control"
-                      placeholderText="Select a date"
-                    />
-                    <FaCalendarAlt className="ms-2 text-secondary" />
+      <div className="row mt-3">
+        <div className="col-9">
+          <div className="card mt-3">
+            <div className="card-body">
+              <div className="container-fluid">
+                <div className="row g-3">
+                  <div className="col-md-4">
+                    <p className="fw-bold">FIRST NAME</p>
+                    {isEditing?(
+                      <input
+                        type="text"
+                        name="first_name"
+                        value={student.first_name}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.first_name}</p>
+                    )}
                   </div>
-                  ):(
-                    <p>{student.date_of_birth}</p>
-                  )}
+                  <div className="col-md-4">
+                    <p className="fw-bold">LAST NAME</p>
+                    {isEditing?(
+                      <input
+                        type="text"
+                        name="last_name"
+                        value={student.last_name}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.last_name}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">ID</p>
+                    <p>{student.student_id}</p>
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">GRADE</p>
+                    {isEditing?(
+                      <input
+                        type="number"
+                        name="grade_level"
+                        value={student.grade_level}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.grade_level}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Date of Birth</p>
+                    {isEditing?(
+                      <div className="d-flex align-items-center">
+                      <DatePicker
+                        selected={student.date_of_birth}
+                        onChange={setDate}
+                        dateFormat="yyyy/MM/dd"
+                        className="form-control"
+                        placeholderText="Select a date"
+                      />
+                      <FaCalendarAlt className="ms-2 text-secondary" />
+                    </div>
+                    ):(
+                      <p>{student.date_of_birth}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Student Phone</p>
+                    {isEditing?(
+                      <input
+                        type="text"
+                        name="student_phone"
+                        value={student.student_phone}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.student_phone}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Student Email</p>
+                    {isEditing?(
+                      <input
+                        type="text"
+                        name="student_email"
+                        value={student.student_email}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.student_email}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Emergency Contact Name</p>
+                    {isEditing?(
+                      <input
+                        type="text"
+                        name="emergency_name"
+                        value={student.emergency_name}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.emergency_name}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Emergency Contact Relationship</p>
+                    {isEditing?(
+                      <input
+                        type="text"
+                        name="emergency_relationship"
+                        value={student.emergency_relationship}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.emergency_relationship}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Emergency Contact Phone</p>
+                    {
+                      isEditing?(
+                      <input
+                        type="text"
+                        name="emergency_phone"
+                        value={student.emergency_phone}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.emergency_phone}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Stamps</p>
+                    {
+                      isEditing?(
+                      <input
+                        type="number"
+                        name="stamps"
+                        value={student.stamps}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.stamps}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">School</p>
+                    {
+                      isEditing?(
+                      <input
+                        type="text"
+                        name="school"
+                        value={student.school}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.school}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Caregiver Name</p>
+                    {
+                      isEditing?(
+                      <input
+                        type="text"
+                        name="caregiver"
+                        value={student.caregiver}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.caregiver}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Secondary Phone</p>
+                    {
+                      isEditing?(
+                      <input
+                        type="text"
+                        name="secondary_phone"
+                        value={student.secondary_phone}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.secondary_phone}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Work Phone</p>
+                    {
+                      isEditing?(
+                      <input
+                        type="text"
+                        name="work_phone"
+                        value={student.work_phone}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.work_phone}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Address</p>
+                    {
+                      isEditing?(
+                      <input
+                        type="text"
+                        name="address"
+                        value={student.address}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.address}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Postal Code</p>
+                    {
+                      isEditing?(
+                      <input
+                        type="text"
+                        name="postalcode"
+                        value={student.postalcode}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.postalcode}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Signed?</p>
+                    {isEditing?(
+                      <label>
+                        <select
+                          name="signed"
+                          value={student.signed}
+                          onChange={handleBooleanChange}
+                        >
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
+                        </select>
+                      </label>
+                    ):(
+                      <p>{student.signed?'Yes':'No'}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Marketing Agreement</p>
+                    {isEditing?(
+                      <label>
+                        <select
+                          name="marketing_agreement"
+                          value={student.marketing_agreement}
+                          onChange={handleBooleanChange}
+                        >
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
+                        </select>
+                      </label>
+                    ):(
+                      <p>{student.marketing_agreement?'Yes':'No'}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Can Email</p>
+                    {isEditing?(
+                      <label>
+                        <select
+                          name="can_email"
+                          value={student.can_email}
+                          onChange={handleBooleanChange}
+                        >
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
+                        </select>
+                      </label>
+                    ):(
+                      <p>{student.can_email?'Yes':'No'}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Academic Goal</p>
+                    {isEditing?(
+                      <input
+                        type="text"
+                        name="academic_goal"
+                        value={student.academic_goal}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.academic_goal}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4">
+                    <p className="fw-bold">Behavioural Goal</p>
+                    {isEditing?(
+                      <input
+                        type="text"
+                        name="behavioural_goal"
+                        value={student.behavioural_goal}
+                        onChange={handleInputChange}
+                      />
+                    ):(
+                      <p>{student.behavioural_goal}</p>
+                    )}
+                  </div>
                 </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Student Phone</p>
-                  {isEditing?(
-                    <input
-                      type="text"
-                      name="student_phone"
-                      value={student.student_phone}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.student_phone}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Student Email</p>
-                  {isEditing?(
-                    <input
-                      type="text"
-                      name="student_email"
-                      value={student.student_email}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.student_email}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Emergency Contact Name</p>
-                  {isEditing?(
-                    <input
-                      type="text"
-                      name="emergency_name"
-                      value={student.emergency_name}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.emergency_name}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Emergency Contact Relationship</p>
-                  {isEditing?(
-                    <input
-                      type="text"
-                      name="emergency_relationship"
-                      value={student.emergency_relationship}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.emergency_relationship}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Emergency Contact Phone</p>
-                  {
-                    isEditing?(
-                    <input
-                      type="text"
-                      name="emergency_phone"
-                      value={student.emergency_phone}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.emergency_phone}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Stamps</p>
-                  {
-                    isEditing?(
-                    <input
-                      type="number"
-                      name="stamps"
-                      value={student.stamps}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.stamps}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">School</p>
-                  {
-                    isEditing?(
-                    <input
-                      type="text"
-                      name="school"
-                      value={student.school}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.school}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Caregiver Name</p>
-                  {
-                    isEditing?(
-                    <input
-                      type="text"
-                      name="caregiver"
-                      value={student.caregiver}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.caregiver}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Secondary Phone</p>
-                  {
-                    isEditing?(
-                    <input
-                      type="text"
-                      name="secondary_phone"
-                      value={student.secondary_phone}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.secondary_phone}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Work Phone</p>
-                  {
-                    isEditing?(
-                    <input
-                      type="text"
-                      name="work_phone"
-                      value={student.work_phone}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.work_phone}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Address</p>
-                  {
-                    isEditing?(
-                    <input
-                      type="text"
-                      name="address"
-                      value={student.address}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.address}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Postal Code</p>
-                  {
-                    isEditing?(
-                    <input
-                      type="text"
-                      name="postalcode"
-                      value={student.postalcode}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.postalcode}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Signed?</p>
-                  {isEditing?(
-                    <label>
-                      <select
-                        name="signed"
-                        value={student.signed}
-                        onChange={handleBooleanChange}
-                      >
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                      </select>
-                    </label>
-                  ):(
-                    <p>{student.signed?'Yes':'No'}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Marketing Agreement</p>
-                  {isEditing?(
-                    <label>
-                      <select
-                        name="marketing_agreement"
-                        value={student.marketing_agreement}
-                        onChange={handleBooleanChange}
-                      >
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                      </select>
-                    </label>
-                  ):(
-                    <p>{student.marketing_agreement?'Yes':'No'}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Can Email</p>
-                  {isEditing?(
-                    <label>
-                      <select
-                        name="can_email"
-                        value={student.can_email}
-                        onChange={handleBooleanChange}
-                      >
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                      </select>
-                    </label>
-                  ):(
-                    <p>{student.can_email?'Yes':'No'}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Academic Goal</p>
-                  {isEditing?(
-                    <input
-                      type="text"
-                      name="academic_goal"
-                      value={student.academic_goal}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.academic_goal}</p>
-                  )}
-                </div>
-                <div className="col-md-4">
-                  <p className="fw-bold">Behavioural Goal</p>
-                  {isEditing?(
-                    <input
-                      type="text"
-                      name="behavioural_goal"
-                      value={student.behavioural_goal}
-                      onChange={handleInputChange}
-                    />
-                  ):(
-                    <p>{student.behavioural_goal}</p>
-                  )}
-                </div>
+                
               </div>
-              
             </div>
           </div>
         </div>
-      </div>
-      <div className="col-3">
-        test
+        <div className="col-3">
+          test
+        </div>
       </div>
       <div>
         <div className="card" style={{ width: '95%' }}>
