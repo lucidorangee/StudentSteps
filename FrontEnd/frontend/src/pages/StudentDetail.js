@@ -464,6 +464,9 @@ const StudentList = () => {
           </div>
         </div>
       </div>
+      <div className="col-3">
+        test
+      </div>
       <div>
         <div className="card" style={{ width: '95%' }}>
           <div className="card-body text-left">
