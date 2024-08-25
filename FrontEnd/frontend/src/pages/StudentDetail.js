@@ -442,7 +442,7 @@ const StudentList = () => {
                       onChange={handleInputChange}
                     />
                   ):(
-                    <p>{student.behavioural_goal}</p>
+                    <p>{student.academic_goal}</p>
                   )}
                 </div>
                 <div className="col-md-4">
