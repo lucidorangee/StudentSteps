@@ -167,7 +167,7 @@ const updateStudent = async (req, res) => {
   const {
     first_name, last_name, student_photo, date_of_birth, grade_level, student_phone, 
     student_email, emergency_name, emergency_relationship, emergency_phone, emergency_email,  
-    school, caregiver, secondary_phone, work_phone, address, postalcode, signed, marketing_agreement, can_email
+    school, caregiver, secondary_phone, work_phone, address, postalcode, signed, marketing_agreement, can_email, academic_goal, behavioural_goal
   } = req.body;
 
   try {
@@ -177,7 +177,7 @@ const updateStudent = async (req, res) => {
         first_name, last_name, student_photo, date_of_birth, grade_level, student_phone, 
         student_email, emergency_name, emergency_relationship, emergency_phone, emergency_email, 
         school, caregiver, secondary_phone, work_phone, address, postalcode, signed, 
-        marketing_agreement, can_email, id
+        marketing_agreement, can_email, academic_goal, behavioural_goal, id
       ]
     );
 
