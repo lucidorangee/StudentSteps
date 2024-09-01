@@ -147,7 +147,6 @@ const completeAndAddComment = (req, res) => {
             if(error) throw error;
         }
     )
-
     
     res.status(201).send("Comment has been created successfully");
 }

@@ -6,12 +6,29 @@ import { FaCalendarAlt } from 'react-icons/fa';
 const StudentList = () => {
   const { id } = useParams();
   const [student, setStudent] = useState(null);
+  const [comments, setComments] = useState([]);
   const [tempStudent, setTempStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     //Fetch authentication status
     fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
+      method: 'get',
+      credentials: 'include',
+    })
+      .then(response => response.json())
+      .then(data => {
+        setStudent(data[0]);
+        setTempStudent(data[0]);
+      })
+      .catch(error => {
+        console.error('Error fetching the student data: ', error);
+      })
+  }, []);
+
+  useEffect(() => {
+    //Fetch authentication status
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/`, {
       method: 'get',
       credentials: 'include',
     })
@@ -99,7 +116,7 @@ const StudentList = () => {
         return;
     }
 
-    fetch(`http://localhost:4000/api/v1/comments`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
       credentials: 'include',
       method: 'POST',
       headers: {
@@ -466,7 +483,15 @@ const StudentList = () => {
           </div>
         </div>
         <div className="col-3">
-          test
+          <div className="card" style={{ width: '95%' }}>
+            <div className="card-body text-left">
+              <h5 className="card-title">New Comment</h5>
+              <div className="input-group mb-3">
+                  <span className="input-group-text" id="comment-input-text">Comment: </span>
+                  <textarea className="form-control" aria-label="With textarea" rows="6"></textarea>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div>
