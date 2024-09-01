@@ -34,11 +34,10 @@ const StudentList = () => {
     })
       .then(response => response.json())
       .then(data => {
-        setStudent(data[0]);
-        setTempStudent(data[0]);
+        setComments(data[0]);
       })
       .catch(error => {
-        console.error('Error fetching the student data: ', error);
+        console.error('Error fetching comments: ', error);
       })
   }, []);
 
@@ -495,6 +494,16 @@ const StudentList = () => {
         </div>
       </div>
       <div>
+      {Array.isArray(comments) && (comments).length > 0 ? (
+          (comments).map((comment, index) => (
+            <tr key={index}>
+              <td>{comment.id}</td>
+            </tr>
+          ))):(
+            <tr>
+              <td colSpan="9">No data available</td>
+            </tr>
+          )};
         <div className="card" style={{ width: '95%' }}>
           <div className="card-body text-left">
             <h5 className="card-title">New Comment</h5>
