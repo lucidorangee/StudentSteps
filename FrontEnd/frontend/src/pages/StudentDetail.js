@@ -28,13 +28,13 @@ const StudentList = () => {
 
   useEffect(() => {
     //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
       method: 'get',
       credentials: 'include',
     })
       .then(response => response.json())
       .then(data => {
-        setComments(data[0]);
+        setComments(data);
       })
       .catch(error => {
         console.error('Error fetching comments: ', error);
@@ -482,28 +482,19 @@ const StudentList = () => {
           </div>
         </div>
         <div className="col-3">
-          <div className="card" style={{ width: '95%' }}>
-            <div className="card-body text-left">
-              <h5 className="card-title">New Comment</h5>
-              <div className="input-group mb-3">
-                  <span className="input-group-text" id="comment-input-text">Comment: </span>
-                  <textarea className="form-control" aria-label="With textarea" rows="6"></textarea>
-              </div>
-            </div>
-          </div>
+          {Array.isArray(comments) && (comments).length > 0 ? (
+            (comments).map((comment, index) => (
+              <tr key={index}>
+                <td>{comment.id}</td>
+              </tr>
+            ))):(
+              <tr>
+                <td colSpan="9">No data available</td>
+              </tr>
+          )};
         </div>
       </div>
       <div>
-      {Array.isArray(comments) && (comments).length > 0 ? (
-          (comments).map((comment, index) => (
-            <tr key={index}>
-              <td>{comment.id}</td>
-            </tr>
-          ))):(
-            <tr>
-              <td colSpan="9">No data available</td>
-            </tr>
-          )};
         <div className="card" style={{ width: '95%' }}>
           <div className="card-body text-left">
             <h5 className="card-title">New Comment</h5>
