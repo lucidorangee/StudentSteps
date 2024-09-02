@@ -484,7 +484,8 @@ const StudentList = () => {
           {Array.isArray(comments) && (comments).length > 0 ? (
             (comments).map((comment, index) => (
               <tr key={index}>
-                <td>{comment.id}</td>
+                <td>{comment.datetime}</td>
+                <td>{comment.content}</td>
               </tr>
             ))):(
               <tr>
