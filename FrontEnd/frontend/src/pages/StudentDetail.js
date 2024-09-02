@@ -29,8 +29,7 @@ const StudentList = () => {
   useEffect(() => {
     //Fetch authentication status
     fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
-      method: 'get',
-      credentials: 'include',
+      credentials: 'include'
     })
       .then(response => response.json())
       .then(data => {
@@ -491,7 +490,7 @@ const StudentList = () => {
               <tr>
                 <td colSpan="9">No data available</td>
               </tr>
-          )};
+          )}
         </div>
       </div>
       <div>
