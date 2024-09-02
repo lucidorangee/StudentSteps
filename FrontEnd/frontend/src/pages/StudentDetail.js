@@ -484,8 +484,15 @@ const StudentList = () => {
           {Array.isArray(comments) && (comments).length > 0 ? (
             (comments).map((comment, index) => (
               <tr key={index}>
-                <td>{comment.datetime}</td>
-                <td>{comment.content}</td>
+                <div className="card" style={{ width: '95%' }}>
+                  <div className="card-body text-left">
+                    <h5 className="card-title">{comment.datetime}</h5>
+                    <div className="input-group mb-3">
+                      <p class="card-text">Date: {comment.datetime}</p>
+                      <p class="card-text">Content: {comment.content}</p>
+                    </div>
+                  </div>
+                </div>
               </tr>
             ))):(
               <tr>
