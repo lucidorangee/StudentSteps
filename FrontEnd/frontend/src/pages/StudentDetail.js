@@ -28,6 +28,7 @@ const StudentList = () => {
 
   useEffect(() => {
     if (tempStudent) {
+      console.log(tempStudent);
       console.log(`${process.env.REACT_APP_API_BASE_URL}/comments?student_id=${tempStudent.student_id}`);
       // Fetch comments once tempStudent is set
       fetch(`${process.env.REACT_APP_API_BASE_URL}/comments?student_id=${tempStudent.student_id}`, {
