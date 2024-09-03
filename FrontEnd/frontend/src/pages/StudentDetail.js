@@ -27,18 +27,20 @@ const StudentList = () => {
   }, []);
 
   useEffect(() => {
-    //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
-      credentials: 'include'
-    })
-      .then(response => response.json())
-      .then(data => {
-        setComments(data);
+    if (tempStudent) {
+      // Fetch comments once tempStudent is set
+      fetch(`${process.env.REACT_APP_API_BASE_URL}/comments?student_id=${tempStudent.id}`, {
+        credentials: 'include'
       })
-      .catch(error => {
-        console.error('Error fetching comments: ', error);
-      })
-  }, []);
+        .then(response => response.json())
+        .then(data => {
+          setComments(data);
+        })
+        .catch(error => {
+          console.error('Error fetching comments: ', error);
+        });
+    }
+  }, [tempStudent]);
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
