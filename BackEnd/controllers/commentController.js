@@ -11,6 +11,7 @@ const getComments = (req, res) => {
 
     const { comment_id, student_id, tutor_id, datetime, type, approved } = req.query;
     console.log('getting comments');
+    console.log(student_id);
 
     // comment_id | student_id | tutor_id | datetime | content | type | stamps | approved
 
