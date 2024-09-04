@@ -91,15 +91,15 @@ const updateTutor = (req, res) => {
         first_name, last_name, tutor_photo, date_of_birth, contact_phone, contact_email
       } = req.body;
 
-    pool.query(tutorQueries.getStudentById, [id], (error, results) => {
-        const noStudentFound = !results.rows.length;
-        if(noStudentFound){
-            res.send("Student does not exist in the database.");
+    pool.query(tutorQueries.getTutorById, [id], (error, results) => {
+        const noTutorFound = !results.rows.length;
+        if(noTutorFound){
+            res.send("Tutor does not exist in the database.");
         }
         else{
-            pool.query(tutorQueries.updateStudent, [first_name, last_name, tutor_photo, date_of_birth, contact_phone, contact_email, id], (error, results) => {
+            pool.query(tutorQueries.updateTutor, [first_name, last_name, tutor_photo, date_of_birth, contact_phone, contact_email, id], (error, results) => {
                 if(error) throw error;
-                res.status(200).send("Student " + id + " has been successfully updated");
+                res.status(200).send("Tutor " + id + " has been successfully updated");
             });
         }
     });
