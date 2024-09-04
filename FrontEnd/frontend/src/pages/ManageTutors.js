@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, Link, NavLink } from "react-router-dom";
+import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 
 const ManageUsers = () => {
-  const [authenticated, setAuthenticated] = useState(true);
   const [tutors, setTutors] = useState(null);
+  const navigate = useNavigate();
 /*
   useEffect(() => {
     //Fetch authentication status
@@ -74,7 +74,7 @@ const ManageUsers = () => {
     });
   };
 
-  const redirectTutorProfile  = (student_id) => {
+  const redirectTutorProfile  = (tutor_id) => {
     navigate(`/tutors/detail/${tutor_id}`, { replace : true});
 
   }
