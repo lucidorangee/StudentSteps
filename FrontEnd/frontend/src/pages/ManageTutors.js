@@ -74,6 +74,11 @@ const ManageUsers = () => {
     });
   };
 
+  const redirectTutorProfile  = (student_id) => {
+    navigate(`/tutors/detail/${tutor_id}`, { replace : true});
+
+  }
+
   const AuthenticatedOptions = ( {tutors} ) => {    
     return (
       <div className="App">
@@ -93,7 +98,7 @@ const ManageUsers = () => {
           {Array.isArray(tutors) && (tutors).length > 0 ? (
             (tutors).map((tutor, index) => (
               <tr key={index}>
-                <td>{tutor.tutor_id}</td>
+                <td onClick={() => redirectTutorProfile(tutor.tutor_id)}>{tutor.tutor_id}</td>
                 <td>{tutor.user_id}</td>
                 <td>{tutor.first_name} {tutor.last_name}</td>
                 <td>{tutor.contact_phone}</td>

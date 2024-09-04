@@ -20,6 +20,7 @@ import ManageTutors from './pages/ManageTutors.js';
 import ManageRoles from './pages/ManageRoles.js';
 import StudentDetail from './pages/StudentDetail.js';
 import ScheduleCalendar from './pages/ScheduleCalendar.js';
+import TutorDetail from './pages/TutorDetail.js';
 
 
 function App() {  
@@ -48,6 +49,7 @@ function App() {
           
 
           <Route path="/tutors/create" element={<ProtectedRoute element={CreateTutor} />} />
+          <Route path="/tutors/detail/:id" element={<ProtectedRoute element={TutorDetail} />} />
 
           <Route path="/comments" element={<ProtectedRoute element={ManageComments} />} />
         </Route>

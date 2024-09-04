@@ -29,6 +29,10 @@ const getComments = (req, res) => {
         conditions.push(`student_id = $${index++}`);
         values.push(parseInt(student_id));
     }
+    if(tutor_id){
+        conditions.push(`tutor_id = $${index++}`);
+        values.push(parseInt(tutor_id));
+    }
     else{
         pool.query(`SELECT all_calendar_read FROM roles WHERE name='${req.user.role}'`, (error, results) => {
             if(error) throw error;
