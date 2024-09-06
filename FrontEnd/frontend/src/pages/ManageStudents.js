@@ -10,6 +10,8 @@ const ManageUsers = () => {
   
   const [loading, setLoading] = useState(true);
   const [filterName, setFilterName] = useState("");
+  const [filterEmail, setFilterEmail] = useState("");
+  const [filterGrade, setFilterGrade] = useState(0);
   
   const [filteredStudents, setFilteredStudents] = useState(null);
 
@@ -68,13 +70,20 @@ const ManageUsers = () => {
     setFilterName(value);
   };
 
+  const handleFilterGradeChange = (e) => {
+    const { value } = e.target;
+    setFilterGrade(parseInt(value) || 0);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     let temp = [];
     for(let i = 0; i < students.length; i++)
     {
-      if(students[i].first_name.includes(filterName) || students[i].last_name.includes(filterName)) temp.push(students[i]);
+      if((students[i].first_name.includes(filterName) || students[i].last_name.includes(filterName))
+        && (filterGrade === 0 || students[i].grade === filterGrade))
+          temp.push(students[i]);
     }
     setFilteredStudents(temp);
   };
@@ -85,11 +94,19 @@ const ManageUsers = () => {
       <form onSubmit={handleSubmit}>
         <div className="container-fluid m-3">
           <div className="col">
-            <label htmlFor="FormControlInput1" className="form-label">Student</label>
+            <label htmlFor="FormControlInput1" className="form-label">Name</label>
             <input
               type="text"
               value={filterName}
               onChange={handleFilterNameChange}
+            />
+          </div>
+          <div className="col">
+            <label htmlFor="FormControlInput2" className="form-label">Grade</label>
+            <input
+              type="text"
+              value={filterGrade}
+              onChange={handleFilterGradeChange}
             />
           </div>
         </div>
