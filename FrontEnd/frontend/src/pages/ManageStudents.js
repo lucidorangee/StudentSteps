@@ -82,7 +82,7 @@ const ManageUsers = () => {
     for(let i = 0; i < students.length; i++)
     {
       if((students[i].first_name.includes(filterName) || students[i].last_name.includes(filterName))
-        && (filterGrade === 0 || students[i].grade === filterGrade))
+        && (filterGrade === 0 || students[i].grade_level === filterGrade))
           temp.push(students[i]);
     }
     setFilteredStudents(temp);
