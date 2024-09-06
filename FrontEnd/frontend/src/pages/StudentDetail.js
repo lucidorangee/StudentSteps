@@ -170,14 +170,6 @@ const StudentList = () => {
         </div>
       )}
       <hr className="m-4" />
-      <div className="col-3">
-        <input
-          type="text"
-          name="emergency_phone"
-          value={student.emergency_phone}
-          onChange={handleFilterChange}
-        />
-      </div>
       <div className="row mt-3">
         <div className="col-9">
           <div className="card mt-3">
