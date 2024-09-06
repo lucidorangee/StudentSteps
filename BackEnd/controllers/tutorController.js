@@ -78,7 +78,7 @@ const removeTutor = (req, res) => {
         else{
             pool.query(tutorQueries.removeTutor, [id], (error, result) => {
                 if (error) throw error;
-                res.status(200).send("Tutor "+id+" removed successfully");
+                res.status(200).send("Tutor " + id + " removed successfully");
             })
         }
     });

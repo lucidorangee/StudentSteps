@@ -10,6 +10,7 @@ const StudentList = () => {
   const [tempStudent, setTempStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
+
   useEffect(() => {
     //Fetch authentication status
     fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
@@ -169,6 +170,14 @@ const StudentList = () => {
         </div>
       )}
       <hr className="m-4" />
+      <div className="col-3">
+        <input
+          type="text"
+          name="emergency_phone"
+          value={student.emergency_phone}
+          onChange={handleFilterChange}
+        />
+      </div>
       <div className="row mt-3">
         <div className="col-9">
           <div className="card mt-3">

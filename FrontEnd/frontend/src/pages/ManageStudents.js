@@ -6,6 +6,11 @@ const ManageUsers = () => {
   const [students, setStudents] = useState(null);
   const navigate = useNavigate();
 
+  
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [studentOptions, setStudentOptions] = useState([]);
+  const [student_id, setStudent] = useState('');
+
   useEffect(() => {
     //Fetch authentication status
     fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
@@ -18,7 +23,18 @@ const ManageUsers = () => {
       .then(response => response.json())
       .then(data => {
         setStudents(data);
-      })
+        console.log("DATA ", data);
+        const options = data.map(student => ({
+          value: student.student_id,
+          label: `${student.first_name} (ID: ${student.student_id})`,
+        }));
+        setStudentOptions(options);
+        if (options.length > 0) {
+          setSelectedStudent(options[0]);
+          setStudent(options[0].value);
+        }
+        setLoading(false);
+        })
       .catch(error => {
         console.error('Error fetching students data: ', error);
       })
@@ -52,12 +68,44 @@ const ManageUsers = () => {
 
   const redirectStudentProfile  = (student_id) => {
     navigate(`/students/detail/${student_id}`, { replace : true});
-
   }
+
+  const handleStudentChange = (selectedOption) => {
+    setSelectedStudent(selectedOption);
+    setStudent(selectedOption ? selectedOption.value : -1);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    console.log('filtering');
+  };
 
   return (
     <div className="App">
       <h2>Welcome, User!</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="container-fluid m-3">
+          <div className="col">
+            <label htmlFor="FormControlInput1" className="form-label">Student</label>
+            {loading ? (
+              <p>Loading students...</p>
+            ) : (
+              <Select
+                options={studentOptions}
+                onChange={handleStudentChange}
+                placeholder="Search for a student..."
+                classNamePrefix="react-select"
+              />
+            )}
+          </div>
+        </div>
+        <div className="row align-items-start m-3">
+          <div className="col-10">
+            <button type="submit" className="btn btn-primary mb-3">Apply Filter</button>
+          </div>
+        </div>
+      </form>
       <table className="table table-hover">
         <thead>
           <tr>
