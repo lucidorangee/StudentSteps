@@ -9,9 +9,10 @@ const ManageUsers = () => {
 
   
   const [loading, setLoading] = useState(true);
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [studentOptions, setStudentOptions] = useState([]);
-  const [student_id, setStudent] = useState('');
+  const [filterName, setFilterName] = useState("");
+  
+  const [filteredStudents, setFilteredStudents] = useState(null);
+
 
   useEffect(() => {
     //Fetch authentication status
@@ -25,17 +26,7 @@ const ManageUsers = () => {
       .then(response => response.json())
       .then(data => {
         setStudents(data);
-        console.log("DATA ", data);
-        const options = data.map(student => ({
-          value: student.student_id,
-          label: `${student.first_name} (ID: ${student.student_id})`,
-        }));
-        setStudentOptions(options);
-        if (options.length > 0) {
-          setSelectedStudent(options[0]);
-          setStudent(options[0].value);
-        }
-        setLoading(false);
+        setFilteredStudents(data);
         })
       .catch(error => {
         console.error('Error fetching students data: ', error);
@@ -72,15 +63,20 @@ const ManageUsers = () => {
     navigate(`/students/detail/${student_id}`, { replace : true});
   }
 
-  const handleStudentChange = (selectedOption) => {
-    setSelectedStudent(selectedOption);
-    setStudent(selectedOption ? selectedOption.value : -1);
+  const handleFilterNameChange = (e) => {
+    const { value } = e.target;
+    setFilterName(value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    console.log('filtering');
+    let temp = [];
+    for(let i = 0; i < students.length; i++)
+    {
+      if(students[i].first_name.includes(filterName) || students[i].last_name.includes(filterName)) temp.push(students[i]);
+    }
+    setFilteredStudents(temp);
   };
 
   return (
@@ -90,16 +86,11 @@ const ManageUsers = () => {
         <div className="container-fluid m-3">
           <div className="col">
             <label htmlFor="FormControlInput1" className="form-label">Student</label>
-            {loading ? (
-              <p>Loading students...</p>
-            ) : (
-              <Select
-                options={studentOptions}
-                onChange={handleStudentChange}
-                placeholder="Search for a student..."
-                classNamePrefix="react-select"
-              />
-            )}
+            <input
+              type="text"
+              value={filterName}
+              onChange={handleFilterNameChange}
+            />
           </div>
         </div>
         <div className="row align-items-start m-3">
@@ -121,8 +112,8 @@ const ManageUsers = () => {
           </tr>
         </thead>
         <tbody>
-        {Array.isArray(students) && (students).length > 0 ? (
-          (students).map((student, index) => (
+        {Array.isArray(filteredStudents) && (filteredStudents).length > 0 ? (
+          (filteredStudents).map((student, index) => (
             <tr key={index}>
               <td onClick={() => redirectStudentProfile(student.student_id)}>{student.student_id}</td>
               <td>{student.user_id}</td>
