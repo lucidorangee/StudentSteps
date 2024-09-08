@@ -92,22 +92,24 @@ const ManageUsers = () => {
     <div className="App">
       <h2>Welcome, User!</h2>
       <form onSubmit={handleSubmit}>
-        <div className="container-fluid row g-3">
-          <div className="col-8">
-            <label htmlFor="FormControlInput1" className="form-label">Name</label>
-            <input
-              type="text"
-              value={filterName}
-              onChange={handleFilterNameChange}
-            />
-          </div>
-          <div className="col-4">
-            <label htmlFor="FormControlInput2" className="form-label">Grade</label>
-            <input
-              type="text"
-              value={filterGrade}
-              onChange={handleFilterGradeChange}
-            />
+        <div className="container-fluid m-3">
+          <div className="row g-3">
+            <div className="col-8">
+              <label htmlFor="FormControlInput1" className="form-label">Name</label>
+              <input
+                type="text"
+                value={filterName}
+                onChange={handleFilterNameChange}
+              />
+            </div>
+            <div className="col-4">
+              <label htmlFor="FormControlInput2" className="form-label">Grade</label>
+              <input
+                type="text"
+                value={filterGrade}
+                onChange={handleFilterGradeChange}
+              />
+            </div>
           </div>
         </div>
         <div className="row align-items-start m-3">
