@@ -93,7 +93,7 @@ const ManageUsers = () => {
       <h2>Welcome, User!</h2>
       <form onSubmit={handleSubmit}>
         <div className="container-fluid m-3">
-          <div className="col">
+          <div className="col-8">
             <label htmlFor="FormControlInput1" className="form-label">Name</label>
             <input
               type="text"
@@ -101,7 +101,7 @@ const ManageUsers = () => {
               onChange={handleFilterNameChange}
             />
           </div>
-          <div className="col">
+          <div className="col-4">
             <label htmlFor="FormControlInput2" className="form-label">Grade</label>
             <input
               type="text"
