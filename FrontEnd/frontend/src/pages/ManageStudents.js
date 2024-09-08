@@ -92,7 +92,7 @@ const ManageUsers = () => {
     <div className="App">
       <h2>Welcome, User!</h2>
       <form onSubmit={handleSubmit}>
-        <div className="container-fluid m-3">
+        <div className="container-fluid row g-3">
           <div className="col-8">
             <label htmlFor="FormControlInput1" className="form-label">Name</label>
             <input
