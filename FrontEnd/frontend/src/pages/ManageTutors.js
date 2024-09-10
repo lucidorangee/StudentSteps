@@ -8,7 +8,6 @@ const ManageUsers = () => {
 
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
-  const [filterGrade, setFilterGrade] = useState(0);
   
   const [filteredTutors, setFilteredTutors] = useState(null);
 
@@ -73,7 +72,7 @@ const ManageUsers = () => {
     for(let i = 0; i < tutors.length; i++)
     {
       if((tutors[i].first_name.includes(filterName) || tutors[i].last_name.includes(filterName))
-        && (filterGrade === 0 || tutors[i].grade_level === filterGrade))
+        && true)
           temp.push(tutors[i]);
     }
     setFilteredTutors(temp);
@@ -111,8 +110,8 @@ const ManageUsers = () => {
           </tr>
         </thead>
         <tbody>
-        {Array.isArray(tutors) && (tutors).length > 0 ? (
-          (tutors).map((tutor, index) => (
+        {Array.isArray(filteredTutors) && (filteredTutors).length > 0 ? (
+          (filteredTutors).map((tutor, index) => (
             <tr key={index}>
               <td onClick={() => redirectTutorProfile(tutor.tutor_id)}>{tutor.tutor_id}</td>
               <td>{tutor.user_id}</td>
