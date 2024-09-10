@@ -94,7 +94,7 @@ const ManageUsers = () => {
       <form onSubmit={handleSubmit}>
         <div className="container-fluid m-3">
           <div className="row g-3">
-            <div className="col-8">
+            <div className="col-3">
               <label htmlFor="FormControlInput1" className="form-label">Name</label>
               <input
                 type="text"
@@ -102,7 +102,7 @@ const ManageUsers = () => {
                 onChange={handleFilterNameChange}
               />
             </div>
-            <div className="col-4">
+            <div className="col-3">
               <label htmlFor="FormControlInput2" className="form-label">Grade</label>
               <input
                 type="text"
@@ -110,13 +110,14 @@ const ManageUsers = () => {
                 onChange={handleFilterGradeChange}
               />
             </div>
+            <div className="row align-items-start m-3">
+              <div className="col-3">
+                <button type="submit" className="btn btn-primary mb-3">Apply Filter</button>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="row align-items-start m-3">
-          <div className="col-10">
-            <button type="submit" className="btn btn-primary mb-3">Apply Filter</button>
-          </div>
-        </div>
+        
       </form>
       <table className="table table-hover">
         <thead>
