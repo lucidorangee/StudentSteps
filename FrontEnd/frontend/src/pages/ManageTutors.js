@@ -70,11 +70,11 @@ const ManageUsers = () => {
     e.preventDefault();
   
     let temp = [];
-    for(let i = 0; i < students.length; i++)
+    for(let i = 0; i < tutors.length; i++)
     {
-      if((students[i].first_name.includes(filterName) || students[i].last_name.includes(filterName))
-        && (filterGrade === 0 || students[i].grade_level === filterGrade))
-          temp.push(students[i]);
+      if((tutors[i].first_name.includes(filterName) || tutors[i].last_name.includes(filterName))
+        && (filterGrade === 0 || tutors[i].grade_level === filterGrade))
+          temp.push(tutors[i]);
     }
     setFilteredTutors(temp);
   };
