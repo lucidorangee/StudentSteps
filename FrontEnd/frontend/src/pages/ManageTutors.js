@@ -6,6 +6,12 @@ const ManageUsers = () => {
   const [tutors, setTutors] = useState(null);
   const navigate = useNavigate();
 
+  const [filterName, setFilterName] = useState("");
+  const [filterEmail, setFilterEmail] = useState("");
+  const [filterGrade, setFilterGrade] = useState(0);
+  
+  const [filteredTutors, setFilteredTutors] = useState(null);
+
   useEffect(() => {
     //Fetch authentication status
     fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
@@ -18,6 +24,7 @@ const ManageUsers = () => {
       .then(response => response.json())
       .then(data => {
         setTutors(data);
+        setFilteredTutors(data);
       })
       .catch(error => {
         console.error('Error fetching tutors data: ', error);
@@ -52,12 +59,46 @@ const ManageUsers = () => {
 
   const redirectTutorProfile  = (tutor_id) => {
     navigate(`/tutors/detail/${tutor_id}`, { replace : true});
-
   }
+
+  const handleFilterNameChange = (e) => {
+    const { value } = e.target;
+    setFilterName(value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    let temp = [];
+    for(let i = 0; i < students.length; i++)
+    {
+      if((students[i].first_name.includes(filterName) || students[i].last_name.includes(filterName))
+        && (filterGrade === 0 || students[i].grade_level === filterGrade))
+          temp.push(students[i]);
+    }
+    setFilteredTutors(temp);
+  };
   
   return (
     <div className="App">
       <h2>Welcome, User!</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="container-fluid m-3">
+          <div className="row g-3">
+            <div className="col-3">
+              <label htmlFor="FormControlInput1" className="form-label">Name</label>
+              <input
+                type="text"
+                value={filterName}
+                onChange={handleFilterNameChange}
+              />
+            </div>
+            <div className="col-3">
+              <button type="submit" className="btn btn-primary mb-3">Apply Filter</button>
+            </div>
+          </div>
+        </div>
+      </form>
       <table className="table">
         <thead>
           <tr>
