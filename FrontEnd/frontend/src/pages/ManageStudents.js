@@ -110,11 +110,9 @@ const ManageUsers = () => {
                 onChange={handleFilterGradeChange}
               />
             </div>
-            <div className="row align-items-start m-3">
               <div className="col-3">
                 <button type="submit" className="btn btn-primary mb-3">Apply Filter</button>
               </div>
-            </div>
           </div>
         </div>
         
