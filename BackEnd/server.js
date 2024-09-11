@@ -15,6 +15,7 @@ const tutorRoutes = require('./routes/tutorRoutes.js');
 const studentRoutes = require('./routes/studentRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
 const roleRoutes = require('./routes/roleRoutes.js');
+const homeworkRoutes = require('./routes/homeworkRoutes.js');
 const tutoringSessionRoutes = require('./routes/tutoringSessionRoutes.js');
 
 console.log("CORS_ORIGIN:", process.env.CORS_ORIGIN);
@@ -64,6 +65,7 @@ app.use('/api/v1/assessments', authMiddleware, assessmentRoutes);
 app.use('/api/v1/students', authMiddleware, studentRoutes);
 app.use('/api/v1/tutors', authMiddleware, tutorRoutes);
 app.use('/api/v1/roles', authMiddleware, roleRoutes);
+app.use('/api/v1/homework', authMiddleware, homeworkRoutes);
 app.use('/api/v1/tutoringsessions', authMiddleware, tutoringSessionRoutes);
 
 const PORT = process.env.PORT || 4000;
