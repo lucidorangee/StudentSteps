@@ -153,7 +153,7 @@ const ManageUsers = () => {
             <tr key={index}>
               {//<td onClick={() => redirectStudentProfile(student.student_id)}>{student.student_id}</td>
               }
-              <td>{aahomework.homework_id}</td>
+              <td>{ahomework.homework_id}</td>
               <td>{ahomework.student_id}</td>
               <td>{ahomework.subject}</td>
               <td>{ahomework.assigned}</td>
