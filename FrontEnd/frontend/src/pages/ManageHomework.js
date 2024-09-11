@@ -53,7 +53,7 @@ const ManageUsers = () => {
       .catch(error => {
         console.error('Error fetching homework data: ', error);
       })
-  }, [students]);
+  }, []);
 
   const handleDelete = (homework_id) => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/${homework_id}`, {
