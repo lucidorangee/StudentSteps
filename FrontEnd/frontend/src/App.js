@@ -14,8 +14,10 @@ import ScheduleList from './pages/ScheduleList.js';
 import CreateTutoringSession from './pages/CreateTutoringSession.js';
 import CreateStudent from './pages/CreateStudent.js';
 import CreateTutor from './pages/CreateTutor.js';
+import CreateHomework from './pages/CreateHomework.js';
 import ManageComments from './pages/ManageComments.js';
 import ManageStudents from './pages/ManageStudents.js';
+import ManageHomework from './pages/ManageHomework.js';
 import ManageTutors from './pages/ManageTutors.js';
 import ManageRoles from './pages/ManageRoles.js';
 import StudentDetail from './pages/StudentDetail.js';
@@ -39,10 +41,13 @@ function App() {
           <Route path="/admin/tutors" element={<ProtectedRoute element={ManageTutors} />} />
           <Route path="/admin/students" element={<ProtectedRoute element={ManageStudents} />} />
           <Route path="/admin/roles" element={<ProtectedRoute element={ManageRoles} />} />
+          <Route path="/admin/homework" element={<ProtectedRoute element={ManageHomework} />} />
 
           <Route path="/schedule/list/:date?" element={<ProtectedRoute element={ScheduleList} />} />
           <Route path="/schedule/calendar/:date?" element={<ProtectedRoute element={ScheduleCalendar} />} />
           <Route path="/schedule/create" element={<ProtectedRoute element={CreateTutoringSession} />} />
+
+          <Route path="/homework/create" element={<ProtectedRoute element={CreateHomework} />} />
 
           <Route path="/students/create" element={<ProtectedRoute element={CreateStudent} />} />
           <Route path="/students/detail/:id" element={<ProtectedRoute element={StudentDetail} />} />
