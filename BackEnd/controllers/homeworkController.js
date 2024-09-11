@@ -3,7 +3,7 @@ const queries = require("../models/homeworkQueries.js");
 const bcrypt = require("bcrypt");
 
 const getHomework = (req, res) => {
-    pool.query("SELECT * FROM homeworks", (error, results) => {
+    pool.query("SELECT * FROM homework", (error, results) => {
         if(error) throw error;
         res.status(200).json(results.rows);            
     })

@@ -18,8 +18,7 @@ const ManageUsers = () => {
 
 
   useEffect(() => {
-    //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
       credentials: 'include',
       method: 'GET',
       headers: {
@@ -36,8 +35,7 @@ const ManageUsers = () => {
   }, []);
 
   useEffect(() => {
-    //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/`, {
       credentials: 'include',
       method: 'GET',
       headers: {
