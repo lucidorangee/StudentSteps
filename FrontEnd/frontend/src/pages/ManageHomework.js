@@ -46,6 +46,7 @@ const ManageUsers = () => {
       .then(data => {
           setHomework(data);
           setFilteredHomework(data);
+          console.log(homework);
           setLoading(false);
         })
       .catch(error => {
@@ -146,7 +147,7 @@ const ManageUsers = () => {
           </tr>
         </thead>
         <tbody>
-        {loading && Array.isArray(filteredHomework) && (filteredHomework).length > 0 ? (
+        {!loading && Array.isArray(filteredHomework) && (filteredHomework).length > 0 ? (
           (filteredHomework).map((ahomework, index) => (
             <tr key={index}>
               {//<td onClick={() => redirectStudentProfile(student.student_id)}>{student.student_id}</td>
