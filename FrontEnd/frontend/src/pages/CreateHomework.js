@@ -109,7 +109,7 @@ const handleSubmit = async (e) => {
   };
 
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/add`, {
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/`, {
       credentials: 'include',
       method: 'post',
       headers: {
