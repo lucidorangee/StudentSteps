@@ -18,6 +18,7 @@ import CreateHomework from './pages/CreateHomework.js';
 import ManageComments from './pages/ManageComments.js';
 import ManageStudents from './pages/ManageStudents.js';
 import ManageHomework from './pages/ManageHomework.js';
+import ManageDueHomework from './pages/ManageDueHomework.js';
 import ManageTutors from './pages/ManageTutors.js';
 import ManageRoles from './pages/ManageRoles.js';
 import StudentDetail from './pages/StudentDetail.js';
@@ -48,6 +49,7 @@ function App() {
           <Route path="/schedule/create" element={<ProtectedRoute element={CreateTutoringSession} />} />
 
           <Route path="/homework/create" element={<ProtectedRoute element={CreateHomework} />} />
+          <Route path="/admin/homework/due" element={<ProtectedRoute element={ManageDueHomework} />} />
 
           <Route path="/students/create" element={<ProtectedRoute element={CreateStudent} />} />
           <Route path="/students/detail/:id" element={<ProtectedRoute element={StudentDetail} />} />

@@ -46,7 +46,6 @@ const ManageUsers = () => {
       .then(data => {
           setHomework(data);
           setFilteredHomework(data);
-          console.log(homework);
           setLoading(false);
         })
       .catch(error => {
