@@ -13,6 +13,14 @@ const ManageDueHomework = () => {
   const [datetime, setDatetime] = useState('');
   const [filteredHomeworkList, setFilteredHomeworkList] = useState([]);
 
+
+  const findStudentName = (id) => {
+    for(let i = 0; i < students.length; i++)
+    {
+      if(students[i].student_id === id) return students[i].first_name + students[i].last_name;
+    }
+    return "No Name Found";
+  }
   
   useEffect(() => {
     const fetchData = async () => {
@@ -69,8 +77,7 @@ const ManageDueHomework = () => {
         <thead>
           <tr>
             <th>Student ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Name</th>
             <th>Subject</th>
             <th>Notes</th>
             <th>Completed?</th>
@@ -81,8 +88,7 @@ const ManageDueHomework = () => {
           (filteredHomeworkList).map((homework, index) => (
             <tr key={index}>
               <td>{homework.homework_id}</td>
-              <td>{homework.student_id}</td>
-              <td>{homework.student_id}</td>
+              <td>{findStudentName(homework.student_id)}</td>
               <td>{homework.subject}</td>
               <td>{homework.notes}</td>
               <td>{homework.completed}</td>
