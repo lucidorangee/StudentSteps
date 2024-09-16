@@ -27,8 +27,7 @@ const ManageDueHomework = () => {
     
     // Convert the date string (yyyy/MM/dd) into a Date object
     console.log(datetime);
-    const [year, month, day] = datetime.split('/').map(Number); // split and convert to numbers
-    const targetDate = new Date(year, month - 1, day); // month is zero-indexed in JS Date (Jan = 0)
+    const targetDate = new Date(datetime); 
     const targetDateOnly = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
 
     let temp = [];
