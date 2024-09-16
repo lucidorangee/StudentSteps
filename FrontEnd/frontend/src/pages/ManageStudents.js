@@ -15,6 +15,8 @@ const ManageUsers = () => {
   
   const [filteredStudents, setFilteredStudents] = useState(null);
 
+  const [completion, setCompletion] = useState(0);
+
 
   useEffect(() => {
     //Fetch authentication status
@@ -88,6 +90,10 @@ const ManageUsers = () => {
     setFilteredStudents(temp);
   };
 
+  const handleSelect = (value) => {
+    setCompletion(value); // Update the completion state with the selected value
+  };
+
   return (
     <div className="App">
       <h2>Welcome, User!</h2>
@@ -139,11 +145,24 @@ const ManageUsers = () => {
               <td>{student.student_email}</td>
               <td>{student.stamps}</td>
               <td>
-                <i
-                  className="bi bi-trash"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleDelete(student.student_id)}
-                ></i>
+                <button
+                  className="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                Select Completion: {completion}
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <li key={num}>
+                      <button className="dropdown-item" onClick={() => handleSelect(num)}>
+                        {num}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
               </td>
             </tr>
           ))):(
