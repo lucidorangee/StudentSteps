@@ -25,17 +25,17 @@ const ManageDueHomework = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Convert the date string (yyyy/MM/dd) into a Date object
-    console.log(datetime);
     const targetDate = new Date(datetime); 
     const targetDateOnly = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
 
     let temp = [];
     for(let i = 0; i < homeworkList.length; i++)
     {
+      if(homeworkList[i].completed > 0) continue;
+
       const givenDate = new Date(homeworkList[i].due_date);
       const givenDateOnly = new Date(givenDate.getFullYear(), givenDate.getMonth(), givenDate.getDate());
-      console.log(givenDate.getDate());
+      console.log(givenDate.getTime());
       if(targetDateOnly.getTime() === givenDateOnly.getTime())
       {
         temp.push(homeworkList[i]);
@@ -119,7 +119,6 @@ const ManageDueHomework = () => {
               <td>{homework.subject}</td>
               <td>{homework.notes}</td>
               <td>{homework.completed}</td>
-              
             </tr>
           ))):(
             <tr>
