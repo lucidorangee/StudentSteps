@@ -17,11 +17,33 @@ const ManageDueHomework = () => {
   const findStudentName = (id) => {
     for(let i = 0; i < students.length; i++)
     {
-      if(students[i].student_id === id) return students[i].first_name + students[i].last_name;
+      if(students[i].student_id === id) return students[i].first_name + " " + students[i].last_name;
     }
     return "No Name Found";
   }
   
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Convert the date string (yyyy/MM/dd) into a Date object
+    const [year, month, day] = datetime.split('/').map(Number); // split and convert to numbers
+    const targetDate = new Date(year, month - 1, day); // month is zero-indexed in JS Date (Jan = 0)
+    const targetDateOnly = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+
+    let temp = [];
+    for(let i = 0; i < homeworkList.length; i++)
+    {
+      const givenDate = new Date(homeworkList[i].due_date);
+      const givenDateOnly = new Date(givenDate.getFullYear(), givenDate.getMonth(), givenDate.getDate());
+      console.log(givenDate.getDate());
+      if(targetDateOnly.getTime() === givenDateOnly.getTime())
+      {
+        temp.push(homeworkList[i]);
+      }
+    }
+    setFilteredHomeworkList(temp);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -60,17 +82,22 @@ const ManageDueHomework = () => {
   return (
     <div className="App">
       <h2>Welcome, User!</h2>
-      <label htmlFor="FormControlInput1" className="form-label">Datetime</label>
-      <div className="d-flex align-items-center">
-        <DatePicker
-          selected={datetime}
-          onChange={setDatetime}
-          dateFormat="yyyy/MM/dd"
-          className="form-control"
-          placeholderText="Select a date"
-        />
-        <FaCalendarAlt className="ms-2 text-secondary" />
-      </div>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="FormControlInput1" className="form-label">Datetime</label>
+        <div className="d-flex align-items-center">
+          <DatePicker
+            selected={datetime}
+            onChange={setDatetime}
+            dateFormat="yyyy/MM/dd"
+            className="form-control"
+            placeholderText="Select a date"
+          />
+          <FaCalendarAlt className="ms-2 text-secondary" />
+          <div className="col-3">
+            <button type="submit" className="btn btn-primary mb-3">Refresh</button>
+          </div>
+        </div>
+      </form>
 
 
       <table className="table custom-table">
