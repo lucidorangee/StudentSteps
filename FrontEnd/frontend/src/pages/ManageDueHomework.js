@@ -118,7 +118,26 @@ const ManageDueHomework = () => {
               <td>{findStudentName(homework.student_id)}</td>
               <td>{homework.subject}</td>
               <td>{homework.notes}</td>
-              <td>{homework.completed}</td>
+              <td>
+                <button
+                  className="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                Select Completion: {completion}
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <li key={num}>
+                      <button className="dropdown-item" onClick={() => handleSelect(num)}>
+                        {num}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </td>
             </tr>
           ))):(
             <tr>

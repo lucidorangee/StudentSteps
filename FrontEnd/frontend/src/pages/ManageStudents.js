@@ -145,24 +145,11 @@ const ManageUsers = () => {
               <td>{student.student_email}</td>
               <td>{student.stamps}</td>
               <td>
-                <button
-                  className="btn btn-secondary dropdown-toggle"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                Select Completion: {completion}
-                </button>
-                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  {[1, 2, 3, 4, 5].map((num) => (
-                    <li key={num}>
-                      <button className="dropdown-item" onClick={() => handleSelect(num)}>
-                        {num}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                <i
+                  className="bi bi-trash"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => handleDelete(student.student_id)}
+                ></i>
               </td>
             </tr>
           ))):(
