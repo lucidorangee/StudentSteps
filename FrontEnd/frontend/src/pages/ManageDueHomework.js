@@ -36,7 +36,7 @@ const ManageDueHomework = () => {
       const givenDate = new Date(homeworkList[i].due_date);
       const givenDateOnly = new Date(givenDate.getFullYear(), givenDate.getMonth(), givenDate.getDate());
       console.log(givenDate.getTime());
-      if(targetDateOnly.getTime() === givenDateOnly.getTime())
+      if(targetDateOnly.getTime() <= givenDateOnly.getTime())
       {
         temp.push(homeworkList[i]);
       }
