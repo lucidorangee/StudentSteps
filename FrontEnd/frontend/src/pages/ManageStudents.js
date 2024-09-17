@@ -15,8 +15,6 @@ const ManageUsers = () => {
   
   const [filteredStudents, setFilteredStudents] = useState(null);
 
-  const [completion, setCompletion] = useState(0);
-
 
   useEffect(() => {
     //Fetch authentication status
@@ -88,10 +86,6 @@ const ManageUsers = () => {
           temp.push(students[i]);
     }
     setFilteredStudents(temp);
-  };
-
-  const handleSelect = (value) => {
-    setCompletion(value); // Update the completion state with the selected value
   };
 
   return (

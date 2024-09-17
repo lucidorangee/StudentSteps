@@ -13,6 +13,8 @@ const ManageDueHomework = () => {
   const [datetime, setDatetime] = useState('');
   const [filteredHomeworkList, setFilteredHomeworkList] = useState([]);
 
+  const [completion, setCompletion] = useState(0);
+
 
   const findStudentName = (id) => {
     for(let i = 0; i < students.length; i++)
@@ -77,7 +79,9 @@ const ManageDueHomework = () => {
     fetchData();
   }, []);
 
-  
+  const handleSelect = (value) => {
+    setCompletion(value); // Update the completion state with the selected value
+  };
 
   return (
     <div className="App">
