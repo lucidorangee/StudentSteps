@@ -42,18 +42,6 @@ const ScheduleList = () => {
     }
   }, [date, tutoringSessionData]);
 
-  return (
-    <div>
-      {authenticated ? (
-        <AuthenticatedOptions tutoringSessionData={filteredData} />
-      ) : (
-        <UnauthenticatedOptions />
-      )}
-    </div>
-  );
-};
-
-const AuthenticatedOptions = (tutoringSessionData) => {
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -68,7 +56,7 @@ const AuthenticatedOptions = (tutoringSessionData) => {
 
   const handleCommentSubmit = (tutoringSession) => {
     const comment = document.querySelector('textarea').value; // Get the value of the textarea
-    if (!textarea) {
+    if (!comment) {
       return;
     }
 
