@@ -55,90 +55,90 @@ const CreateTutoringSession = () => {
       console.error('Error fetching students:', error);
       setLoading(false);
     });
-}, []);
+  }, []);
 
 
-useEffect(() => {
-  //Fetch authentication status
-  fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
-    credentials: 'include',
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  .then(response => response.json())
-  .then(data => {
-    setTutors(data);
-    console.log("DATA ", data);
-    const options = data.map(tutor => ({
-      value: tutor.tutor_id,
-      label: `${tutor.first_name} (ID: ${tutor.tutor_id})`,
-    }));
-    setTutorOptions(options);
-    if (options.length > 0) {
-      setSelectedTutor(options[0]);
-      setTutor(options[0].value);
-    }
-    setLoading(false);
-  })
-  .catch(error => {
-    console.error('Error fetching tutors:', error);
-    setLoading(false);
-  });
-}, []);
+  useEffect(() => {
+    //Fetch authentication status
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
+      credentials: 'include',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+      setTutors(data);
+      console.log("DATA ", data);
+      const options = data.map(tutor => ({
+        value: tutor.tutor_id,
+        label: `${tutor.first_name} (ID: ${tutor.tutor_id})`,
+      }));
+      setTutorOptions(options);
+      if (options.length > 0) {
+        setSelectedTutor(options[0]);
+        setTutor(options[0].value);
+      }
+      setLoading(false);
+    })
+    .catch(error => {
+      console.error('Error fetching tutors:', error);
+      setLoading(false);
+    });
+  }, []);
 
-const handleStudentChange = (selectedOption) => {
-  setSelectedStudent(selectedOption);
-  setStudent(selectedOption ? selectedOption.value : -1);
-};
-
-const handleTutorChange = (selectedOption) => {
-  setSelectedTutor(selectedOption);
-  setStudent(selectedOption ? selectedOption.value : -1);
-};
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if(isNaN(durationHour) || isNaN(durationMinute)){
-    setAlert("The value in hour or minute is not a valid number");
-    return;
-  }
-
-  const formData = {
-    student_id: student_id,
-    tutor_id: tutor_id,
-    datetime: datetime,
-    duration: (parseInt(durationHour)*60+parseInt(durationMinute)),
-    notes: notes,
+  const handleStudentChange = (selectedOption) => {
+    setSelectedStudent(selectedOption);
+    setStudent(selectedOption ? selectedOption.value : -1);
   };
 
-  try {
-    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/add`, {
-      credentials: 'include',
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData),
-    });
+  const handleTutorChange = (selectedOption) => {
+    setSelectedTutor(selectedOption);
+    setStudent(selectedOption ? selectedOption.value : -1);
+  };
 
-    if (response.ok) {
-      // Request was successful
-      console.log('Session creation successful! Redirecting...');
-      navigate('/schedule/list', { replace : true});
-    } else {
-      // Request failed
-      console.error('Session creation failed:', response.statusText);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if(isNaN(durationHour) || isNaN(durationMinute)){
+      setAlert("The value in hour or minute is not a valid number");
+      return;
     }
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
 
-return (
-  <div className="App">
+    const formData = {
+      student_id: student_id,
+      tutor_id: tutor_id,
+      datetime: datetime,
+      duration: (parseInt(durationHour)*60+parseInt(durationMinute)),
+      notes: notes,
+    };
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/add`, {
+        credentials: 'include',
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Request was successful
+        console.log('Session creation successful! Redirecting...');
+        navigate('/schedule/list', { replace : true});
+      } else {
+        // Request failed
+        console.error('Session creation failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  return (
+    <div className="App">
       <header className="App-header">
         <div className="position-absolute top-50 start-50 translate-middle h-50 w-50 container-fluid">
           <div className="position-relative mb-3" >

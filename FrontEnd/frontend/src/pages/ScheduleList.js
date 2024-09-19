@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ScheduleList = () => {
-  const [authenticated, setAuthenticated] = useState(true);
   const [tutoringSessionData, setTutoringSessionData] = useState(null);
+
+  const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState(null);
   
   const { date } = useParams();
   const [filteredData, setFilteredData] = useState([]);
@@ -41,9 +43,6 @@ const ScheduleList = () => {
       setFilteredData([]);
     }
   }, [date, tutoringSessionData]);
-
-  const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState(null);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -155,16 +154,6 @@ const ScheduleList = () => {
           </tr>
         )}
       </div>
-    </div>
-    
-  );
-};
-
-const UnauthenticatedOptions = () => {
-  
-  return (
-    <div>
-      <h2>Please Log In</h2>
     </div>
   );
 };
