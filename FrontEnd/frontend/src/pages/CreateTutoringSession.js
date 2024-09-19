@@ -12,7 +12,8 @@ const CreateTutoringSession = () => {
   const [student_id, setStudent] = useState('');
   const [tutor_id, setTutor] = useState('');
   const [datetime, setDatetime] = useState('');
-  const [duration, setDuration] = useState('');
+  const [durationHour, setHour] = useState('');
+  const [durationMinute, setMinute] = useState('');
   const [notes, setNotes] = useState('');
   const [alert, setAlert] = useState('');
 
@@ -100,8 +101,8 @@ const handleTutorChange = (selectedOption) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  if(isNaN(duration)){
-    setAlert("duration is not a valid number");
+  if(isNaN(durationHour) || isNaN(durationMinute)){
+    setAlert("The value in hour or minute is not a valid number");
     return;
   }
 
@@ -109,7 +110,7 @@ const handleSubmit = async (e) => {
     student_id: student_id,
     tutor_id: tutor_id,
     datetime: datetime,
-    duration: duration,
+    duration: (parseInt(durationHour)*60+parseInt(durationMinute)),
     notes: notes,
   };
 
@@ -144,7 +145,7 @@ return (
             <div className="shadow p-3 mb-5 bg-body-tertiary rounded">
               {alert ? (
                 <div>
-                  <div class="alert alert-primary" role="alert">
+                  <div class="alert alert-danger" role="alert">
                     {alert}
                   </div>
                 </div>
@@ -195,7 +196,21 @@ return (
                     <FaCalendarAlt className="ms-2 text-secondary" />
                   </div>
                   <label htmlFor="FormControlInput1" className="form-label">Duration</label>
-                  <input type="text" className="form-control" id="FormControlInput1" aria-describedby="passwordHelpBlock" onChange={(e) => setDuration(e.target.value)} />
+                  <div class="row">
+                    <div class="col-md-2">
+                      Hour: 
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" className="form-control" id="FormControlInput1" aria-describedby="hourDuration" onChange={(e) => setHour(e.target.value)} />
+                    </div>
+                    <div class="col-md-2">
+                      Minutes: 
+                    </div>
+                    <div class="col-md-4"> 
+                      <input type="text" className="form-control" id="FormControlInput1" aria-describedby="minuteDuration" onChange={(e) => setMinute(e.target.value)} />
+                    </div>
+                  </div>
+                  
                   <label htmlFor="FormControlInput1" className="form-label">Notes</label>
                   <input type="text" className="form-control" id="FormControlInput1" aria-describedby="passwordHelpBlock" onChange={(e) => setNotes(e.target.value)} />
                 </div>
