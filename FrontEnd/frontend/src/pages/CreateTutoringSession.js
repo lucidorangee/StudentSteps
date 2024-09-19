@@ -14,6 +14,7 @@ const CreateTutoringSession = () => {
   const [datetime, setDatetime] = useState('');
   const [duration, setDuration] = useState('');
   const [notes, setNotes] = useState('');
+  const [alert, setAlert] = userState('');
 
   const [students, setStudents] = useState(null);
   const [tutors, setTutors] = useState(null);
@@ -136,6 +137,15 @@ return (
         <div className="position-absolute top-50 start-50 translate-middle h-50 w-50 container-fluid">
           <div className="position-relative mb-3" >
             <div className="shadow p-3 mb-5 bg-body-tertiary rounded">
+              {alert ? (
+                <div>
+                  <div class="alert alert-primary" role="alert">
+                    A field is wrong.
+                  </div>
+                </div>
+              ) : (
+                <div></div>
+              )}
               <div className="container-fluid m-3">
                 <h1>Add Session</h1>
               </div>
