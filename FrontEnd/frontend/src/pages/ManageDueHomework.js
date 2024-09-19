@@ -78,7 +78,7 @@ const ManageDueHomework = () => {
   }, []);
 
   const handleSelect = (homework, value) => {
-    homework.completed = value; // Update the completion state with the selected value
+    homework.is_completed = value; // Update the completion state with the selected value
   };
 
   return (
@@ -128,7 +128,7 @@ const ManageDueHomework = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                {homework.completed}
+                {homework.is_completed}
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   {[1, 2, 3, 4, 5].map((num) => (
