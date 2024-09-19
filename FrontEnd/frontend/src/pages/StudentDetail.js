@@ -130,8 +130,8 @@ const StudentList = () => {
           student_id: null,
           datetime: new Date().toISOString(), 
           content: comment,
-          type: 'admin'
-      }), // Adjust according to your backend API
+          type: commentType
+      }),
     })
     .then(response => {
         if (!response.ok) {
@@ -458,6 +458,7 @@ const StudentList = () => {
                       <p>{student.can_email?'Yes':'No'}</p>
                     )}
                   </div>
+                  <div />
                   <div className="col-md-4">
                     <p className="fw-bold">Academic Goal</p>
                     {isEditing?(
@@ -471,6 +472,8 @@ const StudentList = () => {
                       <p>{student.academic_goal}</p>
                     )}
                   </div>
+                  <div />
+                  <div />
                   <div className="col-md-4">
                     <p className="fw-bold">Behavioural Goal</p>
                     {isEditing?(
