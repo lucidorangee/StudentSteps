@@ -98,13 +98,12 @@ const handleTutorChange = (selectedOption) => {
 };
 
 const handleSubmit = async (e) => {
+  e.preventDefault();
+
   if(isNaN(duration)){
     setAlert("duration is not a valid number");
     return;
   }
-
-
-  e.preventDefault();
 
   const formData = {
     student_id: student_id,
