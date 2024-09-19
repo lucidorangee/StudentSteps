@@ -14,7 +14,7 @@ const CreateTutoringSession = () => {
   const [datetime, setDatetime] = useState('');
   const [duration, setDuration] = useState('');
   const [notes, setNotes] = useState('');
-  const [alert, setAlert] = userState('');
+  const [alert, setAlert] = useState('');
 
   const [students, setStudents] = useState(null);
   const [tutors, setTutors] = useState(null);
