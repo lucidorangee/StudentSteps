@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ScheduleList = () => {
-  const [tutoringSessionData, setTutoringSessionData] = useState(null);
+  const [tutoringSessionData, setTutoringSessionData] = useState([]);
 
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(null);
