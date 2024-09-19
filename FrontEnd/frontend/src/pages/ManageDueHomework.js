@@ -13,8 +13,6 @@ const ManageDueHomework = () => {
   const [datetime, setDatetime] = useState('');
   const [filteredHomeworkList, setFilteredHomeworkList] = useState([]);
 
-  const [completion, setCompletion] = useState(0);
-
 
   const findStudentName = (id) => {
     for(let i = 0; i < students.length; i++)
@@ -79,8 +77,8 @@ const ManageDueHomework = () => {
     fetchData();
   }, []);
 
-  const handleSelect = (value) => {
-    setCompletion(value); // Update the completion state with the selected value
+  const handleSelect = (homework, value) => {
+    homework.completed = value; // Update the completion state with the selected value
   };
 
   return (
@@ -130,12 +128,12 @@ const ManageDueHomework = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                Select Completion: {completion}
+                {homework.completed}
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   {[1, 2, 3, 4, 5].map((num) => (
                     <li key={num}>
-                      <button className="dropdown-item" onClick={() => handleSelect(num)}>
+                      <button className="dropdown-item" onClick={() => handleSelect(homework, num)}>
                         {num}
                       </button>
                     </li>
