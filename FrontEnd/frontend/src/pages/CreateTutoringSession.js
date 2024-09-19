@@ -212,7 +212,7 @@ return (
                   </div>
                   
                   <label htmlFor="FormControlInput1" className="form-label">Notes</label>
-                  <input type="textarea" className="form-control" id="FormControlInput1" aria-describedby="sessionNotes" rows="4" onChange={(e) => setNotes(e.target.value)} />
+                  <textarea className="form-control" id="FormControlInput1" aria-describedby="sessionNotes" rows="4" onChange={(e) => setNotes(e.target.value)} />
                 </div>
                 <div className="row align-items-start m-3">
                   <div className="col-10">
