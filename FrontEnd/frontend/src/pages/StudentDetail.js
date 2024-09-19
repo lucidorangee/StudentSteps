@@ -9,6 +9,8 @@ const StudentList = () => {
   const [comments, setComments] = useState([]);
   const [tempStudent, setTempStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  
+  const [commentType, setCommentType] = useState('');
 
 
   useEffect(() => {
@@ -152,8 +154,6 @@ const StudentList = () => {
         alert('Failed to submit comment. Please try again later.');
     });
   }
-
-  const [commentType, setCommentType] = useState('');
 
   const handleSelect = (type) => {
     setCommentType(type);
