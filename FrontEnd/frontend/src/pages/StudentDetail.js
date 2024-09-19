@@ -9,8 +9,8 @@ const StudentList = () => {
   const [comments, setComments] = useState([]);
   const [tempStudent, setTempStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  
-  const [commentType, setCommentType] = useState('');
+
+  const [commentType, setCommentType] = useState('admin');
 
 
   useEffect(() => {
