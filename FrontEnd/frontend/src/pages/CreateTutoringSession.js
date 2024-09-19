@@ -98,6 +98,12 @@ const handleTutorChange = (selectedOption) => {
 };
 
 const handleSubmit = async (e) => {
+  if(isNaN(duration)){
+    setAlert("duration is not a valid number");
+    return;
+  }
+
+
   e.preventDefault();
 
   const formData = {
@@ -140,7 +146,7 @@ return (
               {alert ? (
                 <div>
                   <div class="alert alert-primary" role="alert">
-                    A field is wrong.
+                    {alert}
                   </div>
                 </div>
               ) : (
