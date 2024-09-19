@@ -153,6 +153,13 @@ const StudentList = () => {
     });
   }
 
+  const [commentType, setCommentType] = useState('');
+
+  const handleSelect = (type) => {
+    setCommentType(type);
+    console.log(`Comment type selected: ${type}`);
+  };
+
   return (
     <div> 
       <h1 className="m-2 mt-4">
@@ -507,7 +514,33 @@ const StudentList = () => {
       <div>
         <div className="card" style={{ width: '95%' }}>
           <div className="card-body text-left">
-            <h5 className="card-title">New Comment</h5>
+            <div className="row-m-3">
+              <h5 className="card-title">New Comment</h5>
+              <div className="dropdown">
+                <button
+                  className="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  {commentType ? commentType : 'Select Comment Type'}
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li>
+                    <button className="dropdown-item" onClick={() => handleSelect('admin')}>
+                      Admin
+                    </button>
+                  </li>
+                  <li>
+                    <button className="dropdown-item" onClick={() => handleSelect('public')}>
+                      Public
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
             <div className="input-group mb-3">
                 <span className="input-group-text" id="comment-input-text">Comment: </span>
                 <textarea className="form-control" aria-label="With textarea" rows="6"></textarea>
