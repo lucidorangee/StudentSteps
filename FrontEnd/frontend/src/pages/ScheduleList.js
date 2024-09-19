@@ -12,6 +12,8 @@ const ScheduleList = () => {
   const { date } = useParams();
   const [filteredData, setFilteredData] = useState([]);
 
+  const [alert, setAlert] = useState('');
+
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
       credentials: 'include'
@@ -66,10 +68,13 @@ const AuthenticatedOptions = (tutoringSessionData) => {
 
   const handleCommentSubmit = (tutoringSession) => {
     const comment = document.querySelector('textarea').value; // Get the value of the textarea
+    if (!textarea) {
+      return;
+    }
 
     // Validate if comment is empty or any other necessary validation
     if (!comment.trim()) {
-        alert('Please enter a comment.');
+        setAlert('Please enter a comment.');
         return;
     }
 
@@ -112,6 +117,15 @@ const AuthenticatedOptions = (tutoringSessionData) => {
   return (
     <div className="App">
       <h2>Welcome to ScheduleList.js!</h2>
+      {alert ? (
+        <div>
+          <div class="alert alert-danger" role="alert">
+            {alert}
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
       <div className="d-flex align-items-center">
         <DatePicker
           selected={selectedDate}
