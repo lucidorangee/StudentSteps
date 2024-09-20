@@ -30,7 +30,6 @@ const ScheduleList = () => {
   }, []);
 
   useEffect(() => {
-    console.log('here')
     if (tutoringSessionData && Array.isArray(tutoringSessionData)) {
       if (date) {
         const filteredSessions = tutoringSessionData.filter(session =>
@@ -41,6 +40,7 @@ const ScheduleList = () => {
         setFilteredData(tutoringSessionData);
       }
     } else {
+      console.log("here?");
       setFilteredData([]);
     }
   }, [date, tutoringSessionData]);
