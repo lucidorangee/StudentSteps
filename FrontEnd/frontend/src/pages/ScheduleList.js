@@ -32,15 +32,16 @@ const ScheduleList = () => {
   useEffect(() => {
     if (tutoringSessionData && Array.isArray(tutoringSessionData)) {
       if (date) {
+        console.log("if 1");
         const filteredSessions = tutoringSessionData.filter(session =>
           session.session_datetime.startsWith(date)
         );
         setFilteredData(filteredSessions);
       } else {
+        console.log("else");
         setFilteredData(tutoringSessionData);
       }
     } else {
-      console.log("here?");
       setFilteredData([]);
     }
   }, [date, tutoringSessionData]);
