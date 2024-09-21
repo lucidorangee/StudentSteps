@@ -93,7 +93,7 @@ const ManageDueHomework = () => {
       return newList;
     });
 
-    console.log(updatedHomeworkList);
+    console.log(...updatedHomeworkList);
     
   };
 
