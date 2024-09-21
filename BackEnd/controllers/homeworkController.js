@@ -73,8 +73,10 @@ const updateHomework = async (req, res) => {
 };
 
 const updateHomeworkCompletion = async (req, res) => {
+  
   const { homework_id, completion } = req.body;
-
+  if(homework_id === undefined) return;
+  
   for(let i = 0; i < homework_id.length; i++)
   {
     try {
