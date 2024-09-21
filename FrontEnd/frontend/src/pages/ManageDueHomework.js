@@ -91,9 +91,6 @@ const ManageDueHomework = () => {
       newList.set(homework_id, value);
       return newList;
     });
-
-    console.log(JSON.stringify(Array.from(updatedHomeworkList)));
-    
   };
 
   const applyChanges = async () => {
@@ -111,6 +108,7 @@ const ManageDueHomework = () => {
       if (response.ok) {
         // Request was successful
         console.log('Homework update successful!');
+        setUpdatedHomeworkList(new Map());
       } else {
         // Request failed
         console.error('Homework is_completed update failed:', response.statusText);
@@ -143,7 +141,7 @@ const ManageDueHomework = () => {
             {/* Empty column */}
           </div>
           <div className="col-2">
-            <button className="btn btn-success mb-3" onClick={applyChanges}>Apply</button>
+            <button type="button" className="btn btn-success mb-3" onClick={applyChanges}>Apply</button>
           </div>
         </div>
       </form>
