@@ -101,9 +101,6 @@ const ManageDueHomework = () => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'https://studentsteps-front-end.onrender.com/',
-        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Z-Key',
-        'Access-Control-Allow-Methods': 'GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS'
       },
       body: JSON.stringify(updatedHomeworkList),
     });

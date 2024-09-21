@@ -73,7 +73,6 @@ const updateHomework = async (req, res) => {
 };
 
 const updateHomeworkCompletion = async (req, res) => {
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   const { homework_id, completion } = req.body;
 
   for(let i = 0; i < homework_id.length; i++)
