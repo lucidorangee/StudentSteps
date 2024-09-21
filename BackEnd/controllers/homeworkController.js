@@ -78,7 +78,7 @@ const updateHomeworkCompletion = async (req, res) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
 
-  const { homeworkList } = req.body;
+  const homeworkList = req.body;
   console.log(homeworkList);
 
   if(!homeworkList) return res.status(400).send('Empty homework list');
