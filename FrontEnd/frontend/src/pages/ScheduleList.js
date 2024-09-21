@@ -35,7 +35,6 @@ const ScheduleList = () => {
         const filteredSessions = tutoringSessionData.filter(session =>
           session.session_datetime.startsWith(date)
         );
-        console.log(filteredSessions);
         setFilteredData(filteredSessions);
       } else {
         setFilteredData(tutoringSessionData);

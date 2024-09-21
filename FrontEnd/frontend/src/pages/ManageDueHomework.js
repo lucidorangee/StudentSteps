@@ -77,8 +77,8 @@ const ManageDueHomework = () => {
     fetchData();
   }, []);
 
-  const handleSelect = (homework, value) => {
-    homework.is_completed = value; // Update the completion state with the selected value
+  const handleSelect = (homework_id, value) => {
+    for(let i = 0; i < homeworkList.length; i++) if(homeworkList[i].homework_id === homework_id) homeworkList[i].is_completed = value; // Update the completion state with the selected value
   };
 
   return (
@@ -133,7 +133,7 @@ const ManageDueHomework = () => {
                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   {[1, 2, 3, 4, 5].map((num) => (
                     <li key={num}>
-                      <button className="dropdown-item" onClick={() => handleSelect(homework, num)}>
+                      <button className="dropdown-item" onClick={() => handleSelect(homework.homework_id, num)}>
                         {num}
                       </button>
                     </li>
