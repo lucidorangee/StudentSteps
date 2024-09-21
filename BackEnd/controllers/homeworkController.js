@@ -79,7 +79,7 @@ const updateHomeworkCompletion = async (req, res) => {
 
 
   const homeworkList = req.body;
-  console.log(homeworkList);
+  console.log(homeworkList[0][0] + " " + homeworkList[0][1]);
 
   if(!homeworkList) return res.status(400).send('Empty homework list');
 
