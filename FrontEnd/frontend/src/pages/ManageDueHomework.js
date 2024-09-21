@@ -89,7 +89,7 @@ const ManageDueHomework = () => {
 
     setUpdatedHomeworkList(updatedHomeworkList => {
       const newList = new Map(updatedHomeworkList);
-      newList.set(id, value);
+      newList.set(homework_id, value);
       return newList;
     });
     
