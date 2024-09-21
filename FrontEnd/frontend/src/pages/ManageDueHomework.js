@@ -93,12 +93,12 @@ const ManageDueHomework = () => {
       return newList;
     });
 
-    console.log(JSON.stringify(updatedHomeworkList));
+    console.log(JSON.stringify(Array.from(updatedHomeworkList)));
     
   };
 
   const applyChanges = () => {
-    console.log(JSON.stringify(updatedHomeworkList));
+    console.log(JSON.stringify(Array.from(updatedHomeworkList)));
 
     const response = fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/completion`, {
       credentials: 'include',

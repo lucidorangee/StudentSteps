@@ -74,16 +74,16 @@ const updateHomework = async (req, res) => {
 
 const updateHomeworkCompletion = async (req, res) => {
   
-  const { homework_id, completion } = req.body;
-  if(homework_id === undefined) return;
-  
-  for(let i = 0; i < homework_id.length; i++)
+  const { homeworkList } = req.body;
+  if(!homeworkList) return res.status(400).send('Empty homework list');
+
+  for(let i = 0; i < homeworkList.length; i++)
   {
     try {
       await pool.query(
         queries.updateHomeworkCompletion,
         [
-          homework_id[i], completion[i]
+          homeworkList[i][0], homeworkList[i][1]
         ]
       );
   
