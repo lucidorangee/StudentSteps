@@ -156,7 +156,7 @@ const ManageUsers = () => {
               <td>{ahomework.subject}</td>
               <td>{ahomework.assigned}</td>
               <td>{ahomework.due_date}</td>
-              <td>{ahomework.completed}</td>
+              <td>{ahomework.is_completed}</td>
               <td>
                 <i
                   className="bi bi-trash"
