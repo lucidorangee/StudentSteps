@@ -113,7 +113,7 @@ const ManageDueHomework = () => {
       console.log('Homework update successful!');
     } else {
       // Request failed
-      console.error('Session creation failed:', response.statusText);
+      console.error('Homework is_completed update failed:', response.statusText);
     }
   }
 
