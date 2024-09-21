@@ -95,26 +95,22 @@ const ManageDueHomework = () => {
     
   };
 
-  const applyChanges = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/completion`, {
-        credentials: 'include',
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updatedHomeworkList),
-      });
+  const applyChanges = () => {
+    const response = fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/completion`, {
+      credentials: 'include',
+      method: 'patch',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedHomeworkList),
+    });
 
-      if (response.ok) {
-        // Request was successful
-        console.log('Homework update successful!');
-      } else {
-        // Request failed
-        console.error('Session creation failed:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error:', error);
+    if (response.ok) {
+      // Request was successful
+      console.log('Homework update successful!');
+    } else {
+      // Request failed
+      console.error('Session creation failed:', response.statusText);
     }
   }
 
