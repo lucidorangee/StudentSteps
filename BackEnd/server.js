@@ -24,6 +24,7 @@ initializePassport(passport);
 
 app.use(cors({
   origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
 app.use(express.json());
