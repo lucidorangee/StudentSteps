@@ -12,7 +12,7 @@ const ManageDueHomework = () => {
 
   const [datetime, setDatetime] = useState('');
   const [filteredHomeworkList, setFilteredHomeworkList] = useState([]);
-  const [updatedHomeworkList, setUpdatedHomeworkList] = useState([]);
+  const [updatedHomeworkList, setUpdatedHomeworkList] = useState(new Map());
 
 
   const findStudentName = (id) => {
@@ -92,6 +92,8 @@ const ManageDueHomework = () => {
       newList.set(homework_id, value);
       return newList;
     });
+
+    console.log(updatedHomeworkList);
     
   };
 
