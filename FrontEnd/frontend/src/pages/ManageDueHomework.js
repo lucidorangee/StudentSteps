@@ -79,7 +79,7 @@ const ManageDueHomework = () => {
 
   const handleSelect = (homework_id, value) => {
     const updatedHomeworkList = filteredHomeworkList.map((homework) => 
-      homework.homework_id === selectedHomework.homework_id 
+      homework.homework_id === homework_id 
         ? { ...homework, is_completed: value } 
         : homework
     );
