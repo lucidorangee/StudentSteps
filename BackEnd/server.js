@@ -32,6 +32,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
+
+app.options('*', cors(corsOptions));
+
 app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 
