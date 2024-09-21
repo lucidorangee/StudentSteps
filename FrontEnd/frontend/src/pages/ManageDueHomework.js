@@ -96,6 +96,8 @@ const ManageDueHomework = () => {
   };
 
   const applyChanges = () => {
+    console.log(JSON.stringify(updatedHomeworkList));
+
     const response = fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/completion`, {
       credentials: 'include',
       method: 'PATCH',
