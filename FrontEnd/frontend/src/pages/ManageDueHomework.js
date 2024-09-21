@@ -99,7 +99,7 @@ const ManageDueHomework = () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/completion`, {
         credentials: 'include',
-        method: 'patch',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
