@@ -106,7 +106,7 @@ const ManageDueHomework = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(updatedHomeworkList),
+      body: JSON.stringify(Array.from(updatedHomeworkList)),
     });
 
     if (response.ok) {
