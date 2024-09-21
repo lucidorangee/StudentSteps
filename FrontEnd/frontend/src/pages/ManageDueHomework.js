@@ -78,7 +78,8 @@ const ManageDueHomework = () => {
   }, []);
 
   const handleSelect = (homework_id, value) => {
-    for(let i = 0; i < homeworkList.length; i++) if(homeworkList[i].homework_id === homework_id) homeworkList[i].is_completed = value; // Update the completion state with the selected value
+    for(let i = 0; i < homeworkList.length; i++) if(homeworkList[i].homework_id === homework_id) homeworkList[i].is_completed = value;
+    for(let i = 0; i < filteredHomeworkList.length; i++) if(filteredHomeworkList[i].homework_id === homework_id) homeworkList[i].is_completed = value;
   };
 
   return (
