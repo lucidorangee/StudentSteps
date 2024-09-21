@@ -97,7 +97,6 @@ const ManageDueHomework = () => {
   };
 
   const applyChanges = async () => {
-    console.log(JSON.stringify(Array.from(updatedHomeworkList)));
 
     try{
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/completion`, {
