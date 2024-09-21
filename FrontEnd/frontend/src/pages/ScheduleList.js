@@ -125,8 +125,8 @@ const ScheduleList = () => {
         <FaCalendarAlt className="ms-2 text-secondary" />
       </div>
       <div className="row">
-        {Array.isArray(filteredData.tutoringSessionData) && filteredData.tutoringSessionData.length > 0 ? (
-          filteredData.tutoringSessionData.map((tutoringSession, index) => {
+        {Array.isArray(filteredData) && filteredData.length > 0 ? (
+          filteredData.map((tutoringSession, index) => {
             if (!tutoringSession.complete) {
               return (
                 <div className="row mt-3" key={index}>
