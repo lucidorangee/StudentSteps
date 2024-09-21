@@ -93,16 +93,24 @@ const ManageDueHomework = () => {
       <form onSubmit={handleSubmit}>
         <label htmlFor="FormControlInput1" className="form-label">Datetime</label>
         <div className="d-flex align-items-center">
-          <DatePicker
-            selected={datetime}
-            onChange={setDatetime}
-            dateFormat="yyyy/MM/dd"
-            className="form-control"
-            placeholderText="Select a date"
-          />
-          <FaCalendarAlt className="ms-2 text-secondary" />
+          <div className="col-2">
+            <DatePicker
+              selected={datetime}
+              onChange={setDatetime}
+              dateFormat="yyyy/MM/dd"
+              className="form-control"
+              placeholderText="Select a date"
+            />
+            <FaCalendarAlt className="ms-2 text-secondary" />
+          </div>
           <div className="col-3">
             <button type="submit" className="btn btn-primary mb-3">Refresh</button>
+          </div>
+          <div className="col-5">
+            {/* Empty column */}
+          </div>
+          <div className="col-2">
+            <button type="submit" className="btn btn-success mb-3">Apply</button>
           </div>
         </div>
       </form>
