@@ -96,24 +96,28 @@ const ManageDueHomework = () => {
     
   };
 
-  const applyChanges = () => {
+  const applyChanges = async () => {
     console.log(JSON.stringify(Array.from(updatedHomeworkList)));
 
-    const response = fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/completion`, {
-      credentials: 'include',
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(Array.from(updatedHomeworkList)),
-    });
+    try{
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/completion`, {
+        credentials: 'include',
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(Array.from(updatedHomeworkList)),
+      });
 
-    if (response.ok) {
-      // Request was successful
-      console.log('Homework update successful!');
-    } else {
-      // Request failed
-      console.error('Homework is_completed update failed:', response.statusText);
+      if (response.ok) {
+        // Request was successful
+        console.log('Homework update successful!');
+      } else {
+        // Request failed
+        console.error('Homework is_completed update failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
   }
 
