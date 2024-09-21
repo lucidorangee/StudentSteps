@@ -12,6 +12,7 @@ const ManageDueHomework = () => {
 
   const [datetime, setDatetime] = useState('');
   const [filteredHomeworkList, setFilteredHomeworkList] = useState([]);
+  const [updatedHomeworkList, setUpdatedHomeworkList] = useState([]);
 
 
   const findStudentName = (id) => {
@@ -78,14 +79,44 @@ const ManageDueHomework = () => {
   }, []);
 
   const handleSelect = (homework_id, value) => {
-    const updatedHomeworkList = filteredHomeworkList.map((homework) => 
-      homework.homework_id === homework_id 
+    const updatedFilteredHomeworkList = filteredHomeworkList.map((homework) => 
+      homework.homework_id === homework_id
         ? { ...homework, is_completed: value } 
         : homework
     );
     
-    setFilteredHomeworkList(updatedHomeworkList);
+    setFilteredHomeworkList(updatedFilteredHomeworkList);
+
+    setUpdatedHomeworkList(updatedHomeworkList => {
+      const newList = new Map(updatedHomeworkList);
+      newList.set(id, value);
+      return newList;
+    });
+    
   };
+
+  const applyChanges = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/completion`, {
+        credentials: 'include',
+        method: 'patch',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedHomeworkList),
+      });
+
+      if (response.ok) {
+        // Request was successful
+        console.log('Homework update successful!');
+      } else {
+        // Request failed
+        console.error('Session creation failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
   return (
     <div className="App">
@@ -110,7 +141,7 @@ const ManageDueHomework = () => {
             {/* Empty column */}
           </div>
           <div className="col-2">
-            <button type="submit" className="btn btn-success mb-3">Apply</button>
+            <button className="btn btn-success mb-3" onClick={applyChanges}>Apply</button>
           </div>
         </div>
       </form>

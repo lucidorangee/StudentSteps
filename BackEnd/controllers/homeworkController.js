@@ -72,6 +72,28 @@ const updateHomework = async (req, res) => {
   }
 };
 
+const updateHomeworkCompletion = async (req, res) => {
+  const { homework_id, completion } = req.body;
+
+  for(let i = 0; i < homework_id.length; i++)
+  {
+    try {
+      await pool.query(
+        queries.updateHomeworkCompletion,
+        [
+          homework_id[i], completion[i]
+        ]
+      );
+  
+    } catch (error) {
+      console.error('Error updating homework:', error);
+      res.status(500).send('Internal server error');
+    }
+  }
+  
+  res.status(200).send('Homework updated successfully');
+}
+
 
 
 module.exports = {
@@ -79,5 +101,6 @@ module.exports = {
     getHomeworkById,
     addHomework,
     removeHomework,
-    updateHomework
+    updateHomework,
+    updateHomeworkCompletion
 };
