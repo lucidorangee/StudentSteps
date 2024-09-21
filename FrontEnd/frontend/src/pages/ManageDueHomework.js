@@ -159,7 +159,7 @@ const ManageDueHomework = () => {
         </thead>
         <tbody>
         {Array.isArray(filteredHomeworkList) && (filteredHomeworkList).length > 0 ? (
-          (filteredHomeworkList).map((homework, index) => (
+          (filteredHomeworkList).filter(homework => homework.is_completed === 0).map((homework, index) => (
             <tr key={index}>
               <td>{homework.homework_id}</td>
               <td>{findStudentName(homework.student_id)}</td>
