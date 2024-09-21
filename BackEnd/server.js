@@ -22,11 +22,15 @@ console.log("CORS_ORIGIN:", process.env.CORS_ORIGIN);
 console.log("environment: ", process.env.NODE_ENV);
 initializePassport(passport);
 
-app.use(cors({
+const corsOptions = {
   origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
