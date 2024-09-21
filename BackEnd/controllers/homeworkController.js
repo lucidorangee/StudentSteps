@@ -96,6 +96,7 @@ const updateHomeworkCompletion = async (req, res) => {
     } catch (error) {
       console.error('Error updating homework:', error);
       res.status(500).send('Internal server error');
+      return;
     }
   }
   
