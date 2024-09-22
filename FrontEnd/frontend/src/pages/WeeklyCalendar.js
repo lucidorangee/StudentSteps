@@ -25,7 +25,7 @@ const WeeklyCalendar = () => {
 
   const [calendar, setCalendar] = useState(null);
   const [events, setEvents] = useState([]);
-  const [startDate, setStartDate] = useState("2025-10-05");
+  const [startDate, setStartDate] = useState(date);
 
   const config = {
     viewType: "Week",
