@@ -23,6 +23,7 @@ import ManageTutors from './pages/ManageTutors.js';
 import ManageRoles from './pages/ManageRoles.js';
 import StudentDetail from './pages/StudentDetail.js';
 import ScheduleCalendar from './pages/ScheduleCalendar.js';
+import WeeklyCalendar from './pages/WeeklyCalendar.js';
 import TutorDetail from './pages/TutorDetail.js';
 
 
@@ -45,6 +46,7 @@ function App() {
           <Route path="/admin/homework" element={<ProtectedRoute element={ManageHomework} />} />
 
           <Route path="/schedule/list/:date?" element={<ProtectedRoute element={ScheduleList} />} />
+          <Route path="/schedule/week/:date?" element={<ProtectedRoute element={WeeklyCalendar} />} />
           <Route path="/schedule/calendar/:date?" element={<ProtectedRoute element={ScheduleCalendar} />} />
           <Route path="/schedule/create" element={<ProtectedRoute element={CreateTutoringSession} />} />
 
