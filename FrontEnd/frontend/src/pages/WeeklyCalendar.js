@@ -175,14 +175,15 @@ const WeeklyCalendar = () => {
   useEffect(() => {
 
     const events = filteredData.map(item => {
-      console.log("before start " + item.session_datetime);
       const start = new Date(item.session_datetime);
-      console.log("here is start" + start);
       const end = new Date(start.getTime() + item.duration * 60 * 1000);
+
+      const tutor = tutors.find(t => t.tutor_id === item.tutor_id);
+      const tutorName = tutor ? `${tutor.first_name} ${tutor.last_name}` : 'Unknown Tutor';
       
       return {
         id: item.session_id,
-        text: item.tutor_id,
+        text: tutorName,
         start: start,
         end: end,
         backColor: intToHexSpread(item.tutor_id)

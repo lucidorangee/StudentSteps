@@ -95,7 +95,7 @@ const CreateTutoringSession = () => {
 
   const handleTutorChange = (selectedOption) => {
     setSelectedTutor(selectedOption);
-    setStudent(selectedOption ? selectedOption.value : -1);
+    setTutor(selectedOption ? selectedOption.value : -1);
   };
 
   const handleSubmit = async (e) => {
