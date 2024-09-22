@@ -114,7 +114,7 @@ const CreateTutoringSession = () => {
     }
 
     
-
+    console.log("IDS: " + student_id + " " + tutor_id)
     console.log("inputted time: " + (parseInt(durationHourToUse) * 60 + parseInt(durationMinuteToUse)));
 
     const formData = {
