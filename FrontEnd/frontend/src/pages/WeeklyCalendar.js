@@ -15,6 +15,7 @@ const styles = {
   }
 };
 
+
 const WeeklyCalendar = () => {
 
 
@@ -116,6 +117,22 @@ const WeeklyCalendar = () => {
     calendar.events.update(e);
   };
 
+  function intToHexSpread(integer) {
+    const MAX_HEX_VALUE = 0xFFFFFF; // 6-digit hex max (16777215 in decimal)
+
+    // Apply a bitwise XOR with a large prime number to scramble the bits
+    let scrambledInt = integer ^ 0xABCDEF; 
+    
+    // Perform a left shift and combine with original using XOR for further scrambling
+    scrambledInt = (scrambledInt << 3) ^ (scrambledInt >> 5);
+    
+    // Apply modulo to wrap around in the valid hex range and ensure positivity
+    let hexValue = Math.abs(scrambledInt % (MAX_HEX_VALUE + 1));
+    
+    // Convert to hexadecimal and pad with leading zeros to ensure 6 digits
+    return hexValue.toString(16).padStart(6, '0').toUpperCase();
+  }
+
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
       credentials: 'include'
@@ -143,7 +160,8 @@ const WeeklyCalendar = () => {
         text: item.tutor_id,
         start: start,
         end: end,
-        participants: 1
+        participants: 1,
+        backColor: intToHexSpread(tutor_id)
       };
     });
 
