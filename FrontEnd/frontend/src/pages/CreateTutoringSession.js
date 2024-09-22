@@ -44,7 +44,6 @@ const CreateTutoringSession = () => {
       }));
       setStudentOptions(options);
       if (options.length > 0) {
-        setSelectedStudent(options[0]);
         setStudent(options[0].value);
       }
       setLoading(false);
@@ -75,7 +74,6 @@ const CreateTutoringSession = () => {
       }));
       setTutorOptions(options);
       if (options.length > 0) {
-        setSelectedTutor(options[0]);
         setTutor(options[0].value);
       }
       setLoading(false);
