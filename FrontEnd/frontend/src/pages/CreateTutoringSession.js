@@ -101,7 +101,7 @@ const CreateTutoringSession = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(durationHour === "") awaitsetHour("1");
+    if(durationHour === "") setHour("1");
     if(durationMinute === "") setMinute("0");
 
     if(isNaN(durationHour) || isNaN(durationMinute)){
