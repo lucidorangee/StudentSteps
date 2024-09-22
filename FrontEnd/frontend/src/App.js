@@ -46,7 +46,7 @@ function App() {
           <Route path="/admin/homework" element={<ProtectedRoute element={ManageHomework} />} />
 
           <Route path="/schedule/list/:date?" element={<ProtectedRoute element={ScheduleList} />} />
-          <Route path="/schedule/week/:date?" element={<ProtectedRoute element={WeeklyCalendar} />} />
+          <Route path="/schedule/weekly/:date?" element={<ProtectedRoute element={WeeklyCalendar} />} />
           <Route path="/schedule/calendar/:date?" element={<ProtectedRoute element={ScheduleCalendar} />} />
           <Route path="/schedule/create" element={<ProtectedRoute element={CreateTutoringSession} />} />
 
