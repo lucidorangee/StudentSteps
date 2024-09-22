@@ -21,10 +21,12 @@ const WeeklyCalendar = () => {
   const { date } = useParams();
   const [homeworkList, setHomeworkList] = useState([]);
   const [students, setStudents] = useState([]);
+  const [tutors, setTutors] = useState([]);
   const [tutoringSessionData, setTutoringSessionData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [selectedTutor, setSelectedTutor] = useState(null);
 
   const [calendar, setCalendar] = useState(null);
   const [events, setEvents] = useState([]);
@@ -135,11 +137,14 @@ const WeeklyCalendar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [homeworkResponse, studentResponse, tutoringSessionResponse] = await Promise.all([
+        const [homeworkResponse, studentResponse, tutorResponse, tutoringSessionResponse] = await Promise.all([
           fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
             credentials: 'include'
           }),
           fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
+            credentials: 'include'
+          }),
+          fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
             credentials: 'include'
           }),
           fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
@@ -147,14 +152,16 @@ const WeeklyCalendar = () => {
           }),
         ]);
   
-        if (!homeworkResponse.ok || !studentResponse.ok) throw new Error('One or more fetch requests failed');
+        if (!homeworkResponse.ok || !studentResponse.ok || !tutorResponse.ok || !tutoringSessionResponse.ok) throw new Error('One or more fetch requests failed');
   
         const homeworkData = await homeworkResponse.json();
         const studentData = await studentResponse.json();
+        const tutorData = await tutorResponse.json();
         const tutoringSessionData = await tutoringSessionResponse.json();
   
         setHomeworkList(homeworkData);
         setStudents(studentData);
+        setTutors(tutorData);
         setTutoringSessionData(tutoringSessionData);
         setFilteredData(tutoringSessionData);
       } catch (error) {
@@ -189,8 +196,15 @@ const WeeklyCalendar = () => {
     const studentId = e.target.value;
     setSelectedStudent(studentId);
 
-    // Filter the tutoring sessions by selected student
     const filteredSessions = tutoringSessionData.filter(session => session.student_id === parseInt(studentId));
+    setFilteredData(filteredSessions);
+  };
+
+  const handleTutorChange = (e) => {
+    const tutorId = e.target.value;
+    setSelectedTutor(tutorId);
+
+    const filteredSessions = tutoringSessionData.filter(session => session.tutor_id === parseInt(tutorId));
     setFilteredData(filteredSessions);
   };
 
@@ -198,14 +212,29 @@ const WeeklyCalendar = () => {
     
     <div className="App">
       {/* Dropdown to select student */}
-      <select value={selectedStudent || ""} onChange={handleStudentChange} className="form-select mb-3">
-      <option value="" disabled>Select a Student</option>
-      {students.map(student => (
-        <option key={student.student_id} value={student.student_id}>
-          {student.first_name} {student.last_name}
-        </option>
-      ))}
-      </select>
+      <row>
+        <div className="col-6">
+          <select value={selectedStudent || ""} onChange={handleStudentChange} className="form-select mb-3">
+          <option value="" disabled>Select a Student</option>
+          {students.map(student => (
+            <option key={student.student_id} value={student.student_id}>
+              {student.first_name} {student.last_name}
+            </option>
+          ))}
+          </select>
+        </div>
+        <div className="col-6">
+          <select value={selectedTutor || ""} onChange={handleTutorChange} className="form-select mb-3">
+          <option value="" disabled>Select a Tutor</option>
+          {tutors.map(tutor => (
+            <option key={tutor.tutor_id} value={tutor.tutor_id}>
+              {tutor.first_name} {tutor.last_name}
+            </option>
+          ))}
+          </select>
+        </div>
+      </row>
+      
       <div style={styles.wrap}>
         <div style={styles.left}>
           <DayPilotNavigator
