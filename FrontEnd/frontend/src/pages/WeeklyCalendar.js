@@ -15,14 +15,14 @@ const styles = {
   }
 };
 
-
 const WeeklyCalendar = () => {
-
-
   const { date } = useParams();
+  const [homeworkList, setHomeworkList] = useState([]);
+  const [students, setStudents] = useState([]);
   const [tutoringSessionData, setTutoringSessionData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
+  const [selectedStudent, setSelectedStudent] = useState(null); // Track selected student
   const [calendar, setCalendar] = useState(null);
   const [events, setEvents] = useState([]);
   const [startDate, setStartDate] = useState(date);
@@ -44,69 +44,6 @@ const WeeklyCalendar = () => {
     },
     onEventClick: async args => {
       await editEvent(args.e);
-    },
-    contextMenu: new DayPilot.Menu({
-      items: [
-        {
-          text: "Delete",
-          onClick: async args => {
-            calendar.events.remove(args.source);
-          },
-        },
-        {
-          text: "-"
-        },
-        {
-          text: "Edit...",
-          onClick: async args => {
-            await editEvent(args.source);
-          }
-        }
-      ]
-    }),
-    onBeforeEventRender: args => {
-      args.data.areas = [
-        {
-          top: 3,
-          right: 3,
-          width: 20,
-          height: 20,
-          symbol: "icons/daypilot.svg#minichevron-down-2",
-          fontColor: "#fff",
-          toolTip: "Show context menu",
-          action: "ContextMenu",
-        },
-        {
-          top: 3,
-          right: 25,
-          width: 20,
-          height: 20,
-          symbol: "icons/daypilot.svg#x-circle",
-          fontColor: "#fff",
-          action: "None",
-          toolTip: "Delete event",
-          onClick: async args => {
-            calendar.events.remove(args.source);
-          }
-        }
-      ];
-
-      /*
-      const participants = args.data.participants;
-      if (participants > 0) {
-        // show one icon for each participant
-        for (let i = 0; i < participants; i++) {
-          args.data.areas.push({
-            bottom: 5,
-            right: 5 + i * 30,
-            width: 24,
-            height: 24,
-            action: "None",
-            image: `https://picsum.photos/24/24?random=${i}`,
-            style: "border-radius: 50%; border: 2px solid #fff; overflow: hidden;",
-          });
-        }
-      }*/
     }
   };
 
@@ -117,38 +54,44 @@ const WeeklyCalendar = () => {
     calendar.events.update(e);
   };
 
-  function intToHexSpread(integer) {
-    const MAX_HEX_VALUE = 0xFFFFFF;
-
-    let scrambledInt = integer ^ 0xABCDEF; 
-    
-    scrambledInt = (scrambledInt << 3) ^ (scrambledInt >> 5);
-  
-    let hexValue = Math.abs(scrambledInt % (MAX_HEX_VALUE + 1));
-    
-    return hexValue.toString(16).padStart(6, '0').toUpperCase();
-  }
-
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
-      credentials: 'include'
-    })
-      .then(response => response.json())
-      .then(data => {
-        setTutoringSessionData(data);
-        setFilteredData(data);
-      })
-      .catch(error => {
-        console.error('Error fetching session data: ', error);
-      })
+    const fetchData = async () => {
+      try {
+        const [homeworkResponse, studentResponse, tutoringSessionResponse] = await Promise.all([
+          fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
+            credentials: 'include'
+          }),
+          fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
+            credentials: 'include'
+          }),
+          fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
+            credentials: 'include'
+          }),
+        ]);
+
+        if (!homeworkResponse.ok || !studentResponse.ok || !tutoringSessionResponse.ok) {
+          throw new Error('One or more fetch requests failed');
+        }
+
+        const homeworkData = await homeworkResponse.json();
+        const studentData = await studentResponse.json();
+        const tutoringSessionData = await tutoringSessionResponse.json();
+
+        setHomeworkList(homeworkData);
+        setStudents(studentData);
+        setTutoringSessionData(tutoringSessionData);
+        setFilteredData(tutoringSessionData);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
-
     const events = filteredData.map(item => {
-      console.log("before start " + item.session_datetime);
       const start = new Date(item.session_datetime);
-      console.log("here is start" + start);
       const end = new Date(start.getTime() + item.duration * 60 * 1000);
       
       return {
@@ -156,7 +99,6 @@ const WeeklyCalendar = () => {
         text: item.tutor_id,
         start: start,
         end: end,
-        //participants: 1,
         backColor: intToHexSpread(item.tutor_id)
       };
     });
@@ -164,29 +106,51 @@ const WeeklyCalendar = () => {
     setEvents(events);
   }, [filteredData]);
 
+  // Handle student selection and filter tutoring sessions
+  const handleStudentChange = (e) => {
+    const studentId = e.target.value;
+    setSelectedStudent(studentId);
+
+    // Filter the tutoring sessions by selected student
+    const filteredSessions = tutoringSessionData.filter(session => session.student_id === parseInt(studentId));
+    setFilteredData(filteredSessions);
+  };
+
   return (
-    <div style={styles.wrap}>
-      <div style={styles.left}>
-        <DayPilotNavigator
-          selectMode={"Week"}
-          showMonths={3}
-          skipMonths={3}
-          selectionDay={startDate}
-          onTimeRangeSelected={ args => {
-            setStartDate(args.day);
-          }}
-        />
-      </div>
-      <div style={styles.main}>
-        <DayPilotCalendar
-          {...config}
-          events={events}
-          startDate={startDate}
-          controlRef={setCalendar}
-        />
+    <div>
+      {/* Dropdown to select student */}
+      <select value={selectedStudent || ""} onChange={handleStudentChange} className="form-select mb-3">
+        <option value="" disabled>Select a Student</option>
+        {students.map(student => (
+          <option key={student.student_id} value={student.student_id}>
+            {student.first_name} {student.last_name}
+          </option>
+        ))}
+      </select>
+
+      <div style={styles.wrap}>
+        <div style={styles.left}>
+          <DayPilotNavigator
+            selectMode={"Week"}
+            showMonths={3}
+            skipMonths={3}
+            selectionDay={startDate}
+            onTimeRangeSelected={ args => {
+              setStartDate(args.day);
+            }}
+          />
+        </div>
+        <div style={styles.main}>
+          <DayPilotCalendar
+            {...config}
+            events={events}
+            startDate={startDate}
+            controlRef={setCalendar}
+          />
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default WeeklyCalendar;
