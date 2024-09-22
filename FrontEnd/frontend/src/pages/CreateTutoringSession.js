@@ -101,7 +101,7 @@ const CreateTutoringSession = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(durationHour === "") setHour("1");
+    if(durationHour === "") awaitsetHour("1");
     if(durationMinute === "") setMinute("0");
 
     if(isNaN(durationHour) || isNaN(durationMinute)){
@@ -109,6 +109,7 @@ const CreateTutoringSession = () => {
       return;
     }
 
+    console.log("inputted time: " + (parseInt(durationHour)*60+parseInt(durationMinute)));
     const formData = {
       student_id: student_id,
       tutor_id: tutor_id,
