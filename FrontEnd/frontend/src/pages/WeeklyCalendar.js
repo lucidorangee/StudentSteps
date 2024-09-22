@@ -28,7 +28,7 @@ const WeeklyCalendar = () => {
 
   const config = {
     viewType: "Week",
-    durationBarVisible: false,
+    durationBarVisible: true,
     timeRangeSelectedHandling: "Enabled",
     onTimeRangeSelected: async args => {
       const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
