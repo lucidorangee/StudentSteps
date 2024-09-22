@@ -136,7 +136,7 @@ const WeeklyCalendar = () => {
       id: item.session_id,
       text: item.tutor_id,
       start: item.session_datetime,
-      end_time: item.session_datetime + item.duration,
+      end: item.session_datetime + item.duration,
       participants:1
     }));
 
