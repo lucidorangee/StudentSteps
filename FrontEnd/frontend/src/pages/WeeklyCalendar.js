@@ -7,10 +7,13 @@ const WeeklyCalendar = () => {
     };
 
     return (
+      <div className="App">
+        <h2>Welcome, User!</h2>
         <div>
             <DayPilotCalendar {...config} />
         </div>
+      </div>
     );
 }
 
-export default WeeklyCalendar;
+export default WeeklyCalendar;  
