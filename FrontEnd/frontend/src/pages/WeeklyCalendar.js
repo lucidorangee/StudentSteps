@@ -132,13 +132,18 @@ const WeeklyCalendar = () => {
 
   useEffect(() => {
 
-    const events = filteredData.map(item => ({
-      id: item.session_id,
-      text: item.tutor_id,
-      start: item.session_datetime,
-      end: item.session_datetime + item.duration,
-      participants:1
-    }));
+    const events = filteredData.map(item => {
+      const start = new Date(item.session_datetime);
+      const end = new Date(start.getTime() + item.duration * 60 * 1000);
+      
+      return {
+        id: item.session_id,
+        text: item.tutor_id,
+        start: start,
+        end: end,
+        participants: 1
+      };
+    });
 
     setEvents(events);
   }, [filteredData]);
