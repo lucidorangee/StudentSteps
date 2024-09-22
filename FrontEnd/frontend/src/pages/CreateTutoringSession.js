@@ -101,15 +101,16 @@ const CreateTutoringSession = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(durationHour === "") setHour("1");
-    if(durationMinute === "") setMinute("0");
+    let durationHourToUse = durationHour === "" ? "1" : durationHour;
+    let durationMinuteToUse = durationMinute === "" ? "0" : durationMinute;
 
-    if(isNaN(durationHour) || isNaN(durationMinute)){
+    if (isNaN(durationHourToUse) || isNaN(durationMinuteToUse)) {
       setAlert("The value in hour or minute is not a valid number");
       return;
     }
 
-    console.log("inputted time: " + (parseInt(durationHour)*60+parseInt(durationMinute)));
+    console.log("inputted time: " + (parseInt(durationHourToUse) * 60 + parseInt(durationMinuteToUse)));
+
     const formData = {
       student_id: student_id,
       tutor_id: tutor_id,
