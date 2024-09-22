@@ -9,8 +9,8 @@ import Select from 'react-select';
 
 const CreateTutoringSession = () => {
 
-  const [student_id, setStudent] = useState('');
-  const [tutor_id, setTutor] = useState('');
+  const [student_id, setStudent] = useState(-1);
+  const [tutor_id, setTutor] = useState(-1);
   const [datetime, setDatetime] = useState('');
   const [durationHour, setHour] = useState('');
   const [durationMinute, setMinute] = useState('');
@@ -19,8 +19,6 @@ const CreateTutoringSession = () => {
 
   const [students, setStudents] = useState(null);
   const [tutors, setTutors] = useState(null);
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [selectedTutor, setSelectedTutor] = useState(null);
   const [studentOptions, setStudentOptions] = useState([]);
   const [tutorOptions, setTutorOptions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -89,12 +87,10 @@ const CreateTutoringSession = () => {
   }, []);
 
   const handleStudentChange = (selectedOption) => {
-    setSelectedStudent(selectedOption);
     setStudent(selectedOption ? selectedOption.value : -1);
   };
 
   const handleTutorChange = (selectedOption) => {
-    setSelectedTutor(selectedOption);
     setTutor(selectedOption ? selectedOption.value : -1);
   };
 
@@ -109,13 +105,25 @@ const CreateTutoringSession = () => {
       return;
     }
 
+    if(student_id === -1){
+      setAlert("Please select a student");
+      return;
+    }
+
+    if(tutor_id === -1){
+      setAlert("Please select a student");
+      return;
+    }
+
+    
+
     console.log("inputted time: " + (parseInt(durationHourToUse) * 60 + parseInt(durationMinuteToUse)));
 
     const formData = {
       student_id: student_id,
       tutor_id: tutor_id,
       datetime: datetime,
-      duration: (parseInt(durationHour)*60+parseInt(durationMinute)),
+      duration: (parseInt(durationHourToUse) * 60 + parseInt(durationMinuteToUse)),
       notes: notes,
     };
 
