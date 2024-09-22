@@ -40,7 +40,7 @@ const CreateTutoringSession = () => {
       console.log("DATA ", data);
       const options = data.map(student => ({
         value: student.student_id,
-        label: `${student.first_name} (ID: ${student.student_id})`,
+        label: `${student.first_name} ${student.last_name} (ID: ${student.student_id})`,
       }));
       setStudentOptions(options);
       if (options.length > 0) {
@@ -70,7 +70,7 @@ const CreateTutoringSession = () => {
       console.log("DATA ", data);
       const options = data.map(tutor => ({
         value: tutor.tutor_id,
-        label: `${tutor.first_name} (ID: ${tutor.tutor_id})`,
+        label: `${tutor.first_name} ${tutor.last_name} (ID: ${tutor.tutor_id})`,
       }));
       setTutorOptions(options);
       if (options.length > 0) {
