@@ -103,6 +103,11 @@ const CreateTutoringSession = () => {
       return;
     }
 
+    if (datetime === "") {
+      setAlert("Please select a date");
+      return;
+    }
+
     if(student_id === -1){
       setAlert("Please select a student");
       return;
