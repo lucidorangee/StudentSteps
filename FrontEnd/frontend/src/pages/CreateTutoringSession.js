@@ -101,8 +101,8 @@ const CreateTutoringSession = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(durationHour === "") durationHour = "1";
-    if(durationMinute === "") durationMinute = "0";
+    if(durationHour === "") setHour("1");
+    if(durationMinute === "") setMinute("0");
 
     if(isNaN(durationHour) || isNaN(durationMinute)){
       setAlert("The value in hour or minute is not a valid number");
