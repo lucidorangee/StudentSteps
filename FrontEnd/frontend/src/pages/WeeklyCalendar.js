@@ -161,7 +161,7 @@ const WeeklyCalendar = () => {
         start: start,
         end: end,
         participants: 1,
-        backColor: intToHexSpread(tutor_id)
+        backColor: intToHexSpread(item.tutor_id)
       };
     });
 
