@@ -91,7 +91,7 @@ const WeeklyCalendar = () => {
         }
       ];
 
-
+      /*
       const participants = args.data.participants;
       if (participants > 0) {
         // show one icon for each participant
@@ -106,7 +106,7 @@ const WeeklyCalendar = () => {
             style: "border-radius: 50%; border: 2px solid #fff; overflow: hidden;",
           });
         }
-      }
+      }*/
     }
   };
 
@@ -118,18 +118,14 @@ const WeeklyCalendar = () => {
   };
 
   function intToHexSpread(integer) {
-    const MAX_HEX_VALUE = 0xFFFFFF; // 6-digit hex max (16777215 in decimal)
+    const MAX_HEX_VALUE = 0xFFFFFF;
 
-    // Apply a bitwise XOR with a large prime number to scramble the bits
     let scrambledInt = integer ^ 0xABCDEF; 
     
-    // Perform a left shift and combine with original using XOR for further scrambling
     scrambledInt = (scrambledInt << 3) ^ (scrambledInt >> 5);
-    
-    // Apply modulo to wrap around in the valid hex range and ensure positivity
+  
     let hexValue = Math.abs(scrambledInt % (MAX_HEX_VALUE + 1));
     
-    // Convert to hexadecimal and pad with leading zeros to ensure 6 digits
     return hexValue.toString(16).padStart(6, '0').toUpperCase();
   }
 
@@ -160,7 +156,7 @@ const WeeklyCalendar = () => {
         text: item.tutor_id,
         start: start,
         end: end,
-        participants: 1,
+        //participants: 1,
         backColor: intToHexSpread(item.tutor_id)
       };
     });
