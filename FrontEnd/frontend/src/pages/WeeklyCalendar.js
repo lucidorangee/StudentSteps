@@ -24,6 +24,8 @@ const WeeklyCalendar = () => {
   const [tutoringSessionData, setTutoringSessionData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
+  const [selectedStudent, setSelectedStudent] = useState(null);
+
   const [calendar, setCalendar] = useState(null);
   const [events, setEvents] = useState([]);
   const [startDate, setStartDate] = useState(date);
