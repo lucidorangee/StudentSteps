@@ -114,9 +114,6 @@ const CreateTutoringSession = () => {
     }
 
     
-    console.log("IDS: " + student_id + " " + tutor_id)
-    console.log("inputted time: " + (parseInt(durationHourToUse) * 60 + parseInt(durationMinuteToUse)));
-
     const formData = {
       student_id: student_id,
       tutor_id: tutor_id,
@@ -124,6 +121,8 @@ const CreateTutoringSession = () => {
       duration: (parseInt(durationHourToUse) * 60 + parseInt(durationMinuteToUse)),
       notes: notes,
     };
+
+    console.log("Going through: " + JSON.stringify(formData));
 
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/add`, {
