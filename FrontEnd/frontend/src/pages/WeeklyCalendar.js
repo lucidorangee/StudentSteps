@@ -133,7 +133,7 @@ const WeeklyCalendar = () => {
   useEffect(() => {
 
     const events = filteredData.map(item => {
-      console.log("before start " + start);
+      console.log("before start " + item.session_datetime);
       const start = new Date(item.session_datetime);
       console.log("here is start" + start);
       const end = new Date(start.getTime() + item.duration * 60 * 1000);
