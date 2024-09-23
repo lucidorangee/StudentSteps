@@ -206,7 +206,7 @@ const CreateTutoringSession = () => {
                       selected={date}
                       onChange={(date) => setDate(date)}
                       showTimeSelect
-                      timeFormat="HH:mm"
+                      timeFormat="h:mm aa"
                       timeIntervals={30} // Set time interval to 30 minutes
                       dateFormat="yyyy/MM/dd h:mm aa" // Date and time format
                       className="form-control"
