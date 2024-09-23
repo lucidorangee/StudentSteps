@@ -2,9 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import Select from 'react-select';
+import { useQuery } from '@tanstack/react-query';
+
+const fetchStudents = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch students');
+  }
+  return response.json(); // Parse and return the JSON response
+};
 
 const ManageUsers = () => {
-  const [students, setStudents] = useState(null);
+  //const [students, setStudents] = useState(null);
   const navigate = useNavigate();
 
   
@@ -15,7 +30,7 @@ const ManageUsers = () => {
   
   const [filteredStudents, setFilteredStudents] = useState(null);
 
-
+/*
   useEffect(() => {
     //Fetch authentication status
     fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
@@ -33,7 +48,15 @@ const ManageUsers = () => {
       .catch(error => {
         console.error('Error fetching students data: ', error);
       })
-  }, []);
+  }, []);*/
+
+  const {
+    data: students,
+    isLoading: studentsLoading,
+    error: studentsError,
+  } = useQuery({queryKey: ['students'], queryFn: fetchStudents});
+
+  setLoading(studentsLoading);
 
   const handleDelete = (student_id) => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {

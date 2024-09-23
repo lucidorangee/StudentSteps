@@ -48,11 +48,8 @@ const CreateTutoringSession = () => {
   const [notes, setNotes] = useState('');
   const [alert, setAlert] = useState('');
 
-  //const [students, setStudents] = useState(null);
-  //const [tutors, setTutors] = useState(null);
   const [studentOptions, setStudentOptions] = useState([]);
   const [tutorOptions, setTutorOptions] = useState([]);
-  //const [loading, setLoading] = useState(true);
   
   const navigate = useNavigate();
 
@@ -63,15 +60,6 @@ const CreateTutoringSession = () => {
     isLoading: studentsLoading,
     error: studentsError,
   } = useQuery({queryKey: ['students'], queryFn: fetchStudents});
-/*
-  const studentOptionsTemp = students.map(student => ({
-    value: student.student_id,
-    label: `${student.first_name} ${student.last_name} (ID: ${student.student_id})`,
-  }));
-  setStudentOptions(studentOptionsTemp);
-  if (studentOptionsTemp.length > 0) {
-    setStudent(studentOptionsTemp[0].value);
-  }*/
 
   const {
     data: tutors,
@@ -107,74 +95,6 @@ const CreateTutoringSession = () => {
 
   if (studentsLoading || tutorsLoading) return <div>Loading...</div>;
   if (studentsError || tutorsError) return <div>Error loading data</div>;
-/*
-  const tutorOptionsTemp = tutors.map(tutor => ({
-    value: tutor.tutor_id,
-    label: `${tutor.first_name} ${tutor.last_name} (ID: ${tutor.tutor_id})`,
-  }));
-  setTutorOptions(tutorOptionsTemp);
-  if (tutorOptionsTemp.length > 0) {
-    setTutor(tutorOptionsTemp[0].value);
-  }*/
-/*
-  useEffect(() => {
-    //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
-      credentials: 'include',
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(response => response.json())
-    .then(data => {
-      setStudents(data);
-      console.log("DATA ", data);
-      const options = data.map(student => ({
-        value: student.student_id,
-        label: `${student.first_name} ${student.last_name} (ID: ${student.student_id})`,
-      }));
-      setStudentOptions(options);
-      if (options.length > 0) {
-        setStudent(options[0].value);
-      }
-      setLoading(false);
-    })
-    .catch(error => {
-      console.error('Error fetching students:', error);
-      setLoading(false);
-    });
-  }, []);*/
-
-/*
-  useEffect(() => {
-    //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
-      credentials: 'include',
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(response => response.json())
-    .then(data => {
-      setTutors(data);
-      console.log("DATA ", data);
-      const options = data.map(tutor => ({
-        value: tutor.tutor_id,
-        label: `${tutor.first_name} ${tutor.last_name} (ID: ${tutor.tutor_id})`,
-      }));
-      setTutorOptions(options);
-      if (options.length > 0) {
-        setTutor(options[0].value);
-      }
-      setLoading(false);
-    })
-    .catch(error => {
-      console.error('Error fetching tutors:', error);
-      setLoading(false);
-    });
-  }, []);*/
 
   const handleStudentChange = (selectedOption) => {
     setStudent(selectedOption ? selectedOption.value : -1);
