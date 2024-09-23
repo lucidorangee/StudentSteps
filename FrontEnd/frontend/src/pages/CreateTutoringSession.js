@@ -6,12 +6,14 @@ import { Nav, Navbar } from 'react-bootstrap'
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import Select from 'react-select';
+import TimePicker from 'react-time-picker';
 
 const CreateTutoringSession = () => {
 
   const [student_id, setStudent] = useState(-1);
   const [tutor_id, setTutor] = useState(-1);
-  const [datetime, setDatetime] = useState('');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('10:00');
   const [durationHour, setHour] = useState('');
   const [durationMinute, setMinute] = useState('');
   const [notes, setNotes] = useState('');
@@ -103,7 +105,7 @@ const CreateTutoringSession = () => {
       return;
     }
 
-    if (datetime === "") {
+    if (date === "") {
       setAlert("Please select a date");
       return;
     }
@@ -122,7 +124,7 @@ const CreateTutoringSession = () => {
     const formData = {
       student_id: student_id,
       tutor_id: tutor_id,
-      datetime: datetime,
+      date: date,
       duration: (parseInt(durationHourToUse) * 60 + parseInt(durationMinuteToUse)),
       notes: notes,
     };
@@ -199,17 +201,24 @@ const CreateTutoringSession = () => {
                       />
                     )}
                   </div>
-                  <label htmlFor="FormControlInput1" className="form-label">Datetime</label>
+                  <label htmlFor="FormControlInput1" className="form-label">Date</label>
                   <div className="d-flex align-items-center">
                     <DatePicker
-                      selected={datetime}
-                      onChange={setDatetime}
+                      selected={date}
+                      onChange={setDate}
                       dateFormat="yyyy/MM/dd"
                       className="form-control"
                       placeholderText="Select a date"
                     />
                     <FaCalendarAlt className="ms-2 text-secondary" />
                   </div>
+                  <label htmlFor="time">Select Time:</label>
+                    <TimePicker
+                      id="time"
+                      value={time}
+                      onChange={setTime}
+                      disableClock={true} // Optional, disables the clock face
+                  />
                   <label htmlFor="FormControlInput1" className="form-label">Duration</label>
                   <div class="row">
                     <div class="col-md-2">
