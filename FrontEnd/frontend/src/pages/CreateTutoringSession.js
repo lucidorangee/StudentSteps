@@ -7,6 +7,21 @@ import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import Select from 'react-select';
 import TimePicker from 'react-time-picker';
+import { useQuery } from '@tanstack/react-query';
+
+const fetchStudents = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch students');
+  }
+  return response.json(); // Parse and return the JSON response
+};
 
 const CreateTutoringSession = () => {
 
@@ -18,7 +33,7 @@ const CreateTutoringSession = () => {
   const [notes, setNotes] = useState('');
   const [alert, setAlert] = useState('');
 
-  const [students, setStudents] = useState(null);
+  //const [students, setStudents] = useState(null);
   const [tutors, setTutors] = useState(null);
   const [studentOptions, setStudentOptions] = useState([]);
   const [tutorOptions, setTutorOptions] = useState([]);
@@ -26,6 +41,20 @@ const CreateTutoringSession = () => {
   
   const navigate = useNavigate();
 
+  const { data: students, isLoading, error } = useQuery(['students'], fetchStudents);
+
+  if (isLoading) return <div>Loading students...</div>;
+  if (error) return <div>Error fetching students: {error.message}</div>;
+
+  const options = students.map(student => ({
+    value: student.student_id,
+    label: `${student.first_name} ${student.last_name} (ID: ${student.student_id})`,
+  }));
+  setStudentOptions(options);
+  if (options.length > 0) {
+    setStudent(options[0].value);
+  }
+/*
   useEffect(() => {
     //Fetch authentication status
     fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
@@ -53,7 +82,7 @@ const CreateTutoringSession = () => {
       console.error('Error fetching students:', error);
       setLoading(false);
     });
-  }, []);
+  }, []);*/
 
 
   useEffect(() => {
