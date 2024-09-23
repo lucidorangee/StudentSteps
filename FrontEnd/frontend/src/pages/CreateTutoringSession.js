@@ -23,6 +23,21 @@ const fetchStudents = async () => {
   return response.json(); // Parse and return the JSON response
 };
 
+const fetchTutors = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch tutors');
+  }
+
+  return response.json(); // Parse and return the JSON response
+};
+
 const CreateTutoringSession = () => {
 
   const [student_id, setStudent] = useState(-1);
@@ -40,6 +55,8 @@ const CreateTutoringSession = () => {
   //const [loading, setLoading] = useState(true);
   
   const navigate = useNavigate();
+
+  const loading = false;
 
   const {
     data: students,
@@ -65,7 +82,7 @@ const CreateTutoringSession = () => {
   if (studentsLoading || tutorsLoading) return <div>Loading...</div>;
   if (studentsError || tutorsError) return <div>Error loading data</div>;
 
-  const tutorOptionsTemp = data.map(tutor => ({
+  const tutorOptionsTemp = tutors.map(tutor => ({
     value: tutor.tutor_id,
     label: `${tutor.first_name} ${tutor.last_name} (ID: ${tutor.tutor_id})`,
   }));
