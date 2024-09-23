@@ -212,7 +212,15 @@ const CreateTutoringSession = () => {
                     />
                     <FaCalendarAlt className="ms-2 text-secondary" />
                   </div>
-                  <TimePicker label="Basic time picker" />
+                  <DatePicker
+                    selected={time}
+                    onChange={(date) => setTime(date)}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeIntervals={15}
+                    timeCaption="Time"
+                    dateFormat="h:mm aa"
+                  />
                   <div className="row">
                     <label htmlFor="time">Select Time:</label>
                     <div className="time-picker-wrapper">
