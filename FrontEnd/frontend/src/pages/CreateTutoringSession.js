@@ -62,7 +62,7 @@ const CreateTutoringSession = () => {
     data: students,
     isLoading: studentsLoading,
     error: studentsError,
-  } = useQuery(['students'], fetchStudents);
+  } = useQuery({queryKey: ['students'], queryFn: fetchStudents});
 /*
   const studentOptionsTemp = students.map(student => ({
     value: student.student_id,
@@ -77,7 +77,7 @@ const CreateTutoringSession = () => {
     data: tutors,
     isLoading: tutorsLoading,
     error: tutorsError,
-  } = useQuery(['tutors'], fetchTutors);
+  } = useQuery({queryKey: ['tutors'], queryFn: fetchTutors});
 
   useEffect(() => {
     if (students) {
