@@ -23,6 +23,12 @@ const CreateTutoringSession = () => {
   const [studentOptions, setStudentOptions] = useState([]);
   const [tutorOptions, setTutorOptions] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const minTime = new Date();
+  minTime.setHours(16, 0, 0); // 4:00 PM
+
+  const maxTime = new Date();
+  maxTime.setHours(20, 0, 0); // 8:00 PM
   
   const navigate = useNavigate();
 
@@ -208,6 +214,8 @@ const CreateTutoringSession = () => {
                       showTimeSelect
                       timeFormat="h:mm aa"
                       timeIntervals={30} // Set time interval to 30 minutes
+                      minTime={minTime}
+                      maxTime={maxTime}
                       dateFormat="yyyy/MM/dd h:mm aa" // Date and time format
                       className="form-control"
                       placeholderText="Select a date and time"
