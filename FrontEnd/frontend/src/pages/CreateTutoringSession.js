@@ -34,25 +34,44 @@ const CreateTutoringSession = () => {
   const [alert, setAlert] = useState('');
 
   //const [students, setStudents] = useState(null);
-  const [tutors, setTutors] = useState(null);
+  //const [tutors, setTutors] = useState(null);
   const [studentOptions, setStudentOptions] = useState([]);
   const [tutorOptions, setTutorOptions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  //const [loading, setLoading] = useState(true);
   
   const navigate = useNavigate();
 
-  const { data: students, isLoading, error } = useQuery(['students'], fetchStudents);
+  const {
+    data: students,
+    isLoading: studentsLoading,
+    error: studentsError,
+  } = useQuery(['students'], fetchStudents);
 
-  if (isLoading) return <div>Loading students...</div>;
-  if (error) return <div>Error fetching students: {error.message}</div>;
-
-  const options = students.map(student => ({
+  const studentOptionsTemp = students.map(student => ({
     value: student.student_id,
     label: `${student.first_name} ${student.last_name} (ID: ${student.student_id})`,
   }));
-  setStudentOptions(options);
-  if (options.length > 0) {
-    setStudent(options[0].value);
+  setStudentOptions(studentOptionsTemp);
+  if (studentOptionsTemp.length > 0) {
+    setStudent(studentOptionsTemp[0].value);
+  }
+
+  const {
+    data: tutors,
+    isLoading: tutorsLoading,
+    error: tutorsError,
+  } = useQuery(['tutors'], fetchTutors);
+
+  if (studentsLoading || tutorsLoading) return <div>Loading...</div>;
+  if (studentsError || tutorsError) return <div>Error loading data</div>;
+
+  const tutorOptionsTemp = data.map(tutor => ({
+    value: tutor.tutor_id,
+    label: `${tutor.first_name} ${tutor.last_name} (ID: ${tutor.tutor_id})`,
+  }));
+  setTutorOptions(tutorOptionsTemp);
+  if (tutorOptionsTemp.length > 0) {
+    setTutor(tutorOptionsTemp[0].value);
   }
 /*
   useEffect(() => {
@@ -84,7 +103,7 @@ const CreateTutoringSession = () => {
     });
   }, []);*/
 
-
+/*
   useEffect(() => {
     //Fetch authentication status
     fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
@@ -112,7 +131,7 @@ const CreateTutoringSession = () => {
       console.error('Error fetching tutors:', error);
       setLoading(false);
     });
-  }, []);
+  }, []);*/
 
   const handleStudentChange = (selectedOption) => {
     setStudent(selectedOption ? selectedOption.value : -1);
