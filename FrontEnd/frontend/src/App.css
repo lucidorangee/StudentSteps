@@ -57,10 +57,9 @@ label{margin-left: 20px;}
 .time-picker-wrapper {
   display: flex;
   align-items: center;
-  width: 100%; /* Adjust as needed */
+  width: 100%; 
 }
 
 .react-time-picker {
-  width: 100%; /* Ensure full width */
-  max-width: 300px; /* Set a max-width if necessary */
+  width: 100px; 
 }
