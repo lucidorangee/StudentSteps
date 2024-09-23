@@ -25,8 +25,8 @@ const WeeklyCalendar = () => {
   const [tutoringSessionData, setTutoringSessionData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
-  const [selectedStudent, setSelectedStudent] = useState(-1);
-  const [selectedTutor, setSelectedTutor] = useState(-1);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [selectedTutor, setSelectedTutor] = useState(null);
 
   const [calendar, setCalendar] = useState(null);
   const [events, setEvents] = useState([]);
@@ -197,7 +197,7 @@ const WeeklyCalendar = () => {
     const studentId = e.target.value;
     setSelectedStudent(studentId);
 
-    const filteredSessions = tutoringSessionData.filter(session => (session.student_id === parseInt(studentId) && (selectedTutor === -1? true : session.tutorId === parseInt(selectedTutor))));
+    const filteredSessions = tutoringSessionData.filter(session => (session.student_id === parseInt(studentId) && (selectedTutor === null? true : session.tutorId === parseInt(selectedTutor))));
     setFilteredData(filteredSessions);
   };
 
@@ -205,7 +205,7 @@ const WeeklyCalendar = () => {
     const tutorId = e.target.value;
     setSelectedTutor(tutorId);
 
-    const filteredSessions = tutoringSessionData.filter(session => session.tutor_id === parseInt(tutorId) && (selectedTutor === -1? true : session.tutorId === parseInt(selectedTutor)));
+    const filteredSessions = tutoringSessionData.filter(session => session.tutor_id === parseInt(tutorId) && (selectedTutor === null? true : session.tutorId === parseInt(selectedTutor)));
     setFilteredData(filteredSessions);
   };
 

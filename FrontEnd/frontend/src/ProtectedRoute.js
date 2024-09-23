@@ -30,8 +30,10 @@ const ProtectedRoute = ({ element: Component, ...rest }) => {
         return <div>Loading...</div>;
     }
 
-    console.log('Authenticated:', authenticated);
-    return authenticated ? <Component {...rest} /> : <Navigate to="/login" />;
+    const temp = authenticated;
+    setAuthenticated(false);
+    console.log('Authenticated:', temp);
+    return temp ? <Component {...rest} /> : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;
