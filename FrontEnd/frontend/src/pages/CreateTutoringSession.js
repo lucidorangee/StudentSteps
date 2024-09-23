@@ -12,8 +12,7 @@ const CreateTutoringSession = () => {
 
   const [student_id, setStudent] = useState(-1);
   const [tutor_id, setTutor] = useState(-1);
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState(new Date());
+  const [date, setDate] = useState(new Date());
   const [durationHour, setHour] = useState('');
   const [durationMinute, setMinute] = useState('');
   const [notes, setNotes] = useState('');
@@ -124,7 +123,7 @@ const CreateTutoringSession = () => {
     const formData = {
       student_id: student_id,
       tutor_id: tutor_id,
-      date: date,
+      date: date.toISOString(),
       duration: (parseInt(durationHourToUse) * 60 + parseInt(durationMinuteToUse)),
       notes: notes,
     };
@@ -205,22 +204,16 @@ const CreateTutoringSession = () => {
                   <div className="d-flex align-items-center">
                     <DatePicker
                       selected={date}
-                      onChange={setDate}
-                      dateFormat="yyyy/MM/dd"
+                      onChange={(date) => setDate(date)}
+                      showTimeSelect
+                      timeFormat="HH:mm"
+                      timeIntervals={30} // Set time interval to 30 minutes
+                      dateFormat="yyyy/MM/dd h:mm aa" // Date and time format
                       className="form-control"
-                      placeholderText="Select a date"
+                      placeholderText="Select a date and time"
                     />
                     <FaCalendarAlt className="ms-2 text-secondary" />
                   </div>
-                  <DatePicker
-                    selected={time}
-                    onChange={(date) => setTime(date)}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={15}
-                    timeCaption="Time"
-                    dateFormat="h:mm aa"
-                  />
                   <div className="row">
                     <label htmlFor="time">Select Time:</label>
                     <div className="time-picker-wrapper">
