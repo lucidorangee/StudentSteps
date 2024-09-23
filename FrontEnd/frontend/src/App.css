@@ -64,3 +64,8 @@ label{margin-left: 20px;}
   width: 100%; /* Ensure full width */
   max-width: 300px; /* Set a max-width if necessary */
 }
+
+.react-time-picker__inputGroup__input {
+  width: auto !important;  /* Override the inline width */
+  min-width: 50px; /* Adjust this value as needed */
+}
