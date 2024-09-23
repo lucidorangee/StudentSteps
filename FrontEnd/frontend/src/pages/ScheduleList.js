@@ -128,7 +128,7 @@ const ScheduleList = () => {
           filteredData.map((tutoringSession, index) => {
             if (!tutoringSession.complete) {
               return (
-                <div className="row mt-3" key={index}>
+                <div className="row ml-3 mt-3" key={index}>
                   <div className="card" style={{ width: '95%' }}>
                     <div className="card-body text-left">
                       <h5 className="card-title">{tutoringSession.student_name}</h5>
