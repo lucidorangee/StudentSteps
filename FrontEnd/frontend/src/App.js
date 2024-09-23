@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ProtectedRoute from './ProtectedRoute.js';
+import ProtectedRouteWrapper from './ProtectedRouteWrapper.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Home from './pages/Home.js';
@@ -36,31 +36,31 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<Register />} />
         <Route element={<Layout />}>
-          <Route path="/" element={<ProtectedRoute element={Home} />}  />
-          <Route path="/tutoringsessions" element={<ProtectedRoute element={ManageTutoringSessions} />} />
+          <Route path="/" element={<ProtectedRouteWrapper element={Home} />}  />
+          <Route path="/tutoringsessions" element={<ProtectedRouteWrapper element={ManageTutoringSessions} />} />
 
-          <Route path="/admin/users" element={<ProtectedRoute element={ManageUsers} />} />
-          <Route path="/admin/tutors" element={<ProtectedRoute element={ManageTutors} />} />
-          <Route path="/admin/students" element={<ProtectedRoute element={ManageStudents} />} />
-          <Route path="/admin/roles" element={<ProtectedRoute element={ManageRoles} />} />
-          <Route path="/admin/homework" element={<ProtectedRoute element={ManageHomework} />} />
+          <Route path="/admin/users" element={<ProtectedRouteWrapper element={ManageUsers} />} />
+          <Route path="/admin/tutors" element={<ProtectedRouteWrapper element={ManageTutors} />} />
+          <Route path="/admin/students" element={<ProtectedRouteWrapper element={ManageStudents} />} />
+          <Route path="/admin/roles" element={<ProtectedRouteWrapper element={ManageRoles} />} />
+          <Route path="/admin/homework" element={<ProtectedRouteWrapper element={ManageHomework} />} />
 
-          <Route path="/schedule/list/:date?" element={<ProtectedRoute element={ScheduleList} />} />
-          <Route path="/schedule/weekly/:date?" element={<ProtectedRoute element={WeeklyCalendar} />} />
-          <Route path="/schedule/calendar/:date?" element={<ProtectedRoute element={ScheduleCalendar} />} />
-          <Route path="/schedule/create" element={<ProtectedRoute element={CreateTutoringSession} />} />
+          <Route path="/schedule/list/:date?" element={<ProtectedRouteWrapper element={ScheduleList} />} />
+          <Route path="/schedule/weekly/:date?" element={<ProtectedRouteWrapper element={WeeklyCalendar} />} />
+          <Route path="/schedule/calendar/:date?" element={<ProtectedRouteWrapper element={ScheduleCalendar} />} />
+          <Route path="/schedule/create" element={<ProtectedRouteWrapper element={CreateTutoringSession} />} />
 
-          <Route path="/homework/create" element={<ProtectedRoute element={CreateHomework} />} />
-          <Route path="/admin/homework/due" element={<ProtectedRoute element={ManageDueHomework} />} />
+          <Route path="/homework/create" element={<ProtectedRouteWrapper element={CreateHomework} />} />
+          <Route path="/admin/homework/due" element={<ProtectedRouteWrapper element={ManageDueHomework} />} />
 
-          <Route path="/students/create" element={<ProtectedRoute element={CreateStudent} />} />
-          <Route path="/students/detail/:id" element={<ProtectedRoute element={StudentDetail} />} />
+          <Route path="/students/create" element={<ProtectedRouteWrapper element={CreateStudent} />} />
+          <Route path="/students/detail/:id" element={<ProtectedRouteWrapper element={StudentDetail} />} />
           
 
-          <Route path="/tutors/create" element={<ProtectedRoute element={CreateTutor} />} />
-          <Route path="/tutors/detail/:id" element={<ProtectedRoute element={TutorDetail} />} />
+          <Route path="/tutors/create" element={<ProtectedRouteWrapper element={CreateTutor} />} />
+          <Route path="/tutors/detail/:id" element={<ProtectedRouteWrapper element={TutorDetail} />} />
 
-          <Route path="/comments" element={<ProtectedRoute element={ManageComments} />} />
+          <Route path="/comments" element={<ProtectedRouteWrapper element={ManageComments} />} />
         </Route>
       </Routes>
       </div>
