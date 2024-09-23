@@ -212,13 +212,15 @@ const CreateTutoringSession = () => {
                     />
                     <FaCalendarAlt className="ms-2 text-secondary" />
                   </div>
-                  <label htmlFor="time">Select Time:</label>
-                    <TimePicker
-                      id="time"
-                      value={time}
-                      onChange={setTime}
-                      disableClock={true} // Optional, disables the clock face
-                  />
+                  <div className="row">
+                    <label htmlFor="time">Select Time:</label>
+                      <TimePicker
+                        id="time"
+                        value={time}
+                        onChange={setTime}
+                        disableClock={true}
+                    />
+                  </div>
                   <label htmlFor="FormControlInput1" className="form-label">Duration</label>
                   <div class="row">
                     <div class="col-md-2">
