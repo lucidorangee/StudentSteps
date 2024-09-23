@@ -61,5 +61,6 @@ label{margin-left: 20px;}
 }
 
 .react-time-picker {
-  width: 100px; 
+  width: 100%; /* Ensure full width */
+  max-width: 300px; /* Set a max-width if necessary */
 }
