@@ -13,8 +13,8 @@ const CreateTutoringSession = () => {
   const [student_id, setStudent] = useState(-1);
   const [tutor_id, setTutor] = useState(-1);
   const [date, setDate] = useState(new Date());
-  const [durationHour, setHour] = useState('');
-  const [durationMinute, setMinute] = useState('');
+  const [durationHour, setHour] = useState('1');
+  const [durationMinute, setMinute] = useState('0');
   const [notes, setNotes] = useState('');
   const [alert, setAlert] = useState('');
 
@@ -228,13 +228,13 @@ const CreateTutoringSession = () => {
                       Hour: 
                     </div>
                     <div class="col-md-4">
-                      <input type="text" className="form-control" id="FormControlInput1" aria-describedby="hourDuration" onChange={(e) => setHour(e.target.value)} />
+                      <input type="text" className="form-control" id="FormControlInput1" defaultValue={durationHour} aria-describedby="hourDuration" onChange={(e) => setHour(e.target.value)} />
                     </div>
                     <div class="col-md-2">
                       Minutes: 
                     </div>
                     <div class="col-md-4"> 
-                      <input type="text" className="form-control" id="FormControlInput1" aria-describedby="minuteDuration" onChange={(e) => setMinute(e.target.value)} />
+                      <input type="text" className="form-control" id="FormControlInput1" defaultValue={durationMinute} aria-describedby="minuteDuration" onChange={(e) => setMinute(e.target.value)} />
                     </div>
                   </div>
                   
