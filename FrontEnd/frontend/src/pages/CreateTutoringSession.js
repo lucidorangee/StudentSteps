@@ -212,7 +212,8 @@ const CreateTutoringSession = () => {
                     />
                     <FaCalendarAlt className="ms-2 text-secondary" />
                   </div>
-                  <div className="row ">
+                  <TimePicker label="Basic time picker" />
+                  <div className="row">
                     <label htmlFor="time">Select Time:</label>
                     <div className="time-picker-wrapper">
                       <TimePicker
