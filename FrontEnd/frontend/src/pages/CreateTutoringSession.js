@@ -219,7 +219,7 @@ const CreateTutoringSession = () => {
                           id="time"
                           value={time}
                           onChange={setTime}
-                          disableClock={true}
+                          disableClock={false}
                       />
                     </div>
                   </div>
