@@ -216,10 +216,9 @@ const CreateTutoringSession = () => {
                     <label htmlFor="time">Select Time:</label>
                     <div className="time-picker-wrapper">
                       <TimePicker
-                          id="time"
+                          label="Controlled picker"
                           value={time}
-                          onChange={setTime}
-                          disableClock={false}
+                          onChange={(value) => setTime(value)}
                       />
                     </div>
                   </div>
