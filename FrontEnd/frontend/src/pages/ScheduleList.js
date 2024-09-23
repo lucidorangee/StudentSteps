@@ -36,6 +36,7 @@ const ScheduleList = () => {
           session.session_datetime.startsWith(date)
         );
         setFilteredData(filteredSessions);
+        console.log(filteredSessions);
       } else {
         setFilteredData(tutoringSessionData);
       }
@@ -131,7 +132,7 @@ const ScheduleList = () => {
                 <div className="row ml-3 mt-3" key={index}>
                   <div className="card" style={{ width: '95%' }}>
                     <div className="card-body text-left">
-                      <h5 className="card-title">{tutoringSession.student_name}</h5>
+                      <h5 className="card-title">Student: {tutoringSession.student_name}</h5>
                       <h5 className="card-title">Date: {tutoringSession.session_datetime.substring(0, 10)}</h5>
 
                       <p className="card-text">{tutoringSession.notes}</p>
