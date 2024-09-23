@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@daypilot/daypilot-lite-react": "^3.25.0"
+    "@daypilot/daypilot-lite-react": "^3.25.0",
+    "@tanstack/react-query": "^5.56.2"
   }
 }
