@@ -63,7 +63,7 @@ const CreateTutoringSession = () => {
     isLoading: studentsLoading,
     error: studentsError,
   } = useQuery(['students'], fetchStudents);
-
+/*
   const studentOptionsTemp = students.map(student => ({
     value: student.student_id,
     label: `${student.first_name} ${student.last_name} (ID: ${student.student_id})`,
@@ -71,7 +71,7 @@ const CreateTutoringSession = () => {
   setStudentOptions(studentOptionsTemp);
   if (studentOptionsTemp.length > 0) {
     setStudent(studentOptionsTemp[0].value);
-  }
+  }*/
 
   const {
     data: tutors,
@@ -79,9 +79,35 @@ const CreateTutoringSession = () => {
     error: tutorsError,
   } = useQuery(['tutors'], fetchTutors);
 
+  useEffect(() => {
+    if (students) {
+      const studentOptionsTemp = students.map(student => ({
+        value: student.student_id,
+        label: `${student.first_name} ${student.last_name} (ID: ${student.student_id})`,
+      }));
+      setStudentOptions(studentOptionsTemp);
+      if (studentOptionsTemp.length > 0) {
+        setStudent(studentOptionsTemp[0].value);
+      }
+    }
+  }, [students]);
+
+  useEffect(() => {
+    if (tutors) {
+      const tutorOptionsTemp = tutors.map(tutor => ({
+        value: tutor.tutor_id,
+        label: `${tutor.first_name} ${tutor.last_name} (ID: ${tutor.tutor_id})`,
+      }));
+      setTutorOptions(tutorOptionsTemp);
+      if (tutorOptionsTemp.length > 0) {
+        setTutor(tutorOptionsTemp[0].value);
+      }
+    }
+  }, [tutors]);
+
   if (studentsLoading || tutorsLoading) return <div>Loading...</div>;
   if (studentsError || tutorsError) return <div>Error loading data</div>;
-
+/*
   const tutorOptionsTemp = tutors.map(tutor => ({
     value: tutor.tutor_id,
     label: `${tutor.first_name} ${tutor.last_name} (ID: ${tutor.tutor_id})`,
@@ -89,7 +115,7 @@ const CreateTutoringSession = () => {
   setTutorOptions(tutorOptionsTemp);
   if (tutorOptionsTemp.length > 0) {
     setTutor(tutorOptionsTemp[0].value);
-  }
+  }*/
 /*
   useEffect(() => {
     //Fetch authentication status
