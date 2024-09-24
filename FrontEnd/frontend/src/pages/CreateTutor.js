@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useState } from 'react';
-import { Outlet, Link, NavLink } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
