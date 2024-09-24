@@ -7,7 +7,6 @@ import { FaCalendarAlt } from 'react-icons/fa';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 
-const navigate = useNavigate();
 
 const postTutor = async (formData) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/`, {
@@ -36,6 +35,7 @@ const CreateTutor = () => {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const queryClient = useQueryClient()
+  const navigate = useNavigate();
 
   const { mutate: addTutor, isLoading, isError, error } = useMutation({
     mutationFn: postTutor
