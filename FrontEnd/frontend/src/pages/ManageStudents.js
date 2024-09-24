@@ -56,7 +56,7 @@ const ManageUsers = () => {
     error: studentsError,
   } = useQuery({queryKey: ['students'], queryFn: fetchStudents});
 
-  setLoading(studentsLoading);
+  if(!studentsLoading) setLoading(false);
 
   const handleDelete = (student_id) => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
