@@ -4,9 +4,10 @@ import { Nav, Navbar } from 'react-bootstrap'
 import Select from 'react-select';
 import { useQuery } from '@tanstack/react-query';
 
-const navigate = useNavigate();
+//const navigate = useNavigate();
 
 const fetchStudents = async () => {
+  const navigate = useNavigate();
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
     credentials: 'include',
     headers: {
@@ -25,7 +26,7 @@ const fetchStudents = async () => {
 
 const ManageUsers = () => {
   //const [students, setStudents] = useState(null);
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   
   const [loading, setLoading] = useState(false);
