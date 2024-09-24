@@ -6,6 +6,36 @@ import { Nav, Navbar } from 'react-bootstrap'
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import Select from 'react-select';
+import { useQuery } from '@tanstack/react-query';
+
+const fetchStudents = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch students');
+  }
+  return response.json();
+};
+
+const fetchTutors = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch tutors');
+  }
+
+  return response.json(); // Parse and return the JSON response
+};
 
 const CreateHomework = () => {
 
@@ -15,8 +45,6 @@ const CreateHomework = () => {
   const [duration, setDuration] = useState('');
   const [notes, setNotes] = useState('');
 
-  const [students, setStudents] = useState(null);
-  const [tutors, setTutors] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [selectedTutor, setSelectedTutor] = useState(null);
   const [studentOptions, setStudentOptions] = useState([]);
@@ -25,66 +53,46 @@ const CreateHomework = () => {
   
   const navigate = useNavigate();
 
+  const {
+    data: students,
+    isLoading: studentsLoading,
+    error: studentsError,
+  } = useQuery({queryKey: ['students'], queryFn: fetchStudents});
+
+  const {
+    data: tutors,
+    isLoading: tutorsLoading,
+    error: tutorsError,
+  } = useQuery({queryKey: ['tutors'], queryFn: fetchTutors});
+
   useEffect(() => {
-    //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
-      credentials: 'include',
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(response => response.json())
-    .then(data => {
-      setStudents(data);
-      console.log("DATA ", data);
-      const options = data.map(student => ({
+    if (students) {
+      const studentOptionsTemp = students.map(student => ({
         value: student.student_id,
-        label: `${student.first_name} (ID: ${student.student_id})`,
+        label: `${student.first_name} ${student.last_name} (ID: ${student.student_id})`,
       }));
-      setStudentOptions(options);
-      if (options.length > 0) {
-        setSelectedStudent(options[0]);
-        setStudent(options[0].value);
+      setStudentOptions(studentOptionsTemp);
+      if (studentOptionsTemp.length > 0) {
+        setStudent(studentOptionsTemp[0].value);
       }
-      setLoading(false);
-    })
-    .catch(error => {
-      console.error('Error fetching students:', error);
-      setLoading(false);
-    });
-}, []);
-
-
-useEffect(() => {
-  //Fetch authentication status
-  fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
-    credentials: 'include',
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  .then(response => response.json())
-  .then(data => {
-    setTutors(data);
-    console.log("DATA ", data);
-    const options = data.map(tutor => ({
-      value: tutor.tutor_id,
-      label: `${tutor.first_name} (ID: ${tutor.tutor_id})`,
-    }));
-    setTutorOptions(options);
-    if (options.length > 0) {
-      setSelectedTutor(options[0]);
-      setTutor(options[0].value);
     }
-    setLoading(false);
-  })
-  .catch(error => {
-    console.error('Error fetching tutors:', error);
-    setLoading(false);
-  });
-}, []);
+  }, [students]);
+
+  useEffect(() => {
+    if (tutors) {
+      const tutorOptionsTemp = tutors.map(tutor => ({
+        value: tutor.tutor_id,
+        label: `${tutor.first_name} ${tutor.last_name} (ID: ${tutor.tutor_id})`,
+      }));
+      setTutorOptions(tutorOptionsTemp);
+      if (tutorOptionsTemp.length > 0) {
+        setTutor(tutorOptionsTemp[0].value);
+      }
+    }
+  }, [tutors]);
+
+  if (studentsLoading || tutorsLoading) return <div>Loading...</div>;
+  if (studentsError || tutorsError) return <div>Error loading data</div>;
 
 const handleStudentChange = (selectedOption) => {
   setSelectedStudent(selectedOption);

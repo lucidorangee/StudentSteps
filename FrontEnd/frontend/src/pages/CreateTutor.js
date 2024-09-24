@@ -5,6 +5,24 @@ import { Outlet, Link, NavLink } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
+import { QueryClient, useMutation } from '@tanstack/react-query';
+
+const postTutor = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/`, {
+    credentials: 'include',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to create student');
+  }
+  
+  return response.json();
+}
 
 const CreateTutor = () => {
 //  tutor_id | first_name | last_name | tutor_photo | date_of_birth | contact_phone | contact_email | user_id
@@ -15,6 +33,10 @@ const CreateTutor = () => {
   const [date_of_birth, setDateOfBirth] = useState(new Date());
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+
+  const { mutate: addTutor, isLoading, isError, error } = useMutation({
+    mutationFn: postTutor
+  })
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,26 +50,16 @@ const CreateTutor = () => {
       email: email,
     };
 
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/`, {
-        credentials: 'include',
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        // Request was successful
-        console.log('Tutor creation successful!');
-      } else {
-        // Request failed
-        console.error('Tutor creation failed:', response.statusText);
+    addTutor(formData, {
+      onSuccess: (data) => {
+        QueryClient.invalidateQueries({ queryKey: ['tutors']});
+        console.log('Tutor added successfully:', data);
+      },
+      onError: (error) => {
+        console.log('Error adding tutor:', error);
       }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    });
+
   };
 // student_id | first_name | last_name | student_photo | date_of_birth | grade_level | student_phone | 
 // student_email | parent_first_name | parent_last_name | parent_phone | parent_email | user_id

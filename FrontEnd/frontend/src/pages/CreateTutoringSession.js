@@ -20,7 +20,7 @@ const fetchStudents = async () => {
   if (!response.ok) {
     throw new Error('Failed to fetch students');
   }
-  return response.json(); // Parse and return the JSON response
+  return response.json();
 };
 
 const fetchTutors = async () => {
@@ -35,7 +35,7 @@ const fetchTutors = async () => {
     throw new Error('Failed to fetch tutors');
   }
 
-  return response.json(); // Parse and return the JSON response
+  return response.json();
 };
 
 const CreateTutoringSession = () => {
