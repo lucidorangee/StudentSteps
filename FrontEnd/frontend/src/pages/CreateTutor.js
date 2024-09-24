@@ -8,7 +8,7 @@ import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 
 
-const postTutor = async (formData) => {
+const postTutor = async (formData, navigate) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/`, {
     credentials: 'include',
     method: 'post',
@@ -38,7 +38,7 @@ const CreateTutor = () => {
   const navigate = useNavigate();
 
   const { mutate: addTutor, isLoading, isError, error } = useMutation({
-    mutationFn: postTutor
+    mutationFn: () => postTutor(formData, navigate)
   })
 
   const handleSubmit = async (e) => {
