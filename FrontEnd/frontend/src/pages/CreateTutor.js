@@ -7,7 +7,7 @@ import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { QueryClient, useMutation } from '@tanstack/react-query';
 
-const postTutor = async () => {
+const postTutor = async (formData) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/`, {
     credentials: 'include',
     method: 'post',
