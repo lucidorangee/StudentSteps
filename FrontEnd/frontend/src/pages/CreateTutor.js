@@ -5,7 +5,7 @@ import { Outlet, Link, NavLink } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { QueryClient, useMutation } from '@tanstack/react-query';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 
 const navigate = useNavigate();
@@ -36,6 +36,7 @@ const CreateTutor = () => {
   const [date_of_birth, setDateOfBirth] = useState(new Date());
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const queryClient = useQueryClient()
 
   const { mutate: addTutor, isLoading, isError, error } = useMutation({
     mutationFn: postTutor
@@ -55,7 +56,7 @@ const CreateTutor = () => {
 
     addTutor(formData, {
       onSuccess: (data) => {
-        QueryClient.invalidateQueries({ queryKey: ['tutors']});
+        queryClient.invalidateQueries({ queryKey: ['tutors']});
         console.log('Tutor added successfully:', data);
         navigate("/admin/tutors");
       },
