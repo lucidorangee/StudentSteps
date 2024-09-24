@@ -56,7 +56,7 @@ const CreateTutor = () => {
 
     addTutor(formData, {
       onSuccess: (data) => {
-        queryClient.invalidateQueries({ queryKey: ['tutors']});
+        queryClient.setQueryData(['students'], (oldData) => [...oldData, data]);
         console.log('Tutor added successfully:', data);
         navigate("/admin/tutors");
       },
