@@ -6,6 +6,9 @@ import { Nav, Navbar } from 'react-bootstrap'
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { QueryClient, useMutation } from '@tanstack/react-query';
+import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
+
+const navigate = useNavigate();
 
 const postTutor = async (formData) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/`, {
@@ -54,6 +57,7 @@ const CreateTutor = () => {
       onSuccess: (data) => {
         QueryClient.invalidateQueries({ queryKey: ['tutors']});
         console.log('Tutor added successfully:', data);
+        navigate("/admin/tutors");
       },
       onError: (error) => {
         console.log('Error adding tutor:', error);

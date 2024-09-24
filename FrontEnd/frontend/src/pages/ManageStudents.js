@@ -4,6 +4,8 @@ import { Nav, Navbar } from 'react-bootstrap'
 import Select from 'react-select';
 import { useQuery } from '@tanstack/react-query';
 
+const navigate = useNavigate();
+
 const fetchStudents = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
     credentials: 'include',
@@ -11,16 +13,19 @@ const fetchStudents = async () => {
       'Content-Type': 'application/json'
     },
   });
-
+  if (response.status === 401) {
+    navigate("/login");
+    throw new Error('Unauthorized: You must be logged in to access this resource.');
+  }
   if (!response.ok) {
     throw new Error('Failed to fetch students');
   }
-  return response.json(); // Parse and return the JSON response
+  return response.json();
 };
 
 const ManageUsers = () => {
   //const [students, setStudents] = useState(null);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   
   const [loading, setLoading] = useState(false);
