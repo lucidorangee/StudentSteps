@@ -56,14 +56,14 @@ const ManageUsers = () => {
     error: studentsError,
   } = useQuery({queryKey: ['students'], queryFn: fetchStudents});
 
-  if (studentsLoading) return <div>Loading...</div>;
-  if (studentsError) return <div>Error loading data</div>;
-  
   useEffect(() => {
     if (students) {
       setFilteredStudents(students); // Initialize filteredStudents with the fetched data
     }
   }, [students]);
+
+  if (studentsLoading) return <div>Loading...</div>;
+  if (studentsError) return <div>Error loading data</div>;
 
   const handleDelete = (student_id) => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
