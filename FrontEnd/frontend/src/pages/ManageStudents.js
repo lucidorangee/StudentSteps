@@ -23,12 +23,12 @@ const ManageUsers = () => {
   const navigate = useNavigate();
 
   
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
   const [filterGrade, setFilterGrade] = useState(0);
   
-  const [filteredStudents, setFilteredStudents] = useState(null);
+  const [filteredStudents, setFilteredStudents] = useState([]);
 
 /*
   useEffect(() => {
@@ -56,7 +56,14 @@ const ManageUsers = () => {
     error: studentsError,
   } = useQuery({queryKey: ['students'], queryFn: fetchStudents});
 
-  if(!studentsLoading) setLoading(false);
+  if (studentsLoading) return <div>Loading...</div>;
+  if (studentsError) return <div>Error loading data</div>;
+  
+  useEffect(() => {
+    if (students) {
+      setFilteredStudents(students); // Initialize filteredStudents with the fetched data
+    }
+  }, [students]);
 
   const handleDelete = (student_id) => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
