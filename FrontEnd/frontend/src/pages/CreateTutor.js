@@ -43,6 +43,9 @@ const CreateTutor = () => {
       queryClient.setQueryData(['students'], (oldData) => [...oldData, data]);
       console.log('Tutor added successfully');
       navigate("/admin/tutors");
+    },
+    onError: (error) => {
+      console.log('Error adding tutor:', error.message); // Log the error message
     }
   })
 
