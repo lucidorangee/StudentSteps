@@ -43,7 +43,7 @@ const CreateTutor = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+/*
     const formData = new FormData();
     formData.append('first_name', first_name);
     formData.append('last_name', last_name);
@@ -51,8 +51,17 @@ const CreateTutor = () => {
     formData.append('date_of_birth', date_of_birth.toISOString()); // Ensure date format is correct
     formData.append('phone', phone);
     formData.append('email', email);
+*/
+    const formData = {
+      first_name: first_name,
+      last_name: last_name,
+      photo: photo,
+      date_of_birth: date_of_birth,
+      phone: phone,
+      email: email,
+    };
 
-    addTutor(formData);
+    //addTutor(formData);
 
     addTutor(formData, {
       onSuccess: (data) => {
