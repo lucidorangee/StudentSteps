@@ -32,6 +32,7 @@ const deleteStudentByID = async (student_id) => {
   });
 
   if (!response.ok) {
+    console.log(response);
     const responseText = await response.text();
     throw new Error('Failed to delete student: ' + responseText); // Include responseText in the error for context
   }
@@ -69,7 +70,7 @@ const ManageUsers = () => {
       console.log("Successfully deleted");
     },
     onError: (error) => {
-      console.log('Error adding tutor:', error.message);
+      console.log('Error deleting student:', error.message);
     }
   });
 
