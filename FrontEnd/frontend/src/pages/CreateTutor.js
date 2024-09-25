@@ -18,11 +18,23 @@ const postTutor = async (formData) => {
     body: JSON.stringify(formData),
   });
 
+  const responseText = await response.text(); // Get raw response text
+
+  // Log the raw response for debugging
+  console.log('Response Text:', responseText);
+
   if (!response.ok) {
-    throw new Error('Failed to create tutor');
+    throw new Error('Failed to create tutor: ' + responseText); // Include responseText in the error for context
   }
-  
-  return response.json();
+
+  try {
+    // Attempt to parse the response as JSON
+    return JSON.parse(responseText);
+  } catch (error) {
+    // If JSON parsing fails, log the error and the raw response
+    console.error('Failed to parse JSON:', error);
+    throw new Error('Invalid JSON in response: ' + responseText);
+  }
 }
 
 const CreateTutor = () => {
