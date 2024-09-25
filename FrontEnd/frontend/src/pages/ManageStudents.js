@@ -32,7 +32,8 @@ const deleteStudentByID = async (student_id) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to delete student: ' + response); // Include responseText in the error for context
+    const responseText = await response.text();
+    throw new Error('Failed to delete student: ' + responseText); // Include responseText in the error for context
   }
 
   return;
@@ -61,6 +62,17 @@ const ManageUsers = () => {
     }
   }, [students]);
 
+  const { mutate: deleteStudent, isLoading, isError, error } = useMutation({
+    mutationFn: (student_id) => deleteStudentByID(student_id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['students']);
+      console.log("Successfully deleted");
+    },
+    onError: (error) => {
+      console.log('Error adding tutor:', error.message);
+    }
+  });
+
   if (studentsLoading) return <div>Loading...</div>;
   if (studentsError) {
     if(studentsError.status === 401) //unauthorized
@@ -71,16 +83,8 @@ const ManageUsers = () => {
     console.log(studentsError.status);
     return <div>Error loading data</div>;
   }
-  const { mutate: deleteStudent, isLoading, isError, error } = useMutation({
-    mutationFn: (student_id) => deleteStudentByID(student_id),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['students']);
-      console.log(response);
-    },
-    onError: (error) => {
-      console.log('Error adding tutor:', error.message);
-    }
-  });
+
+  
 /*
   const handleDelete = (student_id) => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
