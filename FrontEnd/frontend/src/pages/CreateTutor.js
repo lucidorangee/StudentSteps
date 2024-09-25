@@ -38,7 +38,7 @@ const CreateTutor = () => {
   const navigate = useNavigate();
 
   const { mutate: addTutor, isLoading, isError, error } = useMutation({
-    mutationFn: () => postTutor(formData)
+    mutationFn: (formData) => postTutor(formData)
   })
 
   const handleSubmit = async (e) => {
