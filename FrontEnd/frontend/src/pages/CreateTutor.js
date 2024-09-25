@@ -40,7 +40,7 @@ const CreateTutor = () => {
   const [ addTutor, {isLoading, isError, error} ] = useMutation({
     mutationFn: (formData) => postTutor(formData),
     onSuccess: (data) => {
-      queryClient.setQueryData(['students'], (oldData) => [...oldData, data]);
+      //queryClient.setQueryData(['students'], (oldData) => [...oldData, data]);
       console.log('Tutor added successfully');
       //navigate("/admin/tutors");
     },
