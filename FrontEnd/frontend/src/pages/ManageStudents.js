@@ -58,11 +58,11 @@ const deleteStudentByID = async (student_id) => {
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = `student_${student_id}_comments.txt`;
-  link.click(); // Triggers download
+  link.click();
 
   const deleteCommentsResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments?student_id=${student_id}`, {
     credentials: 'include',
-    method: 'DELETE',
+    method: 'delete',
     headers: {
       'Content-Type': 'application/json',
     },

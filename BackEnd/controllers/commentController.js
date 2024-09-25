@@ -158,6 +158,24 @@ const completeAndAddComment = (req, res) => {
 
 const removeComment = (req, res) => {
     const id = parseInt(req.params.id);
+    
+    pool.query(queries.getCommentById, [id], (error, results) => {
+        const noCommentFound = !results.rows.length;
+        if(noCommentFound){
+            res.send("The comment does not exist in the database, could not remove");
+        }
+
+        else{
+            pool.query(queries.removeComment, [id], (error, result) => {
+                if (error) throw error;
+                res.status(200).json({'message':"comment "+id+" removed successfully"});
+            })
+        }
+    });
+    
+}
+
+const removeCommentByCondition = (req, res) => {
     const { student_id } = req.query;
 
     if(student_id)
@@ -168,22 +186,9 @@ const removeComment = (req, res) => {
         })
     }
     else{
-        pool.query(queries.getCommentById, [id], (error, results) => {
-            const noCommentFound = !results.rows.length;
-            if(noCommentFound){
-                res.send("The comment does not exist in the database, could not remove");
-            }
-
-            else{
-                pool.query(queries.removeComment, [id], (error, result) => {
-                    if (error) throw error;
-                    res.status(200).json({'message':"comment "+id+" removed successfully"});
-                })
-            }
-        });
+        res.status(400).json({'message':"No student id provided"});
     }
 }
-
 
 
 module.exports = {
@@ -192,4 +197,5 @@ module.exports = {
     addComment,
     removeComment,
     completeAndAddComment,
+    removeCommentByCondition,
 };
