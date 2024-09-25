@@ -22,7 +22,31 @@ const fetchStudents = async () => {
   return response.json();
 };
 
+const fetchComments = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch comments');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
+
 const deleteStudentByID = async (student_id) => {
+  const commentsText = comments.map(comment => `${comment.datetime} - ${comment.content}`).join('\n\n');
+  const blob = new Blob([commentsText], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `student_${student_id}_comments.txt`;
+  link.click(); // Triggers download
+  return;
+  /*
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
     credentials: 'include',
     method: 'DELETE',
@@ -37,7 +61,7 @@ const deleteStudentByID = async (student_id) => {
     throw new Error('Failed to delete student: ' + responseText); // Include responseText in the error for context
   }
 
-  return;
+  return;*/
 }
 
 const ManageUsers = () => {
@@ -62,6 +86,12 @@ const ManageUsers = () => {
       setFilteredStudents(students); // Initialize filteredStudents with the fetched data
     }
   }, [students]);
+
+  const {
+    data: comments,
+    isLoading: commentsLoading,
+    error: commentsError,
+  } = useQuery({queryKey: ['comments'], queryFn: () => fetchComments()});
 
   const { mutate: deleteStudent, isLoading, isError, error } = useMutation({
     mutationFn: (student_id) => deleteStudentByID(student_id),

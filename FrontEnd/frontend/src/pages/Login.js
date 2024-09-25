@@ -52,26 +52,6 @@ const Login = () => {
       };
 
       attemptLogin(formData);
-/*
-      try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData),
-          credentials: 'include',
-        });
-
-        if (response.ok) {
-          // Request was successful
-        } else {
-          // Request failed
-          console.error('Login failed:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }*/
     };
 
     return (
