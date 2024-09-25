@@ -21,8 +21,6 @@ const postTutor = async (formData) => {
   if (!response.ok) {
     throw new Error('Failed to create tutor');
   }
-
-  console.log("hereee");
   
   return response.json();
 }
@@ -72,7 +70,7 @@ const CreateTutor = () => {
         navigate("/admin/tutors");
       },
       onError: (error) => {
-        console.log('Error adding tutor:', error);
+        console.log('Error adding tutor:', error.message);
       }
     });
 
