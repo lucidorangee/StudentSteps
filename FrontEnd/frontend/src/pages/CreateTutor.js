@@ -19,8 +19,10 @@ const postTutor = async (formData) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to create student');
+    throw new Error('Failed to create tutor');
   }
+
+  console.log("hereee");
   
   return response.json();
 }
