@@ -37,7 +37,7 @@ const CreateTutor = () => {
   const queryClient = useQueryClient()
   const navigate = useNavigate();
 
-  const { mutate: addTutor, isLoading, isError, error } = useMutation({
+  const [ addTutor, {isLoading, isError, error} ] = useMutation({
     mutationFn: (formData) => postTutor(formData),
     onSuccess: (data) => {
       queryClient.setQueryData(['students'], (oldData) => [...oldData, data]);
