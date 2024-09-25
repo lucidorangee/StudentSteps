@@ -39,6 +39,19 @@ const fetchComments = async () => {
 };
 
 const deleteStudentByID = async (student_id) => {
+  const commentsResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments?student_id=${student_id}`, {
+    credentials: 'include',
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!commentsResponse.ok) {
+    throw new Error('Failed to fetch comments');
+  }
+
+  const comments = await commentsResponse.json();
   const commentsText = comments.map(comment => `${comment.datetime} - ${comment.content}`).join('\n\n');
   const blob = new Blob([commentsText], { type: 'text/plain' });
   const link = document.createElement('a');
