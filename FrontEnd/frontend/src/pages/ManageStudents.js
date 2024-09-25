@@ -72,9 +72,7 @@ const deleteStudentByID = async (student_id) => {
     const deleteCommentsText = await deleteCommentsResponse.text();
     throw new Error('Failed to delete comments: ' + deleteCommentsText);
   }
-
-  return;
-  /*
+  
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
     credentials: 'include',
     method: 'DELETE',
@@ -84,12 +82,11 @@ const deleteStudentByID = async (student_id) => {
   });
 
   if (!response.ok) {
-    console.log(response);
     const responseText = await response.text();
     throw new Error('Failed to delete student: ' + responseText); // Include responseText in the error for context
   }
 
-  return;*/
+  return;
 }
 
 const ManageUsers = () => {
