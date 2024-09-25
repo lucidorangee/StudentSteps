@@ -158,21 +158,30 @@ const completeAndAddComment = (req, res) => {
 
 const removeComment = (req, res) => {
     const id = parseInt(req.params.id);
-    
-    pool.query(queries.getCommentById, [id], (error, results) => {
-        const noCommentFound = !results.rows.length;
-        if(noCommentFound){
-            res.send("The comment does not exist in the database, could not remove");
-        }
+    const { student_id } = req.query;
 
-        else{
-            pool.query(queries.removeComment, [id], (error, result) => {
-                if (error) throw error;
-                res.status(200).json({'message':"comment "+id+" removed successfully"});
-            })
-        }
-    });
+    if(student_id)
+    {
+        pool.query(queries.removeCommentByStudentID, [student_id], (error, result) => {
+            if (error) throw error;
+            res.status(200).json({'message':"comment from the student "+ student_id +" removed successfully"});
+        })
+    }
+    else{
+        pool.query(queries.getCommentById, [id], (error, results) => {
+            const noCommentFound = !results.rows.length;
+            if(noCommentFound){
+                res.send("The comment does not exist in the database, could not remove");
+            }
 
+            else{
+                pool.query(queries.removeComment, [id], (error, result) => {
+                    if (error) throw error;
+                    res.status(200).json({'message':"comment "+id+" removed successfully"});
+                })
+            }
+        });
+    }
 }
 
 
