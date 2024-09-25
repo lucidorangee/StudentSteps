@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import Select from 'react-select';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+import { Navigate } from 'react-router-dom';
 
 
 const fetchStudents = async () => {
@@ -21,9 +22,25 @@ const fetchStudents = async () => {
   return response.json();
 };
 
+const deleteStudentByID = async (student_id) => {
+  const response = fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
+    credentials: 'include',
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete student: ' + response); // Include responseText in the error for context
+  }
+
+  return;
+}
+
 const ManageUsers = () => {
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   
   const [loading, setLoading] = useState(false);
   const [filterName, setFilterName] = useState("");
@@ -46,10 +63,25 @@ const ManageUsers = () => {
 
   if (studentsLoading) return <div>Loading...</div>;
   if (studentsError) {
+    if(studentsError.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
     console.log(studentsError.status);
     return <div>Error loading data</div>;
   }
-
+  const { mutate: deleteStudent, isLoading, isError, error } = useMutation({
+    mutationFn: (student_id) => deleteStudentByID(student_id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['students']);
+      console.log(response);
+    },
+    onError: (error) => {
+      console.log('Error adding tutor:', error.message);
+    }
+  });
+/*
   const handleDelete = (student_id) => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
       credentials: 'include',
@@ -74,7 +106,7 @@ const ManageUsers = () => {
     .catch(error => {
       console.error('Error deleting session:', error);
     });
-  };
+  };*/
 
   const redirectStudentProfile  = (student_id) => {
     navigate(`/students/detail/${student_id}`, { replace : true});
@@ -157,7 +189,7 @@ const ManageUsers = () => {
                 <i
                   className="bi bi-trash"
                   style={{ cursor: 'pointer' }}
-                  onClick={() => handleDelete(student.student_id)}
+                  onClick={() => deleteStudent(student.student_id)}
                 ></i>
               </td>
             </tr>

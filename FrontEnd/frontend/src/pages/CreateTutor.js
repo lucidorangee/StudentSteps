@@ -21,7 +21,8 @@ const postTutor = async (formData) => {
     throw new Error('Failed to create tutor: ' + response); // Include responseText in the error for context
   }
 
-  return response;
+  const responseText = await response.text();
+  return responseText;
 }
 
 const CreateTutor = () => {
@@ -39,10 +40,8 @@ const CreateTutor = () => {
   const { mutate: addTutor, isLoading, isError, error } = useMutation({
     mutationFn: (formData) => postTutor(formData),
     onSuccess: (response) => {
-      console.log(response.text);
-      console.log("Status code: " + response.status);
+      console.log(response);
       navigate("/admin/tutors");
-      // Optionally update query cache and navigate
     },
     onError: (error) => {
       console.log('Error adding tutor:', error.message);
