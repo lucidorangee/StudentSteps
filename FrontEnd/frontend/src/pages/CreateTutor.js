@@ -38,7 +38,12 @@ const CreateTutor = () => {
   const navigate = useNavigate();
 
   const { mutate: addTutor, isLoading, isError, error } = useMutation({
-    mutationFn: (formData) => postTutor(formData)
+    mutationFn: (formData) => postTutor(formData),
+    onSuccess: (data) => {
+      queryClient.setQueryData(['students'], (oldData) => [...oldData, data]);
+      console.log('Tutor added successfully');
+      navigate("/admin/tutors");
+    }
   })
 
   const handleSubmit = async (e) => {
@@ -63,13 +68,7 @@ const CreateTutor = () => {
 
     //addTutor(formData);
 
-    addTutor(formData, {
-      onSuccess: (data) => {
-        queryClient.setQueryData(['students'], (oldData) => [...oldData, data]);
-        console.log('Tutor added successfully');
-        navigate("/admin/tutors");
-      }
-    });
+    addTutor(formData);
 
   };
 // student_id | first_name | last_name | student_photo | date_of_birth | grade_level | student_phone | 
