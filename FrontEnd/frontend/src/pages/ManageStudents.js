@@ -84,34 +84,6 @@ const ManageUsers = () => {
     return <div>Error loading data</div>;
   }
 
-  
-/*
-  const handleDelete = (student_id) => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
-      credentials: 'include',
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      console.log("HERE");
-      return response.text();
-    })
-    .then(data => {
-      console.log(`Student with ID ${student_id} deleted successfully`);
-
-      // Refresh after successful deletion
-      window.location.reload();
-    })
-    .catch(error => {
-      console.error('Error deleting session:', error);
-    });
-  };*/
-
   const redirectStudentProfile  = (student_id) => {
     navigate(`/students/detail/${student_id}`, { replace : true});
   }

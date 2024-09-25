@@ -3,12 +3,46 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useState } from 'react';
 import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+
+const postLogin = async (formData) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
+    credentials: 'include',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData),
+  });
+
+  if (!response.ok) {
+    const responseText = response.json().message;
+    const err = new Error('Login failed:', response.responseText); // Include responseText in the error for context
+    err.status = response.status;
+    throw err;
+  }
+
+  return response.json();
+}
 
 const Login = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
+    const { mutate: attemptLogin, isLoading, isError, error } = useMutation({
+      mutationFn: (formData) => postLogin(formData),
+      onSuccess: (formData) => {
+        console.log('Login successful!');
+        const currentDate = new Date().toISOString().substring(0, 10);
+        navigate(`/schedule/list/${currentDate}`);
+      },
+      onError: (error) => {
+        console.log('Error logging in', error.message);
+      }
+    });
 
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -18,6 +52,8 @@ const Login = () => {
         password: password
       };
 
+      attemptLogin(formData);
+/*
       try {
         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
           method: 'post',
@@ -30,16 +66,13 @@ const Login = () => {
 
         if (response.ok) {
           // Request was successful
-          console.log('Login successful!');
-          const currentDate = new Date().toISOString().substring(0, 10);
-          navigate(`/schedule/list/${currentDate}`);
         } else {
           // Request failed
           console.error('Login failed:', response.statusText);
         }
       } catch (error) {
         console.error('Error:', error);
-      }
+      }*/
     };
 
     return (
