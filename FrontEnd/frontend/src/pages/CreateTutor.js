@@ -37,6 +37,18 @@ const CreateTutor = () => {
   const queryClient = useQueryClient()
   const navigate = useNavigate();
 
+  const { mutate: addTutor, isLoading, isError, error } = useMutation({
+    mutationFn: (formData) => postTutor(formData),
+    onSuccess: (data) => {
+      console.log('Tutor added successfully');
+      // Optionally update query cache and navigate
+    },
+    onError: (error) => {
+      console.log('Error adding tutor:', error.message);
+    }
+  });
+
+  /*
   const [ addTutor, {isLoading, isError, error} ] = useMutation({
     mutationFn: (formData) => postTutor(formData),
     onSuccess: (data) => {
@@ -47,7 +59,7 @@ const CreateTutor = () => {
     onError: (error) => {
       console.log('Error adding tutor:', error.message); // Log the error message
     }
-  })
+  })*/
 
   const handleSubmit = async (e) => {
     e.preventDefault();
