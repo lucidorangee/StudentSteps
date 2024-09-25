@@ -30,7 +30,6 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const queryClient = useQueryClient();
 
     const { mutate: attemptLogin, isLoading, isError, error } = useMutation({
       mutationFn: (formData) => postLogin(formData),

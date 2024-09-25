@@ -23,7 +23,7 @@ const fetchStudents = async () => {
 };
 
 const deleteStudentByID = async (student_id) => {
-  const response = fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
     credentials: 'include',
     method: 'DELETE',
     headers: {
