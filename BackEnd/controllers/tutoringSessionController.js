@@ -110,7 +110,7 @@ const getTutoringSessionById = (req, res) => {
 
 const addTutoringSession = (req, res) => {
     console.log(req.body);
-    const { student_id, tutor_id, datetime, duration, notes } = req.body;
+    const { student_id, tutor_id, date, duration, notes } = req.body;
 
     // Search the student_id via student_name
 
@@ -118,7 +118,7 @@ const addTutoringSession = (req, res) => {
 
     pool.query(
         queries.addTutoringSession,
-        [ student_id, tutor_id, datetime.replace("T", " ").replace("Z", "+00:00"), duration, notes ],
+        [ student_id, tutor_id, date.replace("T", " ").replace("Z", "+00:00"), duration, notes ],
         (error, results) => {
             if(error) throw error;
             res.status(201).send("Session has been created successfully");
