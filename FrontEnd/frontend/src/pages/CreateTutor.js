@@ -39,8 +39,10 @@ const CreateTutor = () => {
 
   const { mutate: addTutor, isLoading, isError, error } = useMutation({
     mutationFn: (formData) => postTutor(formData),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: (response) => {
+      console.log(response.text);
+      console.log("Status code: " + response.status);
+      navigate("/admin/tutors");
       // Optionally update query cache and navigate
     },
     onError: (error) => {
