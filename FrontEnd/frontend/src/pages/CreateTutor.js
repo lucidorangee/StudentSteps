@@ -7,7 +7,6 @@ import { FaCalendarAlt } from 'react-icons/fa';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 
-
 const postTutor = async (formData) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/`, {
     credentials: 'include',
@@ -50,30 +49,9 @@ const CreateTutor = () => {
     }
   });
 
-  /*
-  const [ addTutor, {isLoading, isError, error} ] = useMutation({
-    mutationFn: (formData) => postTutor(formData),
-    onSuccess: (data) => {
-      //queryClient.setQueryData(['students'], (oldData) => [...oldData, data]);
-      console.log('Tutor added successfully');
-      //navigate("/admin/tutors");
-    },
-    onError: (error) => {
-      console.log('Error adding tutor:', error.message); // Log the error message
-    }
-  })*/
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-/*
-    const formData = new FormData();
-    formData.append('first_name', first_name);
-    formData.append('last_name', last_name);
-    formData.append('photo', photo); // Assuming photo is a file
-    formData.append('date_of_birth', date_of_birth.toISOString()); // Ensure date format is correct
-    formData.append('phone', phone);
-    formData.append('email', email);
-*/
+
     const formData = {
       first_name: first_name,
       last_name: last_name,

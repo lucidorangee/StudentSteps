@@ -5,19 +5,18 @@ import Select from 'react-select';
 import { useQuery } from '@tanstack/react-query';
 
 
-const fetchStudents = async (navigate) => {
+const fetchStudents = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json'
     },
   });
-  if (response.status === 401) {
-    navigate("/login");
-    throw new Error('Unauthorized: You must be logged in to access this resource.');
-  }
+
   if (!response.ok) {
-    throw new Error('Failed to fetch students');
+    const err = new Error('Failed to fetch students');
+    err.status = response.status;
+    throw err;
   }
   return response.json();
 };
@@ -37,7 +36,7 @@ const ManageUsers = () => {
     data: students,
     isLoading: studentsLoading,
     error: studentsError,
-  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents(navigate)});
+  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
 
   useEffect(() => {
     if (students) {
@@ -47,7 +46,7 @@ const ManageUsers = () => {
 
   if (studentsLoading) return <div>Loading...</div>;
   if (studentsError) {
-    console.log(studentsError);
+    console.log(studentsError.status);
     return <div>Error loading data</div>;
   }
 
