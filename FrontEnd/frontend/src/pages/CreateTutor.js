@@ -19,7 +19,7 @@ const postTutor = async (formData) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to create tutor: ' + responseText); // Include responseText in the error for context
+    throw new Error('Failed to create tutor: ' + response); // Include responseText in the error for context
   }
 
   return response;
