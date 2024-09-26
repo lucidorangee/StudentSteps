@@ -72,14 +72,6 @@ const ManageUsers = () => {
     error: userDataError,
   } = useQuery({queryKey: ['users'], queryFn: () => fetchUsers()});
 
-  useEffect(() => {
-    if (userData) {
-      console.log("Fetched users:", userData); // Log the entire data structure
-      console.log("Is it an array?", Array.isArray(userData)); // Check if it's really an array
-      console.log("Array length:", userData.length); // Log the length of the array
-    }
-  }, [userData]);
-
   if (userDataLoading) return <div>Loading...</div>;
   if (userDataError) {
     if(userDataError.status === 401) //unauthorized
