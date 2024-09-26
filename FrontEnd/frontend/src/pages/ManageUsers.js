@@ -5,7 +5,7 @@ import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 
 const fetchStudents = async () => {
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users`, {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/users`, {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json'
@@ -21,7 +21,7 @@ const fetchStudents = async () => {
 };
 
 const deleteUserByID = async (id) => {
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${id}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/users/${id}`, {
     credentials: 'include',
     method: 'DELETE',
     headers: {
