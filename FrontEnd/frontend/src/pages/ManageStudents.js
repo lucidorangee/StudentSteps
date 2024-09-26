@@ -50,16 +50,8 @@ const deleteStudentByID = async (student_id) => {
   if (!commentsResponse.ok) {
     throw new Error('Failed to fetch comments');
   }
-  
 
-  const comments = await commentsResponse.json();
-  const commentsText = comments.map(comment => `${comment.datetime} - ${comment.content}`).join('\n\n');
-  const blob = new Blob([commentsText], { type: 'text/plain' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = `student_${student_id}_comments.txt`;
-  link.click();
-
+  /*
   const deleteCommentsResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments?student_id=${student_id}`, {
     credentials: 'include',
     method: 'delete',
@@ -71,7 +63,31 @@ const deleteStudentByID = async (student_id) => {
   if (!deleteCommentsResponse.ok) {
     const deleteCommentsText = await deleteCommentsResponse.text();
     throw new Error('Failed to delete comments: ' + deleteCommentsText);
+  }*/
+
+  const tutoringSessionsResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions?student_id=${student_id}`, {
+    credentials: 'include',
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!tutoringSessionsResponse.ok) {
+    throw new Error('Failed to fetch tutoring sessions');
   }
+  
+  const comments = await commentsResponse.json();
+  const commentsText = comments.map(comment => `${comment.datetime} - ${comment.content}`).join('\n\n');
+
+  const tutoringSessions = await tutoringSessionsResponse.json();
+  const tutoringsessionsText = tutoringSessions.map(tutoringSession => `${tutoringSession.session_datetime} - ${tutoringSession.notes}`).join('\n\n');
+
+  const blob = new Blob([commentsText, "\n\n\n", tutoringsessionsText], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `student_${student_id}_comments.txt`;
+  link.click();
   
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
     credentials: 'include',

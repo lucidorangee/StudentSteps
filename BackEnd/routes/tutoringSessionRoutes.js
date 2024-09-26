@@ -8,5 +8,6 @@ tutoringSessionRouter.get("/:id", controller.getTutoringSessionById);
 tutoringSessionRouter.post("/add", controller.addTutoringSession);
 tutoringSessionRouter.delete("/:id", controller.removeTutoringSession);
 tutoringSessionRouter.patch("/:id", controller.submitTutoringSession);
+tutoringSessionRouter.delete("/", controller.removeTutoringSessionByCondition)
 
 module.exports = tutoringSessionRouter;

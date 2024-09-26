@@ -143,7 +143,6 @@ const removeTutoringSession = (req, res) => {
             })
         }
     });
-
 }
 
 const submitTutoringSession = (req, res) => {
