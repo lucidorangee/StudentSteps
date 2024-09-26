@@ -25,7 +25,7 @@ const fetchUsers = async () => {
 const deleteUserByID = async (id) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/users/${id}`, {
     credentials: 'include',
-    method: 'DELETE',
+    method: 'delete',
     headers: {
       'Content-Type': 'application/json',
     },
