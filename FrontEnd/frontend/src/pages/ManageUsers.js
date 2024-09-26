@@ -4,7 +4,7 @@ import { Nav, Navbar } from 'react-bootstrap'
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 
-const fetchStudents = async () => {
+const fetchUsers = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/users`, {
     credentials: 'include',
     headers: {
@@ -17,6 +17,8 @@ const fetchStudents = async () => {
     err.status = response.status;
     throw err;
   }
+
+  console.log("successfully fetched users");
   return response.json();
 };
 
@@ -68,7 +70,13 @@ const ManageUsers = () => {
     data: userData,
     isLoading: userDataLoading,
     error: userDataError,
-  } = useQuery({queryKey: ['users'], queryFn: () => fetchStudents()});
+  } = useQuery({queryKey: ['users'], queryFn: () => fetchUsers()});
+
+  useEffect(() => {
+    if (userData) {
+      console.log(userData); // Initialize filteredStudents with the fetched data
+    }
+  }, [userData]);
 
   if (userDataLoading) return <div>Loading...</div>;
   if (userDataError) {

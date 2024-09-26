@@ -8,6 +8,7 @@ const login = (req, res) => {
 }
 
 const getUsers = (req, res) => {
+  console.log("getting users");
   if(req.user.role !== "admin")
   {
     if(req.user.role == "public") res.status(200).json({ message: "There is not sufficient permissions to access. You're a public." });
