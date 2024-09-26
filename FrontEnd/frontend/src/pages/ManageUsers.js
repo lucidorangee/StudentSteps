@@ -38,6 +38,8 @@ const deleteUserByID = async (id) => {
 }
 
 const ManageUsers = () => {
+  const queryClient = useQueryClient();
+
   //const [userData, setUserData] = useState(null);
 /*
   useEffect(() => {
