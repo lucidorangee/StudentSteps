@@ -175,27 +175,10 @@ const removeComment = (req, res) => {
     
 }
 
-const removeCommentByCondition = (req, res) => {
-    const { student_id } = req.query;
-
-    if(student_id)
-    {
-        pool.query(queries.removeCommentByStudentID, [student_id], (error, result) => {
-            if (error) throw error;
-            res.status(200).json({'message':"comment from the student "+ student_id +" removed successfully"});
-        })
-    }
-    else{
-        res.status(400).json({'message':"No student id provided"});
-    }
-}
-
-
 module.exports = {
     getComments,
     getCommentById,
     addComment,
     removeComment,
     completeAndAddComment,
-    removeCommentByCondition,
 };
