@@ -119,8 +119,8 @@ const ManageUsers = () => {
           </tr>
         </thead>
         <tbody>
-        {Array.isArray(userData.userData) && (userData.userData).length > 0 ? (
-          (userData.userData).map((user, index) => (
+        {Array.isArray(userData) && (userData).length > 0 ? (
+          (userData).map((user, index) => (
             <tr key={index}>
               <td>{user.id}</td>
               <td>{user.name}</td>
