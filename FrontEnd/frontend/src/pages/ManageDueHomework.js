@@ -5,6 +5,49 @@ import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import Select from 'react-select';
 
+const fetchStudents = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch students');
+  }
+  return response.json();
+};
+
+const fetchHomework = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch homework');
+  }
+  return response.json();
+};
+
+const fetchTutoringSessions = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch tutoring sessions');
+  }
+  return response.json();
+};
+
+
 const ManageDueHomework = () => {
   const [homeworkList, setHomeworkList] = useState([]);
   const [students, setStudents] = useState([]);

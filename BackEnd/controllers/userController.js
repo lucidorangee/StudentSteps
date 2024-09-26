@@ -117,6 +117,25 @@ const checkAuthenticated = (req, res) => {
   }
 }
 
+const deleteUser = (req, res) => {
+  const id = parseInt(req.params.id);
+    
+  pool.query(queries.getUserById, [id], (error, results) => {
+      if (error) throw error;
+      const noUserFound = !results.rows.length;
+      if(noUserFound){
+          res.send("User does not exist in the database, could not remove");
+      }
+
+      else{
+          pool.query(queries.removeUser, [id], (error, result) => {
+              if (error) throw error;
+              res.status(200).send("User "+id+" removed successfully");
+          })
+      }
+  });
+}
+
 /**
 
 const doNothing = (req, res) => {
@@ -139,5 +158,6 @@ module.exports = {
     loginfail,
     registerUser,
     checkAuthenticated,
-    getUsers
+    getUsers,
+    deleteUser
 };
