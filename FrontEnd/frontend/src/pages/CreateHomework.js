@@ -37,6 +37,27 @@ const fetchTutors = async () => {
   return response.json(); // Parse and return the JSON response
 };
 
+const postHomework = async (formData) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
+    credentials: 'include',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData),
+  });
+
+  if (!response.ok) {
+    const responseText = response.json().message;
+    const err = new Error('Homework creation failed:', response.responseText); // Include responseText in the error for context
+    err.status = response.status;
+    throw err;
+  }
+
+  return;
+}
+
+
 const CreateHomework = () => {
 
   const [student_id, setStudent] = useState('');
@@ -91,56 +112,69 @@ const CreateHomework = () => {
     }
   }, [tutors]);
 
+  const { mutate: createHomework, isLoading, isError, error } = useMutation({
+    mutationFn: (formData) => postHomework(formData),
+    onSuccess: () => {
+      console.log('Homework creation successful!');
+      navigate('/schedule/list', { replace : true});
+    },
+    onError: (error) => {
+      console.log('Error creating homework: ', error.message);
+    }
+  });
+
   if (studentsLoading || tutorsLoading) return <div>Loading...</div>;
   if (studentsError || tutorsError) return <div>Error loading data</div>;
 
-const handleStudentChange = (selectedOption) => {
-  setSelectedStudent(selectedOption);
-  setStudent(selectedOption ? selectedOption.value : -1);
-};
-
-const handleTutorChange = (selectedOption) => {
-  setSelectedTutor(selectedOption);
-  setStudent(selectedOption ? selectedOption.value : -1);
-};
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  const formData = {
-    student_id: student_id,
-    //tutor_id: tutor_id,
-    assigned: datetime,
-    due_date: datetime,
-    subject: duration,
-    notes: notes,
+  const handleStudentChange = (selectedOption) => {
+    setSelectedStudent(selectedOption);
+    setStudent(selectedOption ? selectedOption.value : -1);
   };
 
-  try {
-    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/`, {
-      credentials: 'include',
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData),
-    });
+  const handleTutorChange = (selectedOption) => {
+    setSelectedTutor(selectedOption);
+    setStudent(selectedOption ? selectedOption.value : -1);
+  };
 
-    if (response.ok) {
-      // Request was successful
-      console.log('Homework creation successful! Redirecting...');
-      navigate('/schedule/list', { replace : true});
-    } else {
-      // Request failed
-      console.error('Homework creation failed:', response.statusText);
-    }
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-return (
-  <div className="App">
+    const formData = {
+      student_id: student_id,
+      //tutor_id: tutor_id,
+      assigned: datetime,
+      due_date: datetime,
+      subject: duration,
+      notes: notes,
+    };
+
+    createHomework(formData);
+    /*
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/`, {
+        credentials: 'include',
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Request was successful
+        console.log('Homework creation successful! Redirecting...');
+        navigate('/schedule/list', { replace : true});
+      } else {
+        // Request failed
+        console.error('Homework creation failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }*/
+  };
+
+  return (
+    <div className="App">
       <header className="App-header">
         <div className="position-absolute top-50 start-50 translate-middle h-50 w-50 container-fluid">
           <div className="position-relative mb-3" >

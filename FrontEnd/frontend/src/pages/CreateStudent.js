@@ -63,7 +63,7 @@ const CreateStudent = () => {
       navigate(`/students/detail/${response.student_id}`);
     },
     onError: (error) => {
-      console.log('Error logging in', error.message);
+      console.log('Error creating student: ', error.message);
     }
   });
 
