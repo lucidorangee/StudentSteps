@@ -4,6 +4,8 @@ import { Nav, Navbar } from 'react-bootstrap'
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import Select from 'react-select';
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+import { Navigate } from 'react-router-dom';
 
 const fetchStudents = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
@@ -33,7 +35,7 @@ const fetchHomework = async () => {
   return response.json();
 };
 
-const updateHomeworkCompletion = async (id) => {
+const updateHomeworkCompletion = async (updatedHomeworkList) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/completion`, {
     credentials: 'include',
     method: 'PATCH',
@@ -52,6 +54,7 @@ const updateHomeworkCompletion = async (id) => {
 }
 
 const ManageDueHomework = () => {
+  const queryClient = useQueryClient();
   //const [homeworkList, setHomeworkList] = useState([]);
   //const [students, setStudents] = useState([]);
   //const [schedules, setSchedules] = useState([]);
