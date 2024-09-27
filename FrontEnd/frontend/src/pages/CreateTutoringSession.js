@@ -38,6 +38,24 @@ const fetchTutors = async () => {
   return response.json();
 };
 
+const postTutoringSession = async (formData) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/add`, {
+    credentials: 'include',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to create tutoring session: ' + response); // Include responseText in the error for context
+  }
+
+  const responseText = await response.text();
+  return responseText;
+}
+
 const CreateTutoringSession = () => {
 
   const [student_id, setStudent] = useState(-1);
@@ -93,6 +111,17 @@ const CreateTutoringSession = () => {
     }
   }, [tutors]);
 
+  const { mutate: createTutoringSession, isLoading, isError, error } = useMutation({
+    mutationFn: (formData) => postTutoringSession(formData),
+    onSuccess: () => {
+      console.log('Tutoring session creation successful!');
+      navigate('/schedule/list', { replace : true});
+    },
+    onError: (error) => {
+      console.log('Error creating homework: ', error.message);
+    }
+  });
+  
   if (studentsLoading || tutorsLoading) return <div>Loading...</div>;
   if (studentsError || tutorsError) return <div>Error loading data</div>;
 
@@ -130,7 +159,6 @@ const CreateTutoringSession = () => {
       return;
     }
 
-    
     const formData = {
       student_id: student_id,
       tutor_id: tutor_id,
@@ -141,27 +169,7 @@ const CreateTutoringSession = () => {
 
     console.log("Going through: " + JSON.stringify(formData));
 
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/add`, {
-        credentials: 'include',
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        // Request was successful
-        console.log('Session creation successful! Redirecting...');
-        navigate('/schedule/list', { replace : true});
-      } else {
-        // Request failed
-        console.error('Session creation failed:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    createTutoringSession(formData);
   };
 
   return (

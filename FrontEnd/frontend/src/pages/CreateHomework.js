@@ -149,28 +149,6 @@ const CreateHomework = () => {
     };
 
     createHomework(formData);
-    /*
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/`, {
-        credentials: 'include',
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        // Request was successful
-        console.log('Homework creation successful! Redirecting...');
-        navigate('/schedule/list', { replace : true});
-      } else {
-        // Request failed
-        console.error('Homework creation failed:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }*/
   };
 
   return (
