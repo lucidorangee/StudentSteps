@@ -33,25 +33,28 @@ const fetchHomework = async () => {
   return response.json();
 };
 
-const fetchTutoringSessions = async () => {
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
+const updateHomeworkCompletion = async (id) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/completion`, {
     credentials: 'include',
+    method: 'PATCH',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
+    body: JSON.stringify(Array.from(updatedHomeworkList)),
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch tutoring sessions');
+    const responseText = await response.text();
+    throw new Error('Failed to update completion: ' + responseText); // Include responseText in the error for context
   }
-  return response.json();
-};
 
+  return;
+}
 
 const ManageDueHomework = () => {
-  const [homeworkList, setHomeworkList] = useState([]);
-  const [students, setStudents] = useState([]);
-  const [schedules, setSchedules] = useState([]);
+  //const [homeworkList, setHomeworkList] = useState([]);
+  //const [students, setStudents] = useState([]);
+  //const [schedules, setSchedules] = useState([]);
 
   const [datetime, setDatetime] = useState('');
   const [filteredHomeworkList, setFilteredHomeworkList] = useState([]);
@@ -87,38 +90,48 @@ const ManageDueHomework = () => {
     setFilteredHomeworkList(temp);
   };
 
+  const {
+    data: students,
+    isLoading: studentsLoading,
+    error: studentsError,
+  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
+
+  const {
+    data: homeworkList,
+    isLoading: homeworkListLoading,
+    error: homeworkListError,
+  } = useQuery({queryKey: ['homework'], queryFn: () => fetchHomework()});
+
+  /*const {
+    data: tutoringSessionList,
+    isLoading: tutoringSessionLoading,
+    error: tutoringSessionError,
+  } = useQuery({queryKey: ['tutoringSession'], queryFn: () => fetchTutoringSessions()});*/
+  
+  
+  if (homeworkListLoading || studentsLoading) return <div>Loading...</div>;
+  if (homeworkListError) {
+    if(homeworkListError.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    console.log(homeworkListError.status);
+    return <div>Error loading data</div>;
+  }
+  if (studentsError) {
+    if(studentsError.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    console.log(studentsError.status);
+    return <div>Error loading data</div>;
+  }
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [homeworkResponse, studentResponse, scheduleResponse] = await Promise.all([
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
-            credentials: 'include'
-          }),
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
-            credentials: 'include'
-          }),
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
-            credentials: 'include'
-          }),
-        ]);
-  
-        if (!homeworkResponse.ok || !studentResponse.ok) throw new Error('One or more fetch requests failed');
-  
-        const homeworkData = await homeworkResponse.json();
-        const studentData = await studentResponse.json();
-        const scheduleData = await scheduleResponse.json();
-  
-        setHomeworkList(homeworkData);
-        setFilteredHomeworkList(homeworkData);
-        setStudents(studentData);
-        setSchedules(scheduleData);
-      } catch (error) {
-        console.error("Error fetching homework, students, or schedule data: ", error);
-      }
-    };
-  
-    fetchData();
-  }, []);
+    setFilteredHomeworkList(homeworkData);
+  }, [homeworkData]);
 
   const handleSelect = (homework_id, value) => {
     const updatedFilteredHomeworkList = filteredHomeworkList.map((homework) => 
@@ -136,30 +149,17 @@ const ManageDueHomework = () => {
     });
   };
 
-  const applyChanges = async () => {
-
-    try{
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/completion`, {
-        credentials: 'include',
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(Array.from(updatedHomeworkList)),
-      });
-
-      if (response.ok) {
-        // Request was successful
-        console.log('Homework update successful!');
-        setUpdatedHomeworkList(new Map());
-      } else {
-        // Request failed
-        console.error('Homework is_completed update failed:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error:', error);
+  const { mutate: updateHomework, isLoading, isError, error } = useMutation({
+    mutationFn: (updatedHomeworkList) => updateHomeworkCompletion(updatedHomeworkList),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['homework']);
+      console.log("Successfully updated");
+      setUpdatedHomeworkList(new Map());
+    },
+    onError: (error) => {
+      console.log('Error updating homework:', error.message);
     }
-  }
+  });
 
   return (
     <div className="App">
@@ -184,7 +184,7 @@ const ManageDueHomework = () => {
             {/* Empty column */}
           </div>
           <div className="col-2">
-            <button type="button" className="btn btn-success mb-3" onClick={applyChanges}>Apply</button>
+            <button type="button" className="btn btn-success mb-3" onClick={() => updateHomework(updatedHomeworkList)}>Apply</button>
           </div>
         </div>
       </form>
