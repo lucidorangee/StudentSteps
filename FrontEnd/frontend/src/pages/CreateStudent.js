@@ -5,6 +5,29 @@ import { Outlet, Link, NavLink } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from "react-router-dom";
+
+const postStudent = async (formData) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
+    credentials: 'include',
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData),
+  });
+
+  if (!response.ok) {
+    const responseText = response.json().message;
+    const err = new Error('Student creation failed:', response.responseText); // Include responseText in the error for context
+    err.status = response.status;
+    throw err;
+  }
+
+  return response.json();
+}
+
 
 const CreateStudent = () => {
   // student_id | first_name | last_name | student_photo | date_of_birth | grade_level | student_phone | 
@@ -30,7 +53,19 @@ const CreateStudent = () => {
   const [signed, setSigned] = useState(false);
   const [marketing_agreement, setMarketingAgreement] = useState(false);
   const [can_email, setCanEmail] = useState(false);
+
+  const navigate = useNavigate();
   
+  const { mutate: createStudent, isLoading, isError, error } = useMutation({
+    mutationFn: (formData) => postStudent(formData),
+    onSuccess: (response) => {
+      console.log('Student creation successful!');
+      navigate(`/students/detail/${response.student_id}`);
+    },
+    onError: (error) => {
+      console.log('Error logging in', error.message);
+    }
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,27 +91,8 @@ const CreateStudent = () => {
       can_email: can_email,
     };
 
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
-        credentials: 'include',
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        // Request was successful
-        console.log('Student creation successful!');
-      } else {
-        // Request failed
-        console.error('Student creation failed:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+    createStudent(formData);
+  }
   // student_id | first_name | last_name | student_photo | date_of_birth | grade_level | student_phone | 
   // student_email | emergency_name | emergency_relationship | emergency_phone | user_id | 
   // stamps | school | caregiver | secondary_phone | work_phone | address | postalcode | signed | marketing_agreement | can_email
@@ -250,6 +266,7 @@ const CreateStudent = () => {
       </div>
   );
 };
+
   
 export default CreateStudent;
 
