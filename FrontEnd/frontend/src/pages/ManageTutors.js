@@ -21,7 +21,7 @@ const fetchTutors = async () => {
 };
 
 const deleteTutorByID = async (tutor_id) => {
-  const response = fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/${tutor_id}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/${tutor_id}`, {
     credentials: 'include',
     method: 'DELETE',
     headers: {
@@ -31,7 +31,7 @@ const deleteTutorByID = async (tutor_id) => {
 
   if (!response.ok) {
     const responseText = await response.text();
-    throw new Error('Failed to delete student: ' + responseText); 
+    throw new Error('Failed to delete Tutor: ' + responseText); 
   }
 
   return;

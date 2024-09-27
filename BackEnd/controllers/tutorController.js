@@ -68,7 +68,6 @@ const addTutor = async (req, res) => {
 const removeTutor = (req, res) => {
     const id = parseInt(req.params.id);
     
-    
     pool.query(tutorQueries.getTutorById, [id], (error, results) => {
         const noTutorFound = !results.rows.length;
         if(noTutorFound){
