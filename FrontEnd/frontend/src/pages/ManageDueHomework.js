@@ -105,36 +105,9 @@ const ManageDueHomework = () => {
     error: homeworkListError,
   } = useQuery({queryKey: ['homework'], queryFn: () => fetchHomework()});
 
-  /*const {
-    data: tutoringSessionList,
-    isLoading: tutoringSessionLoading,
-    error: tutoringSessionError,
-  } = useQuery({queryKey: ['tutoringSession'], queryFn: () => fetchTutoringSessions()});*/
-  
-  
-  if (homeworkListLoading || studentsLoading) return <div>Loading...</div>;
-  if (homeworkListError) {
-    if(homeworkListError.status === 401) //unauthorized
-    {
-      console.log("unathorized");
-      return <Navigate to="/login" />;
-    }
-    console.log(homeworkListError.status);
-    return <div>Error loading data</div>;
-  }
-  if (studentsError) {
-    if(studentsError.status === 401) //unauthorized
-    {
-      console.log("unathorized");
-      return <Navigate to="/login" />;
-    }
-    console.log(studentsError.status);
-    return <div>Error loading data</div>;
-  }
-
   useEffect(() => {
-    setFilteredHomeworkList(homeworkData);
-  }, [homeworkData]);
+    setFilteredHomeworkList(homeworkList);
+  }, [homeworkList]);
 
   const handleSelect = (homework_id, value) => {
     const updatedFilteredHomeworkList = filteredHomeworkList.map((homework) => 
@@ -163,6 +136,35 @@ const ManageDueHomework = () => {
       console.log('Error updating homework:', error.message);
     }
   });
+
+  /*const {
+    data: tutoringSessionList,
+    isLoading: tutoringSessionLoading,
+    error: tutoringSessionError,
+  } = useQuery({queryKey: ['tutoringSession'], queryFn: () => fetchTutoringSessions()});*/
+  
+  
+  if (homeworkListLoading || studentsLoading) return <div>Loading...</div>;
+  if (homeworkListError) {
+    if(homeworkListError.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    console.log(homeworkListError.status);
+    return <div>Error loading data</div>;
+  }
+  if (studentsError) {
+    if(studentsError.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    console.log(studentsError.status);
+    return <div>Error loading data</div>;
+  }
+
+  
 
   return (
     <div className="App">
