@@ -2,6 +2,72 @@ import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "@daypilot/daypilot-lite-react";
 import "./css/Calendar.css";
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+import { Navigate } from 'react-router-dom';
+
+const fetchHomework = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch homework');
+  }
+  return response.json();
+};
+
+const fetchStudents = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch students');
+  }
+  return response.json();
+};
+
+const fetchTutors = async() => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch comments');
+    err.status = response.status;
+    throw err;
+  }
+
+  console.log("successfully fetched comments");
+  return response.json();
+}
+
+const fetchTutoringSessions = async() => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutoring sessions');
+    err.status = response.status;
+    throw err;
+  }
+
+  console.log("successfully fetched tutoring sessions");
+  return response.json();
+}
 
 const styles = {
   wrap: {
@@ -17,12 +83,13 @@ const styles = {
 
 
 const WeeklyCalendar = () => {
+  const queryClient = useQueryClient();
 
   const { date } = useParams();
-  const [homeworkList, setHomeworkList] = useState([]);
-  const [students, setStudents] = useState([]);
-  const [tutors, setTutors] = useState([]);
-  const [tutoringSessionData, setTutoringSessionData] = useState([]);
+  //const [homeworkList, setHomeworkList] = useState([]);
+  //const [students, setStudents] = useState([]);
+  //const [tutors, setTutors] = useState([]);
+  //const [tutoringSessionData, setTutoringSessionData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -31,6 +98,36 @@ const WeeklyCalendar = () => {
   const [calendar, setCalendar] = useState(null);
   const [events, setEvents] = useState([]);
   const [startDate, setStartDate] = useState(date);
+
+  const {
+    data: students,
+    isLoading: studentsLoading,
+    error: studentsError,
+  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
+
+  const {
+    data: tutors,
+    isLoading: tutorsLoading,
+    error: tutorsError,
+  } = useQuery({queryKey: ['tutors'], queryFn: () => fetchTutors()});
+
+  const {
+    data: homeworkList,
+    isLoading: homeworkListLoading,
+    error: homeworkListError,
+  } = useQuery({queryKey: ['homework'], queryFn: () => fetchHomework()});
+
+  const {
+    data: tutoringSessionData,
+    isLoading: tutoringSessionLoading,
+    error: tutoringSessionError,
+  } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
+
+  useEffect(() => {
+    setFilteredData(tutoringSessionData);
+  }, [tutoringSessionData]);
+
+  
 
   const config = {
     viewType: "Week",
@@ -133,7 +230,7 @@ const WeeklyCalendar = () => {
     
     return hexValue.toString(16).padStart(6, '0').toUpperCase();
   }
-
+/*
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -170,7 +267,7 @@ const WeeklyCalendar = () => {
     };
   
     fetchData();
-  }, []);
+  }, []);*/
 
   useEffect(() => {
 
@@ -192,6 +289,17 @@ const WeeklyCalendar = () => {
 
     setEvents(events);
   }, [filteredData]);
+
+  if (homeworkListLoading || studentsLoading || tutorsLoading || tutoringSessionLoading) return <div>Loading...</div>;
+  if (homeworkListError || studentsError || tutorsError || tutoringSessionError){
+    if(homeworkListError?.status === 401 || studentsError?.status === 401 || tutorsError?.status === 401 || tutoringSessionError?.status === 401)
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    return <div>Error loading data</div>;
+    
+  }
 
   const handleStudentChange = (e) => {
     const studentId = e.target.value;
