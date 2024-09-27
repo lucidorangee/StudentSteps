@@ -65,6 +65,7 @@ const addStudent = async (req, res) => {
             student_email, emergency_name, emergency_relationship, emergency_phone, emergency_email, user_id, 
             school, caregiver, secondary_phone, work_phone, address, postalcode, signed, marketing_agreement, can_email]
     );
+    const student_id = result.rows[0].student_id;
     res.status(201).json({ message: 'Student added successfully', student_id });
   } catch (error) {
     console.error('Error adding student:', error);
