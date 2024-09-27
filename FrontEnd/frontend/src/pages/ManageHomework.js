@@ -88,7 +88,7 @@ const ManageUsers = () => {
   });
 
   useEffect(() => {
-    setFilteredHomework(data);
+    setFilteredHomework(homeworkList);
   }, [homeworkList])
 
   // End of Hooks
