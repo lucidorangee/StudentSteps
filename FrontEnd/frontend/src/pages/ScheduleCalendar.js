@@ -3,11 +3,45 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import Select from 'react-select';
 import './css/custom-calendar.css'; // Import custom calendar CSS
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+import { Navigate } from 'react-router-dom';
+
+const fetchTutors = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutors');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
+
+const fetchStudents = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch students');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
 
 const CalendarPage = () => {
   
-  const [tutors, setTutors] = useState(null);
-  const [students, setStudents] = useState(null);
+  //const [tutors, setTutors] = useState(null);
+  //const [students, setStudents] = useState(null);
   const [tutoringSessions, setTutoringSessions] = useState(null);
   const [assessments, setAssessments] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());

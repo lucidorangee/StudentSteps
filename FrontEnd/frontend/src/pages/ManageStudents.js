@@ -3,7 +3,7 @@ import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import Select from 'react-select';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const fetchStudents = async () => {
@@ -105,7 +105,7 @@ const deleteStudentByID = async (student_id) => {
   return;
 }
 
-const ManageUsers = () => {
+const ManageStudents = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   
@@ -252,4 +252,4 @@ const ManageUsers = () => {
   );
 };
 
-export default ManageUsers;
+export default ManageStudents;
