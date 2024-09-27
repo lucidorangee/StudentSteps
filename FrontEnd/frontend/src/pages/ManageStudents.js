@@ -109,7 +109,6 @@ const ManageUsers = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   
-  const [loading, setLoading] = useState(false);
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
   const [filterGrade, setFilterGrade] = useState(0);

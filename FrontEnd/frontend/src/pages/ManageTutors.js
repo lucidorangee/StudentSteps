@@ -1,60 +1,74 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+import { Navigate } from 'react-router-dom';
+
+const fetchTutors = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutors');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
+
+const deleteTutorByID = async (tutor_id) => {
+  const response = fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/${tutor_id}`, {
+    credentials: 'include',
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    const responseText = await response.text();
+    throw new Error('Failed to delete student: ' + responseText); 
+  }
+
+  return;
+}
 
 const ManageUsers = () => {
-  const [tutors, setTutors] = useState(null);
+  //const [tutors, setTutors] = useState(null);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
   
   const [filteredTutors, setFilteredTutors] = useState(null);
 
+  const {
+    data: tutors,
+    isLoading: tutorsLoading,
+    error: tutorsError,
+  } = useQuery({queryKey: ['tutors'], queryFn: () => fetchTutors()});
+
   useEffect(() => {
-    //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
-      credentials: 'include',
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        setTutors(data);
-        setFilteredTutors(data);
-      })
-      .catch(error => {
-        console.error('Error fetching tutors data: ', error);
-      })
-  }, []);
+    if (tutors) {
+      setFilteredTutors(tutors); // Initialize filteredStudents with the fetched data
+    }
+  }, [tutors]);
 
-  const handleDelete = (tutor_id) => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/${tutor_id}`, {
-      credentials: 'include',
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      console.log("HERE");
-      return response.text();
-    })
-    .then(data => {
-      console.log(`Tutor with ID ${tutor_id} deleted successfully`);
-
-      // Refresh after successful deletion
-      window.location.reload();
-    })
-    .catch(error => {
-      console.error('Error deleting session:', error);
-    });
-  };
+  const { mutate: deleteTutor, isLoading, isError, error } = useMutation({
+    mutationFn: (tutor_id) => deleteTutorByID(tutor_id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['tutors']);
+      console.log("Successfully deleted");
+    },
+    onError: (error) => {
+      console.log('Error deleting tutor:', error.message);
+    }
+  });
 
   const redirectTutorProfile  = (tutor_id) => {
     navigate(`/tutors/detail/${tutor_id}`, { replace : true});
@@ -122,7 +136,7 @@ const ManageUsers = () => {
                 <i
                   className="bi bi-trash"
                   style={{ cursor: 'pointer' }}
-                  onClick={() => handleDelete(tutor.tutor_id)}
+                  onClick={() => deleteTutor(tutor.tutor_id)}
                 ></i>
               </td>
             </tr>

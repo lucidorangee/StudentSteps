@@ -6,19 +6,6 @@ const ManageRoles = () => {
   const [authenticated, setAuthenticated] = useState(true);
   const [userData, setUserData] = useState(null);
   const [roleStates, setRoleStates] = useState([]);
-/*
-  useEffect(() => {
-    //Fetch authentication status
-    fetch('http://localhost:4000/users/status')
-      .then(response => response.json())
-      .then(data => {
-        setAuthenticated(data.isAuthenticated);
-      })
-      .catch(error => {
-        console.error('Error fetching authentication status: ', error);
-      })
-  }, []);*/
-
 
   useEffect(() => {
     const fetchRoles = async () => {
