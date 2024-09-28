@@ -230,12 +230,22 @@ const CalendarPage = () => {
 
   const handleTutorChange = (selectedOption) => {
     setSelectedTutor(selectedOption);
-    setSelectedTutorID(selectedOption.value);
+
+    if(selectedOption === null)
+    {
+      setSelectedTutorID(-1);
+    }
+    else setSelectedTutorID(selectedOption.value);
   };
 
   const handleStudentChange = (selectedOption) => {
     setSelectedStudent(selectedOption);
-    setSelectedStudentID(selectedOption.value);
+
+    if(selectedOption === null)
+    {
+      setSelectedStudentID(-1);
+    }
+    else setSelectedStudentID(selectedOption.value);
   };
 
   return (
