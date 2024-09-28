@@ -23,9 +23,10 @@ const fetchTutoringSessions = async () => {
   return response.json();
 }
 
-const postComment = async (session_id, tutor_id, student_id, date, comment) => {
-  console.log("Date: " + date);
-  console.log("newDae: " + (new Date(date)));
+const postComment = async (session_id, tutor_id, student_id, datetime, comment) => {
+  console.log("Data: " + student_id + " / " + tutor_id + " / " + session_id + " : " + comment)
+  console.log("Date: " + datetime);
+  console.log("newDae: " + (new Date(datetime)));
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
     credentials: 'include',
     method: 'POST',
@@ -35,7 +36,7 @@ const postComment = async (session_id, tutor_id, student_id, date, comment) => {
     body: JSON.stringify({
         tutor_id: tutor_id,
         student_id: student_id,
-        datetime: new Date(date).toISOString(), // Ensure datetime is correctly serialized
+        datetime: new Date(datetime).toISOString(), // Ensure datetime is correctly serialized
         content: comment,
         type: 'public'
     }), // Adjust according to your backend API
@@ -130,7 +131,7 @@ const ScheduleList = () => {
       session_id: tutoringSession.session_id, 
       tutor_id: tutoringSession.tutor_id, 
       student_id: tutoringSession.student_id, 
-      date: tutoringSession.session_datetime, 
+      datetime: tutoringSession.session_datetime, 
       comment: comment
     });
 /*
