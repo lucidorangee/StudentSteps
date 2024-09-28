@@ -24,6 +24,8 @@ const fetchTutoringSessions = async () => {
 }
 
 const postComment = async (session_id, tutor_id, student_id, date, comment) => {
+  console.log("Date: " + date);
+  console.log("newDae: " + (new Date(date)));
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
     credentials: 'include',
     method: 'POST',
