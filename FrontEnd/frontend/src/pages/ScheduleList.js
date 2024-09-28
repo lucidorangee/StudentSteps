@@ -4,11 +4,47 @@ import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+import { Navigate } from 'react-router-dom';
+
+const fetchTutoringSessions = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutoring sessions');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+}
+
+const postComment = async (session_id, tutor_id, student_id, datetime, comment) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
+    credentials: 'include',
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        tutor_id: tutor_id,
+        student_id: student_id,
+        datetime: new Date(datetime).toISOString(), // Ensure datetime is correctly serialized
+        content: comment,
+        type: 'public'
+    }), // Adjust according to your backend API
+  })
+}
 
 const ScheduleList = () => {
-  const [tutoringSessionData, setTutoringSessionData] = useState([]);
+  //const [tutoringSessionData, setTutoringSessionData] = useState([]);
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [selectedDate, setSelectedDate] = useState(null);
   
   const { date } = useParams();
@@ -16,18 +52,22 @@ const ScheduleList = () => {
 
   const [alert, setAlert] = useState('');
 
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
-      credentials: 'include'
-    })
-      .then(response => response.json())
-      .then(data => {
-        setTutoringSessionData(data);
-      })
-      .catch(error => {
-        console.error('Error fetching session data: ', error);
-      })
-  }, []);
+  const {
+    data: tutoringSessionData,
+    isLoading: tutoringSessionsLoading,
+    error: tutoringSessionsError,
+  } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
+
+  const { mutate: submitComment, isLoading, isError, error } = useMutation({
+    mutationFn: (session_id, tutor_id, student_id, datetime, comment) => postComment(session_id, tutor_id, student_id, datetime, comment),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['comments']);
+      console.log("Successfully posted");
+    },
+    onError: (error) => {
+      console.log('Error posting comments:', error.message);
+    }
+  });
 
   useEffect(() => {
     if (tutoringSessionData && Array.isArray(tutoringSessionData)) {
@@ -44,6 +84,16 @@ const ScheduleList = () => {
       setFilteredData([]);
     }
   }, [date, tutoringSessionData]);
+
+  if (tutoringSessionsLoading) return <div>Loading...</div>;
+  if (tutoringSessionsError) {
+    if(tutoringSessionsError?.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    return <div>Error loading data</div>;
+  }
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -66,6 +116,8 @@ const ScheduleList = () => {
         return;
     }
 
+    submitComment(tutoringSession.tutor_id, tutoringSession.student_id, tutoringSession.session_datetime, comment);
+/*
     fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${tutoringSession.session_id}`, {
       credentials: 'include',
       method: 'POST',
@@ -99,7 +151,7 @@ const ScheduleList = () => {
         console.error('Error submitting comment:', error);
         // Optionally, show an error message to the user
         alert('Failed to submit comment. Please try again later.');
-    });
+    });*/
   }
 
   return (
