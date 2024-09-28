@@ -66,7 +66,7 @@ const ScheduleList = () => {
   } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
 
   const { mutate: submitComment, isLoading, isError, error } = useMutation({
-    mutationFn: (session_id, tutor_id, student_id, datetime, comment) => postComment(session_id, tutor_id, student_id, datetime, comment),
+    mutationFn: ({session_id, tutor_id, student_id, datetime, comment}) => postComment(session_id, tutor_id, student_id, datetime, comment),
     onSuccess: () => {
       queryClient.invalidateQueries(['comments']);
       console.log("Successfully posted");
