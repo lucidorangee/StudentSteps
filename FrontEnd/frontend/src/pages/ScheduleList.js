@@ -124,7 +124,13 @@ const ScheduleList = () => {
     }
 
     console.log(tutoringSession.session_datetime);
-    submitComment(tutoringSession.session_id, tutoringSession.tutor_id, tutoringSession.student_id, tutoringSession.session_datetime, comment);
+    submitComment({
+      session_id: tutoringSession.session_id, 
+      tutor_id: tutoringSession.tutor_id, 
+      student_id: tutoringSession.student_id, 
+      date: tutoringSession.session_datetime, 
+      comment: comment
+    });
 /*
     fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${tutoringSession.session_id}`, {
       credentials: 'include',
