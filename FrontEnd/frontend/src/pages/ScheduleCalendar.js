@@ -156,21 +156,24 @@ const CalendarPage = () => {
 
   // Filter when selecting 
   useEffect(() => {
-    setFilteredTutoringSessions(
-      tutoringSessions.filter((session) => {
-        if(selectedStudentID === -1 && selectedTutorID === -1) return false;
-        if(selectedStudentID === -1) return selectedTutorID === -1 ? false : selectedTutorID === session.tutor_id;
-        if(selectedTutorID === -1) return selectedStudentID === session.student_id;
-        
-        return selectedStudentID === session.student_id && selectedTutorID === session.tutor_id;
-      })
-    );
+    if(tutoringSessions && assessments)
+    {
+      setFilteredTutoringSessions(
+        tutoringSessions.filter((session) => {
+          if(selectedStudentID === -1 && selectedTutorID === -1) return false;
+          if(selectedStudentID === -1) return selectedTutorID === -1 ? false : selectedTutorID === session.tutor_id;
+          if(selectedTutorID === -1) return selectedStudentID === session.student_id;
+          
+          return selectedStudentID === session.student_id && selectedTutorID === session.tutor_id;
+        })
+      );
 
-    setFilteredAssessments(
-      assessments.filter((session) => {        
-        return selectedStudentID === -1 ? false : selectedStudentID === session.student_id;
-      })
-    );
+      setFilteredAssessments(
+        assessments.filter((session) => {        
+          return selectedStudentID === -1 ? false : selectedStudentID === session.student_id;
+        })
+      );
+    }
   }, [selectedStudentID, selectedTutorID])
 
   if (studentsLoading || tutorsLoading || assessmentsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
