@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import Select from 'react-select';
 import './css/custom-calendar.css'; // Import custom calendar CSS
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const fetchTutors = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
@@ -23,7 +23,7 @@ const fetchTutors = async () => {
 };
 
 const fetchStudents = async () => {
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json'
@@ -38,12 +38,47 @@ const fetchStudents = async () => {
   return response.json();
 };
 
+const fetchTutoringSessions = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutoring sessions');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+}
+
+const fetchAssessments = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/assessments`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutoring sessions');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+}
+
 const CalendarPage = () => {
   
   //const [tutors, setTutors] = useState(null);
   //const [students, setStudents] = useState(null);
-  const [tutoringSessions, setTutoringSessions] = useState(null);
-  const [assessments, setAssessments] = useState(null);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  //const [tutoringSessions, setTutoringSessions] = useState(null);
+  //const [assessments, setAssessments] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -53,86 +88,95 @@ const CalendarPage = () => {
   const [tutorOptions, setTutorOptions] = useState([]);
   const [selectedTutorID, setSelectedTutorID] = useState(-1);
 
-  const [loading, setLoading] = useState(true);
+  const [filteredTutoringSessions, setFilteredTutoringSessions] = useState([]);
+  const [filteredAssessments, setFilteredAssessments] = useState([]);
+
+  const {
+    data: students,
+    isLoading: studentsLoading,
+    error: studentsError,
+  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
+
+  const {
+    data: tutors,
+    isLoading: tutorsLoading,
+    error: tutorsError,
+  } = useQuery({queryKey: ['tutors'], queryFn: () => fetchTutors()});
+
+  const {
+    data: tutoringSessions,
+    isLoading: tutoringSessionsLoading,
+    error: tutoringSessionsError,
+  } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
+
+  const {
+    data: assessments,
+    isLoading: assessmentsLoading,
+    error: assessmentsError,
+  } = useQuery({queryKey: ['assessments'], queryFn: () => fetchAssessments()});
 
   useEffect(() => {
-    const fetchTutorsAndStudents = async () => {
-      try {
-        const [tutorResponse, studentResponse] = await Promise.all([
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
-            credentials: 'include'
-          }),
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
-            credentials: 'include'
-          }),
-        ]);
-  
-        if (!tutorResponse.ok || !studentResponse.ok) throw new Error('One or more fetch requests failed');
-  
-        const tutorData = await tutorResponse.json();
-        const studentData = await studentResponse.json();
-  
-        setTutors(tutorData);
-        const tutorOptions = [
-          { value: -1, label: 'No Filter' },
-          ...studentData.map(student => ({
-            value: student.student_id,
-            label: `${student.first_name} (ID: ${student.student_id})`,
-          }))
-        ];
-        setTutorOptions(tutorOptions);
-        setSelectedTutor(tutorOptions[0]);
-        setSelectedTutorID(-1);
-        
-  
-        setStudents(studentData);
-        const options = [
-          { value: -1, label: 'No Filter' },
-          ...studentData.map(student => ({
-            value: student.student_id,
-            label: `${student.first_name} (ID: ${student.student_id})`,
-          }))
-        ];
-        setStudentOptions(options);
-        setSelectedStudent(studentOptions[0]);
-        setSelectedStudentID(-1);
-      } catch (error) {
-        console.error("Error fetching tutors and students: ", error);
-      }
-    };
-  
-    fetchTutorsAndStudents();
-  }, []);
-  
+    const tutorOptions = [
+      { value: -1, label: 'No Filter' },
+      ...Data.map(tutor => ({
+        value: tutor.tutor_id,
+        label: `${tutor.first_name} (ID: ${tutor.tutor_id})`,
+      }))
+    ];
+    setTutorOptions(tutorOptions);
+    setSelectedTutor(tutorOptions[0]);
+    setSelectedTutorID(-1);
+  }, [tutors]);
+
   useEffect(() => {
-    const fetchTutoringSessionsAndAssessments = async () => {
-      try {
-        const [tutoringSessionsResponse, assessmentsResponse] = await Promise.all([
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions?${selectedStudentID===-1?0:"student_id="+selectedStudentID}`, {
-            credentials: 'include'
-          }),
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/assessments`, {
-            credentials: 'include'
-          }),
-        ]);
-  
-        if (!tutoringSessionsResponse.ok || !assessmentsResponse.ok) throw new Error('One or more fetch requests failed');
-  
-        const tutoringSessionsData = await tutoringSessionsResponse.json();
-        const assessmentsData = await assessmentsResponse.json();
-  
-        setTutoringSessions(tutoringSessionsData);
-        setAssessments(assessmentsData);
-      } catch (error) {
-        console.error("Error fetching tutoring sessions and assessments: ", error);
-      } finally {
-        console.log("Loading done");
-        setLoading(false);
-      }
-    };
-  
-    fetchTutoringSessionsAndAssessments();
-  }, [selectedStudentID]);
+    const options = [
+      { value: -1, label: 'No Filter' },
+      ...studentData.map(student => ({
+        value: student.student_id,
+        label: `${student.first_name} (ID: ${student.student_id})`,
+      }))
+    ];
+    setStudentOptions(options);
+    setSelectedStudent(studentOptions[0]);
+    setSelectedStudentID(-1);
+  }, [students]);
+
+  useEffect(() => {
+    setFilteredAssessments(assessments);
+  }, [assessments]);
+
+  useEffect(() => {
+    setFilteredTutoringSessions(tutoringSessions);
+  }, [tutoringSessions]);
+
+  // Filter when selecting 
+  useEffect(() => {
+    setFilteredTutoringSessions(
+      tutoringSessions.filter((session) => {
+        if(selectedStudentID === -1 && selectedTutorID === -1) return false;
+        if(selectedStudentID === -1) return selectedTutorID === -1 ? false : selectedTutorID === session.tutor_id;
+        if(selectedTutorID === -1) return selectedStudentID === session.student_id;
+        
+        return selectedStudentID === session.student_id && selectedTutorID === session.tutor_id;
+      })
+    );
+
+    setFilteredAssessments(
+      assessments.filter((session) => {        
+        return selectedStudentID === -1 ? false : selectedStudentID === session.student_id;
+      })
+    );
+  }, [selectedStudentID, selectedTutorID])
+
+  if (studentsLoading || tutorsLoading || assessmentsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
+  if (studentsError || tutorsError || assessmentsError || tutoringSessionsError) {
+    if(studentsError?.status === 401 || tutorsError?.status === 401 || assessmentsError?.status === 401 || tutoringSessionsError?.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    return <div>Error loading data</div>;
+  }
 
   const handleNextMonth = () => {
     setCurrentMonth(prevMonth => new Date(prevMonth.setMonth(prevMonth.getMonth() + 1)));
@@ -186,12 +230,6 @@ const CalendarPage = () => {
     setSelectedStudentID(selectedOption.value);
   };
 
-  if(loading)
-  {
-    return (
-      <div>loading...</div>
-    )
-  }
   return (
     <div className="container-fluid calendar-page">
       <div className="row ms-4 mt-2">

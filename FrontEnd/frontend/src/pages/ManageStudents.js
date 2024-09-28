@@ -3,7 +3,7 @@ import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import Select from 'react-select';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 
 const fetchStudents = async () => {
