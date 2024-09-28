@@ -116,29 +116,34 @@ const CalendarPage = () => {
   } = useQuery({queryKey: ['assessments'], queryFn: () => fetchAssessments()});
 
   useEffect(() => {
-    const tutorOptions = [
-      { value: -1, label: 'No Filter' },
-      ...tutors.map(tutor => ({
-        value: tutor.tutor_id,
-        label: `${tutor.first_name} (ID: ${tutor.tutor_id})`,
-      }))
-    ];
-    setTutorOptions(tutorOptions);
-    setSelectedTutor(tutorOptions[0]);
-    setSelectedTutorID(-1);
+    if(tutors)
+    {
+      const tutorOptions = [
+        { value: -1, label: 'No Filter' },
+        ...tutors.map(tutor => ({
+          value: tutor.tutor_id,
+          label: `${tutor.first_name} (ID: ${tutor.tutor_id})`,
+        }))
+      ];
+      setTutorOptions(tutorOptions);
+      setSelectedTutor(tutorOptions[0]);
+      setSelectedTutorID(-1);
+    }
   }, [tutors]);
 
   useEffect(() => {
-    const options = [
-      { value: -1, label: 'No Filter' },
-      ...students.map(student => ({
-        value: student.student_id,
-        label: `${student.first_name} (ID: ${student.student_id})`,
-      }))
-    ];
-    setStudentOptions(options);
-    setSelectedStudent(studentOptions[0]);
-    setSelectedStudentID(-1);
+    if(students){
+      const options = [
+        { value: -1, label: 'No Filter' },
+        ...students.map(student => ({
+          value: student.student_id,
+          label: `${student.first_name} (ID: ${student.student_id})`,
+        }))
+      ];
+      setStudentOptions(options);
+      setSelectedStudent(studentOptions[0]);
+      setSelectedStudentID(-1);
+    }
   }, [students]);
 
   useEffect(() => {
