@@ -23,7 +23,7 @@ const fetchTutoringSessions = async () => {
   return response.json();
 }
 
-const postComment = async (session_id, tutor_id, student_id, datetime, comment) => {
+const postComment = async (session_id, tutor_id, student_id, date, comment) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
     credentials: 'include',
     method: 'POST',
@@ -33,7 +33,7 @@ const postComment = async (session_id, tutor_id, student_id, datetime, comment) 
     body: JSON.stringify({
         tutor_id: tutor_id,
         student_id: student_id,
-        datetime: new Date(datetime).toISOString(), // Ensure datetime is correctly serialized
+        datetime: new Date(date).toISOString(), // Ensure datetime is correctly serialized
         content: comment,
         type: 'public'
     }), // Adjust according to your backend API
@@ -116,6 +116,7 @@ const ScheduleList = () => {
         return;
     }
 
+    console.log(tutoringSession.session_datetime);
     submitComment(tutoringSession.session_id, tutoringSession.tutor_id, tutoringSession.student_id, tutoringSession.session_datetime, comment);
 /*
     fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${tutoringSession.session_id}`, {
