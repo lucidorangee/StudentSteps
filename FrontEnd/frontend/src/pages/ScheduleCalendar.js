@@ -229,11 +229,13 @@ const CalendarPage = () => {
   };
 
   const handleTutorChange = (selectedOption) => {
+    console.log(selectedOption);
     setSelectedTutor(selectedOption);
     setSelectedTutorID(selectedOption.value);
   };
 
   const handleStudentChange = (selectedOption) => {
+    console.log(selectedOption);
     setSelectedStudent(selectedOption);
     setSelectedStudentID(selectedOption.value);
   };
