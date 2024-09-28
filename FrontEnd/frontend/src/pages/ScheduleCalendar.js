@@ -197,7 +197,7 @@ const CalendarPage = () => {
   const tileContent = ({ date }) => {
     const formattedDate = date.toISOString().split('T')[0];
 
-    const assessmentsForDate = assessments?.filter((item) => {
+    const assessmentsForDate = filteredAssessments?.filter((item) => {
       try {
         return formattedDate === new Date(item.date).toISOString().split('T')[0];
       } catch (error) {
@@ -206,7 +206,7 @@ const CalendarPage = () => {
       }
     }) || [];
 
-    const tutoringSessionsForDate = tutoringSessions?.filter((item) => {
+    const tutoringSessionsForDate = filteredTutoringSessions?.filter((item) => {
       try {
         return formattedDate === new Date(item.session_datetime).toISOString().split('T')[0];
       } catch (error) {
@@ -229,13 +229,11 @@ const CalendarPage = () => {
   };
 
   const handleTutorChange = (selectedOption) => {
-    console.log(selectedOption);
     setSelectedTutor(selectedOption);
     setSelectedTutorID(selectedOption.value);
   };
 
   const handleStudentChange = (selectedOption) => {
-    console.log(selectedOption);
     setSelectedStudent(selectedOption);
     setSelectedStudentID(selectedOption.value);
   };
