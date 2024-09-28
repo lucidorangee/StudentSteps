@@ -118,7 +118,7 @@ const CalendarPage = () => {
   useEffect(() => {
     const tutorOptions = [
       { value: -1, label: 'No Filter' },
-      ...Data.map(tutor => ({
+      ...tutors.map(tutor => ({
         value: tutor.tutor_id,
         label: `${tutor.first_name} (ID: ${tutor.tutor_id})`,
       }))
@@ -131,7 +131,7 @@ const CalendarPage = () => {
   useEffect(() => {
     const options = [
       { value: -1, label: 'No Filter' },
-      ...studentData.map(student => ({
+      ...students.map(student => ({
         value: student.student_id,
         label: `${student.first_name} (ID: ${student.student_id})`,
       }))
