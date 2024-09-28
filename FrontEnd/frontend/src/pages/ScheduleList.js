@@ -38,6 +38,13 @@ const postComment = async (session_id, tutor_id, student_id, date, comment) => {
         type: 'public'
     }), // Adjust according to your backend API
   })
+
+  if (!response.ok) {
+    const responseText = await response.text();
+    throw new Error('Failed to post comment: ' + responseText); // Include responseText in the error for context
+  }
+
+  return;
 }
 
 const ScheduleList = () => {
