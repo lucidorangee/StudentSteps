@@ -136,6 +136,7 @@ const addComment = (req, res) => {
 };
 
 const completeAndAddComment = (req, res) => {
+    console.log(req);
     pool.query(
         tutoringSessionQueries.completeTutoringSession,
         [ req.params.id ],
