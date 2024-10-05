@@ -44,6 +44,8 @@ const postComment = async (session_id, tutor_id, student_id, datetime, comment) 
     throw new Error('Failed to post comment: ' + responseText); // Include responseText in the error for context
   }
 
+  console.log("AAAA");
+
   return;
 }
 
