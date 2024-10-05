@@ -24,6 +24,7 @@ const fetchTutoringSessions = async () => {
 }
 
 const postComment = async (session_id, tutor_id, student_id, datetime, comment) => {
+  console.log(`${session_id} | ${tutor_id} | ${student_id} | ${datetime} | ${comment}`);
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
     credentials: 'include',
     method: 'POST',
@@ -43,8 +44,6 @@ const postComment = async (session_id, tutor_id, student_id, datetime, comment) 
     const responseText = await response.text();
     throw new Error('Failed to post comment: ' + responseText); // Include responseText in the error for context
   }
-
-  console.log("AAAA");
 
   return;
 }
