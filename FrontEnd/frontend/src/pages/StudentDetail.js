@@ -80,14 +80,16 @@ const StudentList = () => {
       console.log('Error updating student:', error.message);
     }
   });
-/*
-  const { data: tempInitStudent, isInitStudentsLoading, initStudentsError } = useQuery(
-    ['students'],
-    fetchStudents, // Assume this fetches all students
-    {
-      select: (data) => data.find((student) => student.student_id === id), // Select specific student
-    }
-  );
+
+  const {
+    data: tempInitStudent,
+    isLoading: isInitStudentsLoading,
+    error: initStudentsError,
+  } = useQuery({
+    queryKey: ['students'],
+    queryFn: fetchStudents,
+    select: (data) => data.find((student) => student.student_id === id), // Select specific student
+  });
 
   /*/
   const {
@@ -95,7 +97,7 @@ const StudentList = () => {
     isLoading: isInitStudentsLoading,
     error: initStudentsError,
   } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
-  
+  */
 
   useEffect(() => {
     if(tempInitStudent) 
