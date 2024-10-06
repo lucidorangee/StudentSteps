@@ -95,12 +95,14 @@ const StudentList = () => {
   });
 
   useEffect(() => {
-  if (!isInitStudentsLoading && tempInitStudent) {
-    console.log("here");
-    setStudent(tempInitStudent);
-    setTempStudent(tempInitStudent);
-  }
-}, [isInitStudentsLoading, tempInitStudent]);
+    console.log(tempInitStudent);
+    if(tempInitStudent) 
+    {
+      console.log("here");
+      setStudent(tempInitStudent);
+      setTempStudent(tempInitStudent);
+    }
+  }, [tempInitStudent]);
 
   /*
   const { data: comments, isCommentsLoading, commentsError } = useQuery(
