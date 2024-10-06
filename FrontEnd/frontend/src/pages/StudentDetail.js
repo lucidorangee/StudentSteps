@@ -92,10 +92,9 @@ const StudentList = () => {
     queryKey: ['students'],
     queryFn: fetchStudents,
     select: (data) => data.find((student) => student.student_id === id), // Select specific student
-  });
+  }); 
 
   useEffect(() => {
-    console.log(tempInitStudent);
     if(tempInitStudent) 
     {
       console.log("here");
@@ -280,6 +279,15 @@ const StudentList = () => {
     console.log(`Comment type selected: ${type}`);
   };
 
+  if(tempInitStudent === null)
+  {
+    return(
+      <div>
+        No student found give {id}
+      </div>
+
+    );
+  }
   return (
     <div> 
       <h1 className="m-2 mt-4">
