@@ -67,6 +67,20 @@ const StudentList = () => {
 
   const [commentType, setCommentType] = useState('admin');
 
+  const { mutate: putStudent, isStudentLoading, isStudentError, error } = useMutation({
+    mutationFn: (id, student) => updateStudent(id, student),
+    onSuccess: () => {
+      console.log('Student update successful!');
+      setTempStudent({ ...student });
+      setIsEditing(false);
+      queryClient.invalidateQueries(['students']);
+      console.log("Successfully updated");
+    },
+    onError: (error) => {
+      console.log('Error updating student:', error.message);
+    }
+  });
+/*
   const { data: tempInitStudent, isInitStudentsLoading, initStudentsError } = useQuery(
     ['students'],
     fetchStudents, // Assume this fetches all students
@@ -74,6 +88,14 @@ const StudentList = () => {
       select: (data) => data.find((student) => student.student_id === id), // Select specific student
     }
   );
+
+  /*/
+  const {
+    data: tempInitStudent,
+    isLoading: isInitStudentsLoading,
+    error: initStudentsError,
+  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
+  
 
   useEffect(() => {
     if(tempInitStudent) 
@@ -90,20 +112,6 @@ const StudentList = () => {
       select: (data) => data.find((comment) => comment.student_id === id), // Select specific comment
     }
   );
-
-  const { mutate: putStudent, isStudentLoading, isStudentError, error } = useMutation({
-    mutationFn: (id, student) => updateStudent(id, student),
-    onSuccess: () => {
-      console.log('Student update successful!');
-      setTempStudent({ ...student });
-      setIsEditing(false);
-      queryClient.invalidateQueries(['students']);
-      console.log("Successfully updated");
-    },
-    onError: (error) => {
-      console.log('Error updating student:', error.message);
-    }
-  });
 
   if (isInitStudentsLoading || isCommentsLoading) return <div>Loading...</div>;
   if (initStudentsError || commentsError) {
