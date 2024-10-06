@@ -107,13 +107,23 @@ const StudentList = () => {
     }
   }, [tempInitStudent]);
 
+  /*
   const { data: comments, isCommentsLoading, commentsError } = useQuery(
     ['comments'],
     fetchComments, // Assume this fetches all comments
     {
       select: (data) => data.find((comment) => comment.student_id === id), // Select specific comment
     }
-  );
+  );*/
+  const {
+    data: comments,
+    isLoading: isCommentsLoading,
+    error: commentsError,
+  } = useQuery({
+    queryKey: ['comments'],
+    queryFn: fetchComments,
+    select: (data) => data.find((comment) => comment.student_id === id), // Select specific student
+  });
 
   if (isInitStudentsLoading || isCommentsLoading) return <div>Loading...</div>;
   if (initStudentsError || commentsError) {
