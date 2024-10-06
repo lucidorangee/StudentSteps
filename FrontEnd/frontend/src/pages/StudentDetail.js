@@ -288,6 +288,8 @@ const StudentList = () => {
 
     );
   }
+  
+  console.log(`Temp Init Student is ${tempInitStudent}`);
   return (
     <div> 
       <h1 className="m-2 mt-4">
