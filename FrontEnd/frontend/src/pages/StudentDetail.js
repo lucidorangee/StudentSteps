@@ -6,6 +6,8 @@ import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 
 const fetchStudents = async () => {
+  console.log("FETCH STUDENTS");
+
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
     credentials: 'include',
     headers: {
@@ -18,6 +20,8 @@ const fetchStudents = async () => {
     err.status = response.status;
     throw err;
   }
+
+  console.log("successfully fetched students");
   return response.json();
 };
 
