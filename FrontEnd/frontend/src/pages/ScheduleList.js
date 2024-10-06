@@ -44,7 +44,7 @@ const postComment = async (session_id, tutor_id, student_id, datetime, comment) 
     throw new Error('Failed to post comment: ' + responseText); // Include responseText in the error for context
   }
 
-  return;
+  return session_id;
 }
 
 const ScheduleList = () => {
@@ -69,7 +69,7 @@ const ScheduleList = () => {
 
   const { mutate: submitComment, isLoading, isError, error } = useMutation({
     mutationFn: ({session_id, tutor_id, student_id, datetime, comment}) => postComment(session_id, tutor_id, student_id, datetime, comment),
-    onSuccess: () => {
+    onSuccess: (session_id) => {
       console.log("Successfully posted");
 
       //delete from temp comments
