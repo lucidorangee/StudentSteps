@@ -24,7 +24,6 @@ const fetchTutoringSessions = async () => {
 }
 
 const postComment = async (session_id, tutor_id, student_id, datetime, comment) => {
-  console.log(`${session_id} | ${tutor_id} | ${student_id} | ${datetime} | ${comment}`);
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
     credentials: 'include',
     method: 'POST',
@@ -54,7 +53,9 @@ const ScheduleList = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [selectedDate, setSelectedDate] = useState(null);
-  
+
+  const [tempComments, setTempComments] = useState({});
+
   const { date } = useParams();
   const [filteredData, setFilteredData] = useState([]);
 
@@ -69,8 +70,18 @@ const ScheduleList = () => {
   const { mutate: submitComment, isLoading, isError, error } = useMutation({
     mutationFn: ({session_id, tutor_id, student_id, datetime, comment}) => postComment(session_id, tutor_id, student_id, datetime, comment),
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments']);
       console.log("Successfully posted");
+
+      //delete from temp comments
+      setTempComments((prevComments) => {
+        const updatedComments = { ...prevComments };
+    
+        delete updatedComments[session_id];
+    
+        return updatedComments;
+      });
+      
+      queryClient.invalidateQueries(['comments']);
     },
     onError: (error) => {
       console.log('Error posting comments:', error.message);
@@ -113,13 +124,10 @@ const ScheduleList = () => {
   };
 
   const handleCommentSubmit = (tutoringSession) => {
-    const comment = document.querySelector('textarea').value; // Get the value of the textarea
-    if (!comment) {
-      return;
-    }
+    const comment = tempComments[tutoringSession.session_id] || ''; // Get the value of the textarea
 
     // Validate if comment is empty or any other necessary validation
-    if (!comment.trim()) {
+    if (comment !== '' && !comment.trim()) {
         setAlert('Please enter a comment.');
         return;
     }
@@ -132,41 +140,6 @@ const ScheduleList = () => {
       datetime: tutoringSession.session_datetime, 
       comment: comment
     });
-/*
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${tutoringSession.session_id}`, {
-      credentials: 'include',
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          tutor_id: tutoringSession.tutor_id,
-          student_id: tutoringSession.student_id,
-          datetime: new Date(tutoringSession.session_datetime).toISOString(), // Ensure datetime is correctly serialized
-          content: comment,
-          type: 'public'
-      }), // Adjust according to your backend API
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        
-        return response.text();
-    })
-    .then(data => {
-        // Handle success response from the server if needed
-        console.log('Comment submitted successfully', data);
-    
-        // Refresh after successful submission
-        window.location.reload();
-    })
-    .catch(error => {
-        // Handle errors
-        console.error('Error submitting comment:', error);
-        // Optionally, show an error message to the user
-        alert('Failed to submit comment. Please try again later.');
-    });*/
   }
 
   return (
@@ -207,7 +180,13 @@ const ScheduleList = () => {
 
                       <div className="input-group mb-3">
                           <span className="input-group-text" id="comment-input-text">Comment: </span>
-                          <textarea className="form-control" aria-label="With textarea" rows="6"></textarea>
+                          <textarea
+                            value={tempComments[tutoringSession.session_id] || ''} // default to empty string if there's no comment yet
+                            onChange={(e) => setTempComments({
+                              ...tempComments,
+                              [tutoringSession.session_id]: e.target.value
+                            })}
+                          />
                       </div>
 
                       <button className="btn btn-primary" onClick={() => handleCommentSubmit(tutoringSession)}>Submit Comment</button>
