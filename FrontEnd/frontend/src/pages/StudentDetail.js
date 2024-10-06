@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+import { Navigate } from 'react-router-dom';
 
 const fetchStudents = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
@@ -37,7 +39,7 @@ const fetchComments = async() => {
   return response.json();
 }
 
-const updateStudent = async (student) => {
+const updateStudent = async (id, student) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
     credentials: 'include',
     method: 'put',
@@ -56,6 +58,7 @@ const updateStudent = async (student) => {
 }
 
 const StudentList = () => {
+  const queryClient = useQueryClient();
   const { id } = useParams();
   const [student, setStudent] = useState(null);
   //const [comments, setComments] = useState([]);
