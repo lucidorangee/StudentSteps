@@ -102,6 +102,7 @@ const StudentList = () => {
   useEffect(() => {
     if(tempInitStudent) 
     {
+      console.log("here");
       setStudent(tempInitStudent);
       setTempStudent(tempInitStudent);
     }
