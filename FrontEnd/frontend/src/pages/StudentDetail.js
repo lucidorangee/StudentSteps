@@ -6,7 +6,6 @@ import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 
 const fetchStudents = async () => {
-  console.log("FETCH STUDENTS");
 
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
     credentials: 'include',
@@ -95,22 +94,13 @@ const StudentList = () => {
     select: (data) => data.find((student) => student.student_id === id), // Select specific student
   });
 
-  /*/
-  const {
-    data: tempInitStudent,
-    isLoading: isInitStudentsLoading,
-    error: initStudentsError,
-  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
-  */
-
   useEffect(() => {
-    if(tempInitStudent) 
-    {
-      console.log("here");
-      setStudent(tempInitStudent);
-      setTempStudent(tempInitStudent);
-    }
-  }, [tempInitStudent]);
+  if (!isInitStudentsLoading && tempInitStudent) {
+    console.log("here");
+    setStudent(tempInitStudent);
+    setTempStudent(tempInitStudent);
+  }
+}, [isInitStudentsLoading, tempInitStudent]);
 
   /*
   const { data: comments, isCommentsLoading, commentsError } = useQuery(
