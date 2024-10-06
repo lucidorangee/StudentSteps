@@ -95,6 +95,7 @@ const StudentList = () => {
   }); 
 
   useEffect(() => {
+    console.log(`Temp Init Student is ${tempInitStudent} and current loading state is ${isInitStudentsLoading}`);
     if(tempInitStudent) 
     {
       console.log("here");
@@ -283,13 +284,12 @@ const StudentList = () => {
   {
     return(
       <div>
-        No student found give {id}
+        No student found given {id}
       </div>
 
     );
   }
   
-  console.log(`Temp Init Student is ${tempInitStudent}`);
   return (
     <div> 
       <h1 className="m-2 mt-4">
