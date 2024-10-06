@@ -181,6 +181,7 @@ const ScheduleList = () => {
                       <div className="input-group mb-3">
                           <span className="input-group-text" id="comment-input-text">Comment: </span>
                           <textarea
+                            className="form-control" aria-label="With textarea" rows="6"
                             value={tempComments[tutoringSession.session_id] || ''} // default to empty string if there's no comment yet
                             onChange={(e) => setTempComments({
                               ...tempComments,

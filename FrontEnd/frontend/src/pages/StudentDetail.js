@@ -3,15 +3,121 @@ import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 
+const fetchStudents = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch students');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
+
+const fetchComments = async() => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch comments');
+    err.status = response.status;
+    throw err;
+  }
+
+  console.log("successfully fetched comments");
+  return response.json();
+}
+
+const updateStudent = async (student) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
+    credentials: 'include',
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(student),
+  });
+
+  if (!response.ok) {
+    const responseText = await response.text();
+    throw new Error('Failed to update student: ' + responseText); // Include responseText in the error for context
+  }
+
+  return;
+}
+
 const StudentList = () => {
   const { id } = useParams();
   const [student, setStudent] = useState(null);
-  const [comments, setComments] = useState([]);
+  //const [comments, setComments] = useState([]);
   const [tempStudent, setTempStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
   const [commentType, setCommentType] = useState('admin');
 
+  const { data: tempInitStudent, isInitStudentsLoading, initStudentsError } = useQuery(
+    ['students'],
+    fetchStudents, // Assume this fetches all students
+    {
+      select: (data) => data.find((student) => student.student_id === id), // Select specific student
+    }
+  );
+
+  useEffect(() => {
+    if(tempInitStudent) 
+    {
+      setStudent(tempInitStudent);
+      setTempStudent(tempInitStudent);
+    }
+  }, [tempInitStudent]);
+
+  const { data: comments, isCommentsLoading, commentsError } = useQuery(
+    ['comments'],
+    fetchComments, // Assume this fetches all comments
+    {
+      select: (data) => data.find((comment) => comment.student_id === id), // Select specific comment
+    }
+  );
+
+  const { mutate: putStudent, isStudentLoading, isStudentError, error } = useMutation({
+    mutationFn: (id, student) => updateStudent(id, student),
+    onSuccess: () => {
+      console.log('Student update successful!');
+      setTempStudent({ ...student });
+      setIsEditing(false);
+      queryClient.invalidateQueries(['students']);
+      console.log("Successfully updated");
+    },
+    onError: (error) => {
+      console.log('Error updating student:', error.message);
+    }
+  });
+
+  if (isInitStudentsLoading || isCommentsLoading) return <div>Loading...</div>;
+  if (initStudentsError || commentsError) {
+    if(commentsError.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    if(initStudentsError.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    return <div>Error loading data</div>;
+  }
+
+  /*
 
   useEffect(() => {
     //Fetch authentication status
@@ -27,8 +133,8 @@ const StudentList = () => {
       .catch(error => {
         console.error('Error fetching the student data: ', error);
       })
-  }, []);
-
+  }, []);*/
+/*
   useEffect(() => {
     if (tempStudent) {
       // Fetch comments once tempStudent is set
@@ -43,7 +149,7 @@ const StudentList = () => {
           console.error('Error fetching comments: ', error);
         });
     }
-  }, [tempStudent]);
+  }, [tempStudent]);*/
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
@@ -73,6 +179,8 @@ const StudentList = () => {
   }
 
   const handleApply = async () => {
+    putStudent(id,student);
+    /*
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
         credentials: 'include',
@@ -94,20 +202,12 @@ const StudentList = () => {
       }
     } catch (error) {
       console.error('Error:', error);
-    }
+    }*/
   }
 
   const handleBack = () => {
     setIsEditing(false);
     setStudent({ ...tempStudent });
-  }
-
-  if(student === null){
-    return(
-      <div>
-        Loading...
-      </div>
-    )
   }
 
   const handleCommentSubmit = () => {
