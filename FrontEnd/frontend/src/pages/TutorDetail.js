@@ -34,7 +34,6 @@ const fetchComments = async() => {
     err.status = response.status;
     throw err;
   }
-
   console.log("successfully fetched comments");
   return await response.json();
 }
@@ -148,7 +147,7 @@ const TutorList = () => {
         console.log("unathorized");
         return <Navigate to="/login" />;
       }
-      console.log(`commentsError ${commentsError}`);
+      console.log(`commentsError ${JSON.stringify(commentsError)}`);
     }
     if(initTutorError) //unauthorized
     {
