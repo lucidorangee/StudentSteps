@@ -63,6 +63,7 @@ const updateStudent = async (id, student) => {
 const StudentList = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
+  console.log(id);
   const [student, setStudent] = useState(null);
   const [tempStudent, setTempStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);

@@ -122,7 +122,6 @@ const TutorList = () => {
   }, [tempTutor]);*/
 
   useEffect(() => {    
-    console.log(tempInitTutor);
     if(tempInitTutor) 
     {
       setTutor(tempInitTutor);
@@ -197,14 +196,6 @@ const TutorList = () => {
   const handleBack = () => {
     setIsEditing(false);
     setTutor({ ...tempTutor });
-  }
-
-  if(tutor === null){
-    return(
-      <div>
-        Loading...
-      </div>
-    )
   }
 
   const handleCommentSubmit = () => {
