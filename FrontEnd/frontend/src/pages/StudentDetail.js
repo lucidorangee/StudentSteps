@@ -100,6 +100,7 @@ const StudentList = () => {
       {
         if(s.student_id === id)
         {
+          console.log("Found Student:", s);
           setStudent(s);
           setTempStudent(s);
           return;
@@ -107,7 +108,6 @@ const StudentList = () => {
       }
     }
     //console.log("Formatted Temp Init Student:", JSON.stringify(tempInitStudents, null, 2));
-    if(tempInitStudents) console.log("Formatted Temp Init Student:", tempInitStudents[0]);
   //console.log(`Temp Init Student is ${tempInitStudents} and current loading state is ${isInitStudentsLoading}`);
     /*
     if(tempInitStudent) 
