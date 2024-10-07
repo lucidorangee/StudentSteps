@@ -113,7 +113,7 @@ const TutorList = () => {
       console.log("unathorized");
       return <Navigate to="/login" />;
     }
-    if(initStudentsError.status === 401) //unauthorized
+    if(initTutorError.status === 401) //unauthorized
     {
       console.log("unathorized");
       return <Navigate to="/login" />;
