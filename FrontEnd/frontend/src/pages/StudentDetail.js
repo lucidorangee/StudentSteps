@@ -280,15 +280,14 @@ const StudentList = () => {
     console.log(`Comment type selected: ${type}`);
   };
 
-  if(tempInitStudents === null)
-  {
-    return(
-      <div>
-        No student found given {id}
-      </div>
+  
+  return(
+    <div>
+      No student found given {id}
+    </div>
 
-    );
-  }
+  );
+  
   
   return (
     <div> 
