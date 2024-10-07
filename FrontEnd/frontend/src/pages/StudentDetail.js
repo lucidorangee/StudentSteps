@@ -21,7 +21,7 @@ const fetchStudents = async () => {
   }
 
   console.log("successfully fetched students");
-  return response.json();
+  return await response.json();
 };
 
 const fetchComments = async() => {
@@ -39,7 +39,7 @@ const fetchComments = async() => {
   }
 
   console.log("successfully fetched comments");
-  return response.json();
+  return await response.json();
 }
 
 const updateStudent = async (id, student) => {
