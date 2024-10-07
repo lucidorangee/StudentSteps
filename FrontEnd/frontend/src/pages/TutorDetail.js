@@ -78,9 +78,8 @@ const TutorList = () => {
     }
   });
 
-  const tempInitTutor = null;
   const {
-    data: tempInitTutors,
+    data: tempInitTutor,
     isLoading: isInitTutorLoading,
     error: initTutorError,
   } = useQuery({
@@ -123,13 +122,13 @@ const TutorList = () => {
   }, [tempTutor]);*/
 
   useEffect(() => {    
-    console.log(tempInitTutors);
+    console.log(tempInitTutor);
     if(tempInitTutor) 
     {
       setTutor(tempInitTutor);
       setTempTutor(tempInitTutor);
     }
-  }, [tempInitTutors]);
+  }, [tempInitTutor]);
 
   const {
     data: comments,
