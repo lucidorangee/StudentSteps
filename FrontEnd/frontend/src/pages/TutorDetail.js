@@ -60,7 +60,6 @@ const updateTutor = async (id, tutor) => {
 const TutorList = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
-  console.log(id);
   const [tutor, setTutor] = useState(null);
   //const [comments, setComments] = useState([]);
   const [tempTutor, setTempTutor] = useState(null);
@@ -137,7 +136,7 @@ const TutorList = () => {
   } = useQuery({
     queryKey: ['comments'],
     queryFn: fetchComments,
-    select: (data) => data.find((comment) => comment.tutor_id.toString() === id), // Select specific student
+    //select: (data) => data.find((comment) => comment.tutor_id.toString() === id), // Select specific student
   });
 
   if (isInitTutorLoading || isCommentsLoading || !tutor) return <div>Loading...</div>;
