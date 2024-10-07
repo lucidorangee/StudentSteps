@@ -94,7 +94,7 @@ const StudentList = () => {
   }); 
 
   useEffect(() => {
-    console.log(`Temp Init Student is ${tempInitStudents[0]} and current loading state is ${isInitStudentsLoading}`);
+    console.log(`Temp Init Student is ${tempInitStudents} and current loading state is ${isInitStudentsLoading}`);
     /*
     if(tempInitStudent) 
     {
