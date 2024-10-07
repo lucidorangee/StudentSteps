@@ -94,7 +94,10 @@ const StudentList = () => {
   }); 
 
   useEffect(() => {
-    console.log(`Temp Init Student is ${tempInitStudents} and current loading state is ${isInitStudentsLoading}`);
+    tempInitStudents.arrayKey.forEach(item => {
+      console.log(item);
+  });
+  //console.log(`Temp Init Student is ${tempInitStudents} and current loading state is ${isInitStudentsLoading}`);
     /*
     if(tempInitStudent) 
     {
