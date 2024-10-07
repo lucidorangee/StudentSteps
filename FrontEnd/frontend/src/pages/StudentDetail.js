@@ -83,7 +83,6 @@ const StudentList = () => {
     }
   });
 
-
   const {
     data: tempInitStudent,
     isLoading: isInitStudentsLoading,
@@ -114,12 +113,12 @@ const StudentList = () => {
 
   if (isInitStudentsLoading || isCommentsLoading || !student) return <div>Loading...</div>;
   if (initStudentsError || commentsError) {
-    if(commentsError.status === 401) //unauthorized
+    if(commentsError && commentsError.status === 401) //unauthorized
     {
       console.log("unathorized");
       return <Navigate to="/login" />;
     }
-    if(initStudentsError.status === 401) //unauthorized
+    if(initStudentsError && initStudentsError.status === 401) //unauthorized
     {
       console.log("unathorized");
       return <Navigate to="/login" />;

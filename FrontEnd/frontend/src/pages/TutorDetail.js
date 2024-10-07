@@ -108,12 +108,12 @@ const TutorList = () => {
 
   if (isInitTutorLoading || isCommentsLoading || !tutor) return <div>Loading...</div>;
   if (initTutorError || commentsError) {
-    if(commentsError.status === 401) //unauthorized
+    if(commentsError && commentsError.status === 401) //unauthorized
     {
       console.log("unathorized");
       return <Navigate to="/login" />;
     }
-    if(initTutorError.status === 401) //unauthorized
+    if(initTutorError && initTutorError.status === 401) //unauthorized
     {
       console.log("unathorized");
       return <Navigate to="/login" />;
