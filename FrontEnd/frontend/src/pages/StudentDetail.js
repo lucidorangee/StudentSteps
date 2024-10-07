@@ -94,7 +94,8 @@ const StudentList = () => {
   }); 
 
   useEffect(() => {
-    console.log("Formatted Temp Init Student:", JSON.stringify(tempInitStudents, null, 2));
+    //console.log("Formatted Temp Init Student:", JSON.stringify(tempInitStudents, null, 2));
+    console.log("Formatted Temp Init Student:", tempInitStudents[0]);
   //console.log(`Temp Init Student is ${tempInitStudents} and current loading state is ${isInitStudentsLoading}`);
     /*
     if(tempInitStudent) 
