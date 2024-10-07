@@ -92,42 +92,14 @@ const StudentList = () => {
   } = useQuery({
     queryKey: ['students'],
     queryFn: fetchStudents,
-    select: (data) => data.find((s) => s.student_id.toString() === id), // Select specific student
+    select: (data) => data.find((s) => s.student_id.toString() === id),
   });
-  /*
-  const {
-    data: tempInitStudents,
-    isLoading: isInitStudentsLoading,
-    error: initStudentsError,
-  } = useQuery({
-    queryKey: ['students'],
-    queryFn: fetchStudents,
-  }); */
 
   useEffect(() => {
     console.log(tempInitStudent)
-    /*;
-    if(tempInitStudents)
-    {
-      console.log("Looking for:",(typeof id));
-      for(const s of tempInitStudents)
-      {
-        if(s.student_id === id)
-        {
-          console.log("Found Student:", s);
-          setStudent(s);
-          setTempStudent(s);
-          return;
-        }
-        console.log("False:", (typeof s.student_id));
-      }
-    }*/
-    //console.log("Formatted Temp Init Student:", JSON.stringify(tempInitStudents, null, 2));
-  //console.log(`Temp Init Student is ${tempInitStudents} and current loading state is ${isInitStudentsLoading}`);
     
     if(tempInitStudent) 
     {
-      console.log("here");
       setStudent(tempInitStudent);
       setTempStudent(tempInitStudent);
     }
@@ -143,7 +115,7 @@ const StudentList = () => {
     select: (data) => data.find((comment) => comment.student_id.toString() === id), // Select specific student
   });
 
-  if (isInitStudentsLoading || isCommentsLoading) return <div>Loading...</div>;
+  if (isInitStudentsLoading || isCommentsLoading || !tempInitStudent) return <div>Loading...</div>;
   if (initStudentsError || commentsError) {
     if(commentsError.status === 401) //unauthorized
     {
