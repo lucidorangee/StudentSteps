@@ -112,7 +112,7 @@ const TutorList = () => {
     },
     select: (data) => {
       console.log("All tutor_ids:", data); // Log all tutor_ids
-      const selectedComment = data.find((comment) => comment.tutor_id === id);
+      const selectedComment = data.find((comment) => comment.tutor_id.toString() === id.toString());
       console.log("Selected Comment:", selectedComment); // Log the selected comment if found
       return selectedComment;
     },
