@@ -110,7 +110,12 @@ const TutorList = () => {
       // Only retry if error is not 401
       return error.status !== 401;
     },
-    select: (data) => data.find((comment) => comment.tutor_id?.toString() === id), // Select specific student
+    select: (data) => {
+      console.log("All tutor_ids:", data.map(comment => comment.tutor_id)); // Log all tutor_ids
+      const selectedComment = data.find((comment) => comment.tutor_id?.toString() === id);
+      console.log("Selected Comment:", selectedComment); // Log the selected comment if found
+      return selectedComment;
+    },
   });
 
   if (isInitTutorLoading || isCommentsLoading || !tutor) return <div>Loading...</div>;
