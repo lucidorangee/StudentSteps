@@ -14,6 +14,7 @@ const fetchTutors = async () => {
   });
 
   if (!response.ok) {
+    console.log("tutor error");
     const err = new Error('Failed to fetch tutors');
     err.status = response.status;
     throw err;
@@ -30,6 +31,7 @@ const fetchComments = async() => {
   });
 
   if (!response.ok) {
+    console.log("comment error");
     const err = new Error('Failed to fetch comments');
     err.status = response.status;
     throw err;
@@ -142,10 +144,13 @@ const TutorList = () => {
 
   if (isInitTutorLoading || isCommentsLoading || !tutor) return <div>Loading...</div>;
   if (initTutorError || commentsError) {
-    if(commentsError && commentsError.status === 401) //unauthorized
+    if(commentsError) //unauthorized
     {
-      console.log("unathorized");
-      return <Navigate to="/login" />;
+      if(commentsError.status === 401)
+      {
+        console.log("unathorized");
+        return <Navigate to="/login" />;
+      }
     }
     if(initTutorError && initTutorError.status === 401) //unauthorized
     {
