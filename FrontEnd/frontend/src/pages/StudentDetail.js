@@ -94,13 +94,16 @@ const StudentList = () => {
   }); 
 
   useEffect(() => {
-    for(const s of tempInitStudents)
+    if(tempInitStudents)
     {
-      if(s.student_id === id)
+      for(const s of tempInitStudents)
       {
-        setStudent(s);
-        setTempStudent(s);
-        return;
+        if(s.student_id === id)
+        {
+          setStudent(s);
+          setTempStudent(s);
+          return;
+        }
       }
     }
     //console.log("Formatted Temp Init Student:", JSON.stringify(tempInitStudents, null, 2));
