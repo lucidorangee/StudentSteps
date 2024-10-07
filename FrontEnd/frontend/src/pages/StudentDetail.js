@@ -94,6 +94,15 @@ const StudentList = () => {
   }); 
 
   useEffect(() => {
+    for(const s of tempInitStudents)
+    {
+      if(s.student_id === id)
+      {
+        setStudent(s);
+        setTempStudent(s);
+        return;
+      }
+    }
     //console.log("Formatted Temp Init Student:", JSON.stringify(tempInitStudents, null, 2));
     if(tempInitStudents) console.log("Formatted Temp Init Student:", tempInitStudents[0]);
   //console.log(`Temp Init Student is ${tempInitStudents} and current loading state is ${isInitStudentsLoading}`);
@@ -280,16 +289,7 @@ const StudentList = () => {
   const handleSelect = (type) => {
     setCommentType(type);
     console.log(`Comment type selected: ${type}`);
-  };
-
-  
-  return(
-    <div>
-      No student found given {id}
-    </div>
-
-  );
-  
+  };  
   
   return (
     <div> 
