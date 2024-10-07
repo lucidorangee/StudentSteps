@@ -14,13 +14,12 @@ const fetchTutors = async () => {
   });
 
   if (!response.ok) {
+    console.log(err);
     const err = new Error('Failed to fetch tutors');
     err.status = response.status;
     throw err;
   }
-
-  console.log("hereeee");
-  return response.json();
+  return await response.json();
 };
 
 const fetchComments = async() => {
@@ -89,6 +88,39 @@ const TutorList = () => {
     queryFn: fetchTutors,
     select: (data) => data.find((t) => t.tutor_id.toString() === id),
   });
+
+/*
+  useEffect(() => {
+    //Fetch authentication status
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/${id}`, {
+      method: 'get',
+      credentials: 'include',
+    })
+      .then(response => response.json())
+      .then(data => {
+        setTutor(data[0]);
+        setTempTutor(data[0]);
+      })
+      .catch(error => {
+        console.error('Error fetching the tutor data: ', error);
+      })
+  }, []);
+/*
+  useEffect(() => {
+    if (tempTutor) {
+      // Fetch comments once tempTutor is set
+      fetch(`${process.env.REACT_APP_API_BASE_URL}/comments?tutor_id=${tempTutor.tutor_id}`, {
+        credentials: 'include'
+      })
+        .then(response => response.json())
+        .then(data => {
+          setComments(data);
+        })
+        .catch(error => {
+          console.error('Error fetching comments: ', error);
+        });
+    }
+  }, [tempTutor]);*/
 
   useEffect(() => {    
     if(tempInitTutor) 
