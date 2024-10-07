@@ -18,6 +18,8 @@ const fetchTutors = async () => {
     err.status = response.status;
     throw err;
   }
+
+  console.log("hereeee");
   return response.json();
 };
 
