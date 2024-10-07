@@ -43,7 +43,6 @@ const fetchComments = async() => {
 }
 
 const updateStudent = async (id, student) => {
-  console.log(JSON.stringify(student));
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
     credentials: 'include',
     method: 'put',

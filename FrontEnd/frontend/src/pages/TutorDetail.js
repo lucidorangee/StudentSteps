@@ -2,45 +2,124 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+import { Navigate } from 'react-router-dom';
+
+const fetchTutors = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutors');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
+
+const fetchComments = async() => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch comments');
+    err.status = response.status;
+    throw err;
+  }
+
+  console.log("successfully fetched comments");
+  return await response.json();
+}
+
+const updateTutor = async (id, tutor) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/${id}`, {
+    credentials: 'include',
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(tutor),
+  });
+
+  if (!response.ok) {
+    const responseText = await response.text();
+    throw new Error('Failed to update tutor: ' + responseText); // Include responseText in the error for context
+  }
+
+  return;
+}
 
 const TutorList = () => {
+  const queryClient = useQueryClient();
   const { id } = useParams();
   const [tutor, setTutor] = useState(null);
-  const [comments, setComments] = useState([]);
+  //const [comments, setComments] = useState([]);
   const [tempTutor, setTempTutor] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/${id}`, {
-      method: 'get',
-      credentials: 'include',
-    })
-      .then(response => response.json())
-      .then(data => {
-        setTutor(data[0]);
-        setTempTutor(data[0]);
-      })
-      .catch(error => {
-        console.error('Error fetching the tutor data: ', error);
-      })
-  }, []);
-
-  useEffect(() => {
-    if (tempTutor) {
-      // Fetch comments once tempTutor is set
-      fetch(`${process.env.REACT_APP_API_BASE_URL}/comments?tutor_id=${tempTutor.tutor_id}`, {
-        credentials: 'include'
-      })
-        .then(response => response.json())
-        .then(data => {
-          setComments(data);
-        })
-        .catch(error => {
-          console.error('Error fetching comments: ', error);
-        });
+  const { mutate: putTutor, isTutorLoading, isTutorError, error } = useMutation({
+    mutationFn: ({ id, tutor }) => updateTutor(id, tutor),
+    onSuccess: () => {
+      setTempTutor({ ...tutor });
+      setIsEditing(false);
+      queryClient.invalidateQueries(['tutors']);
+      console.log("Tutor successfully updated");
+    },
+    onError: (error) => {
+      console.log('Error updating tutor:', error.message);
     }
-  }, [tempTutor]);
+  });
+
+  const {
+    data: tempInitTutor,
+    isLoading: isInitTutorLoading,
+    error: initTutorError,
+  } = useQuery({
+    queryKey: ['tutors'],
+    queryFn: fetchTutors,
+    select: (data) => data.find((t) => t.tutor_id.toString() === id),
+  });
+
+  useEffect(() => {    
+    if(tempInitTutor) 
+    {
+      setTutor(tempInitTutor);
+      setTempTutor(tempInitTutor);
+    }
+  }, [tempInitTutor]);
+
+  const {
+    data: comments,
+    isLoading: isCommentsLoading,
+    error: commentsError,
+  } = useQuery({
+    queryKey: ['comments'],
+    queryFn: fetchComments,
+    select: (data) => data.find((comment) => comment.tutor_id.toString() === id), // Select specific student
+  });
+
+  if (isInitTutorLoading || isCommentsLoading || !tutor) return <div>Loading...</div>;
+  if (initTutorError || commentsError) {
+    if(commentsError.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    if(initStudentsError.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    return <div>Error loading data</div>;
+  }
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
@@ -70,28 +149,7 @@ const TutorList = () => {
   }
 
   const handleApply = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/${id}`, {
-        credentials: 'include',
-        method: 'put',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(tutor),
-      });
-
-      if (response.ok) {
-        // Request was successful
-        console.log('Tutor update successful!');
-        setTempTutor({ ...tutor });
-        setIsEditing(false);
-      } else {
-        // Request failed
-        console.error('Tutor update failed:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    putTutor({id:id, tutor:tutor});
   }
 
   const handleBack = () => {
