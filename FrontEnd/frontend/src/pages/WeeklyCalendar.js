@@ -86,10 +86,6 @@ const WeeklyCalendar = () => {
   const queryClient = useQueryClient();
 
   const { date } = useParams();
-  //const [homeworkList, setHomeworkList] = useState([]);
-  //const [students, setStudents] = useState([]);
-  //const [tutors, setTutors] = useState([]);
-  //const [tutoringSessionData, setTutoringSessionData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -230,44 +226,6 @@ const WeeklyCalendar = () => {
     
     return hexValue.toString(16).padStart(6, '0').toUpperCase();
   }
-/*
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [homeworkResponse, studentResponse, tutorResponse, tutoringSessionResponse] = await Promise.all([
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
-            credentials: 'include'
-          }),
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
-            credentials: 'include'
-          }),
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
-            credentials: 'include'
-          }),
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
-            credentials: 'include'
-          }),
-        ]);
-  
-        if (!homeworkResponse.ok || !studentResponse.ok || !tutorResponse.ok || !tutoringSessionResponse.ok) throw new Error('One or more fetch requests failed');
-  
-        const homeworkData = await homeworkResponse.json();
-        const studentData = await studentResponse.json();
-        const tutorData = await tutorResponse.json();
-        const tutoringSessionData = await tutoringSessionResponse.json();
-  
-        setHomeworkList(homeworkData);
-        setStudents(studentData);
-        setTutors(tutorData);
-        setTutoringSessionData(tutoringSessionData);
-        setFilteredData(tutoringSessionData);
-      } catch (error) {
-        console.error("Error fetching homework, students, or schedule data: ", error);
-      }
-    };
-  
-    fetchData();
-  }, []);*/
 
   useEffect(() => {
 

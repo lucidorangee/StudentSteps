@@ -87,39 +87,6 @@ const TutorList = () => {
     select: (data) => data.find((t) => t.tutor_id.toString() === id),
   });
 
-/*
-  useEffect(() => {
-    //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/${id}`, {
-      method: 'get',
-      credentials: 'include',
-    })
-      .then(response => response.json())
-      .then(data => {
-        setTutor(data[0]);
-        setTempTutor(data[0]);
-      })
-      .catch(error => {
-        console.error('Error fetching the tutor data: ', error);
-      })
-  }, []);
-/*
-  useEffect(() => {
-    if (tempTutor) {
-      // Fetch comments once tempTutor is set
-      fetch(`${process.env.REACT_APP_API_BASE_URL}/comments?tutor_id=${tempTutor.tutor_id}`, {
-        credentials: 'include'
-      })
-        .then(response => response.json())
-        .then(data => {
-          setComments(data);
-        })
-        .catch(error => {
-          console.error('Error fetching comments: ', error);
-        });
-    }
-  }, [tempTutor]);*/
-
   useEffect(() => {    
     if(tempInitTutor) 
     {
@@ -273,7 +240,7 @@ const TutorList = () => {
                         onChange={handleInputChange}
                       />
                     ):(
-                      <p>{tutor.tutor_phone}</p>
+                      <p>{tutor.contact_phone}</p>
                     )}
                   </div>
                   <div className="col-md-4">
@@ -286,7 +253,7 @@ const TutorList = () => {
                         onChange={handleInputChange}
                       />
                     ):(
-                      <p>{tutor.tutor_email}</p>
+                      <p>{tutor.contact_email}</p>
                     )}
                   </div>
                 </div>
