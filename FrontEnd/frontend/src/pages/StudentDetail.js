@@ -85,24 +85,24 @@ const StudentList = () => {
   });
 
   const {
-    data: tempInitStudent,
+    data: tempInitStudents,
     isLoading: isInitStudentsLoading,
     error: initStudentsError,
   } = useQuery({
     queryKey: ['students'],
     queryFn: fetchStudents,
-    select: (data) => data.find((student) => student.student_id === id), // Select specific student
   }); 
 
   useEffect(() => {
-    console.log(`Temp Init Student is ${tempInitStudent} and current loading state is ${isInitStudentsLoading}`);
+    console.log(`Temp Init Student is ${tempInitStudents} and current loading state is ${isInitStudentsLoading}`);
+    /*
     if(tempInitStudent) 
     {
       console.log("here");
       setStudent(tempInitStudent);
       setTempStudent(tempInitStudent);
-    }
-  }, [tempInitStudent]);
+    }*/
+  }, [tempInitStudents]);
 
   /*
   const { data: comments, isCommentsLoading, commentsError } = useQuery(
