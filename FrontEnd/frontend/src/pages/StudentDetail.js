@@ -96,7 +96,7 @@ const StudentList = () => {
   useEffect(() => {
     if(tempInitStudents)
     {
-      console.log("Looking for:", id);
+      console.log("Looking for:",(typeof id));
       for(const s of tempInitStudents)
       {
         if(s.student_id === id)
@@ -106,7 +106,7 @@ const StudentList = () => {
           setTempStudent(s);
           return;
         }
-        console.log("False:", s.student_id);
+        console.log("False:", (typeof s.student_id));
       }
     }
     //console.log("Formatted Temp Init Student:", JSON.stringify(tempInitStudents, null, 2));
