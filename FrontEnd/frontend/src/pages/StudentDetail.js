@@ -116,6 +116,7 @@ const StudentList = () => {
   });
 
   if (isInitStudentsLoading || isCommentsLoading || !tempInitStudent) return <div>Loading...</div>;
+  else console.log(tempInitStudent);
   if (initStudentsError || commentsError) {
     if(commentsError.status === 401) //unauthorized
     {
