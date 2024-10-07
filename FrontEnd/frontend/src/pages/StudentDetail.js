@@ -115,8 +115,7 @@ const StudentList = () => {
     select: (data) => data.find((comment) => comment.student_id.toString() === id), // Select specific student
   });
 
-  if (isInitStudentsLoading || isCommentsLoading || !tempInitStudent) return <div>Loading...</div>;
-  else console.log(tempInitStudent);
+  if (isInitStudentsLoading || isCommentsLoading || !student) return <div>Loading...</div>;
   if (initStudentsError || commentsError) {
     if(commentsError.status === 401) //unauthorized
     {
