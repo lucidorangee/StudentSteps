@@ -86,7 +86,7 @@ const TutorList = () => {
   } = useQuery({
     queryKey: ['tutors'],
     queryFn: fetchTutors,
-    //select: (data) => data.find((t) => t.tutor_id.toString() === id),
+    select: (data) => data.find((t) => t.tutor_id.toString() === id),
   });
 
 /*
