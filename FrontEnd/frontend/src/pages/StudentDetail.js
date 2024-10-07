@@ -84,6 +84,17 @@ const StudentList = () => {
     }
   });
 
+
+  const {
+    data: tempInitStudent,
+    isLoading: isInitStudentsLoading,
+    error: initStudentsError,
+  } = useQuery({
+    queryKey: ['students'],
+    queryFn: fetchStudents,
+    select: (data) => data.find((s) => s.student_id.toString() === id), // Select specific student
+  });
+  /*
   const {
     data: tempInitStudents,
     isLoading: isInitStudentsLoading,
@@ -91,9 +102,11 @@ const StudentList = () => {
   } = useQuery({
     queryKey: ['students'],
     queryFn: fetchStudents,
-  }); 
+  }); */
 
   useEffect(() => {
+    console.log(tempInitStudent)
+    /*;
     if(tempInitStudents)
     {
       console.log("Looking for:",(typeof id));
@@ -108,26 +121,18 @@ const StudentList = () => {
         }
         console.log("False:", (typeof s.student_id));
       }
-    }
+    }*/
     //console.log("Formatted Temp Init Student:", JSON.stringify(tempInitStudents, null, 2));
   //console.log(`Temp Init Student is ${tempInitStudents} and current loading state is ${isInitStudentsLoading}`);
-    /*
+    
     if(tempInitStudent) 
     {
       console.log("here");
       setStudent(tempInitStudent);
       setTempStudent(tempInitStudent);
-    }*/
-  }, [tempInitStudents]);
-
-  /*
-  const { data: comments, isCommentsLoading, commentsError } = useQuery(
-    ['comments'],
-    fetchComments, // Assume this fetches all comments
-    {
-      select: (data) => data.find((comment) => comment.student_id === id), // Select specific comment
     }
-  );*/
+  }, [tempInitStudent]);
+
   const {
     data: comments,
     isLoading: isCommentsLoading,
@@ -135,7 +140,7 @@ const StudentList = () => {
   } = useQuery({
     queryKey: ['comments'],
     queryFn: fetchComments,
-    select: (data) => data.find((comment) => comment.student_id === id), // Select specific student
+    select: (data) => data.find((comment) => comment.student_id.toString() === id), // Select specific student
   });
 
   if (isInitStudentsLoading || isCommentsLoading) return <div>Loading...</div>;
