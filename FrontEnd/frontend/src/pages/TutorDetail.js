@@ -84,6 +84,10 @@ const TutorList = () => {
   } = useQuery({
     queryKey: ['tutors'],
     queryFn: fetchTutors,
+    retry: (failureCount, error) => {
+      // Only retry if error is not 401
+      return error.status !== 401;
+    },
     select: (data) => data.find((t) => t.tutor_id.toString() === id),
   });
 
@@ -102,6 +106,10 @@ const TutorList = () => {
   } = useQuery({
     queryKey: ['comments'],
     queryFn: fetchComments,
+    retry: (failureCount, error) => {
+      // Only retry if error is not 401
+      return error.status !== 401;
+    },
     //select: (data) => data.find((comment) => comment.tutor_id.toString() === id), // Select specific student
   });
 
