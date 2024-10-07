@@ -147,7 +147,7 @@ const TutorList = () => {
         console.log("unathorized");
         return <Navigate to="/login" />;
       }
-      console.log(`commentsError ${JSON.stringify(commentsError)}`);
+      console.log(`commentsError ${commentsError}`);
     }
     if(initTutorError) //unauthorized
     {
@@ -156,7 +156,7 @@ const TutorList = () => {
         console.log("unathorized");
         return <Navigate to="/login" />;
       }
-      console.log(`initTutorError ${initTutorError.message}`);
+      console.log(`initTutorError ${initTutorError}`);
     }
     return <div>Error loading data</div>;
   }
@@ -195,51 +195,6 @@ const TutorList = () => {
   const handleBack = () => {
     setIsEditing(false);
     setTutor({ ...tempTutor });
-  }
-
-  const handleCommentSubmit = () => {
-    const comment = document.querySelector('textarea').value; // Get the value of the textarea
-
-    // Validate if comment is empty or any other necessary validation
-    if (!comment.trim()) {
-        alert('Please enter a comment.');
-        return;
-    }
-
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
-      credentials: 'include',
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          tutor_id: null,
-          tutor_id: null,
-          datetime: new Date().toISOString(), 
-          content: comment,
-          type: 'admin'
-      }), // Adjust according to your backend API
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        
-        return response.text();
-    })
-    .then(data => {
-        // Handle success response from the server if needed
-        console.log('Comment submitted successfully', data);
-    
-        // Refresh after successful submission
-        window.location.reload();
-    })
-    .catch(error => {
-        // Handle errors
-        console.error('Error submitting comment:', error);
-        // Optionally, show an error message to the user
-        alert('Failed to submit comment. Please try again later.');
-    });
   }
 
   return (
