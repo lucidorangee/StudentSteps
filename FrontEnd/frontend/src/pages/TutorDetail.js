@@ -60,6 +60,7 @@ const updateTutor = async (id, tutor) => {
 const TutorList = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
+  console.log(id);
   const [tutor, setTutor] = useState(null);
   //const [comments, setComments] = useState([]);
   const [tempTutor, setTempTutor] = useState(null);
