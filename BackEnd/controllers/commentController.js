@@ -109,7 +109,7 @@ const getComments = (req, res) => {
         }));
 
         //Return result
-        res.status(200).json(commentsWithNames);     
+        res.status(200).json(comments);     
         
         //res.status(200).json(results.rows)
     })
