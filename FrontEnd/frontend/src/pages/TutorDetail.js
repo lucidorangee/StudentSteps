@@ -148,7 +148,7 @@ const TutorList = () => {
         console.log("unathorized");
         return <Navigate to="/login" />;
       }
-      console.log(`commentsError ${commentsError.message}`);
+      console.log(`commentsError ${commentsError}`);
     }
     if(initTutorError) //unauthorized
     {
