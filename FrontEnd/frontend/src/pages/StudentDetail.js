@@ -72,7 +72,7 @@ const StudentList = () => {
   const [commentType, setCommentType] = useState('admin');
 
   const { mutate: putStudent, isStudentLoading, isStudentError, error } = useMutation({
-    mutationFn: (id, student) => updateStudent(id, student),
+    mutationFn: ({ id, student }) => updateStudent(id, student),
     onSuccess: () => {
       console.log('Student update successful!');
       setTempStudent({ ...student });
@@ -193,7 +193,7 @@ const StudentList = () => {
   }
 
   const handleApply = async () => {
-    putStudent(id, student);
+    putStudent({id: id, student: student});
     /*
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
