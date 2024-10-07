@@ -65,7 +65,6 @@ const StudentList = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [student, setStudent] = useState(null);
-  //const [comments, setComments] = useState([]);
   const [tempStudent, setTempStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -96,9 +95,7 @@ const StudentList = () => {
     select: (data) => data.find((s) => s.student_id.toString() === id),
   });
 
-  useEffect(() => {
-    console.log(tempInitStudent)
-    
+  useEffect(() => {    
     if(tempInitStudent) 
     {
       setStudent(tempInitStudent);
@@ -131,40 +128,6 @@ const StudentList = () => {
     return <div>Error loading data</div>;
   }
 
-  /*
-
-  useEffect(() => {
-    //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
-      method: 'get',
-      credentials: 'include',
-    })
-      .then(response => response.json())
-      .then(data => {
-        setStudent(data[0]);
-        setTempStudent(data[0]);
-      })
-      .catch(error => {
-        console.error('Error fetching the student data: ', error);
-      })
-  }, []);*/
-/*
-  useEffect(() => {
-    if (tempStudent) {
-      // Fetch comments once tempStudent is set
-      fetch(`${process.env.REACT_APP_API_BASE_URL}/comments?student_id=${tempStudent.student_id}`, {
-        credentials: 'include'
-      })
-        .then(response => response.json())
-        .then(data => {
-          setComments(data);
-        })
-        .catch(error => {
-          console.error('Error fetching comments: ', error);
-        });
-    }
-  }, [tempStudent]);*/
-
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
   };
@@ -194,29 +157,6 @@ const StudentList = () => {
 
   const handleApply = async () => {
     putStudent({id: id, student: student});
-    /*
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
-        credentials: 'include',
-        method: 'put',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(student),
-      });
-
-      if (response.ok) {
-        // Request was successful
-        console.log('Student update successful!');
-        setTempStudent({ ...student });
-        setIsEditing(false);
-      } else {
-        // Request failed
-        console.error('Student update failed:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }*/
   }
 
   const handleBack = () => {
@@ -271,7 +211,6 @@ const StudentList = () => {
 
   const handleSelect = (type) => {
     setCommentType(type);
-    console.log(`Comment type selected: ${type}`);
   };  
   
   return (
