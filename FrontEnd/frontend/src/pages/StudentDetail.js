@@ -280,7 +280,7 @@ const StudentList = () => {
     console.log(`Comment type selected: ${type}`);
   };
 
-  if(tempInitStudent === null)
+  if(tempInitStudents === null)
   {
     return(
       <div>
