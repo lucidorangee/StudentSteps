@@ -14,7 +14,6 @@ const fetchTutors = async () => {
   });
 
   if (!response.ok) {
-    console.log(err);
     const err = new Error('Failed to fetch tutors');
     err.status = response.status;
     throw err;
@@ -79,14 +78,15 @@ const TutorList = () => {
     }
   });
 
+  const tempInitTutor = null;
   const {
-    data: tempInitTutor,
+    data: tempInitTutors,
     isLoading: isInitTutorLoading,
     error: initTutorError,
   } = useQuery({
     queryKey: ['tutors'],
     queryFn: fetchTutors,
-    select: (data) => data.find((t) => t.tutor_id.toString() === id),
+    //select: (data) => data.find((t) => t.tutor_id.toString() === id),
   });
 
 /*
@@ -123,12 +123,13 @@ const TutorList = () => {
   }, [tempTutor]);*/
 
   useEffect(() => {    
+    console.log(tempInitTutors);
     if(tempInitTutor) 
     {
       setTutor(tempInitTutor);
       setTempTutor(tempInitTutor);
     }
-  }, [tempInitTutor]);
+  }, [tempInitTutors]);
 
   const {
     data: comments,
