@@ -108,7 +108,7 @@ const StudentList = () => {
   } = useQuery({
     queryKey: ['comments'],
     queryFn: fetchComments,
-    select: (data) => data.find((comment) => comment.student_id.toString() === id), // Select specific student
+    select: (data) => data.filter((comment) => comment.student_id.toString() === id), // Select specific student
   });
 
   if (isInitStudentsLoading || isCommentsLoading || !student) return <div>Loading...</div>;

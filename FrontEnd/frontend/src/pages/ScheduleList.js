@@ -54,7 +54,13 @@ const ScheduleList = () => {
   const queryClient = useQueryClient();
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const [tempComments, setTempComments] = useState({});
+  const [tempComments, setTempComments] = useState(() => {
+  try {
+    return JSON.parse(localStorage.getItem('tempComments')) || {};
+  } catch {
+    return {}; // fallback to empty object if parsing fails
+  }
+});
 
   const { date } = useParams();
   const [filteredData, setFilteredData] = useState([]);
@@ -141,6 +147,14 @@ const ScheduleList = () => {
       comment: comment
     });
   }
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      localStorage.setItem('tempComments', JSON.stringify(tempComments));
+    }, 500); // delay of 500ms
+  
+    return () => clearTimeout(handler); // cleanup on component unmount or tempComments change
+  }, [tempComments]);
 
   return (
     <div className="App">
