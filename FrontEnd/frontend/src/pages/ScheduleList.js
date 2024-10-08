@@ -185,7 +185,7 @@ const ScheduleList = () => {
           placeholderText="Select a date"
         />
         <FaCalendarAlt className="me-2 text-secondary" /> 
-        <button type="button" className="btn btn-info px-4" onClick={handleDateReset}>Info</button>
+        <button type="button" className="btn btn-info px-4" onClick={handleDateReset}>Reset</button>
       </div>
       
       <div className="row">
