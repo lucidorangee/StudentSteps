@@ -170,17 +170,19 @@ const ScheduleList = () => {
       ) : (
         <div></div>
       )}
-        <div className="d-flex align-items-center">
-          <DatePicker
-            selected={selectedDate}
-            onChange={handleDateChange}
-            dateFormat="yyyy/MM/dd"
-            className="form-control"
-            placeholderText="Select a date"
-          />
-          <FaCalendarAlt className="ms-2 text-secondary" />
-          <button type="button" class="btn btn-info">Info</button>
-        </div>
+
+      
+      <div className="d-flex align-items-center gap-3">
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChange}
+          dateFormat="yyyy/MM/dd"
+          className="form-control w-auto"
+          placeholderText="Select a date"
+        />
+        <FaCalendarAlt className="text-secondary" />
+        <button type="button" className="btn btn-info">Info</button>
+      </div>
       
       <div className="row">
         {Array.isArray(filteredData) && filteredData.length > 0 ? (
