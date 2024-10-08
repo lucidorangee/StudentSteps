@@ -228,7 +228,7 @@ const WeeklyCalendar = () => {
   }
 
   useEffect(() => {
-
+    if(!filteredData) return;
     const events = filteredData.map(item => {
       const start = new Date(item.session_datetime);
       const end = new Date(start.getTime() + item.duration * 60 * 1000);
