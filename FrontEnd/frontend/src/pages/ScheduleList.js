@@ -205,7 +205,7 @@ const ScheduleList = () => {
                     <div className="card-body text-left">
                       <h5 className="card-title">Tutor: {tutoringSession.tutor_name}</h5>
                       <h5 className="card-title">Student: {tutoringSession.student_name}</h5>
-                      <h5 className="card-title">Date: {(new Intl.DateTimeFormat('en-US', timeSetting).format(tutoringSession.session_datetime))}</h5>
+                      <h5 className="card-title">Date: {(new Intl.DateTimeFormat('en-US', timeSetting).format(new Date(tutoringSession.session_datetime)))}</h5>
 
                       <p className="card-text">{tutoringSession.notes}</p>
 
