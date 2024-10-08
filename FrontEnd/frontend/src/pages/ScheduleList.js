@@ -139,6 +139,10 @@ const ScheduleList = () => {
     navigate(`/Schedule/List/${formattedDate}`);
   };
 
+  const handleDateReset = (date) => {
+    navigate(`/Schedule/List/`);
+  };
+
   const handleCommentSubmit = (tutoringSession) => {
     const comment = tempComments[tutoringSession.session_id] || ''; // Get the value of the textarea
 
@@ -181,7 +185,7 @@ const ScheduleList = () => {
           placeholderText="Select a date"
         />
         <FaCalendarAlt className="me-2 text-secondary" /> 
-        <button type="button" className="btn btn-info px-4">Info</button>
+        <button type="button" className="btn btn-info px-4" onClick={handleDateReset}>Info</button>
       </div>
       
       <div className="row">
