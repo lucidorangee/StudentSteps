@@ -180,8 +180,8 @@ const ScheduleList = () => {
           className="form-control w-auto"
           placeholderText="Select a date"
         />
-        <FaCalendarAlt className="ms-3 me-2 text-secondary" /> {/* Adjust spacing with ms-3 and me-2 */}
-        <button type="button" className="btn btn-info px-4">Info</button> {/* Add padding to increase width */}
+        <FaCalendarAlt className="me-2 text-secondary" /> 
+        <button type="button" className="btn btn-info px-4">Info</button>
       </div>
       
       <div className="row">
