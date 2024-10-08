@@ -70,7 +70,6 @@ const CreateHomework = () => {
   const [selectedTutor, setSelectedTutor] = useState(null);
   const [studentOptions, setStudentOptions] = useState([]);
   const [tutorOptions, setTutorOptions] = useState([]);
-  const [loading, setLoading] = useState(true);
   
   const navigate = useNavigate();
 
@@ -123,7 +122,6 @@ const CreateHomework = () => {
     }
   });
 
-  if (studentsLoading || tutorsLoading) return <div>Loading...</div>;
   if (studentsError || tutorsError) return <div>Error loading data</div>;
 
   const handleStudentChange = (selectedOption) => {
@@ -164,7 +162,7 @@ const CreateHomework = () => {
                 <div className="container-fluid m-3">
                   <div className="col">
                     <label htmlFor="FormControlInput1" className="form-label">Student</label>
-                    {loading ? (
+                    {studentsLoading ? (
                       <p>Loading students...</p>
                     ) : (
                       <Select
@@ -177,7 +175,7 @@ const CreateHomework = () => {
                   </div>
                   <div className="col">
                     <label htmlFor="FormControlInput1" className="form-label">Tutor</label>
-                    {loading ? (
+                    {tutorsLoading ? (
                       <p>Loading tutors...</p>
                     ) : (
                       <Select
