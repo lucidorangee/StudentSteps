@@ -170,7 +170,6 @@ const ScheduleList = () => {
       ) : (
         <div></div>
       )}
-      <div className="row">
         <div className="d-flex align-items-center">
           <DatePicker
             selected={selectedDate}
@@ -180,9 +179,8 @@ const ScheduleList = () => {
             placeholderText="Select a date"
           />
           <FaCalendarAlt className="ms-2 text-secondary" />
+          <button type="button" class="btn btn-info">Info</button>
         </div>
-        <button type="button" class="btn btn-info">Info</button>
-      </div>
       
       <div className="row">
         {Array.isArray(filteredData) && filteredData.length > 0 ? (
