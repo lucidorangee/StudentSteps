@@ -49,6 +49,7 @@ const postComment = async (session_id, tutor_id, student_id, datetime, comment) 
 
 const ScheduleList = () => {
   //const [tutoringSessionData, setTutoringSessionData] = useState([]);
+  
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -66,6 +67,14 @@ const ScheduleList = () => {
   const [filteredData, setFilteredData] = useState([]);
 
   const [alert, setAlert] = useState('');
+
+  const timeSetting = {
+    timeZone: "America/New_York", // Eastern Time zone
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: true, // Use 12-hour format
+  };
 
   const {
     data: tutoringSessionData,
@@ -93,8 +102,6 @@ const ScheduleList = () => {
       console.log('Error posting comments:', error.message);
     }
   });
-
-  
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -198,7 +205,7 @@ const ScheduleList = () => {
                     <div className="card-body text-left">
                       <h5 className="card-title">Tutor: {tutoringSession.tutor_name}</h5>
                       <h5 className="card-title">Student: {tutoringSession.student_name}</h5>
-                      <h5 className="card-title">Date: {tutoringSession.session_datetime.substring(0, 10)}</h5>
+                      <h5 className="card-title">Date: {(new Intl.DateTimeFormat('en-US', options).format(utcDate))}</h5>
 
                       <p className="card-text">{tutoringSession.notes}</p>
 
