@@ -68,14 +68,20 @@ const ScheduleList = () => {
 
   const [alert, setAlert] = useState('');
 
-  const timeSetting = {
+  const datetimeSetting = {
     timeZone: "America/New_York", // Eastern Time zone
     weekday: "long",
     month: "long",
     day: "numeric",
     hour: 'numeric',
     minute: 'numeric',
-    second: 'numeric',
+    hour12: true, // Use 12-hour format
+  };
+
+  const timeonlySetting = {
+    timeZone: "America/New_York", // Eastern Time zone
+    hour: 'numeric',
+    minute: 'numeric',
     hour12: true, // Use 12-hour format
   };
 
@@ -202,13 +208,17 @@ const ScheduleList = () => {
         {Array.isArray(filteredData) && filteredData.length > 0 ? (
           filteredData.map((tutoringSession, index) => {
             if (!tutoringSession.complete) {
+              const sessionDateTime = new Date(tutoringSession.session_datetime);
+              const endDateTime = new Date(sessionDateTime.getTime() + duration * 60000);
               return (
                 <div className="row ml-3 mt-3" key={index}>
                   <div className="card" style={{ width: '95%' }}>
                     <div className="card-body text-left">
                       <h5 className="card-title">Tutor: {tutoringSession.tutor_name}</h5>
                       <h5 className="card-title">Student: {tutoringSession.student_name}</h5>
-                      <h5 className="card-title">Date: {(new Intl.DateTimeFormat('en-US', timeSetting).format(new Date(tutoringSession.session_datetime)))}</h5>
+                      <h5 key={index} className="card-title">Date: {
+                        `${new Intl.DateTimeFormat('en-US', timeSetting).format(sessionDateTime)} ~ ${new Intl.DateTimeFormat('en-US', timeSetting).format(endDateTime)}`
+                      }</h5>
 
                       <p className="card-text">{tutoringSession.notes}</p>
 
