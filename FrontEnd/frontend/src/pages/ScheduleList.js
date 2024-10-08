@@ -70,6 +70,9 @@ const ScheduleList = () => {
 
   const timeSetting = {
     timeZone: "America/New_York", // Eastern Time zone
+    weekday: "long",
+    month: "long",
+    day: "numeric",
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric',
