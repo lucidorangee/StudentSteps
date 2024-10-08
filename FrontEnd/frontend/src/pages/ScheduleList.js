@@ -209,7 +209,7 @@ const ScheduleList = () => {
           filteredData.map((tutoringSession, index) => {
             if (!tutoringSession.complete) {
               const sessionDateTime = new Date(tutoringSession.session_datetime);
-              const endDateTime = new Date(sessionDateTime.getTime() + duration * 60000);
+              const endDateTime = new Date(sessionDateTime.getTime() + tutoringSession.duration * 60000);
               return (
                 <div className="row ml-3 mt-3" key={index}>
                   <div className="card" style={{ width: '95%' }}>
@@ -217,7 +217,7 @@ const ScheduleList = () => {
                       <h5 className="card-title">Tutor: {tutoringSession.tutor_name}</h5>
                       <h5 className="card-title">Student: {tutoringSession.student_name}</h5>
                       <h5 key={index} className="card-title">Date: {
-                        `${new Intl.DateTimeFormat('en-US', timeSetting).format(sessionDateTime)} ~ ${new Intl.DateTimeFormat('en-US', timeSetting).format(endDateTime)}`
+                        `${new Intl.DateTimeFormat('en-US', datetimeSetting).format(sessionDateTime)} ~ ${new Intl.DateTimeFormat('en-US', timeonlySetting).format(endDateTime)}`
                       }</h5>
 
                       <p className="card-text">{tutoringSession.notes}</p>
