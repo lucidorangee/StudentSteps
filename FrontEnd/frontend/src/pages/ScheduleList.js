@@ -94,6 +94,16 @@ const ScheduleList = () => {
     }
   });
 
+  
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      localStorage.setItem('tempComments', JSON.stringify(tempComments));
+    }, 500); // delay of 500ms
+  
+    return () => clearTimeout(handler); // cleanup on component unmount or tempComments change
+  }, [tempComments]);
+
   useEffect(() => {
     if (tutoringSessionData && Array.isArray(tutoringSessionData)) {
       if (date) {
@@ -147,14 +157,6 @@ const ScheduleList = () => {
       comment: comment
     });
   }
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      localStorage.setItem('tempComments', JSON.stringify(tempComments));
-    }, 500); // delay of 500ms
-  
-    return () => clearTimeout(handler); // cleanup on component unmount or tempComments change
-  }, [tempComments]);
 
   return (
     <div className="App">
