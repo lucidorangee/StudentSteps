@@ -77,6 +77,16 @@ const ManageUsers = () => {
     }
   });
 
+  if (tutorsLoading) return <div>Loading...</div>;
+  if (tutorsError) {
+    if(tutorsError.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    return <div>Error loading data</div>;
+  }
+
   const redirectTutorProfile  = (tutor_id) => {
     navigate(`/tutors/detail/${tutor_id}`, { replace : true});
   }
@@ -98,6 +108,7 @@ const ManageUsers = () => {
     }
     setFilteredTutors(temp);
   };
+  
   
   return (
     <div className="App">
