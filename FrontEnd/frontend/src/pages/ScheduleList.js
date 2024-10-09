@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
+import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 
 const fetchComments = async() => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
@@ -331,7 +332,7 @@ const ScheduleList = () => {
                       </p>
 
                       {/* Foldable Section for Goals and Notes */}
-                      {expandedSessions[index] && (
+                      {/*expandedSessions[index] && (
                         <div className="expanded-content">
                           <div className="row mt-2">
                             <div className="col">Behavioral Goal: {studentData?.behavioural_goal}</div>
@@ -346,7 +347,7 @@ const ScheduleList = () => {
                             </div>
                           </div>
                         </div>
-                      )}
+                      )*/}
 
                       {/* Row 3: Expandable Notes */}
                       <div
