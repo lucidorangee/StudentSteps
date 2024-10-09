@@ -247,6 +247,13 @@ const ScheduleList = () => {
     });
   }
 
+  const toggleExpand = (index) => {
+    setExpandedSessions((prev) => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
+
   return (
     <div className="App">
       <h2>Welcome to ScheduleList.js!</h2>
