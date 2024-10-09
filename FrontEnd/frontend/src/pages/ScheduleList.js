@@ -7,6 +7,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 
+const fetchHomework = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch homework');
+  }
+  return response.json();
+};
+
 const fetchTutoringSessions = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
     credentials: 'include',
@@ -22,6 +36,23 @@ const fetchTutoringSessions = async () => {
   }
   return response.json();
 }
+
+const fetchStudents = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch students');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
+
 
 const postComment = async (session_id, tutor_id, student_id, datetime, comment) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
@@ -91,6 +122,18 @@ const ScheduleList = () => {
     error: tutoringSessionsError,
   } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
 
+  const {
+    data: homeworkList,
+    isLoading: homeworkListLoading,
+    error: homeworkListError,
+  } = useQuery({queryKey: ['homework'], queryFn: () => fetchHomework()});
+
+  const {
+    data: students,
+    isLoading: studentsLoading,
+    error: studentsError,
+  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
+
   const { mutate: submitComment, isLoading, isError, error } = useMutation({
     mutationFn: ({session_id, tutor_id, student_id, datetime, comment}) => postComment(session_id, tutor_id, student_id, datetime, comment),
     onSuccess: (session_id) => {
@@ -136,11 +179,12 @@ const ScheduleList = () => {
     }
   }, [date, tutoringSessionData]);
 
-  if (tutoringSessionsLoading) return <div>Loading...</div>;
-  if (tutoringSessionsError) {
-    if(tutoringSessionsError?.status === 401) //unauthorized
+  if (studentsLoading || homeworkListLoading || tutoringSessionsLoading) return <div>Loading...</div>;
+  if (studentsError || homeworkListError || tutoringSessionsError) {
+    if(studentsError?.status === 401 || homeworkListError?.status === 401 || tutoringSessionsError?.status === 401) //unauthorized
     {
       console.log("unathorized");
+      localStorage.setItem('tempComments', JSON.stringify(tempComments));
       return <Navigate to="/login" />;
     }
     return <div>Error loading data</div>;
@@ -210,41 +254,95 @@ const ScheduleList = () => {
             if (!tutoringSession.complete) {
               const sessionDateTime = new Date(tutoringSession.session_datetime);
               const endDateTime = new Date(sessionDateTime.getTime() + tutoringSession.duration * 60000);
+              
+              // Fetch the student data and homework list based on student_id
+              const studentData = students.find(student => student.student_id === tutoringSession.student_id);
+              const studentHomeworkList = homeworkList.filter(homework => homework.student_id === tutoringSession.student_id);
+
               return (
                 <div className="row ml-3 mt-3" key={index}>
                   <div className="card" style={{ width: '95%' }}>
                     <div className="card-body text-left">
-                      <h5 className="card-title">Tutor: {tutoringSession.tutor_name}</h5>
-                      <h5 className="card-title">Student: {tutoringSession.student_name}</h5>
-                      <h5 key={index} className="card-title">Date: {
-                        `${new Intl.DateTimeFormat('en-US', datetimeSetting).format(sessionDateTime)} ~ ${new Intl.DateTimeFormat('en-US', timeonlySetting).format(endDateTime)}`
-                      }</h5>
+                      
+                      {/* Row 1: Tutor, Student Name, Grade */}
+                      <div className="d-flex justify-content-between">
+                        <h5 className="card-title">Tutor: {tutoringSession.tutor_name}</h5>
+                        <h5 className="card-title">Student: {studentData?.name}</h5>
+                        <h5 className="card-title">Grade: {studentData?.grade}</h5>
+                      </div>
 
-                      <p className="card-text">{tutoringSession.notes}</p>
+                      {/* Row 2: Date and Stamps */}
+                      <div className="d-flex justify-content-between mt-3">
+                        <h5 className="card-title">
+                          Date: {`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(sessionDateTime)} ~ ${new Intl.DateTimeFormat('en-US', timeonlySetting).format(endDateTime)}`}
+                        </h5>
+                        <div className="d-flex align-items-center">
+                          <span className="me-2">Stamps:</span>
+                          <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Enter stamps"
+                            style={{ width: '80px' }}
+                          />
+                        </div>
+                      </div>
 
-                      <div className="input-group mb-3">
-                          <span className="input-group-text" id="comment-input-text">Comment: </span>
+                      {/* Row 3: Notes */}
+                      <p className="card-text mt-3">{tutoringSession.notes}</p>
+
+                      {/* Homework Rows */}
+                      <div className="mt-4">
+                        <h6 className="text-muted">Homework:</h6>
+                        {studentHomeworkList.map((homework, hwIndex) => (
+                          <div key={hwIndex} className="d-flex justify-content-between align-items-center mb-2 p-2 border">
+                            <div>Subject: {homework.subject}</div>
+                            <div>Due: {new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(homework.due_date))}</div>
+                            <div>Notes: {homework.notes}</div>
+                            <input
+                              type="number"
+                              className="form-control"
+                              placeholder="0-9"
+                              min="0"
+                              max="9"
+                              style={{ width: '60px' }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Row 5: Comment Area and Submit Button */}
+                      <div className="mt-4">
+                        <div className="input-group mb-3">
+                          <span className="input-group-text">Comment:</span>
                           <textarea
-                            className="form-control" aria-label="With textarea" rows="6"
-                            value={tempComments[tutoringSession.session_id] || ''} // default to empty string if there's no comment yet
+                            className="form-control"
+                            aria-label="With textarea"
+                            rows="3"
+                            value={tempComments[tutoringSession.session_id] || ''}
                             onChange={(e) => setTempComments({
                               ...tempComments,
                               [tutoringSession.session_id]: e.target.value
                             })}
                           />
+                        </div>
+                        <button
+                          className="btn btn-primary"
+                          onClick={() => handleCommentSubmit(tutoringSession)}
+                        >
+                          Submit Comment
+                        </button>
                       </div>
 
-                      <button className="btn btn-primary" onClick={() => handleCommentSubmit(tutoringSession)}>Submit Comment</button>
                     </div>
                   </div>
                 </div>
               );
             }
           })
-          ) : (
-          <tr>
-            <td colSpan="6">No data available</td>
-          </tr>
+        ) : (
+          <div className="col">
+            <p>No data available</p>
+          </div>
         )}
       </div>
     </div>

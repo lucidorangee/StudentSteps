@@ -33,6 +33,7 @@ const fetchStudents = async () => {
   return response.json();
 };
 
+
 const deleteHomeworkByID = async (id) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/${id}`, {
     credentials: 'include',
