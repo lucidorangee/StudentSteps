@@ -260,7 +260,7 @@ const ScheduleList = () => {
               const studentHomeworkList = homeworkList.filter(homework => homework.student_id === tutoringSession.student_id);
 
               return (
-                <div className="col-12 col-md-11 col-lg-11 mt-3" key={index}>
+                <div className="col-12 mt-3" key={index}>
                   <div className="card">
                     <div className="card-body text-left">
                       
