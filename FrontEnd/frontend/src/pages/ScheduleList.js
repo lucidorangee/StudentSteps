@@ -394,13 +394,13 @@ const ScheduleList = () => {
                             className="form-control"
                             aria-label="With textarea"
                             rows="3"
-                            value={tempComments[tutoringSession.session_id] || ''}
+                            value={tempComments[tutoringSession.session_id].comment || ''}
                             onChange={(e) =>
                               setTempComments({
                                 ...tempComments,
                                 [tutoringSession.session_id]: {
                                   comment: e.target.value,
-                                  stamps: tempComments[tutoringSession.session_id]?.stamps || 0 // Retain current stamps or default to 0
+                                  stamps: tempComments[tutoringSession.session_id]?.comment || 0 // Retain current stamps or default to 0
                                 }
                               })
                             }
