@@ -394,7 +394,7 @@ const ScheduleList = () => {
                             className="form-control"
                             aria-label="With textarea"
                             rows="3"
-                            value={tempComments[tutoringSession.session_id].comment || ''}
+                            value={tempComments[tutoringSession.session_id]?.comment || ''}
                             onChange={(e) =>
                               setTempComments({
                                 ...tempComments,
