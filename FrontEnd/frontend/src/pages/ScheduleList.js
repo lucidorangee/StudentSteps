@@ -231,6 +231,12 @@ const ScheduleList = () => {
     const comment = tempComments[tutoringSession.session_id]?.comment || '';
     const stamps = tempComments[tutoringSession.session_id]?.stamps || 0;
 
+    if(stamps > 20)
+    {
+      setAlert("No more than 20 stamps can be given every session");
+      return;
+    }
+
     // Validate if comment is empty or any other necessary validation
     if (comment !== '' && !comment.trim()) {
         setAlert('Please enter a comment.');
