@@ -305,13 +305,6 @@ const ScheduleList = () => {
                         <h5 className="card-title">Tutor: {tutoringSession.tutor_name}</h5>
                         <h5 className="card-title">Student: {studentData?.first_name} {studentData?.last_name}</h5>
                         <h5 className="card-title">Grade: {studentData?.grade_level}</h5>
-                      </div>
-
-                      {/* Row 2: Date and Stamps */}
-                      <div className="d-flex justify-content-between mt-3">
-                        <h5 className="card-title">
-                          Date: {`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(sessionDateTime)} ~ ${new Intl.DateTimeFormat('en-US', timeonlySetting).format(endDateTime)}`}
-                        </h5>
                         <div className="d-flex align-items-center">
                           <span className="me-2">Stamps:</span>
                           <input
@@ -323,38 +316,45 @@ const ScheduleList = () => {
                         </div>
                       </div>
 
-                      {/* Row 3: Expandable Notes */}
-<div
-  className={`border p-3 mt-3 ${expandedSessions[index] ? 'expanded' : ''}`}
-  style={{ cursor: 'pointer', borderRadius: '5px' }}
-  onClick={() => toggleExpand(index)}
->
-  <div className="d-flex justify-content-between align-items-center">
-    <span>Details</span>
-    {expandedSessions[index] ? <BsChevronUp /> : <BsChevronDown />}
-  </div>
+                      {/* Row 2: Date and Stamps */}
+                      <div className="d-flex justify-content-between mt-3">
+                        <h5 className="card-title">
+                          Date: {`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(sessionDateTime)} ~ ${new Intl.DateTimeFormat('en-US', timeonlySetting).format(endDateTime)}`}
+                        </h5>
+                      </div>
 
-  {expandedSessions[index] && (
-    <div className="mt-3">
-      <div className="mb-2">
-        <strong>Behavioural Goal</strong>
-        <div>{studentData?.behavioural_goal}</div>
-      </div>
-      <div className="mb-2">
-        <strong>Academic Goal</strong>
-        <div>{studentData?.academic_goal}</div>
-      </div>
-      <div className="mb-2">
-        <strong>Notes</strong>
-        <div>{tutoringSession.notes}</div>
-      </div>
-      <div>
-        <strong>Latest Comment</strong>
-        <div>{latestComment?.content}</div>
-      </div>
-    </div>
-  )}
-</div>
+                      {/* Row 3: Expandable Notes */}
+                      <div
+                        className={`border p-3 mt-3 ${expandedSessions[index] ? 'expanded' : ''}`}
+                        style={{ cursor: 'pointer', borderRadius: '5px' }}
+                        onClick={() => toggleExpand(index)}
+                      >
+                        <div className="d-flex justify-content-between align-items-center">
+                          <span>Details</span>
+                          {expandedSessions[index] ? <BsChevronUp /> : <BsChevronDown />}
+                        </div>
+
+                        {expandedSessions[index] && (
+                          <div className="mt-3">
+                            <div className="mb-2">
+                              <strong>Behavioural Goal</strong>
+                              <div>{studentData?.behavioural_goal}</div>
+                            </div>
+                            <div className="mb-2">
+                              <strong>Academic Goal</strong>
+                              <div>{studentData?.academic_goal}</div>
+                            </div>
+                            <div className="mb-2">
+                              <strong>Notes</strong>
+                              <div>{tutoringSession.notes}</div>
+                            </div>
+                            <div>
+                              <strong>Latest Comment</strong>
+                              <div>{latestComment?.content}</div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
 
                       {/* Homework Rows */}
                       <div className="mt-4">
