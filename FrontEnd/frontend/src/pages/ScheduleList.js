@@ -248,7 +248,7 @@ const ScheduleList = () => {
         <button type="button" className="btn btn-info px-4" onClick={handleDateReset}>Reset</button>
       </div>
       
-      <div className="row">
+      <div className="row justify-content-center">
         {Array.isArray(filteredData) && filteredData.length > 0 ? (
           filteredData.map((tutoringSession, index) => {
             if (!tutoringSession.complete) {
@@ -260,8 +260,8 @@ const ScheduleList = () => {
               const studentHomeworkList = homeworkList.filter(homework => homework.student_id === tutoringSession.student_id);
 
               return (
-                <div className="row ml-3 mt-3" key={index}>
-                  <div className="card" style={{ width: '95%' }}>
+                <div className="col-12 col-md-10 col-lg-8 mt-3" key={index}>
+                  <div className="card">
                     <div className="card-body text-left">
                       
                       {/* Row 1: Tutor, Student Name, Grade */}
