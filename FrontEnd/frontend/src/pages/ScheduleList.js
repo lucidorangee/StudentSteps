@@ -112,6 +112,7 @@ const ScheduleList = () => {
   }
 });
 
+  const [expandedSessions, setExpandedSessions] = useState({});
   const { date } = useParams();
   const [filteredData, setFilteredData] = useState([]);
 
@@ -285,7 +286,6 @@ const ScheduleList = () => {
               const latestComment = comments
                 .filter(comment => comment.student_id === tutoringSession.student_id)
                 .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))[0];
-              const [isExpanded, setIsExpanded] = useState(false);
 
               return (
                 <div className="col-12 mt-3" key={index}>
@@ -316,22 +316,28 @@ const ScheduleList = () => {
                       </div>
 
                       {/* Row 3: Notes */}
-                      <button
-                        className="btn btn-link mt-3 p-0"
-                        onClick={() => setIsExpanded(!isExpanded)}
-                      >
-                        {isExpanded ? 'Hide Details' : 'Show Details'}
-                      </button>
+                      <p className="card-text mt-3">
+                        {tutoringSession.notes}
+                        <button className="btn btn-link" onClick={() => toggleExpand(index)}>
+                          {expandedSessions[index] ? "Hide Details" : "Show Details"}
+                        </button>
+                      </p>
 
                       {/* Foldable Section for Goals and Notes */}
-                      {isExpanded && (
-                        <div className="collapse-content mt-3">
-                          <div className="d-flex justify-content-between">
-                            <div>Behavioral Goal: {studentData?.behavioural_goal}</div>
-                            <div>Academic Goal: {studentData?.academic_goal}</div>
+                      {expandedSessions[index] && (
+                        <div className="expanded-content">
+                          <div className="row mt-2">
+                            <div className="col">Behavioral Goal: {studentData?.behavioural_goal}</div>
+                            <div className="col">Academic Goal: {studentData?.academic_goal}</div>
                           </div>
-                          <p className="card-text mt-2">Notes: {tutoringSession.notes}</p>
-                          {(latestComment?.content)?<p className="card-text">Latest Comment: {latestComment?.content || "No comments available"}</p>:<div></div>}
+                          <div className="row mt-2">
+                            <div className="col">Session Notes: {tutoringSession.notes}</div>
+                          </div>
+                          <div className="row mt-2">
+                            <div className="col">
+                              Latest Comment: {latestComment?.content}
+                            </div>
+                          </div>
                         </div>
                       )}
 
