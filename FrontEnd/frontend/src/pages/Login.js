@@ -73,7 +73,7 @@ const Login = () => {
                     </div>
                     <div className="row align-items-start m-3">
                       <div className="col-10">
-                        {!isLoading && <button type="submit" className="btn btn-primary mb-3">Log in</button>}
+                        {!isLoading ? <button type="submit" className="btn btn-primary mb-3">Log in</button>:<div></div>}
                       </div>
                       <div className="col-2">
                         <Nav.Link as={NavLink} to='/' exact>Back</Nav.Link>
