@@ -267,8 +267,8 @@ const ScheduleList = () => {
                       {/* Row 1: Tutor, Student Name, Grade */}
                       <div className="d-flex justify-content-between">
                         <h5 className="card-title">Tutor: {tutoringSession.tutor_name}</h5>
-                        <h5 className="card-title">Student: {studentData?.name}</h5>
-                        <h5 className="card-title">Grade: {studentData?.grade}</h5>
+                        <h5 className="card-title">Student: {studentData?.first_name} {studentData?.last_name}</h5>
+                        <h5 className="card-title">Grade: {studentData?.grade_level}</h5>
                       </div>
 
                       {/* Row 2: Date and Stamps */}
