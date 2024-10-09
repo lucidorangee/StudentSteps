@@ -6,6 +6,7 @@ import { Nav, Navbar } from 'react-bootstrap'
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 
 const postLogin = async (formData) => {
+  const [alert, setAlert] = useState('');
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
     credentials: 'include',
     method: 'post',
@@ -72,7 +73,7 @@ const Login = () => {
                     </div>
                     <div className="row align-items-start m-3">
                       <div className="col-10">
-                        <button type="submit" className="btn btn-primary mb-3">Log in</button>
+                        {!isLoading && <button type="submit" className="btn btn-primary mb-3">Log in</button>}
                       </div>
                       <div className="col-2">
                         <Nav.Link as={NavLink} to='/' exact>Back</Nav.Link>

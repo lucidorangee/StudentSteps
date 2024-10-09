@@ -223,7 +223,7 @@ const ScheduleList = () => {
     navigate(`/Schedule/List/${formattedDate}`);
   };
 
-  const handleDateReset = (date) => {
+  const handleDateReset = () => {
     navigate(`/Schedule/List/`);
   };
 
