@@ -331,17 +331,28 @@ const ScheduleList = () => {
                       >
                         <span>Details</span>
                         {expandedSessions[index] ? <BsChevronUp /> : <BsChevronDown />}
-                        {expandedSessions[index] && (
-                          <div>
-                            <div>Behavioural Goal: {studentData?.behavioural_goal}</div>
-                            <div>Academic Goal: {studentData?.academic_goal}</div>
-                            <div>Notes: {tutoringSession.notes}</div>
-                            <div>
-                              Latest Comment: {latestComment?.content}
-                            </div>
-                          </div>
-                        )}
                       </div>
+
+                      {expandedSessions[index] && (
+                        <div className="border p-3 mt-2" style={{ borderRadius: '5px' }}>
+                          <div className="mb-2">
+                            <strong>Behavioural Goal</strong>
+                            <div>{studentData?.behavioural_goal}</div>
+                          </div>
+                          <div className="mb-2">
+                            <strong>Academic Goal</strong>
+                            <div>{studentData?.academic_goal}</div>
+                          </div>
+                          <div className="mb-2">
+                            <strong>Notes</strong>
+                            <div>{tutoringSession.notes}</div>
+                          </div>
+                          <div>
+                            <strong>Latest Comment</strong>
+                            <div>{latestComment?.content}</div>
+                          </div>
+                        </div>
+                      )}
 
                       {/* Homework Rows */}
                       <div className="mt-4">
