@@ -258,6 +258,10 @@ const ScheduleList = () => {
               // Fetch the student data and homework list based on student_id
               const studentData = students.find(student => student.student_id === tutoringSession.student_id);
               const studentHomeworkList = homeworkList.filter(homework => homework.student_id === tutoringSession.student_id);
+              const latestComment = comments
+                .filter(comment => comment.student_id === tutoringSession.student_id)
+                .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))[0];
+              const [isExpanded, setIsExpanded] = useState(false);
 
               return (
                 <div className="col-12 mt-3" key={index}>
@@ -288,7 +292,24 @@ const ScheduleList = () => {
                       </div>
 
                       {/* Row 3: Notes */}
-                      <p className="card-text mt-3">{tutoringSession.notes}</p>
+                      <button
+                        className="btn btn-link mt-3 p-0"
+                        onClick={() => setIsExpanded(!isExpanded)}
+                      >
+                        {isExpanded ? 'Hide Details' : 'Show Details'}
+                      </button>
+
+                      {/* Foldable Section for Goals and Notes */}
+                      {isExpanded && (
+                        <div className="collapse-content mt-3">
+                          <div className="d-flex justify-content-between">
+                            <div>Behavioral Goal: {studentData?.behavioural_goal}</div>
+                            <div>Academic Goal: {studentData?.academic_goal}</div>
+                          </div>
+                          <p className="card-text mt-2">Notes: {tutoringSession.notes}</p>
+                          {(latestComment?.content)?<p className="card-text">Latest Comment: {latestComment?.content || "No comments available"}</p>:<div></div>}
+                        </div>
+                      )}
 
                       {/* Homework Rows */}
                       <div className="mt-4">
