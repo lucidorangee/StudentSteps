@@ -327,6 +327,7 @@ const ScheduleList = () => {
                       <div
                         className={`border p-3 mt-3 ${expandedSessions[index] ? 'expanded' : ''}`}
                         style={{ cursor: 'pointer', borderRadius: '5px' }}
+                        onMouseDown={(e) => e.preventDefault()} 
                         onClick={() => toggleExpand(index)}
                       >
                         <div className="d-flex justify-content-between align-items-center">
