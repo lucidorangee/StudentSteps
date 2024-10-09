@@ -84,6 +84,7 @@ const postComment = async (session_id, tutor_id, student_id, datetime, stamps, c
         tutor_id: tutor_id,
         student_id: student_id,
         datetime: new Date(datetime).toISOString(), // Ensure datetime is correctly serialized
+        stamps:stamps,
         content: comment,
         type: 'public'
     }), // Adjust according to your backend API
