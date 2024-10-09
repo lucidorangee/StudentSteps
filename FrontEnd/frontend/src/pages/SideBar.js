@@ -8,7 +8,7 @@ const Sidebar = () => {
   const currentDate = new Date().toISOString().substring(0, 10);
 
   return (
-    <div className="sidebar d-flex flex-column vh-100 p-3 bg-dark">
+    <div className="sidebar d-flex flex-column h-100 p-3 bg-dark">
       <ul className="nav nav-pills flex-column mb-10">
         <li className="nav-item">
           <NavLink to={`/schedule/list/${currentDate}`} className="nav-link text-white" activeclassname="active">

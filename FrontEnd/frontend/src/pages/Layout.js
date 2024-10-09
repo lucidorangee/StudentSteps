@@ -6,7 +6,7 @@ import { Outlet, Link } from "react-router-dom";
 
 const Layout = () => {
   return (
-    <div className="container-fluid min-vh-100">
+    <div className="container-fluid">
       <div className="row">
         <Topbar />
       </div>
