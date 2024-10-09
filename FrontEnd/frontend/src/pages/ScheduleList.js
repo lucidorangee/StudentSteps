@@ -228,7 +228,7 @@ const ScheduleList = () => {
 
   const handleCommentSubmit = (tutoringSession) => {
     const comment = tempComments[tutoringSession.session_id]?.comment || '';
-    const stamps = tempComments[tutoringSession.session_id]?.stamps || '';
+    const stamps = tempComments[tutoringSession.session_id]?.stamps || 0;
 
     // Validate if comment is empty or any other necessary validation
     if (comment !== '' && !comment.trim()) {
@@ -400,7 +400,7 @@ const ScheduleList = () => {
                                 ...tempComments,
                                 [tutoringSession.session_id]: {
                                   comment: e.target.value,
-                                  stamps: tempComments[tutoringSession.session_id]?.comment || 0 // Retain current stamps or default to 0
+                                  stamps: tempComments[tutoringSession.session_id]?.stamps || 0 // Retain current stamps or default to 0
                                 }
                               })
                             }
