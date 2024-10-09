@@ -5,6 +5,24 @@ import Select from 'react-select';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 
+const fetchComments = async() => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch comments');
+    err.status = response.status;
+    throw err;
+  }
+
+  console.log("successfully fetched comments");
+  return response.json();
+}
+
 const fetchHomework = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
     credentials: 'include',

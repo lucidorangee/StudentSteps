@@ -7,6 +7,24 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 
+const fetchComments = async() => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch comments');
+    err.status = response.status;
+    throw err;
+  }
+
+  console.log("successfully fetched comments");
+  return response.json();
+}
+
 const fetchHomework = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
     credentials: 'include',
@@ -134,6 +152,12 @@ const ScheduleList = () => {
     error: studentsError,
   } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
 
+  const {
+    data: comments,
+    isLoading: commentsLoading,
+    error: commentsError,
+  } = useQuery({queryKey: ['users'], queryFn: () => fetchComments()});
+
   const { mutate: submitComment, isLoading, isError, error } = useMutation({
     mutationFn: ({session_id, tutor_id, student_id, datetime, comment}) => postComment(session_id, tutor_id, student_id, datetime, comment),
     onSuccess: (session_id) => {
@@ -179,9 +203,9 @@ const ScheduleList = () => {
     }
   }, [date, tutoringSessionData]);
 
-  if (studentsLoading || homeworkListLoading || tutoringSessionsLoading) return <div>Loading...</div>;
-  if (studentsError || homeworkListError || tutoringSessionsError) {
-    if(studentsError?.status === 401 || homeworkListError?.status === 401 || tutoringSessionsError?.status === 401) //unauthorized
+  if (commentsLoading || studentsLoading || homeworkListLoading || tutoringSessionsLoading) return <div>Loading...</div>;
+  if (commentsError || studentsError || homeworkListError || tutoringSessionsError) {
+    if(commentsError?.status === 401 || studentsError?.status === 401 || homeworkListError?.status === 401 || tutoringSessionsError?.status === 401) //unauthorized
     {
       console.log("unathorized");
       localStorage.setItem('tempComments', JSON.stringify(tempComments));
