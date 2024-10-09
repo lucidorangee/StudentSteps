@@ -73,7 +73,7 @@ const fetchStudents = async () => {
 };
 
 
-const postComment = async (session_id, tutor_id, student_id, datetime, comment) => {
+const postComment = async (session_id, tutor_id, student_id, datetime, stamps, comment) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
     credentials: 'include',
     method: 'POST',
@@ -98,9 +98,6 @@ const postComment = async (session_id, tutor_id, student_id, datetime, comment) 
 }
 
 const ScheduleList = () => {
-  //const [tutoringSessionData, setTutoringSessionData] = useState([]);
-  
-
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [selectedDate, setSelectedDate] = useState(null);
@@ -109,7 +106,7 @@ const ScheduleList = () => {
   try {
     return JSON.parse(localStorage.getItem('tempComments')) || {};
   } catch {
-    return {}; // fallback to empty object if parsing fails
+    return {};
   }
 });
 
@@ -161,7 +158,7 @@ const ScheduleList = () => {
   } = useQuery({queryKey: ['users'], queryFn: () => fetchComments()});
 
   const { mutate: submitComment, isLoading, isError, error } = useMutation({
-    mutationFn: ({session_id, tutor_id, student_id, datetime, comment}) => postComment(session_id, tutor_id, student_id, datetime, comment),
+    mutationFn: ({session_id, tutor_id, student_id, datetime, stamps, comment}) => postComment(session_id, tutor_id, student_id, datetime, stamps, comment),
     onSuccess: (session_id) => {
       console.log("Successfully posted");
 
@@ -230,7 +227,8 @@ const ScheduleList = () => {
   };
 
   const handleCommentSubmit = (tutoringSession) => {
-    const comment = tempComments[tutoringSession.session_id] || ''; // Get the value of the textarea
+    const comment = tempComments[tutoringSession.session_id]?.comment || '';
+    const stamps = tempComments[tutoringSession.session_id]?.stamps || '';
 
     // Validate if comment is empty or any other necessary validation
     if (comment !== '' && !comment.trim()) {
@@ -244,6 +242,7 @@ const ScheduleList = () => {
       tutor_id: tutoringSession.tutor_id, 
       student_id: tutoringSession.student_id, 
       datetime: tutoringSession.session_datetime, 
+      stamps: stamps,
       comment: comment
     });
   }
@@ -312,6 +311,16 @@ const ScheduleList = () => {
                             className="form-control"
                             placeholder="Enter stamps"
                             style={{ width: '80px' }}
+                            value={tempComments[tutoringSession.session_id]?.stamps || 0} // Default to 0 if nonexistent
+                            onChange={(e) =>
+                              setTempComments({
+                                ...tempComments,
+                                [tutoringSession.session_id]: {
+                                  comment: tempComments[tutoringSession.session_id]?.comment || '', // Retain current comment or default to an empty string
+                                  stamps: Number(e.target.value) // Update stamps with the new value
+                                }
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -386,10 +395,15 @@ const ScheduleList = () => {
                             aria-label="With textarea"
                             rows="3"
                             value={tempComments[tutoringSession.session_id] || ''}
-                            onChange={(e) => setTempComments({
-                              ...tempComments,
-                              [tutoringSession.session_id]: e.target.value
-                            })}
+                            onChange={(e) =>
+                              setTempComments({
+                                ...tempComments,
+                                [tutoringSession.session_id]: {
+                                  comment: e.target.value,
+                                  stamps: tempComments[tutoringSession.session_id]?.stamps || 0 // Retain current stamps or default to 0
+                                }
+                              })
+                            }
                           />
                         </div>
                         <button

@@ -72,12 +72,8 @@ const updateHomework = async (req, res) => {
   }
 };
 
+//
 const updateHomeworkCompletion = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", process.env.CORS_ORIGIN);
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, PATCH");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-
   const homeworkList = req.body;
   console.log(homeworkList[0][0] + " " + homeworkList[0][1]);
 
