@@ -323,32 +323,6 @@ const ScheduleList = () => {
                         </div>
                       </div>
 
-                      {/* Row 3: Notes */}
-                      <p className="card-text mt-3">
-                        {tutoringSession.notes}
-                        <button className="btn btn-link" onClick={() => toggleExpand(index)}>
-                          {expandedSessions[index] ? "Hide Details" : "Show Details"}
-                        </button>
-                      </p>
-
-                      {/* Foldable Section for Goals and Notes */}
-                      {/*expandedSessions[index] && (
-                        <div className="expanded-content">
-                          <div className="row mt-2">
-                            <div className="col">Behavioral Goal: {studentData?.behavioural_goal}</div>
-                            <div className="col">Academic Goal: {studentData?.academic_goal}</div>
-                          </div>
-                          <div className="row mt-2">
-                            <div className="col">Session Notes: {tutoringSession.notes}</div>
-                          </div>
-                          <div className="row mt-2">
-                            <div className="col">
-                              Latest Comment: {latestComment?.content}
-                            </div>
-                          </div>
-                        </div>
-                      )*/}
-
                       {/* Row 3: Expandable Notes */}
                       <div
                         className="d-flex justify-content-between align-items-center border p-3 mt-3"
@@ -357,18 +331,17 @@ const ScheduleList = () => {
                       >
                         <span>Details</span>
                         {expandedSessions[index] ? <BsChevronUp /> : <BsChevronDown />}
-                      </div>
-
-                      {expandedSessions[index] && (
-                        <div className="p-3 border mt-2" style={{ borderRadius: '5px' }}>
-                          <div>Behavioural Goal: {studentData?.behavioural_goal}</div>
-                          <div>Academic Goal: {studentData?.academic_goal}</div>
-                          <div>Notes: {tutoringSession.notes}</div>
+                        {expandedSessions[index] && (
                           <div>
-                            Latest Comment: {latestComment?.content}
+                            <div>Behavioural Goal: {studentData?.behavioural_goal}</div>
+                            <div>Academic Goal: {studentData?.academic_goal}</div>
+                            <div>Notes: {tutoringSession.notes}</div>
+                            <div>
+                              Latest Comment: {latestComment?.content}
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
 
                       {/* Homework Rows */}
                       <div className="mt-4">
