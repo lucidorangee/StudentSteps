@@ -143,6 +143,7 @@ const CreateHomework = () => {
       assigned: datetime,
       due_date: datetime,
       subject: duration,
+      is_completed: 0,
       notes: notes,
     };
 
