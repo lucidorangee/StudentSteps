@@ -19,6 +19,7 @@ const getHomeworkById = (req, res) => {
 
 const addHomework = (req, res) => {
   const { student_id, assigned, due_date, is_completed, subject, notes } = req.body;
+  console.log(`due date is ${due_date}`);
 
   pool.query(
       queries.addHomework,
