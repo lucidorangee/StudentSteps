@@ -348,6 +348,27 @@ const ScheduleList = () => {
                         </div>
                       )}
 
+                      {/* Row 3: Expandable Notes */}
+                      <div
+                        className="d-flex justify-content-between align-items-center border p-3 mt-3"
+                        onClick={() => toggleExpand(index)}
+                        style={{ cursor: 'pointer', borderRadius: '5px' }}
+                      >
+                        <span>Details</span>
+                        {expandedSessions[index] ? <BsChevronUp /> : <BsChevronDown />}
+                      </div>
+
+                      {expandedSessions[index] && (
+                        <div className="p-3 border mt-2" style={{ borderRadius: '5px' }}>
+                          <div>Behavioural Goal: {studentData?.behavioural_goal}</div>
+                          <div>Academic Goal: {studentData?.academic_goal}</div>
+                          <div>Notes: {tutoringSession.notes}</div>
+                          <div>
+                            Latest Comment: {latestComment?.content}
+                          </div>
+                        </div>
+                      )}
+
                       {/* Homework Rows */}
                       <div className="mt-4">
                         <h6 className="text-muted">Homework:</h6>
