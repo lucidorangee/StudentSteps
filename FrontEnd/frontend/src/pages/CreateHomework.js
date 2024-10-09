@@ -129,11 +129,6 @@ const CreateHomework = () => {
     setStudent(selectedOption ? selectedOption.value : -1);
   };
 
-  const handleTutorChange = (selectedOption) => {
-    setSelectedTutor(selectedOption);
-    setStudent(selectedOption ? selectedOption.value : -1);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -174,20 +169,6 @@ const CreateHomework = () => {
                       />
                     )}
                   </div>
-                  <div className="col">
-                    <label htmlFor="FormControlInput1" className="form-label">Tutor</label>
-                    {tutorsLoading ? (
-                      <p>Loading tutors...</p>
-                    ) : (
-                      <Select
-                        options={tutorOptions}
-                        onChange={handleTutorChange}
-                        placeholder="Search for a tutor..."
-                        isClearable
-                        classNamePrefix="react-select"
-                      />
-                    )}
-                  </div>
                   <label htmlFor="FormControlInput1" className="form-label">Datetime</label>
                   <div className="d-flex align-items-center">
                     <DatePicker
@@ -199,8 +180,6 @@ const CreateHomework = () => {
                     />
                     <FaCalendarAlt className="ms-2 text-secondary" />
                   </div>
-                  <label htmlFor="FormControlInput1" className="form-label">Duration</label>
-                  <input type="text" className="form-control" id="FormControlInput1" aria-describedby="passwordHelpBlock" onChange={(e) => setDuration(e.target.value)} />
                   <label htmlFor="FormControlInput1" className="form-label">Notes</label>
                   <input type="text" className="form-control" id="FormControlInput1" aria-describedby="passwordHelpBlock" onChange={(e) => setNotes(e.target.value)} />
                 </div>
