@@ -362,7 +362,8 @@ const ScheduleList = () => {
                                 ...tempComments,
                                 [tutoringSession.session_id]: {
                                   comment: tempComments[tutoringSession.session_id]?.comment || '', // Retain current comment or default to an empty string
-                                  stamps: Number(e.target.value) // Update stamps with the new value
+                                  stamps: Number(e.target.value), // Update stamps with the new value
+                                  new_homework: tempComments[tutoringSession.session_id]?.new_homework || []
                                 }
                               })
                             }
@@ -491,7 +492,8 @@ const ScheduleList = () => {
                                 ...tempComments,
                                 [tutoringSession.session_id]: {
                                   comment: e.target.value,
-                                  stamps: tempComments[tutoringSession.session_id]?.stamps || 0 // Retain current stamps or default to 0
+                                  stamps: tempComments[tutoringSession.session_id]?.stamps || 0, // Retain current stamps or default to 0
+                                  new_homework: tempComments[tutoringSession.session_id]?.new_homework || []
                                 }
                               })
                             }
