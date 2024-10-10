@@ -261,6 +261,44 @@ const ScheduleList = () => {
     }));
   };
 
+  const handleAddNewHomework = (session_id) => {
+    const currentHomework = tempComments[session_id]?.new_homework || [];
+    setTempComments({
+      ...tempComments,
+      [session_id]: {
+        ...tempComments[session_id],
+        new_homework: [...currentHomework, { subject: '', due_date: '', notes: '' }]
+      }
+    });
+  };
+
+  const handleNewHomeworkChange = (session_id, event, hwIndex, field) => {
+    const updatedHomeworkList = tempComments[session_id].new_homework.map((hw, index) =>
+      index === hwIndex ? { ...hw, [field]: event.target.value } : hw
+    );
+    setTempComments({
+      ...tempComments,
+      [session_id]: {
+        ...tempComments[session_id],
+        new_homework: updatedHomeworkList
+      }
+    });
+  };
+
+  const handleRemoveNewHomework = (session_id, hwIndex) => {
+    const updatedHomeworkList = tempComments[session_id].new_homework.filter(
+      (_, index) => index !== hwIndex
+    );
+    setTempComments({
+      ...tempComments,
+      [session_id]: {
+        ...tempComments[session_id],
+        new_homework: updatedHomeworkList
+      }
+    });
+  };
+  
+
   return (
     <div className="App">
       <h2>Welcome to ScheduleList.js!</h2>
@@ -391,6 +429,52 @@ const ScheduleList = () => {
                             />
                           </div>
                         ))}
+
+                        {/* New Homework Rows for Adding Additional Homework */}
+                        <h6 className="text-muted mt-4">Add New Homework:</h6>
+                        {tempComments[tutoringSession.session_id]?.new_homework?.map((homework, hwIndex) => (
+                          <div key={`new-${hwIndex}`} className="d-flex justify-content-between align-items-center mb-2 p-2 border">
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Subject"
+                              value={homework.subject}
+                              onChange={(e) => handleNewHomeworkChange(tutoringSession.session_id, e, hwIndex, 'subject')}
+                              style={{ width: '25%' }}
+                            />
+                            <input
+                              type="date"
+                              className="form-control"
+                              placeholder="Due Date"
+                              value={homework.due_date}
+                              onChange={(e) => handleNewHomeworkChange(tutoringSession.session_id, e, hwIndex, 'due_date')}
+                              style={{ width: '25%' }}
+                            />
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Notes"
+                              value={homework.notes}
+                              onChange={(e) => handleNewHomeworkChange(tutoringSession.session_id, e, hwIndex, 'notes')}
+                              style={{ width: '30%' }}
+                            />
+                            <button
+                              className="btn btn-danger"
+                              onClick={() => handleRemoveNewHomework(tutoringSession.session_id, hwIndex)}
+                            >
+                              &times;
+                            </button>
+                          </div>
+                        ))}
+
+                        {/* Button to Add a New Homework Row */}
+                        <button
+                          className="btn btn-primary mt-2"
+                          onClick={() => handleAddNewHomework(tutoringSession.session_id)}
+                        >
+                          + Add Homework
+                        </button>
+                        </div>
                       </div>
 
                       {/* Row 5: Comment Area and Submit Button */}
@@ -419,7 +503,8 @@ const ScheduleList = () => {
                         >
                           Submit Comment
                         </button>
-                      </div>
+
+                        
 
                     </div>
                   </div>
