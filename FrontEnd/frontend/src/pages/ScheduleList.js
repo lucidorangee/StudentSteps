@@ -456,11 +456,13 @@ const ScheduleList = () => {
                         )}
                       </div>
 
-                      {/* Homework Rows */}
-                      <div className="mt-4">
+                      {/* Homework Box */}
+                      <div className="mt-4 border p-3 rounded">
                         <h6 className="text-muted">Homework:</h6>
+                        
+                        {/* Existing Homework Rows */}
                         {studentHomeworkList.map((homework, hwIndex) => (
-                          <div key={hwIndex} className="d-flex justify-content-between align-items-center mb-2 p-2 border">
+                          <div key={hwIndex} className="d-flex justify-content-between align-items-center mb-2">
                             <div>Subject: {homework.subject}</div>
                             <div>Due: {new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(homework.due_date))}</div>
                             <div>Notes: {homework.notes}</div>
@@ -478,7 +480,7 @@ const ScheduleList = () => {
                         {/* New Homework Rows for Adding Additional Homework */}
                         <h6 className="text-muted mt-4">Add New Homework:</h6>
                         {tempComments[tutoringSession.session_id]?.new_homework?.map((homework, hwIndex) => (
-                          <div key={`new-${hwIndex}`} className="d-flex justify-content-between align-items-center mb-2 p-2 border">
+                          <div key={`new-${hwIndex}`} className="d-flex justify-content-between align-items-center mb-2">
                             <input
                               type="text"
                               className="form-control"
@@ -519,8 +521,9 @@ const ScheduleList = () => {
                         >
                           + Add Homework
                         </button>
-                        </div>
                       </div>
+
+                      
 
                       {/* Row 5: Comment Area and Submit Button */}
                       <div className="mt-4">
@@ -567,8 +570,7 @@ const ScheduleList = () => {
                         >
                           Submit Comment
                         </button>
-
-                        
+                      </div>
 
                     </div>
                   </div>
