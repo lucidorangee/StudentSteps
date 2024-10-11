@@ -619,7 +619,7 @@ const ScheduleList = () => {
                             />
                             <button
                               className="btn btn-danger"
-                              onClick={() => handleRemoveNewAssessment(tutoringSession.session_id, hwIndex)}
+                              onClick={() => handleRemoveNewAssessment(tutoringSession.session_id, asmtIndex)}
                             >
                               &times;
                             </button>
