@@ -56,7 +56,7 @@ const ManageUsers = () => {
   //const [homework, setHomework] = useState(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  
+
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
   const [filterGrade, setFilterGrade] = useState(0);
@@ -244,12 +244,15 @@ const ManageUsers = () => {
         </thead>
         <tbody>
         {Array.isArray(filteredHomework) && (filteredHomework).length > 0 ? (
-          (filteredHomework).map((ahomework, index) => (
+          (filteredHomework).map((ahomework, index) => {
+            const cur_student = students.find((s) => s.student_id === ahomework.student_id);
+
+            return(
             <tr key={index}>
               {//<td onClick={() => redirectStudentProfile(student.student_id)}>{student.student_id}</td>
               }
               <td>{ahomework.homework_id}</td>
-              <td>{ahomework.student_id}</td>
+              <td>{cur_student.first_name} {cur_student.last_name}</td>
               <td>{ahomework.subject}</td>
               <td>{ahomework.assigned}</td>
               <td>{ahomework.due_date}</td>
@@ -262,7 +265,8 @@ const ManageUsers = () => {
                 ></i>
               </td>
             </tr>
-          ))):(
+            );
+        })):(
             <tr>
               <td colSpan="9">No data available</td>
             </tr>
