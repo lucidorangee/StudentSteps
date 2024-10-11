@@ -51,7 +51,7 @@ const deleteHomeworkByID = async (id) => {
   return;
 }
 
-const ManageUsers = () => {
+const ManageHomework = () => {
   //const [students, setStudents] = useState(null);
   //const [homework, setHomework] = useState(null);
   const navigate = useNavigate();
@@ -62,6 +62,13 @@ const ManageUsers = () => {
   const [filterGrade, setFilterGrade] = useState(0);
   
   const [filteredHomework, setFilteredHomework] = useState(null);
+
+  const dateonlySetting = {
+    timeZone: "America/New_York", // Eastern Time zone
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  };
 
   const {
     data: students,
@@ -255,7 +262,7 @@ const ManageUsers = () => {
               <td>{cur_student.first_name} {cur_student.last_name}</td>
               <td>{ahomework.subject}</td>
               <td>{ahomework.assigned}</td>
-              <td>{ahomework.due_date}</td>
+              <td>{`${new Intl.DateTimeFormat('en-US', dateonlySetting).format(ahomework.due_date)}`}</td>
               <td>{ahomework.is_completed}</td>
               <td>
                 <i
@@ -278,4 +285,4 @@ const ManageUsers = () => {
   );
 };
 
-export default ManageUsers;
+export default ManageHomework;
