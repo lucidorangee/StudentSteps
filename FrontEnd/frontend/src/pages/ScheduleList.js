@@ -573,7 +573,7 @@ const ScheduleList = () => {
                         <h6 className="text-muted">Upcoming Assessments:</h6>
                         
                         {/* Existing Assessments Row */}
-                        {assessments.map((assessment, asmtIndex) => (
+                        {studentAssessments.map((assessment, asmtIndex) => (
                           <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
                             <div>Title: {assessment.title}</div>
                             <div>Date: {assessment.date}</div>
