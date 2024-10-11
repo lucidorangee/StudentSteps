@@ -56,9 +56,7 @@ const ManageUsers = () => {
   //const [homework, setHomework] = useState(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
   
-  const [loading, setLoading] = useState(true);
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
   const [filterGrade, setFilterGrade] = useState(0);
@@ -89,7 +87,6 @@ const ManageUsers = () => {
   });
 
   useEffect(() => {
-    console.log(homeworkList);
     setFilteredHomework(homeworkList);
   }, [homeworkList]);
 
@@ -246,7 +243,7 @@ const ManageUsers = () => {
           </tr>
         </thead>
         <tbody>
-        {!loading && Array.isArray(filteredHomework) && (filteredHomework).length > 0 ? (
+        {Array.isArray(filteredHomework) && (filteredHomework).length > 0 ? (
           (filteredHomework).map((ahomework, index) => (
             <tr key={index}>
               {//<td onClick={() => redirectStudentProfile(student.student_id)}>{student.student_id}</td>
