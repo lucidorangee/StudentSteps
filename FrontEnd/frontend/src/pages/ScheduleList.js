@@ -576,7 +576,7 @@ const ScheduleList = () => {
                         {assessments.map((assessment, asmtIndex) => (
                           <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
                             <div>Title: {assessment.title}</div>
-                            <div>Date: {new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(assessment.date))}</div>
+                            <div>Date: {assessment.date}</div>
                             <div>Detail: {assessment.description}</div>
                             <input
                               type="number"
