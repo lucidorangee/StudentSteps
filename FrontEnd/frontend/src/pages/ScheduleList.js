@@ -143,6 +143,13 @@ const ScheduleList = () => {
     hour12: true, // Use 12-hour format
   };
 
+  const dateonlySetting = {
+    timeZone: "America/New_York", // Eastern Time zone
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  };
+
   const timeonlySetting = {
     timeZone: "America/New_York", // Eastern Time zone
     hour: 'numeric',
@@ -338,6 +345,43 @@ const ScheduleList = () => {
     });
   };
   
+  const handleAddNewAssessment = (session_id) => {
+    const currentAssessments = tempComments[session_id]?.new_assessments || [];
+    
+    setTempComments({
+      ...tempComments,
+      [session_id]: {
+        ...tempComments[session_id],
+        new_assessments: [...currentAssessments, { title: '', date: '', description: '' }]
+      }
+    });
+  };
+
+  const handleNewAssessmentChange = (session_id, event, asmtIndex, field) => {
+    const updatedAssessments = tempComments[session_id].new_assessments.map((asmt, index) =>
+      index === asmtIndex ? { ...asmt, [field]: event.target.value } : asmt
+    );
+    setTempComments({
+      ...tempComments,
+      [session_id]: {
+        ...tempComments[session_id],
+        new_assessments: updatedAssessments
+      }
+    });
+  };
+
+  const handleRemoveNewAssessment = (session_id, asmtIndex) => {
+    const updatedAssessments = tempComments[session_id].new_assessments.filter(
+      (_, index) => index !== asmtIndex
+    );
+    setTempComments({
+      ...tempComments,
+      [session_id]: {
+        ...tempComments[session_id],
+        new_assessments: updatedAssessments
+      }
+    });
+  };
 
   return (
     <div className="App">
@@ -375,6 +419,7 @@ const ScheduleList = () => {
               // Fetch the student data and homework list based on student_id
               const studentData = students.find(student => student.student_id === tutoringSession.student_id);
               const studentHomeworkList = homeworkList.filter(homework => homework.student_id === tutoringSession.student_id);
+              const studentAssessments = assessments.filter(assessment => assessment.student_id === tutoringSession.student_id);
               const latestComment = comments
                 .filter(comment => comment.student_id === tutoringSession.student_id)
                 .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))[0];
@@ -464,7 +509,7 @@ const ScheduleList = () => {
                         {studentHomeworkList.map((homework, hwIndex) => (
                           <div key={hwIndex} className="d-flex justify-content-between align-items-center mb-2">
                             <div>Subject: {homework.subject}</div>
-                            <div>Due: {new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(homework.due_date))}</div>
+                            <div>Due: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(homework.due_date))}</div>
                             <div>Notes: {homework.notes}</div>
                             <input
                               type="number"
@@ -520,6 +565,73 @@ const ScheduleList = () => {
                           onClick={() => handleAddNewHomework(tutoringSession.session_id)}
                         >
                           + Add Homework
+                        </button>
+                      </div>
+
+                      {/* Assessments Box */}
+                      <div className="mt-4 border p-3 rounded">
+                        <h6 className="text-muted">Upcoming Assessments:</h6>
+                        
+                        {/* Existing Assessments Row */}
+                        {assessments.map((assessment, asmtIndex) => (
+                          <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
+                            <div>Title: {assessment.title}</div>
+                            <div>Date: {new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(assessment.date))}</div>
+                            <div>Detail: {assessment.description}</div>
+                            <input
+                              type="number"
+                              className="form-control"
+                              placeholder="0-9"
+                              min="0"
+                              max="9"
+                              style={{ width: '60px' }}
+                            />
+                          </div>
+                        ))}
+
+                        {/* New Assessments Rows for Adding Additional Assessments */}
+                        <h6 className="text-muted mt-4">Add New Assessment:</h6>
+                        {tempComments[tutoringSession.session_id]?.new_assessments?.map((assessment, asmtIndex) => (
+                          <div key={`new-${asmtIndex}`} className="d-flex justify-content-between align-items-center mb-2">
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Title"
+                              value={assessment.title}
+                              onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'title')}
+                              style={{ width: '25%' }}
+                            />
+                            <input
+                              type="date"
+                              className="form-control"
+                              placeholder="Date"
+                              value={assessment.date}
+                              onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'date')}
+                              style={{ width: '25%' }}
+                            />
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Description"
+                              value={assessment.description}
+                              onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'description')}
+                              style={{ width: '30%' }}
+                            />
+                            <button
+                              className="btn btn-danger"
+                              onClick={() => handleRemoveNewAssessment(tutoringSession.session_id, hwIndex)}
+                            >
+                              &times;
+                            </button>
+                          </div>
+                        ))}
+
+                        {/* Button to Add a New Assessment Row */}
+                        <button
+                          className="btn btn-primary mt-2"
+                          onClick={() => handleAddNewAssessment(tutoringSession.session_id)}
+                        >
+                          + Add Assessment
                         </button>
                       </div>
 
