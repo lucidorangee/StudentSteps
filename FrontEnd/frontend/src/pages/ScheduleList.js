@@ -72,6 +72,22 @@ const fetchStudents = async () => {
   return response.json();
 };
 
+const fetchAssessments = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/assessments/`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch students');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
+
 
 const postComment = async (session_id, tutor_id, student_id, datetime, stamps, comment) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
@@ -158,6 +174,12 @@ const ScheduleList = () => {
     error: commentsError,
   } = useQuery({queryKey: ['users'], queryFn: () => fetchComments()});
 
+  const {
+    data: assessments,
+    isLoading: assessmentsLoading,
+    error: assessmentsError,
+  } = useQuery({queryKey: ['users'], queryFn: () => fetchAssessments()});
+
   const { mutate: submitComment, isLoading, isError, error } = useMutation({
     mutationFn: ({session_id, tutor_id, student_id, datetime, stamps, comment}) => postComment(session_id, tutor_id, student_id, datetime, stamps, comment),
     onSuccess: (session_id) => {
@@ -229,8 +251,24 @@ const ScheduleList = () => {
 
   const handleCommentSubmit = (tutoringSession) => {
     const comment = tempComments[tutoringSession.session_id]?.comment || '';
+    const private_comment = tempComments[tutoringSession.session_id]?.private_comment || ''
     const stamps = tempComments[tutoringSession.session_id]?.stamps || 0;
     const new_homework = tempComments[tutoringSession.session_id]?.new_homework || [];
+
+    /*
+    setTempComments({
+                                ...tempComments,
+                                [tutoringSession.session_id]: {
+                                  ...tempComments[tutoringSession.session_id],
+                                  comment: tempComments[tutoringSession.session_id]?.comment || '',
+                                  private_comment: tempComments[tutoringSession.session_id]?.private_comment || '',
+                                  stamps: tempComments[tutoringSession.session_id]?.stamps || 0,
+                                  new_homework: tempComments[tutoringSession.session_id]?.new_homework || [],
+                                  previous_homework: tempComments[tutoringSession.session_id]?.previous_homework || [],
+                                  new_assessments: tempComments[tutoringSession.session_id]?.new_assessments || [],
+                                }
+                              });
+    */
 
     if(stamps > 20)
     {
@@ -264,14 +302,14 @@ const ScheduleList = () => {
 
   const handleAddNewHomework = (session_id) => {
     const currentHomework = tempComments[session_id]?.new_homework || [];
-    /*
+    
     setTempComments({
       ...tempComments,
       [session_id]: {
         ...tempComments[session_id],
         new_homework: [...currentHomework, { subject: '', due_date: '', notes: '' }]
       }
-    });*/
+    });
   };
 
   const handleNewHomeworkChange = (session_id, event, hwIndex, field) => {
@@ -363,9 +401,13 @@ const ScheduleList = () => {
                               setTempComments({
                                 ...tempComments,
                                 [tutoringSession.session_id]: {
-                                  comment: tempComments[tutoringSession.session_id]?.comment || '', // Retain current comment or default to an empty string
-                                  stamps: Number(e.target.value), // Update stamps with the new value
-                                  new_homework: tempComments[tutoringSession.session_id]?.new_homework || []
+                                  ...tempComments[tutoringSession.session_id],
+                                  comment: tempComments[tutoringSession.session_id]?.comment || '',
+                                  private_comment: tempComments[tutoringSession.session_id]?.private_comment || '',
+                                  stamps: Number(e.target.value),
+                                  new_homework: tempComments[tutoringSession.session_id]?.new_homework || [],
+                                  previous_homework: tempComments[tutoringSession.session_id]?.previous_homework || [],
+                                  new_assessments: tempComments[tutoringSession.session_id]?.new_assessments || [],
                                 }
                               })
                             }
@@ -493,11 +535,29 @@ const ScheduleList = () => {
                               setTempComments({
                                 ...tempComments,
                                 [tutoringSession.session_id]: {
+                                  ...tempComments[tutoringSession.session_id],
                                   comment: e.target.value,
-                                  stamps: tempComments[tutoringSession.session_id]?.stamps || 0, // Retain current stamps or default to 0
-                                  new_homework: tempComments[tutoringSession.session_id]?.new_homework || []
+                                  private_comment: tempComments[tutoringSession.session_id]?.private_comment || '',
+                                  stamps: tempComments[tutoringSession.session_id]?.stamps || 0,
+                                  new_homework: tempComments[tutoringSession.session_id]?.new_homework || [],
+                                  previous_homework: tempComments[tutoringSession.session_id]?.previous_homework || [],
+                                  new_assessments: tempComments[tutoringSession.session_id]?.new_assessments || [],
                                 }
                               })
+                              /*
+                              setTempComments({
+                                ...tempComments,
+                                [tutoringSession.session_id]: {
+                                  ...tempComments[tutoringSession.session_id],
+                                  comment: tempComments[tutoringSession.session_id]?.comment || '',
+                                  private_comment: tempComments[tutoringSession.session_id]?.private_comment || '',
+                                  stamps: tempComments[tutoringSession.session_id]?.stamps || 0,
+                                  new_homework: tempComments[tutoringSession.session_id]?.new_homework || [],
+                                  previous_homework: tempComments[tutoringSession.session_id]?.previous_homework || [],
+                                  new_assessments: tempComments[tutoringSession.session_id]?.new_assessments || [],
+                                }
+                              });
+                              */
                             }
                           />
                         </div>
