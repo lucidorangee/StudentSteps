@@ -262,7 +262,7 @@ const ManageHomework = () => {
               <td>{cur_student.first_name} {cur_student.last_name}</td>
               <td>{ahomework.subject}</td>
               <td>{ahomework.assigned}</td>
-              <td>{`${new Intl.DateTimeFormat('en-US', dateonlySetting).format(ahomework.due_date)}`}</td>
+              <td>{`${new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(ahomework.due_date))}`}</td>
               <td>{ahomework.is_completed}</td>
               <td>
                 <i
