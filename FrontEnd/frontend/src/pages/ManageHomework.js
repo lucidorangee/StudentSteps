@@ -5,7 +5,6 @@ import Select from 'react-select';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 
-
 const fetchHomework = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
     credentials: 'include',
@@ -197,9 +196,10 @@ const ManageUsers = () => {
     let temp = [];
     for(let i = 0; i < homeworkList.length; i++)
     {
-      if((students[i].first_name.includes(filterName) || students[i].last_name.includes(filterName))
-        && (filterGrade === 0 || students[i].grade_level === filterGrade))
-          temp.push(students[i]);
+      const student = students.find((s) => s.student_id === homeworkList[i]);
+      if(student?.first_name.includes(filterName) || student?.last_name.includes(filterName)
+        && (filterGrade !== 0 && student?.grade_level === filterGrade))
+          temp.push(homeworkList[i]);
     }
     setFilteredHomework(temp);
   };

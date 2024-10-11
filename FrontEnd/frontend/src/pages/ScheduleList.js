@@ -230,6 +230,7 @@ const ScheduleList = () => {
   const handleCommentSubmit = (tutoringSession) => {
     const comment = tempComments[tutoringSession.session_id]?.comment || '';
     const stamps = tempComments[tutoringSession.session_id]?.stamps || 0;
+    const new_homework = tempComments[tutoringSession.session_id]?.new_homework || [];
 
     if(stamps > 20)
     {
@@ -263,13 +264,14 @@ const ScheduleList = () => {
 
   const handleAddNewHomework = (session_id) => {
     const currentHomework = tempComments[session_id]?.new_homework || [];
+    /*
     setTempComments({
       ...tempComments,
       [session_id]: {
         ...tempComments[session_id],
         new_homework: [...currentHomework, { subject: '', due_date: '', notes: '' }]
       }
-    });
+    });*/
   };
 
   const handleNewHomeworkChange = (session_id, event, hwIndex, field) => {
