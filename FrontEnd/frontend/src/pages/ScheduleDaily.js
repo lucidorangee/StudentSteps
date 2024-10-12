@@ -76,14 +76,18 @@ const ScheduleDaily = () => {
     end: new Date(new Date(session.session_datetime).getTime() + session.duration * 60 * 1000),
   }));
 
-  // Create a time slots array for the calendar (example: 9 AM to 5 PM)
+  // Create a time slots array for the calendar (example: 3 PM to 8 PM)
   const timeSlots = [];
-  const startHour = 9;
-  const endHour = 17;
+  const startHour = 15;
+  const endHour = 20;
   for (let hour = startHour; hour <= endHour; hour++) {
     timeSlots.push(`${hour}:00`);
     timeSlots.push(`${hour}:30`);
   }
+
+  const calculateRowSpan = (start, end) => {
+    return Math.ceil((end - start) / (30 * 60 * 1000)); // Convert duration to 30-minute slots
+  };
 
   return (
     <div className="calendar">
@@ -98,25 +102,39 @@ const ScheduleDaily = () => {
           </tr>
         </thead>
         <tbody>
-          {timeSlots.map(time => (
+          {timeSlots.map((time, timeIndex) => (
             <tr key={time}>
               <td className="time-cell">{time}</td>
               {resources.map(tutor => {
-                const sessionsForTutor = events.filter(event => event.resource === tutor.id &&
-                  event.start.toLocaleTimeString() === new Date(`1970-01-01T${time}:00`).toLocaleTimeString());
-                return (
-                  <td key={tutor.id} className="session-cell">
-                    {sessionsForTutor.length > 0 ? (
-                      sessionsForTutor.map(session => (
-                        <div key={session.id} className="session">
-                          {session.student}
-                        </div>
-                      ))
-                    ) : (
-                      <div className="no-session">No Sessions</div>
-                    )}
-                  </td>
-                );
+                const session = events.find(event => {
+                  const eventStartTime = event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                  return event.resource === tutor.id && eventStartTime === time;
+                });
+
+                if (session) {
+                  const rowSpan = calculateRowSpan(session.start, session.end);
+
+                  return (
+                    <td key={tutor.id} className="session-cell" rowSpan={rowSpan}>
+                      <div className="session">
+                        {session.student}
+                      </div>
+                    </td>
+                  );
+                }
+
+                // Skip cells that are covered by rowspan cells
+                const isWithinMergedCell = events.some(event => {
+                  const eventStartIndex = timeSlots.indexOf(event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+                  const eventRowSpan = calculateRowSpan(event.start, event.end);
+                  return (
+                    event.resource === tutor.id &&
+                    timeIndex > eventStartIndex &&
+                    timeIndex < eventStartIndex + eventRowSpan
+                  );
+                });
+
+                return !isWithinMergedCell ? <td key={tutor.id} className="no-session">No Sessions</td> : null;
               })}
             </tr>
           ))}
