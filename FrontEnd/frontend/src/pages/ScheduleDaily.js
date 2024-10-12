@@ -38,7 +38,9 @@ const fetchTutoringSessions = async () => {
 };
 
 const ScheduleDaily = () => {
-  const { date } = useParams();
+  const { localdate } = useParams();
+  const [year, month, day] = localdate.split("-");
+  const date = new Date(year, month - 1, day);
 
   const {
     data: tutors,
