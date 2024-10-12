@@ -5,7 +5,81 @@ import { useQuery } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 import "./css/Calendar.css";
 
-// Fetch functions remain the same
+const fetchHomework = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/homework`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch homework');
+  }
+  return response.json();
+};
+
+const fetchStudents = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch students');
+  }
+  return response.json();
+};
+
+const fetchTutors = async() => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch comments');
+    err.status = response.status;
+    throw err;
+  }
+
+  console.log("successfully fetched comments");
+  return response.json();
+}
+
+const fetchTutoringSessions = async() => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutoring sessions');
+    err.status = response.status;
+    throw err;
+  }
+
+  console.log("successfully fetched tutoring sessions");
+  return response.json();
+}
+
+const styles = {
+  wrap: {
+    display: "flex"
+  },
+  left: {
+    marginRight: "10px"
+  },
+  main: {
+    flexGrow: "1"
+  }
+};
 
 const WeeklyCalendar = () => {
   const { date } = useParams();
@@ -41,7 +115,7 @@ const WeeklyCalendar = () => {
     .map(session => ({
       id: session.session_id,
       resource: session.tutor_id, // Map to the corresponding tutor
-      text: session.student_name || 'Unnamed Student',
+      text: session.student_id || 'Unnamed Student',
       start: new Date(session.session_datetime),
       end: new Date(new Date(session.session_datetime).getTime() + session.duration * 60 * 1000),
     }));
