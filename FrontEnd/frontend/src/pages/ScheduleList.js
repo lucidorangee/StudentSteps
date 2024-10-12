@@ -389,6 +389,7 @@ const ScheduleList = () => {
   };
 
   const handleExistingHomeworkUpdate = (session_id, homework_id, event, hwIndex) => {
+    console.log(`${homework_id} / ${session_id} / ${event} / ${hwIndex}`)
     const previousHomework = tempComments[session_id]?.previous_homework || []; // Ensure an array exists
 
     // Check if hwIndex is within bounds, if not, add a new entry
