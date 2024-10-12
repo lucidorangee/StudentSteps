@@ -115,7 +115,7 @@ const ScheduleDaily = () => {
     isLoading: tutoringSessionLoading,
     error: tutoringSessionError,
   } = useQuery({ queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions() });
-  
+
   const config = {
     viewType: "Resources",
     durationBarVisible: true,
@@ -178,7 +178,7 @@ const ScheduleDaily = () => {
   }
 
   useEffect(() => {
-    if (!tutoringSessionData) return;
+    if (!tutoringSessionData || !date) return;
 
     // Filter the sessions for the specific day
     const filteredSessions = tutoringSessionData.filter(session => {
@@ -191,7 +191,7 @@ const ScheduleDaily = () => {
 
   // Group by tutor
   useEffect(() => {
-    if (!filteredData) return;
+    if (!filteredData || !tutors) return;
 
     const groupedEvents = filteredData.reduce((acc, item) => {
       const tutorId = item.tutor_id;
