@@ -122,13 +122,21 @@ const ScheduleList = () => {
   const queryClient = useQueryClient();
   const [selectedDate, setSelectedDate] = useState(null);
 
+  /**
+   * comment (text)
+      private_comment (text)
+      stamps (integer between 0 and 20, both inclusive)
+      new_homework (list of [subject, due_date, notes] as we have right now)
+      previous_homework (list of [homework_id, is_completed])
+      new_assessments (list of [title, date, description]) 
+   */
   const [tempComments, setTempComments] = useState(() => {
   try {
     return JSON.parse(localStorage.getItem('tempComments')) || {};
   } catch {
     return {};
   }
-});
+  });
 
   const [expandedSessions, setExpandedSessions] = useState({});
   const { date } = useParams();
@@ -267,21 +275,6 @@ const ScheduleList = () => {
     const prev_homework = tempComments[tutoringSession.session_id]?.prev_homework || [];
     const new_assessments = tempComments[tutoringSession.session_id]?.new_assessments || [];
 
-    /*
-    setTempComments({
-                                ...tempComments,
-                                [tutoringSession.session_id]: {
-                                  ...tempComments[tutoringSession.session_id],
-                                  comment: tempComments[tutoringSession.session_id]?.comment || '',
-                                  private_comment: tempComments[tutoringSession.session_id]?.private_comment || '',
-                                  stamps: tempComments[tutoringSession.session_id]?.stamps || 0,
-                                  new_homework: tempComments[tutoringSession.session_id]?.new_homework || [],
-                                  previous_homework: tempComments[tutoringSession.session_id]?.previous_homework || [],
-                                  new_assessments: tempComments[tutoringSession.session_id]?.new_assessments || [],
-                                }
-                              });
-    */
-
     if(stamps > 20)
     {
       setAlert("No more than 20 stamps can be given every session");
@@ -388,6 +381,19 @@ const ScheduleList = () => {
       [session_id]: {
         ...tempComments[session_id],
         new_assessments: updatedAssessments
+      }
+    });
+  };
+
+  const handleExistingHomeworkUpdate = (session_id, event, hwIndex) => {
+    const updatedHomeworkList = tempComments[session_id].previous_homework.map((hw, index) =>
+      index === hwIndex ? { ...hw, ['homework_id']: hw.homework_id, ['completedness']: Number(event.target.value) } : hw
+    );
+    setTempComments({
+      ...tempComments,
+      [session_id]: {
+        ...tempComments[session_id],
+        previous_homework: updatedHomeworkList
       }
     });
   };
@@ -528,6 +534,7 @@ const ScheduleList = () => {
                               min="0"
                               max="9"
                               style={{ width: '60px' }}
+                              onChange={(e) => handleExistingHomeworkUpdate(tutoringSession.session_id, e, hwIndex)}
                             />
                           </div>
                         ))}

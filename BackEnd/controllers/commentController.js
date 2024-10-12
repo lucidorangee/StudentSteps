@@ -172,6 +172,13 @@ const completeAndAddComment = async (req, res) => {
             ]);
         }
 
+        for(const hm of prev_homework)
+            {
+                await client.query(homeworkQueries.updateHomeworkCompletion, [
+                    hm.homework_id, hm.completedness
+                ]);
+            }
+
         await client.query('COMMIT');  // Commit transaction
         res.status(201).send("Tutoring session completed and comment added successfully");
 
