@@ -235,9 +235,9 @@ const ScheduleList = () => {
     }
   }, [date, tutoringSessionData]);
 
-  if (commentsLoading || studentsLoading || homeworkListLoading || tutoringSessionsLoading) return <div>Loading...</div>;
-  if (commentsError || studentsError || homeworkListError || tutoringSessionsError) {
-    if(commentsError?.status === 401 || studentsError?.status === 401 || homeworkListError?.status === 401 || tutoringSessionsError?.status === 401) //unauthorized
+  if (assessmentsLoading || commentsLoading || studentsLoading || homeworkListLoading || tutoringSessionsLoading) return <div>Loading...</div>;
+  if (assessmentsError || commentsError || studentsError || homeworkListError || tutoringSessionsError) {
+    if(assessmentsError?.status === 401 || commentsError?.status === 401 || studentsError?.status === 401 || homeworkListError?.status === 401 || tutoringSessionsError?.status === 401) //unauthorized
     {
       console.log("unathorized");
       localStorage.setItem('tempComments', JSON.stringify(tempComments));
