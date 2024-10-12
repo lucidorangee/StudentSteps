@@ -124,6 +124,10 @@ const ScheduleList = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [selectedDate, setSelectedDate] = useState(null);
+  const [expandedSessions, setExpandedSessions] = useState({});
+  const { date } = useParams();
+  const [filteredData, setFilteredData] = useState([]);
+  const [alert, setAlert] = useState('');
 
   /**
    * comment (text)
@@ -141,11 +145,6 @@ const ScheduleList = () => {
   }
   });
 
-  const [expandedSessions, setExpandedSessions] = useState({});
-  const { date } = useParams();
-  const [filteredData, setFilteredData] = useState([]);
-
-  const [alert, setAlert] = useState('');
 
   const datetimeSetting = {
     timeZone: "America/New_York", // Eastern Time zone
@@ -312,6 +311,8 @@ const ScheduleList = () => {
           return;
         }
       }
+
+    setAlert(''); // Show there is nothing to alert
 
     submitComment({
       session_id: tutoringSession.session_id, 
