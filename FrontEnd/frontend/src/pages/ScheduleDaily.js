@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { DayPilotScheduler } from "@daypilot/daypilot-lite-react";
-import { useQuery } from '@tanstack/react-query';
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import "./css/Calendar.css";
 
 // Fetch functions
@@ -42,23 +42,20 @@ const fetchTutoringSessions = async () => {
 const ScheduleDaily = () => {
   const { date } = useParams();
 
-  // Data fetching with react-query
   const {
     data: tutors,
     isLoading: tutorsLoading,
     error: tutorsError,
-  } = useQuery(['tutors'], fetchTutors);
+  } = useQuery({queryKey: ['tutors'], queryFn: () => fetchTutors()});
 
   const {
     data: tutoringSessionData,
     isLoading: tutoringSessionLoading,
     error: tutoringSessionError,
-  } = useQuery(['tutoringSessions'], fetchTutoringSessions);
-
-  // Loading state
+  } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
+  
   if (tutorsLoading || tutoringSessionLoading) return <div>Loading...</div>;
 
-  // Error handling
   if (tutoringSessionError || tutorsError) {
     if (tutoringSessionError?.status === 401 || tutorsError?.status === 401) {
       return <Navigate to="/login" />;
