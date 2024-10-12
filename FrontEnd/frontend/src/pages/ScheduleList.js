@@ -388,22 +388,18 @@ const ScheduleList = () => {
     });
   };
 
-  const handleExistingHomeworkUpdate = (session_id, homework_id, event, hwIndex) => {
-    console.log(`${homework_id} / ${session_id} / ${event} / ${hwIndex}`)
+  const handleExistingHomeworkUpdate = (session_id, homework_id, event) => {
     const previousHomework = tempComments[session_id]?.previous_homework || []; // Ensure an array exists
 
-    // Check if hwIndex is within bounds, if not, add a new entry
-    const updatedHomeworkList = previousHomework.map((hw, index) =>
-        index === hwIndex ? { ...hw, completedness: Number(event.target.value) } : hw
-    );
-
-    // If hwIndex is out of bounds, add a new object at that index
-    if (hwIndex >= previousHomework.length) {
-        updatedHomeworkList.push({
-            homework_id: homework_id, 
-            completedness: Number(event.target.value)
-        });
-    }
+    // Check if homework_id already exists in previousHomework
+    const index = previousHomework.findIndex(hw => hw.homework_id === homework_id);
+    
+    // If found, update the completedness; otherwise, add a new entry
+    const updatedHomeworkList = index !== -1
+        ? previousHomework.map((hw, idx) =>
+            idx === index ? { ...hw, completedness: Number(event.target.value) } : hw
+          )
+        : [...previousHomework, { homework_id, completedness: Number(event.target.value) }];
 
     setTempComments({
         ...tempComments,
@@ -412,7 +408,7 @@ const ScheduleList = () => {
             previous_homework: updatedHomeworkList
         }
     });
-};
+  };
 
   return (
     <div className="App">
@@ -550,7 +546,7 @@ const ScheduleList = () => {
                               min="0"
                               max="9"
                               style={{ width: '60px' }}
-                              onChange={(e) => handleExistingHomeworkUpdate(tutoringSession.session_id, homework.homework_id, e, hwIndex)}
+                              onChange={(e) => handleExistingHomeworkUpdate(tutoringSession.session_id, homework.homework_id, e)}
                             />
                           </div>
                         ))}
