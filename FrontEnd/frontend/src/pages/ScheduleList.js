@@ -385,18 +385,28 @@ const ScheduleList = () => {
     });
   };
 
-  const handleExistingHomeworkUpdate = (session_id, event, hwIndex) => {
+  const handleExistingHomeworkUpdate = (session_id, homework_id, event, hwIndex) => {
     const previousHomework = tempComments[session_id]?.previous_homework || []; // Ensure an array exists
+
+    // Check if hwIndex is within bounds, if not, add a new entry
     const updatedHomeworkList = previousHomework.map((hw, index) =>
-      index === hwIndex ? { ...hw, completedness: Number(event.target.value) } : hw
+        index === hwIndex ? { ...hw, completedness: Number(event.target.value) } : hw
     );
 
+    // If hwIndex is out of bounds, add a new object at that index
+    if (hwIndex >= previousHomework.length) {
+        updatedHomeworkList.push({
+            homework_id: homework_id, 
+            completedness: Number(event.target.value)
+        });
+    }
+
     setTempComments({
-      ...tempComments,
-      [session_id]: {
-        ...tempComments[session_id],
-        previous_homework: updatedHomeworkList
-      }
+        ...tempComments,
+        [session_id]: {
+            ...tempComments[session_id],
+            previous_homework: updatedHomeworkList
+        }
     });
 };
 
@@ -536,7 +546,7 @@ const ScheduleList = () => {
                               min="0"
                               max="9"
                               style={{ width: '60px' }}
-                              onChange={(e) => handleExistingHomeworkUpdate(tutoringSession.session_id, e, hwIndex)}
+                              onChange={(e) => handleExistingHomeworkUpdate(tutoringSession.session_id, homework.homework_id, e, hwIndex)}
                             />
                           </div>
                         ))}
