@@ -150,12 +150,12 @@ const completeAndAddComment = async (req, res) => {
 
         // Add comment
         await client.query(queries.addComment, [
-            student_id, tutor_id, datetime, comment, 'public', stamps, private_comment,
+            student_id, tutor_id, datetime, comment, 'public', stamps, false,
         ]);
 
         // Add private comment
         await client.query(queries.addComment, [
-            student_id, tutor_id, datetime, comment, 'private', 0, private_comment,
+            student_id, tutor_id, datetime, comment, 'private', 0, false,
         ]);
 
         for(const assessment of new_assessments)
