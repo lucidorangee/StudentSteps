@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import './css/DailyCalendar.css'; // Ensure your CSS is linked here
+import './css/DailyCalendar.css';
 
 // Fetch functions
 const fetchTutors = async () => {
@@ -119,8 +119,8 @@ const ScheduleDaily = () => {
               <td className="time-cell">{time}</td>
               {resources.map(tutor => {
                 const session = events.find(event => {
-                  const eventStartTime = event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                  console.log(`Comparing: ${new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start)} and ${time}`);
+                  const eventStartTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
+                  console.log(`Comparing: ${(new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start)).toString()} and ${time}`);
                   return event.resource === tutor.id && eventStartTime === time;
                 });
 
