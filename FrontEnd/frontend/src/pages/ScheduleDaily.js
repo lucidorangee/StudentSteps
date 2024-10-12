@@ -238,8 +238,45 @@ const ScheduleDaily = () => {
   }
 
   return (
-    <div className="App">
+    <div className="container">
+      <div className="row">
+        {/* Student Dropdown */}
+        <div className="col-6">
+          <select value={selectedStudent || ""} onChange={handleStudentChange} className="form-select mb-3">
+            <option value="" disabled>Select a Student</option>
+            {students.map(student => (
+              <option key={student.student_id} value={student.student_id}>
+                {student.first_name} {student.last_name}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        {/* Tutor Dropdown */}
+        <div className="col-6">
+          <select value={selectedTutor || ""} onChange={handleTutorChange} className="form-select mb-3">
+            <option value="" disabled>Select a Tutor</option>
+            {tutors.map(tutor => (
+              <option key={tutor.tutor_id} value={tutor.tutor_id}>
+                {tutor.first_name} {tutor.last_name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       <div style={styles.wrap}>
+        <div style={styles.left}>
+          <DayPilotNavigator
+            selectMode={"Week"}
+            showMonths={3}
+            skipMonths={3}
+            selectionDay={startDate}
+            onTimeRangeSelected={args => {
+              setStartDate(args.day);
+            }}
+          />
+        </div>
         <div style={styles.main}>
           <DayPilotCalendar
             {...config}
