@@ -401,6 +401,8 @@ const ScheduleList = () => {
           )
         : [...previousHomework, { homework_id, completedness: Number(event.target.value) }];
 
+        console.log(updatedHomeworkList);
+
     setTempComments({
         ...tempComments,
         [session_id]: {
