@@ -118,23 +118,23 @@ const ScheduleDaily = () => {
       <tr key={time}>
         <td className="time-cell">{time}</td>
         {resources.map(tutor => {
-          // Find sessions that belong to the current tutor at this time slot
+          // Find all sessions for the current tutor at this time slot
           const sessionsAtTime = events.filter(event => {
             const eventStartTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
             return event.resource === tutor.id && eventStartTime === time;
           });
 
+          // If there are sessions for the tutor at this time, display them
           if (sessionsAtTime.length > 0) {
-            // Iterate through each session
             return sessionsAtTime.map((session, sessionIndex) => {
               const rowSpan = calculateRowSpan(session.start, session.end);
-              const occupiedIndex = timeSlots.findIndex((_, index) => activeCells[`${tutor.id}-${index}`] === undefined);
+              const colIndex = timeIndex + (sessionIndex * 0.5); // Offset column index for additional sessions
 
-              // Mark the column as occupied for this tutor
-              activeCells[`${tutor.id}-${occupiedIndex}`] = true;
+              // Mark the cells occupied by this session
+              activeCells[`${tutor.id}-${colIndex}`] = true;
 
               return (
-                <td key={`${tutor.id}-${occupiedIndex}-${sessionIndex}`} className="session-cell" rowSpan={rowSpan}>
+                <td key={`${tutor.id}-${colIndex}-${sessionIndex}`} className="session-cell" rowSpan={rowSpan}>
                   <div className="session">
                     {session.student}
                   </div>
@@ -143,7 +143,7 @@ const ScheduleDaily = () => {
             });
           }
 
-          // If no session is found and column is already occupied
+          // If no session is found and column is already occupied, skip rendering
           if (activeCells[`${tutor.id}-${timeIndex}`]) {
             return null;
           }
@@ -154,6 +154,7 @@ const ScheduleDaily = () => {
     ))}
   </tbody>
 </table>
+
 
     </div>
   );
