@@ -386,9 +386,11 @@ const ScheduleList = () => {
   };
 
   const handleExistingHomeworkUpdate = (session_id, event, hwIndex) => {
-    const updatedHomeworkList = tempComments[session_id].previous_homework.map((hw, index) =>
-      index === hwIndex ? { ...hw, ['homework_id']: hw.homework_id, ['completedness']: Number(event.target.value) } : hw
+    const previousHomework = tempComments[session_id]?.previous_homework || []; // Ensure an array exists
+    const updatedHomeworkList = previousHomework.map((hw, index) =>
+      index === hwIndex ? { ...hw, completedness: Number(event.target.value) } : hw
     );
+
     setTempComments({
       ...tempComments,
       [session_id]: {
@@ -396,7 +398,7 @@ const ScheduleList = () => {
         previous_homework: updatedHomeworkList
       }
     });
-  };
+};
 
   return (
     <div className="App">
