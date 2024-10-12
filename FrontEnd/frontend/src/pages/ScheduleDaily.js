@@ -1,8 +1,7 @@
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
-import { DayPilotScheduler } from "@daypilot/daypilot-lite-react";
-import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
-import "./css/Calendar.css";
+import { useQuery } from '@tanstack/react-query';
+import './css/Calendar.css';
 
 // Fetch functions
 const fetchTutors = async () => {
@@ -36,7 +35,7 @@ const fetchTutoringSessions = async () => {
     throw err;
   }
   return response.json();
-}
+};
 
 const ScheduleDaily = () => {
   const { date } = useParams();
@@ -52,7 +51,7 @@ const ScheduleDaily = () => {
     isLoading: tutoringSessionsLoading,
     error: tutoringSessionsError,
   } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
-  
+
   if (tutorsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
 
   if (tutoringSessionsError || tutorsError) {
@@ -63,7 +62,7 @@ const ScheduleDaily = () => {
   }
 
   // Prepare resources for the scheduler
-  const resources = tutors.slice(0, 5).map(tutor => ({
+  const resources = tutors.map(tutor => ({
     id: tutor.tutor_id,
     name: `${tutor.first_name} ${tutor.last_name}`
   }));
@@ -71,15 +70,58 @@ const ScheduleDaily = () => {
   // Prepare events for the scheduler
   const events = tutoringSessionData.map(session => ({
     id: session.session_id,
-    resource: session.tutor_id, // Map to the corresponding tutor
-    text: session.student_name || 'Unnamed Student', // Use session.student_name if available
+    resource: session.tutor_id,
+    student: session.student_name || 'Unnamed Student',
     start: new Date(session.session_datetime),
     end: new Date(new Date(session.session_datetime).getTime() + session.duration * 60 * 1000),
   }));
 
+  // Create a time slots array for the calendar (example: 9 AM to 5 PM)
+  const timeSlots = [];
+  const startHour = 9;
+  const endHour = 17;
+  for (let hour = startHour; hour <= endHour; hour++) {
+    timeSlots.push(`${hour}:00`);
+    timeSlots.push(`${hour}:30`);
+  }
+
   return (
-    <div className="App">
-      
+    <div className="calendar">
+      <h1>Schedule for {date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()}</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Time</th>
+            {resources.map(tutor => (
+              <th key={tutor.id}>{tutor.name}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {timeSlots.map(time => (
+            <tr key={time}>
+              <td>{time}</td>
+              {resources.map(tutor => {
+                const sessionsForTutor = events.filter(event => event.resource === tutor.id && 
+                  event.start.toLocaleTimeString() === new Date(`1970-01-01T${time}:00`).toLocaleTimeString());
+                return (
+                  <td key={tutor.id}>
+                    {sessionsForTutor.length > 0 ? (
+                      sessionsForTutor.map(session => (
+                        <div key={session.id}>
+                          {session.student}
+                        </div>
+                      ))
+                    ) : (
+                      <div>No Sessions</div>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
