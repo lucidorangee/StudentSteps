@@ -39,7 +39,13 @@ const fetchTutoringSessions = async () => {
 
 const ScheduleDaily = () => {
   const { date } = useParams();
-  console.log(date);
+
+  const timeonlySetting = {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'America/New_York',
+    hour12: false // Set to true if you want 12-hour format
+  };
 
   const {
     data: tutors,
@@ -114,7 +120,7 @@ const ScheduleDaily = () => {
               {resources.map(tutor => {
                 const session = events.find(event => {
                   const eventStartTime = event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                  console.log(`Comparing: ${eventStartTime} and ${time}`);
+                  console.log(`Comparing: ${new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start)} and ${time}`);
                   return event.resource === tutor.id && eventStartTime === time;
                 });
 
