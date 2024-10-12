@@ -114,6 +114,7 @@ const ScheduleDaily = () => {
               {resources.map(tutor => {
                 const session = events.find(event => {
                   const eventStartTime = event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                  console.log(`Comparing: ${eventStartTime} and ${time}`);
                   return event.resource === tutor.id && eventStartTime === time;
                 });
 
