@@ -401,13 +401,19 @@ const ScheduleList = () => {
           )
         : [...previousHomework, { homework_id, completedness: Number(event.target.value) }];
 
-        console.log(updatedHomeworkList);
+        console.log(session_id, updatedHomeworkList);
 
     setTempComments({
         ...tempComments,
         [session_id]: {
             ...tempComments[session_id],
-            prev_homework: updatedHomeworkList
+            comment: tempComments[session_id]?.comment || '',
+            private_comment: tempComments[session_id]?.private_comment || '',
+            stamps: tempComments[session_id]?.stamps || 0,
+            new_homework: tempComments[session_id]?.new_homework || [],
+            prev_homework: tempComments[session_id]?.prev_homework || [],
+            new_assessments: tempComments[session_id]?.new_assessments || [],
+            prev_homework: updatedHomeworkList,
         }
     });
   };
