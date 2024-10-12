@@ -182,13 +182,13 @@ const ScheduleList = () => {
     data: comments,
     isLoading: commentsLoading,
     error: commentsError,
-  } = useQuery({queryKey: ['users'], queryFn: () => fetchComments()});
+  } = useQuery({queryKey: ['comments'], queryFn: () => fetchComments()});
 
   const {
     data: assessments,
     isLoading: assessmentsLoading,
     error: assessmentsError,
-  } = useQuery({queryKey: ['users'], queryFn: () => fetchAssessments()});
+  } = useQuery({queryKey: ['assessments'], queryFn: () => fetchAssessments()});
 
   const { mutate: submitComment, isLoading, isError, error } = useMutation({
     mutationFn: ({session_id, tutor_id, student_id, datetime, stamps, comment, private_comment, prev_homework, new_homework, new_assessments}) => postComment(session_id, tutor_id, student_id, datetime, stamps, comment, private_comment, prev_homework, new_homework, new_assessments),
