@@ -115,17 +115,13 @@ const ScheduleDaily = () => {
     isLoading: tutoringSessionLoading,
     error: tutoringSessionError,
   } = useQuery({ queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions() });
-
-  useEffect(() => {
-    setFilteredData(tutoringSessionData);
-  }, [tutoringSessionData]);
-
+  
   const config = {
     viewType: "Resources",
     durationBarVisible: true,
     timeRangeSelectedHandling: "Enabled",
     businessBeginsHour: 8,   // adjust start time as needed
-    businessEndsHour: 17,    // adjust end time as needed
+    businessEndsHour: 20,    // adjust end time as needed
     resources: tutors?.map(tutor => ({
       id: tutor.tutor_id,
       name: `${tutor.first_name} ${tutor.last_name}`,
@@ -182,21 +178,50 @@ const ScheduleDaily = () => {
   }
 
   useEffect(() => {
-    if (!filteredData) return;
-    const events = filteredData.map(item => {
-      const start = new Date(item.session_datetime);
-      const end = new Date(start.getTime() + item.duration * 60 * 1000);
-      return {
-        id: item.session_id,
-        text: `Session with Student ${item.student_id}`,
-        start: start,
-        end: end,
-        resource: item.tutor_id,  // Assigns the event to the tutor
-        backColor: intToHexSpread(item.tutor_id),
-      };
+    if (!tutoringSessionData) return;
+
+    // Filter the sessions for the specific day
+    const filteredSessions = tutoringSessionData.filter(session => {
+      const sessionDate = new Date(session.session_datetime).toISOString().split('T')[0]; // Get only the date part
+      return sessionDate === date; // Compare with the URL date parameter
     });
+
+    setFilteredData(filteredSessions);
+  }, [tutoringSessionData, date]);
+
+  // Group by tutor
+  useEffect(() => {
+    if (!filteredData) return;
+
+    const groupedEvents = filteredData.reduce((acc, item) => {
+      const tutorId = item.tutor_id;
+      if (!acc[tutorId]) {
+        acc[tutorId] = [];
+      }
+      acc[tutorId].push(item);
+      return acc;
+    }, {});
+
+    const events = Object.entries(groupedEvents).map(([tutorId, sessions]) => {
+      const tutor = tutors.find(t => t.tutor_id === parseInt(tutorId));
+      const tutorName = tutor ? `${tutor.first_name} ${tutor.last_name}` : 'Unknown Tutor';
+
+      return sessions.map(session => {
+        const start = new Date(session.session_datetime);
+        const end = new Date(start.getTime() + session.duration * 60 * 1000);
+        
+        return {
+          id: session.session_id,
+          text: tutorName,
+          start: start,
+          end: end,
+          backColor: intToHexSpread(tutorId)
+        };
+      });
+    }).flat();
+
     setEvents(events);
-  }, [filteredData]);
+  }, [filteredData, tutors]);
 
   if (homeworkListLoading || studentsLoading || tutorsLoading || tutoringSessionLoading || !filteredData) {
     return <div>Loading...</div>;
@@ -231,6 +256,7 @@ const ScheduleDaily = () => {
       <div style={styles.wrap}>
         <div style={styles.main}>
           <DayPilotCalendar
+            viewType="Day"
             {...config}
             events={events}
             startDate={startDate}
