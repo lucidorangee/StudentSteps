@@ -89,7 +89,7 @@ const fetchAssessments = async () => {
 };
 
 
-const postComment = async (session_id, tutor_id, student_id, datetime, stamps, comment) => {
+const postComment = async (session_id, tutor_id, student_id, datetime, stamps, comment, private_comment, prev_homework, new_homework, new_assessments) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
     credentials: 'include',
     method: 'POST',
@@ -101,8 +101,11 @@ const postComment = async (session_id, tutor_id, student_id, datetime, stamps, c
         student_id: student_id,
         datetime: new Date(datetime).toISOString(), // Ensure datetime is correctly serialized
         stamps:stamps,
-        content: comment,
-        type: 'public'
+        comment: comment,
+        private_comment: private_comment,
+        prev_homework: prev_homework,
+        new_homework: new_homework,
+        new_assessments: new_assessments
     }), // Adjust according to your backend API
   })
 
@@ -188,7 +191,7 @@ const ScheduleList = () => {
   } = useQuery({queryKey: ['users'], queryFn: () => fetchAssessments()});
 
   const { mutate: submitComment, isLoading, isError, error } = useMutation({
-    mutationFn: ({session_id, tutor_id, student_id, datetime, stamps, comment}) => postComment(session_id, tutor_id, student_id, datetime, stamps, comment),
+    mutationFn: ({session_id, tutor_id, student_id, datetime, stamps, comment, private_comment, prev_homework, new_homework, new_assessments}) => postComment(session_id, tutor_id, student_id, datetime, stamps, comment, private_comment, prev_homework, new_homework, new_assessments),
     onSuccess: (session_id) => {
       console.log("Successfully posted");
 
@@ -258,9 +261,11 @@ const ScheduleList = () => {
 
   const handleCommentSubmit = (tutoringSession) => {
     const comment = tempComments[tutoringSession.session_id]?.comment || '';
-    const private_comment = tempComments[tutoringSession.session_id]?.private_comment || ''
+    const private_comment = tempComments[tutoringSession.session_id]?.private_comment || '';
     const stamps = tempComments[tutoringSession.session_id]?.stamps || 0;
     const new_homework = tempComments[tutoringSession.session_id]?.new_homework || [];
+    const prev_homework = tempComments[tutoringSession.session_id]?.prev_homework || [];
+    const new_assessments = tempComments[tutoringSession.session_id]?.new_assessments || [];
 
     /*
     setTempComments({
@@ -296,7 +301,11 @@ const ScheduleList = () => {
       student_id: tutoringSession.student_id, 
       datetime: tutoringSession.session_datetime, 
       stamps: stamps,
-      comment: comment
+      comment: comment,
+      private_comment: private_comment,
+      prev_homework: prev_homework,
+      new_homework: new_homework,
+      new_assessments: new_assessments
     });
   }
 

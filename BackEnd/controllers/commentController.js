@@ -1,6 +1,8 @@
 const pool = require('../db.js');
 const queries = require("../models/commentQueries.js");
 const tutoringSessionQueries = require("../models/tutoringSessionQueries.js");
+const homeworkQueries = require("../models/homeworkQueries.js");
+const assessmentQueries = require("../models/assessmentQueries.js");
 
 
 const getComments = (req, res) => {    
@@ -135,26 +137,51 @@ const addComment = (req, res) => {
     )
 };
 
-const completeAndAddComment = (req, res) => {
-    console.log(res);
-    pool.query(
-        tutoringSessionQueries.completeTutoringSession,
-        [ req.params.id ],
-        (error, results) => {
-            if(error) throw error;
-        }
-    )
+const completeAndAddComment = async (req, res) => {
+    const client = await pool.connect();  // Connect to the client for transaction
+    try {
+        await client.query('BEGIN'); // Start transaction
 
-    const { student_id, tutor_id, datetime, content, type, stamps, approved } = req.body;
-    pool.query(
-        queries.addComment,
-        [ student_id, tutor_id, datetime, content, type, stamps, approved ],
-        (error, results) => {
-            if(error) throw error;
+        const { id } = req.params;
+        const { tutor_id, student_id, datetime, stamps, comment, private_comment, prev_homework, new_homework, new_assessments } = req.body;
+
+        // Complete tutoring session
+        await client.query(tutoringSessionQueries.completeTutoringSession, [id]);
+
+        // Add comment
+        await client.query(queries.addComment, [
+            student_id, tutor_id, datetime, comment, 'public', stamps, private_comment,
+        ]);
+
+        // Add private comment
+        await client.query(queries.addComment, [
+            student_id, tutor_id, datetime, comment, 'private', 0, private_comment,
+        ]);
+
+        for(const assessment of new_assessments)
+        {
+            await client.query(assessmentQueries.addAssessment, [
+                assessment.title, assessment.description, assessment.date, student_id, 'empty subject', 'no notes'
+            ]);
         }
-    )
-    
-    res.status(201).send("Comment has been created successfully");
+
+        for(const hm of new_homework)
+        {
+            await client.query(homeworkQueries.addHomework, [
+                student_id, hm.due_date, hm.due_date, 0, hm.subject, hm.notes
+            ]);
+        }
+
+        await client.query('COMMIT');  // Commit transaction
+        res.status(201).send("Tutoring session completed and comment added successfully");
+
+    } catch (error) {
+        await client.query('ROLLBACK'); // Rollback if any error occurs
+        console.error("Transaction failed:", error);
+        res.status(500).send("Error completing tutoring session and adding comment");
+    } finally {
+        client.release();  // Release the client back to the pool
+    }
 }
 
 const removeComment = (req, res) => {
