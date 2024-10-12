@@ -81,16 +81,13 @@ const styles = {
   }
 };
 
-
 const ScheduleDaily = () => {
   const queryClient = useQueryClient();
 
   const { date } = useParams();
   const [filteredData, setFilteredData] = useState([]);
-
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [selectedTutor, setSelectedTutor] = useState(null);
-
   const [calendar, setCalendar] = useState(null);
   const [events, setEvents] = useState([]);
   const [startDate, setStartDate] = useState(date);
@@ -99,43 +96,50 @@ const ScheduleDaily = () => {
     data: students,
     isLoading: studentsLoading,
     error: studentsError,
-  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
+  } = useQuery({ queryKey: ['students'], queryFn: () => fetchStudents() });
 
   const {
     data: tutors,
     isLoading: tutorsLoading,
     error: tutorsError,
-  } = useQuery({queryKey: ['tutors'], queryFn: () => fetchTutors()});
+  } = useQuery({ queryKey: ['tutors'], queryFn: () => fetchTutors() });
 
   const {
     data: homeworkList,
     isLoading: homeworkListLoading,
     error: homeworkListError,
-  } = useQuery({queryKey: ['homework'], queryFn: () => fetchHomework()});
+  } = useQuery({ queryKey: ['homework'], queryFn: () => fetchHomework() });
 
   const {
     data: tutoringSessionData,
     isLoading: tutoringSessionLoading,
     error: tutoringSessionError,
-  } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
+  } = useQuery({ queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions() });
 
   useEffect(() => {
     setFilteredData(tutoringSessionData);
   }, [tutoringSessionData]);
 
   const config = {
-    viewType: "Week",
+    viewType: "Resources",
     durationBarVisible: true,
     timeRangeSelectedHandling: "Enabled",
+    businessBeginsHour: 8,   // adjust start time as needed
+    businessEndsHour: 17,    // adjust end time as needed
+    resources: tutors?.map(tutor => ({
+      id: tutor.tutor_id,
+      name: `${tutor.first_name} ${tutor.last_name}`,
+    })) || [],
     onTimeRangeSelected: async args => {
       const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
       calendar.clearSelection();
-      if (!modal.result) { return; }
+      if (!modal.result) return;
       calendar.events.add({
         start: args.start,
         end: args.end,
+        resource: args.resource,
         id: DayPilot.guid(),
-        text: modal.result
+        text: modal.result,
       });
     },
     onEventClick: async args => {
@@ -150,132 +154,80 @@ const ScheduleDaily = () => {
           },
         },
         {
-          text: "-"
+          text: "-",
         },
         {
           text: "Edit...",
           onClick: async args => {
             await editEvent(args.source);
-          }
-        }
-      ]
-    }),
-    onBeforeEventRender: args => {
-      args.data.areas = [
-        {
-          top: 3,
-          right: 3,
-          width: 20,
-          height: 20,
-          symbol: "icons/daypilot.svg#minichevron-down-2",
-          fontColor: "#fff",
-          toolTip: "Show context menu",
-          action: "ContextMenu",
+          },
         },
-        {
-          top: 3,
-          right: 25,
-          width: 20,
-          height: 20,
-          symbol: "icons/daypilot.svg#x-circle",
-          fontColor: "#fff",
-          action: "None",
-          toolTip: "Delete event",
-          onClick: async args => {
-            calendar.events.remove(args.source);
-          }
-        }
-      ];
-
-      /*
-      const participants = args.data.participants;
-      if (participants > 0) {
-        // show one icon for each participant
-        for (let i = 0; i < participants; i++) {
-          args.data.areas.push({
-            bottom: 5,
-            right: 5 + i * 30,
-            width: 24,
-            height: 24,
-            action: "None",
-            image: `https://picsum.photos/24/24?random=${i}`,
-            style: "border-radius: 50%; border: 2px solid #fff; overflow: hidden;",
-          });
-        }
-      }*/
-    }
+      ],
+    }),
   };
 
-  const editEvent = async (e) => {
+  const editEvent = async e => {
     const modal = await DayPilot.Modal.prompt("Update event text:", e.text());
-    if (!modal.result) { return; }
+    if (!modal.result) return;
     e.data.text = modal.result;
     calendar.events.update(e);
   };
 
   function intToHexSpread(integer) {
-    const MAX_HEX_VALUE = 0xFFFFFF;
-
-    let scrambledInt = integer ^ 0xABCDEF; 
-    
+    const MAX_HEX_VALUE = 0xffffff;
+    let scrambledInt = integer ^ 0xabcdef;
     scrambledInt = (scrambledInt << 3) ^ (scrambledInt >> 5);
-  
     let hexValue = Math.abs(scrambledInt % (MAX_HEX_VALUE + 1));
-    
-    return hexValue.toString(16).padStart(6, '0').toUpperCase();
+    return `#${hexValue.toString(16).padStart(6, '0')}`;
   }
 
   useEffect(() => {
-    if(!filteredData) return;
+    if (!filteredData) return;
     const events = filteredData.map(item => {
       const start = new Date(item.session_datetime);
       const end = new Date(start.getTime() + item.duration * 60 * 1000);
-
-      const tutor = tutors.find(t => t.tutor_id === item.tutor_id);
-      const tutorName = tutor ? `${tutor.first_name} ${tutor.last_name}` : 'Unknown Tutor';
-      
       return {
         id: item.session_id,
-        text: tutorName,
+        text: `Session with Student ${item.student_id}`,
         start: start,
         end: end,
-        backColor: intToHexSpread(item.tutor_id)
+        resource: item.tutor_id,  // Assigns the event to the tutor
+        backColor: intToHexSpread(item.tutor_id),
       };
     });
-
     setEvents(events);
   }, [filteredData]);
 
-  if (homeworkListLoading || studentsLoading || tutorsLoading || tutoringSessionLoading || !filteredData) return <div>Loading...</div>;
-  if (homeworkListError || studentsError || tutorsError || tutoringSessionError){
-    if(homeworkListError?.status === 401 || studentsError?.status === 401 || tutorsError?.status === 401 || tutoringSessionError?.status === 401)
-    {
-      console.log("unathorized");
+  if (homeworkListLoading || studentsLoading || tutorsLoading || tutoringSessionLoading || !filteredData) {
+    return <div>Loading...</div>;
+  }
+  if (homeworkListError || studentsError || tutorsError || tutoringSessionError) {
+    if ([homeworkListError, studentsError, tutorsError, tutoringSessionError].some(err => err?.status === 401)) {
       return <Navigate to="/login" />;
     }
     return <div>Error loading data</div>;
-    
   }
 
-  const handleStudentChange = (e) => {
+  const handleStudentChange = e => {
     const studentId = e.target.value;
     setSelectedStudent(studentId);
-
-    const filteredSessions = tutoringSessionData.filter(session => (session.student_id === parseInt(studentId) && (selectedTutor === null? true : session.tutorId === parseInt(selectedTutor))));
+    const filteredSessions = tutoringSessionData.filter(
+      session => session.student_id === parseInt(studentId) && (!selectedTutor || session.tutor_id === parseInt(selectedTutor))
+    );
     setFilteredData(filteredSessions);
   };
 
-  const handleTutorChange = (e) => {
+  const handleTutorChange = e => {
     const tutorId = e.target.value;
     setSelectedTutor(tutorId);
-
-    const filteredSessions = tutoringSessionData.filter(session => session.tutor_id === parseInt(tutorId) && (selectedTutor === null? true : session.tutorId === parseInt(selectedTutor)));
+    const filteredSessions = tutoringSessionData.filter(
+      session => session.tutor_id === parseInt(tutorId) && (!selectedStudent || session.student_id === parseInt(selectedStudent))
+    );
     setFilteredData(filteredSessions);
   };
 
   return (
-    
-    <div className="App">      
+    <div className="App">
       <div style={styles.wrap}>
         <div style={styles.main}>
           <DayPilotCalendar
@@ -288,6 +240,6 @@ const ScheduleDaily = () => {
       </div>
     </div>
   );
-}
+};
 
 export default ScheduleDaily;
