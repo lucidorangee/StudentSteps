@@ -289,7 +289,7 @@ const ScheduleList = () => {
     }
 
     // Validate if comment is empty or any other necessary validation
-    if (!comment.trim() !== '') {
+    if (comment.trim() === '') {
         setAlert('Please enter a comment.');
         return;
     }
