@@ -25,6 +25,7 @@ import StudentDetail from './pages/StudentDetail.js';
 import ScheduleCalendar from './pages/ScheduleCalendar.js';
 import WeeklyCalendar from './pages/WeeklyCalendar.js';
 import TutorDetail from './pages/TutorDetail.js';
+import ScheduleDaily from './pages/ScheduleDaily.js';
 
 
 function App() {  
@@ -46,6 +47,7 @@ function App() {
           <Route path="/admin/homework" element={<ProtectedRouteWrapper element={ManageHomework} />} />
 
           <Route path="/schedule/list/:date?" element={<ProtectedRouteWrapper element={ScheduleList} />} />
+          <Route path="/schedule/daily/:date?" element={<ProtectedRouteWrapper element={ScheduleDaily} />} />
           <Route path="/schedule/weekly/:date?" element={<ProtectedRouteWrapper element={WeeklyCalendar} />} />
           <Route path="/schedule/calendar/:date?" element={<ProtectedRouteWrapper element={ScheduleCalendar} />} />
           <Route path="/schedule/create" element={<ProtectedRouteWrapper element={CreateTutoringSession} />} />

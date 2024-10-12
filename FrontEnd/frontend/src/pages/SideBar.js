@@ -45,6 +45,11 @@ const Sidebar = () => {
             <i className="bi bi-person-add me-2"></i> Add Homework
           </NavLink>
         </li>
+        <li className="nav-item">
+          <NavLink to={`/schedule/daily`} className="nav-link text-white" activeclassname="active">
+            <i className="bi bi-person-add me-2"></i> Daily Schedule
+          </NavLink>
+        </li>
       </ul>
     </div>
   );
