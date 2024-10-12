@@ -86,8 +86,6 @@ const ScheduleDaily = () => {
 
   const { date } = useParams();
   const [filteredData, setFilteredData] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [selectedTutor, setSelectedTutor] = useState(null);
   const [calendar, setCalendar] = useState(null);
   const [events, setEvents] = useState([]);
   const [startDate, setStartDate] = useState(date);
@@ -178,6 +176,10 @@ const ScheduleDaily = () => {
   }
 
   useEffect(() => {
+    setStartDate(date);
+  }, [date]);
+
+  useEffect(() => {
     if (!tutoringSessionData || !date) return;
 
     // Filter the sessions for the specific day
@@ -233,30 +235,11 @@ const ScheduleDaily = () => {
     return <div>Error loading data</div>;
   }
 
-  const handleStudentChange = e => {
-    const studentId = e.target.value;
-    setSelectedStudent(studentId);
-    const filteredSessions = tutoringSessionData.filter(
-      session => session.student_id === parseInt(studentId) && (!selectedTutor || session.tutor_id === parseInt(selectedTutor))
-    );
-    setFilteredData(filteredSessions);
-  };
-
-  const handleTutorChange = e => {
-    const tutorId = e.target.value;
-    setSelectedTutor(tutorId);
-    const filteredSessions = tutoringSessionData.filter(
-      session => session.tutor_id === parseInt(tutorId) && (!selectedStudent || session.student_id === parseInt(selectedStudent))
-    );
-    setFilteredData(filteredSessions);
-  };
-
   return (
     <div className="App">
       <div style={styles.wrap}>
         <div style={styles.main}>
           <DayPilotCalendar
-            viewType="Day"
             {...config}
             events={events}
             startDate={startDate}
