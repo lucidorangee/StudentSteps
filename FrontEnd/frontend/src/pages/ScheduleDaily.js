@@ -137,7 +137,7 @@ const ScheduleDaily = () => {
                 <td key={`${tutor.id}-${colIndex}-${sessionIndex}`} className="session-cell" rowSpan={rowSpan}>
                   <div className="session">
                     {`${tutor.id}-${colIndex}-${sessionIndex}`}
-                    {session.student}
+                    {/*session.student*/}
                   </div>
                 </td>
               );
