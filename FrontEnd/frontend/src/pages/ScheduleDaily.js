@@ -184,17 +184,17 @@ const ScheduleDaily = () => {
 
     // Filter the sessions for the specific day
     const filteredSessions = tutoringSessionData.filter(session => {
-      const sessionDate = new Date(session.session_datetime).toISOString().split('T')[0]; // Get only the date part
-      return sessionDate === date; // Compare with the URL date parameter
+      const sessionDate = new Date(session.session_datetime).toISOString().split('T')[0]; 
+      return sessionDate === date; 
     });
 
     setFilteredData(filteredSessions);
   }, [tutoringSessionData, date]);
 
-  // Group by tutor
   useEffect(() => {
+    // Group by tutor
     if (!filteredData || !tutors) return;
-
+  
     const groupedEvents = filteredData.reduce((acc, item) => {
       const tutorId = item.tutor_id;
       if (!acc[tutorId]) {
@@ -203,11 +203,11 @@ const ScheduleDaily = () => {
       acc[tutorId].push(item);
       return acc;
     }, {});
-
+  
     const events = Object.entries(groupedEvents).map(([tutorId, sessions]) => {
       const tutor = tutors.find(t => t.tutor_id === parseInt(tutorId));
       const tutorName = tutor ? `${tutor.first_name} ${tutor.last_name}` : 'Unknown Tutor';
-
+  
       return sessions.map(session => {
         const start = new Date(session.session_datetime);
         const end = new Date(start.getTime() + session.duration * 60 * 1000);
@@ -221,9 +221,11 @@ const ScheduleDaily = () => {
         };
       });
     }).flat();
-
+  
+    console.log('Events to display:', events); // Log the events being set
     setEvents(events);
   }, [filteredData, tutors]);
+  
 
   if (homeworkListLoading || studentsLoading || tutorsLoading || tutoringSessionLoading || !filteredData) {
     return <div>Loading...</div>;
