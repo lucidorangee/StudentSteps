@@ -50,17 +50,17 @@ const ScheduleDaily = () => {
 
   const {
     data: tutoringSessionData,
-    isLoading: tutoringSessionLoading,
-    error: tutoringSessionError,
+    isLoading: tutoringSessionsLoading,
+    error: tutoringSessionsError,
   } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
   
-  if (tutorsLoading || tutoringSessionLoading) return <div>Loading...</div>;
+  if (tutorsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
 
-  if (tutoringSessionError || tutorsError) {
-    if (tutoringSessionError?.status === 401 || tutorsError?.status === 401) {
+  if (tutoringSessionsError || tutorsError) {
+    if (tutoringSessionsError?.status === 401 || tutorsError?.status === 401) {
       return <Navigate to="/login" />;
     }
-    return <div>Error loading data: {tutoringSessionError?.message || tutorsError?.message}</div>;
+    return <div>Error loading data: {tutoringSessionsError?.message || tutorsError?.message}</div>;
   }
 
   // Prepare resources for the scheduler
