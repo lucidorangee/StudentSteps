@@ -432,6 +432,7 @@ const ScheduleList = () => {
               const latestComment = comments
                 .filter(comment => comment.student_id === tutoringSession.student_id)
                 .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))[0];
+              console.log(`assessments: ${studentAssessments}`);
 
               return (
                 <div className="col-12 mt-3" key={index}>
