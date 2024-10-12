@@ -91,56 +91,56 @@ const ScheduleDaily = () => {
 
   return (
     <div className="calendar">
-      <h1>Schedule for {date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()}</h1>
-      <table className="schedule-table">
-        <thead>
-          <tr>
-            <th className="time-header">Time</th>
-            {resources.map(tutor => (
-              <th key={tutor.id} className="tutor-header">{tutor.name}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {timeSlots.map((time, timeIndex) => (
-            <tr key={time}>
-              <td className="time-cell">{time}</td>
-              {resources.map(tutor => {
-                const session = events.find(event => {
-                  const eventStartTime = event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                  return event.resource === tutor.id && eventStartTime === time;
-                });
-
-                if (session) {
-                  const rowSpan = calculateRowSpan(session.start, session.end);
-
-                  return (
-                    <td key={tutor.id} className="session-cell" rowSpan={rowSpan}>
-                      <div className="session">
-                        {session.student}
-                      </div>
-                    </td>
-                  );
-                }
-
-                // Skip cells that are covered by rowspan cells
-                const isWithinMergedCell = events.some(event => {
-                  const eventStartIndex = timeSlots.indexOf(event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-                  const eventRowSpan = calculateRowSpan(event.start, event.end);
-                  return (
-                    event.resource === tutor.id &&
-                    timeIndex > eventStartIndex &&
-                    timeIndex < eventStartIndex + eventRowSpan
-                  );
-                });
-
-                return !isWithinMergedCell ? <td key={tutor.id} className="no-session">No Sessions</td> : null;
-              })}
-            </tr>
+    <h1>Schedule for {date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()}</h1>
+    <table className="schedule-table">
+      <thead>
+        <tr>
+          <th className="time-header">Time</th>
+          {resources.map(tutor => (
+            <th key={tutor.id} className="tutor-header">{tutor.name}</th>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </tr>
+      </thead>
+      <tbody>
+        {timeSlots.map((time, timeIndex) => (
+          <tr key={time}>
+            <td className="time-cell">{time}</td>
+            {resources.map(tutor => {
+              const session = events.find(event => {
+                const eventStartTime = event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                return event.resource === tutor.id && eventStartTime === time;
+              });
+
+              if (session) {
+                const rowSpan = calculateRowSpan(session.start, session.end);
+
+                return (
+                  <td key={tutor.id} className="session-cell" rowSpan={rowSpan}>
+                    <div className="session">
+                      {session.student}
+                    </div>
+                  </td>
+                );
+              }
+
+              // Skip cells that are covered by rowspan cells
+              const isWithinMergedCell = events.some(event => {
+                const eventStartIndex = timeSlots.indexOf(event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+                const eventRowSpan = calculateRowSpan(event.start, event.end);
+                return (
+                  event.resource === tutor.id &&
+                  timeIndex > eventStartIndex &&
+                  timeIndex < eventStartIndex + eventRowSpan
+                );
+              });
+
+              return !isWithinMergedCell ? <td key={tutor.id} className="no-session">No Sessions</td> : null;
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
   );
 };
 
