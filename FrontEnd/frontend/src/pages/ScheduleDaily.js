@@ -105,58 +105,55 @@ const ScheduleDaily = () => {
     <div className="calendar">
       <h1>Schedule for {date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()}</h1>
       <table className="schedule-table">
-        <thead>
-          <tr>
-            <th className="time-header">Time</th>
-            {resources.map(tutor => (
-              <th key={tutor.id} className="tutor-header">{tutor.name}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {timeSlots.map((time, timeIndex) => (
-            <tr key={time}>
-              <td className="time-cell">{time}</td>
-              {resources.map(tutor => {
-                const session = events.find(event => {
-                  const eventStartTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
-                  return event.resource === tutor.id && eventStartTime === time;
-                });
+  <thead>
+    <tr>
+      <th className="time-header">Time</th>
+      {resources.map(tutor => (
+        <th key={tutor.id} className="tutor-header">{tutor.name}</th>
+      ))}
+    </tr>
+  </thead>
+  <tbody>
+    {timeSlots.map((time, timeIndex) => (
+      <tr key={time}>
+        <td className="time-cell">{time}</td>
+        {resources.map(tutor => {
+          // Find sessions that belong to the current tutor at this time slot
+          const sessionsAtTime = events.filter(event => {
+            const eventStartTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
+            return event.resource === tutor.id && eventStartTime === time;
+          });
 
-                // Track the first available column for the tutor
-                let occupiedColumnIndex = null;
-                for (let i = 0; i < timeSlots.length; i++) {
-                  if (!activeCells[`${tutor.id}-${i}`]) {
-                    occupiedColumnIndex = i; // First empty column found
-                    break;
-                  }
-                }
+          if (sessionsAtTime.length > 0) {
+            // Iterate through each session
+            return sessionsAtTime.map((session, sessionIndex) => {
+              const rowSpan = calculateRowSpan(session.start, session.end);
+              const occupiedIndex = timeSlots.findIndex((_, index) => activeCells[`${tutor.id}-${index}`] === undefined);
 
-                if (session) {
-                  const rowSpan = calculateRowSpan(session.start, session.end);
-                  console.log(`Displaying ${session.student} from ${session.start} to ${session.end}`);
-                  activeCells[`${tutor.id}-${occupiedColumnIndex}`] = true;
+              // Mark the column as occupied for this tutor
+              activeCells[`${tutor.id}-${occupiedIndex}`] = true;
 
-                  return (
-                    <td key={`${tutor.id}-${occupiedColumnIndex}`} className="session-cell" rowSpan={rowSpan}>
-                      <div className="session">
-                        {session.student}
-                      </div>
-                    </td>
-                  );
-                }
+              return (
+                <td key={`${tutor.id}-${occupiedIndex}-${sessionIndex}`} className="session-cell" rowSpan={rowSpan}>
+                  <div className="session">
+                    {session.student}
+                  </div>
+                </td>
+              );
+            });
+          }
 
-                // If no session and column is already occupied
-                if (activeCells[`${tutor.id}-${timeIndex}`]) {
-                  return null;
-                }
+          // If no session is found and column is already occupied
+          if (activeCells[`${tutor.id}-${timeIndex}`]) {
+            return null;
+          }
 
-                return <td key={`${tutor.id}-${timeIndex}`} className="no-session">No Sessions</td>;
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          return <td key={`${tutor.id}-${timeIndex}`} className="no-session">No Sessions</td>;
+        })}
+      </tr>
+    ))}
+  </tbody>
+</table>
 
     </div>
   );
