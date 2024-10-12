@@ -234,11 +234,11 @@ const ScheduleList = () => {
       if (date) {
         const filteredSessions = tutoringSessionData.filter(session =>
           session.session_datetime.startsWith(date)
-        );
+        ).sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
         setFilteredData(filteredSessions);
-        console.log(filteredSessions);
       } else {
-        setFilteredData(tutoringSessionData);
+        const filteredSessions = tutoringSessionData.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+        setFilteredData(filteredSessions);
       }
     } else {
       setFilteredData([]);
@@ -636,14 +636,6 @@ const ScheduleList = () => {
                             <div>Title: {assessment.title}</div>
                             <div>Date: {assessment.date}</div>
                             <div>Detail: {assessment.description}</div>
-                            <input
-                              type="number"
-                              className="form-control"
-                              placeholder="0-9"
-                              min="0"
-                              max="9"
-                              style={{ width: '60px' }}
-                            />
                           </div>
                         ))}
 
