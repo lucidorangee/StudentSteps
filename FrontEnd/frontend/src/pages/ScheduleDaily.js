@@ -120,12 +120,12 @@ const ScheduleDaily = () => {
               {resources.map(tutor => {
                 const session = events.find(event => {
                   const eventStartTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
-                  console.log(`Comparing: ${(new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start)).toString()} and ${time}`);
                   return event.resource === tutor.id && eventStartTime === time;
                 });
 
                 if (session) {
                   const rowSpan = calculateRowSpan(session.start, session.end);
+                  console.log(`Displaying ${session.student} from ${session.start} to ${session.end}`);
                   activeCells[`${tutor.id}-${timeIndex}`] = true;
 
                   return (
