@@ -123,13 +123,22 @@ const ScheduleDaily = () => {
                   return event.resource === tutor.id && eventStartTime === time;
                 });
 
+                // Track the first available column for the tutor
+                let occupiedColumnIndex = null;
+                for (let i = 0; i < timeSlots.length; i++) {
+                  if (!activeCells[`${tutor.id}-${i}`]) {
+                    occupiedColumnIndex = i; // First empty column found
+                    break;
+                  }
+                }
+
                 if (session) {
                   const rowSpan = calculateRowSpan(session.start, session.end);
                   console.log(`Displaying ${session.student} from ${session.start} to ${session.end}`);
-                  activeCells[`${tutor.id}-${timeIndex}`] = true;
+                  activeCells[`${tutor.id}-${occupiedColumnIndex}`] = true;
 
                   return (
-                    <td key={tutor.id} className="session-cell" rowSpan={rowSpan}>
+                    <td key={`${tutor.id}-${occupiedColumnIndex}`} className="session-cell" rowSpan={rowSpan}>
                       <div className="session">
                         {session.student}
                       </div>
@@ -137,16 +146,18 @@ const ScheduleDaily = () => {
                   );
                 }
 
+                // If no session and column is already occupied
                 if (activeCells[`${tutor.id}-${timeIndex}`]) {
                   return null;
                 }
 
-                return <td key={tutor.id} className="no-session">No Sessions</td>;
+                return <td key={`${tutor.id}-${timeIndex}`} className="no-session">No Sessions</td>;
               })}
             </tr>
           ))}
         </tbody>
       </table>
+
     </div>
   );
 };
