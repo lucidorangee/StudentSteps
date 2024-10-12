@@ -26,7 +26,7 @@ const fetchTutoringSessions = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
     credentials: 'include',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
   });
 
@@ -35,9 +35,8 @@ const fetchTutoringSessions = async () => {
     err.status = response.status;
     throw err;
   }
-
   return response.json();
-};
+}
 
 const ScheduleDaily = () => {
   const { date } = useParams();
@@ -80,17 +79,7 @@ const ScheduleDaily = () => {
 
   return (
     <div className="App">
-      <DayPilotScheduler
-        resources={resources}
-        events={events}
-        startDate={date ? new Date(date) : new Date()} // Set the start date
-        viewType="Day" // Show only one day
-        timeHeaders={[
-          { groupBy: "Month", format: "MMMM" },
-          { groupBy: "Day", format: "dd" }
-        ]}
-        style={{ height: '600px' }} // Adjust height as needed
-      />
+      
     </div>
   );
 };
