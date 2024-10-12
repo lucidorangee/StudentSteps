@@ -124,31 +124,22 @@ const ScheduleDaily = () => {
             return event.resource === tutor.id && eventStartTime === time;
           });
 
-          // If there are sessions for the tutor at this time, display them
           if (sessionsAtTime.length > 0) {
-            return sessionsAtTime.map((session, sessionIndex) => {
-              const rowSpan = calculateRowSpan(session.start, session.end);
-              const colIndex = timeIndex + (sessionIndex * 0.5); // Offset column index for additional sessions
-
-              // Mark the cells occupied by this session
-              activeCells[`${tutor.id}-${colIndex}`] = true;
-
-              return (
-                <td key={`${tutor.id}-${colIndex}-${sessionIndex}`} className="session-cell" rowSpan={rowSpan}>
-                  <div className="session">
-                    {`${tutor.id}-${colIndex}-${sessionIndex}`}
-                    {/*session.student*/}
-                  </div>
-                </td>
-              );
-            });
+            return (
+              <td key={`${tutor.id}-${timeIndex}`} className="session-cell-container">
+                {sessionsAtTime.map((session, sessionIndex) => {
+                  const rowSpan = calculateRowSpan(session.start, session.end);
+                  return (
+                    <div key={session.id} className="session" style={{ gridRowEnd: `span ${rowSpan}` }}>
+                      {session.student}
+                    </div>
+                  );
+                })}
+              </td>
+            );
           }
 
-          // If no session is found and column is already occupied, skip rendering
-          if (activeCells[`${tutor.id}-${timeIndex}`]) {
-            return null;
-          }
-
+          // Display an empty cell if no sessions are found for this tutor at this time
           return <td key={`${tutor.id}-${timeIndex}`} className="no-session">No Sessions</td>;
         })}
       </tr>

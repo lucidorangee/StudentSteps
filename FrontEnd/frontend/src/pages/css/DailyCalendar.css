@@ -1,61 +1,66 @@
 .calendar {
-    margin: 20px;
-    font-family: Arial, sans-serif;
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.time-header {
+  width: 80px; /* Fixed width for time column */
+}
+
+.tutor-header {
+  background-color: #e0f7fa; /* Light blue for tutor headers */
+}
+
+.time-cell, .no-session {
+  text-align: center;
+  padding: 8px;
+  border: 1px solid #ddd;
+  color: #aaa; /* Gray for no session indicator */
+  font-style: italic;
+}
+
+.session-cell-container {
+  display: flex; /* Align overlapping sessions horizontally */
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  min-height: 40px; /* Minimum height for session cells */
+}
+
+.session {
+  flex: 1;
+  padding: 5px;
+  background-color: #ffe0b2; /* Light orange for sessions */
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .calendar {
+    margin: 10px;
   }
-  
-  .schedule-table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
+
   th, td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-    vertical-align: middle;
-  }
-  
-  th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
-  
-  .time-header {
-    width: 80px; /* Set a fixed width for the time column */
-  }
-  
-  .tutor-header {
-    background-color: #e0f7fa; /* Light blue for tutor headers */
-  }
-  
-  .session-cell {
-    position: relative;
-    min-height: 40px; /* Set a minimum height for session cells */
-    overflow: hidden; /* Hide overflow content */
-  }
-  
-  .session {
-    background-color: #ffe0b2; /* Light orange for sessions */
     padding: 5px;
-    margin: 2px 0;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
   }
-  
-  .no-session {
-    color: #aaa; /* Gray for no session indicator */
-    font-style: italic;
-  }
-  
-  @media (max-width: 600px) {
-    .calendar {
-      margin: 10px;
-    }
-  
-    th, td {
-      padding: 5px;
-      font-size: 14px;
-    }
-  }
-  
+}
