@@ -90,6 +90,7 @@ const ScheduleDaily = () => {
   const activeCells = {};
 
   // Debugging logs
+  console.log(`Today's date is ${new Date(date)}`);
   console.log('Events:', events);
   console.log('Time Slots:', timeSlots);
 
