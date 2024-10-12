@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import './css/Calendar.css';
+import './css/DailyCalendar.css'; // Ensure your CSS is linked here
 
 // Fetch functions
 const fetchTutors = async () => {
@@ -88,32 +88,32 @@ const ScheduleDaily = () => {
   return (
     <div className="calendar">
       <h1>Schedule for {date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()}</h1>
-      <table>
+      <table className="schedule-table">
         <thead>
           <tr>
-            <th>Time</th>
+            <th className="time-header">Time</th>
             {resources.map(tutor => (
-              <th key={tutor.id}>{tutor.name}</th>
+              <th key={tutor.id} className="tutor-header">{tutor.name}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {timeSlots.map(time => (
             <tr key={time}>
-              <td>{time}</td>
+              <td className="time-cell">{time}</td>
               {resources.map(tutor => {
-                const sessionsForTutor = events.filter(event => event.resource === tutor.id && 
+                const sessionsForTutor = events.filter(event => event.resource === tutor.id &&
                   event.start.toLocaleTimeString() === new Date(`1970-01-01T${time}:00`).toLocaleTimeString());
                 return (
-                  <td key={tutor.id}>
+                  <td key={tutor.id} className="session-cell">
                     {sessionsForTutor.length > 0 ? (
                       sessionsForTutor.map(session => (
-                        <div key={session.id}>
+                        <div key={session.id} className="session">
                           {session.student}
                         </div>
                       ))
                     ) : (
-                      <div>No Sessions</div>
+                      <div className="no-session">No Sessions</div>
                     )}
                   </td>
                 );
