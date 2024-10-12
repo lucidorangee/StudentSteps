@@ -81,7 +81,7 @@ const styles = {
   }
 };
 
-const WeeklyCalendar = () => {
+const ScheduleDaily = () => {
   const { date } = useParams();
 
   const {
@@ -137,4 +137,4 @@ const WeeklyCalendar = () => {
   );
 };
 
-export default WeeklyCalendar;
+export default ScheduleDaily;
