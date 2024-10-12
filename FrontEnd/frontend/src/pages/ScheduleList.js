@@ -130,7 +130,7 @@ const ScheduleList = () => {
       private_comment (text)
       stamps (integer between 0 and 20, both inclusive)
       new_homework (list of [subject, due_date, notes] as we have right now)
-      previous_homework (list of [homework_id, is_completed])
+      prev_homework (list of [homework_id, is_completed])
       new_assessments (list of [title, date, description]) 
    */
   const [tempComments, setTempComments] = useState(() => {
@@ -389,7 +389,7 @@ const ScheduleList = () => {
   };
 
   const handleExistingHomeworkUpdate = (session_id, homework_id, event) => {
-    const previousHomework = tempComments[session_id]?.previous_homework || []; // Ensure an array exists
+    const previousHomework = tempComments[session_id]?.prev_homework || []; // Ensure an array exists
 
     // Check if homework_id already exists in previousHomework
     const index = previousHomework.findIndex(hw => hw.homework_id === homework_id);
@@ -407,7 +407,7 @@ const ScheduleList = () => {
         ...tempComments,
         [session_id]: {
             ...tempComments[session_id],
-            previous_homework: updatedHomeworkList
+            prev_homework: updatedHomeworkList
         }
     });
   };
@@ -481,7 +481,7 @@ const ScheduleList = () => {
                                   private_comment: tempComments[tutoringSession.session_id]?.private_comment || '',
                                   stamps: Number(e.target.value),
                                   new_homework: tempComments[tutoringSession.session_id]?.new_homework || [],
-                                  previous_homework: tempComments[tutoringSession.session_id]?.previous_homework || [],
+                                  prev_homework: tempComments[tutoringSession.session_id]?.prev_homework || [],
                                   new_assessments: tempComments[tutoringSession.session_id]?.new_assessments || [],
                                 }
                               })
@@ -686,7 +686,7 @@ const ScheduleList = () => {
                                   private_comment: tempComments[tutoringSession.session_id]?.private_comment || '',
                                   stamps: tempComments[tutoringSession.session_id]?.stamps || 0,
                                   new_homework: tempComments[tutoringSession.session_id]?.new_homework || [],
-                                  previous_homework: tempComments[tutoringSession.session_id]?.previous_homework || [],
+                                  prev_homework: tempComments[tutoringSession.session_id]?.prev_homework || [],
                                   new_assessments: tempComments[tutoringSession.session_id]?.new_assessments || [],
                                 }
                               })
@@ -699,7 +699,7 @@ const ScheduleList = () => {
                                   private_comment: tempComments[tutoringSession.session_id]?.private_comment || '',
                                   stamps: tempComments[tutoringSession.session_id]?.stamps || 0,
                                   new_homework: tempComments[tutoringSession.session_id]?.new_homework || [],
-                                  previous_homework: tempComments[tutoringSession.session_id]?.previous_homework || [],
+                                  prev_homework: tempComments[tutoringSession.session_id]?.prev_homework || [],
                                   new_assessments: tempComments[tutoringSession.session_id]?.new_assessments || [],
                                 }
                               });
