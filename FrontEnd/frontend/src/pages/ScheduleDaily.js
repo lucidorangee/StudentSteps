@@ -44,13 +44,13 @@ const ScheduleDaily = () => {
     data: tutors,
     isLoading: tutorsLoading,
     error: tutorsError,
-  } = useQuery({queryKey: ['tutors'], queryFn: () => fetchTutors()});
+  } = useQuery({ queryKey: ['tutors'], queryFn: () => fetchTutors() });
 
   const {
     data: tutoringSessionData,
     isLoading: tutoringSessionsLoading,
     error: tutoringSessionsError,
-  } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
+  } = useQuery({ queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions() });
 
   if (tutorsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
 
@@ -61,13 +61,11 @@ const ScheduleDaily = () => {
     return <div>Error loading data: {tutoringSessionsError?.message || tutorsError?.message}</div>;
   }
 
-  // Prepare resources for the scheduler
   const resources = tutors.map(tutor => ({
     id: tutor.tutor_id,
     name: `${tutor.first_name} ${tutor.last_name}`
   }));
 
-  // Prepare events for the scheduler
   const events = tutoringSessionData.map(session => ({
     id: session.session_id,
     resource: session.tutor_id,
@@ -76,7 +74,7 @@ const ScheduleDaily = () => {
     end: new Date(new Date(session.session_datetime).getTime() + session.duration * 60 * 1000),
   }));
 
-  // Create a time slots array for the calendar (example: 3 PM to 8 PM)
+  // Define time slots
   const timeSlots = [];
   const startHour = 15;
   const endHour = 20;
@@ -86,11 +84,14 @@ const ScheduleDaily = () => {
   }
 
   const calculateRowSpan = (start, end) => {
-    return Math.ceil((end - start) / (30 * 60 * 1000)); // Convert duration to 30-minute slots
+    return Math.ceil((end - start) / (30 * 60 * 1000));
   };
 
-  // Track cells already occupied by sessions
   const activeCells = {};
+
+  // Debugging logs
+  console.log('Events:', events);
+  console.log('Time Slots:', timeSlots);
 
   return (
     <div className="calendar">
@@ -127,7 +128,6 @@ const ScheduleDaily = () => {
                   );
                 }
 
-                // Check if this cell should be skipped due to row spanning
                 if (activeCells[`${tutor.id}-${timeIndex}`]) {
                   return null;
                 }
