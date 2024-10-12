@@ -411,9 +411,8 @@ const ScheduleList = () => {
             private_comment: tempComments[session_id]?.private_comment || '',
             stamps: tempComments[session_id]?.stamps || 0,
             new_homework: tempComments[session_id]?.new_homework || [],
-            prev_homework: tempComments[session_id]?.prev_homework || [],
-            new_assessments: tempComments[session_id]?.new_assessments || [],
             prev_homework: updatedHomeworkList,
+            new_assessments: tempComments[session_id]?.new_assessments || [],
         }
     });
   };
@@ -453,12 +452,11 @@ const ScheduleList = () => {
               
               // Fetch the student data and homework list based on student_id
               const studentData = students.find(student => student.student_id === tutoringSession.student_id);
-              const studentHomeworkList = homeworkList.filter(homework => homework.student_id === tutoringSession.student_id);
+              const studentHomeworkList = homeworkList.filter(homework => homework.student_id === tutoringSession.student_id && homework.is_completed === 0);
               const studentAssessments = assessments.filter(assessment => assessment.student_id === tutoringSession.student_id);
               const latestComment = comments
                 .filter(comment => comment.student_id === tutoringSession.student_id)
                 .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))[0];
-              console.log(`assessments: ${studentAssessments}`);
 
               return (
                 <div className="col-12 mt-3" key={index}>
