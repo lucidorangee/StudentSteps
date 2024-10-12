@@ -274,9 +274,13 @@ const ScheduleList = () => {
     const comment = tempComments[tutoringSession.session_id]?.comment || '';
     const private_comment = tempComments[tutoringSession.session_id]?.private_comment || '';
     const stamps = tempComments[tutoringSession.session_id]?.stamps || 0;
-    const new_homework = tempComments[tutoringSession.session_id]?.new_homework || [];
+    const new_homework = tempComments[tutoringSession.session_id]?.new_homework.filter(hmwk => {
+      return !(hmwk.subject === '' && hmwk.due_date === '' && hmwk.notes === '');
+    }) || [];
     const prev_homework = tempComments[tutoringSession.session_id]?.prev_homework || [];
-    const new_assessments = tempComments[tutoringSession.session_id]?.new_assessments || [];
+    const new_assessments = tempComments[tutoringSession.session_id]?.new_assessments.filter(asmt => {
+      return !(asmt.title === '' && asmt.date === '' && asmt.description === '');
+    }) || [];
 
     if(stamps > 20)
     {
@@ -285,12 +289,29 @@ const ScheduleList = () => {
     }
 
     // Validate if comment is empty or any other necessary validation
-    if (comment !== '' && !comment.trim()) {
+    if (!comment.trim() !== '') {
         setAlert('Please enter a comment.');
         return;
     }
 
-    console.log(tutoringSession.session_datetime);
+    for(const hmwk of new_homework)
+    {
+      if(hmwk['subject'] === '' || hmwk['due_date'] === '' || hmwk['notes'] === '')
+      {
+        setAlert("Please fill in all the information for non-empty homework rows");
+        return;
+      }
+    }
+
+    for(const asmt of new_assessments)
+      {
+        if(asmt['subject'] === '' || asmt['due_date'] === '' || asmt['notes'] === '')
+        {
+          setAlert("Please fill in all the information for non-empty homework rows");
+          return;
+        }
+      }
+
     submitComment({
       session_id: tutoringSession.session_id, 
       tutor_id: tutoringSession.tutor_id, 
