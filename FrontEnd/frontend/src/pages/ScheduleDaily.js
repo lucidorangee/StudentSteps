@@ -170,7 +170,9 @@ const ScheduleDaily = () => {
                     
                     return columnData[tutor.tutor_id][1].map((col, colIndex) => {
                       
+                      console.log(`Count Before: ${count}`);
                       count--;
+                      console.log(`Count After: ${count}`);
                       if(col[timeIndex] !== null)
                       {
                         if(count > 0) 
@@ -179,7 +181,6 @@ const ScheduleDaily = () => {
                         }
                         //else
                         count = col[timeIndex].length;
-                        console.log(`Count: ${count}`);
                       }
                       
                       return col[timeIndex] !== null?
