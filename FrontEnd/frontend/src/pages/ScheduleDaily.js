@@ -133,6 +133,7 @@ const ScheduleDaily = () => {
         }
       }
     }
+    else console.log(eventDate.getMonth(), clientDate.getMonth());
   });
 
   for (const [tutor, arrData] of Object.entries(columnData)) {
