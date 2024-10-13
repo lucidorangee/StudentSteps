@@ -156,16 +156,15 @@ const ScheduleDaily = () => {
                 <td className="time-cell">{time}</td>
                 {
                   tutors.map((tutor, tutorIndex) => {
-                    console.log(tutor);
-                    console.log(JSON.stringify(columnData[tutor.tutor_id]));
                     columnData[tutor.tutor_id][1].map((col, colIndex) => {
-                      console.log(col[timeIndex].student);
+                      console.log(`student info: ${col[timeIndex].student}`);
                     })
                     columnData[tutor.tutor_id][1].map((col, colIndex) => (
                       col[timeIndex]?
                       (
                         <td className={`${tutor.tutor_id}-${colIndex}-${timeIndex}`}>
                           <div className="session">{col[timeIndex].student}</div>
+                          <div className="session">test</div>
                         </td>
                       ):(
                         <div>No session</div>
