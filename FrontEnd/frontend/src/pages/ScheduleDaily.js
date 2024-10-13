@@ -156,6 +156,8 @@ const ScheduleDaily = () => {
                 <td className="time-cell">{time}</td>
                 {
                   tutors.map((tutor_id, tutorIndex) => {
+                    console.log(tutor_id);
+                    console.log(JSON.stringify(columnData[tutor_id]));
                     columnData[tutor_id][1].map((col, colIndex) => (
                       col[timeIndex]?
                       (
