@@ -83,6 +83,7 @@ const ScheduleDaily = () => {
   const columnData = {};
   resources.forEach(tutor => {
     columnData[tutor.id] = [1, [Array(timeSlots.length).fill(null)]];
+    console.log(JSON.stringify(columnData[tutor.id]));
   });
 
   // Helper function to find time slot index
