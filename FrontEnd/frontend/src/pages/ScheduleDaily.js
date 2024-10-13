@@ -111,7 +111,7 @@ const ScheduleDaily = () => {
 
       // Update maxColumnsPerTutor for each overlapping time slot
       let mycolumn = 0;
-      for (let i = startIdx; i < endIdx; i++) {
+      for (let i = startIdx; i <= endIdx; i++) {
         if (i >= 0 && i < timeSlots.length) {
           if(columnData[tutorId][1][mycolumn][i] !== null) 
           {
@@ -187,9 +187,9 @@ const ScheduleDaily = () => {
                       }
 
                       return (
-                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={1}>
+                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length + 1}>
                           <div className="session">{col[timeIndex].student}</div>
-                          <div className="sessionlength">{col[timeIndex].length}</div>
+                          {/*<div className="sessionlength">{col[timeIndex].length + 1}</div>*/}
                         </td>
                       );
                     });
