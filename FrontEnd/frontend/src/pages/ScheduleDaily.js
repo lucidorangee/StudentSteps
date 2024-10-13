@@ -159,13 +159,13 @@ const ScheduleDaily = () => {
                     console.log(tutor);
                     console.log(JSON.stringify(columnData[tutor.tutor_id]));
                     columnData[tutor.tutor_id][1].map((col, colIndex) => {
-                      console.log(col[timeIndex]);
+                      console.log(col[timeIndex].student);
                     })
                     columnData[tutor.tutor_id][1].map((col, colIndex) => (
                       col[timeIndex]?
                       (
                         <td className={`${tutor.tutor_id}-${colIndex}-${timeIndex}`}>
-                          <div className="session">{col[timeIndex]}</div>
+                          <div className="session">{col[timeIndex].student}</div>
                         </td>
                       ):(
                         <div>No session</div>
