@@ -167,32 +167,34 @@ const ScheduleDaily = () => {
                     })
                     
                     let count = 1;
-                    
-                    return columnData[tutor.tutor_id][1].map((col, colIndex) => {
-                      
-                      console.log(`Count Before: ${count}`);
-                      count--;
-                      console.log(`Count After: ${count}`);
-                      if(col[timeIndex] !== null)
-                      {
-                        if(count > 0) 
-                        {
-                          return <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="no-session"> <div>No session</div> </td>;
-                        }
-                        //else
-                        count = col[timeIndex].length;
-                      }
-                      
-                      return col[timeIndex] !== null?
-                      (
-                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={1}>
-                          <div className="session">{col[timeIndex].student}</div>
-                          <div className="session">length of {col[timeIndex].length}</div>
-                        </td>
-                      ):(
-                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="no-session"> <div>No session</div> </td>
-                      )
-                    })
+
+return columnData[tutor.tutor_id][1].map((col, colIndex) => {
+  console.log(`Count Before: ${count}`);
+  count--;
+
+  if (col[timeIndex] !== null) {
+    if (count > 0) {
+      // Skip rendering if within the span of a previous session
+      console.log("Skipping due to count span");
+      return null;
+    }
+    // Set count to the length of the current session only when rendering the start of a session
+    count = col[timeIndex].length;
+  }
+
+  console.log(`Count After: ${count}`);
+  
+  return col[timeIndex] !== null ? (
+    <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={1}>
+      <div className="session">{col[timeIndex].student}</div>
+      <div className="session">length of {col[timeIndex].length}</div>
+    </td>
+  ) : (
+    <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="no-session">
+      <div>No session</div>
+    </td>
+  );
+});
                   })
                 }
               </tr>
