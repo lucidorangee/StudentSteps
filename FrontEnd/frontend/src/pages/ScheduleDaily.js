@@ -170,13 +170,16 @@ const ScheduleDaily = () => {
                     
                     return columnData[tutor.tutor_id][1].map((col, colIndex) => {
                       
-                      count--;
-                      if(count > 0) 
+                      if(col[timeIndex] !== null)
                       {
-                        return;
+                        count--;
+                        if(count > 0) 
+                        {
+                          return;
+                        }
+                        //else
+                        count = col[timeIndex].length;
                       }
-                      //else
-                      count = col[timeIndex].length;
                       
                       return col[timeIndex] !== null?
                       (
