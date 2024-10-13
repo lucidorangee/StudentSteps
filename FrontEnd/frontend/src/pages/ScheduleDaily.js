@@ -145,13 +145,15 @@ const ScheduleDaily = () => {
         <thead>
           <tr>
             <th className="time-header">Time</th>
-            {resources.map(tutor =>
-              Array.from({ length: columnData[tutor.id][0] }).map((_, colIndex) => (
-                <th key={`${tutor.id}-${colIndex}`} className="tutor-header">
-                  {tutor.name} {colIndex > 0 ? `(${colIndex + 1})` : ''}
-                </th>
-              ))
-            )}
+            {
+              tutors.map((tutor) => {
+                return (
+                  <th key={`${tutor.tutor_id}`} className="tutor-header" colSpan={columnData[tutor.tutor_id][0]}>
+                    {tutor.name} 
+                  </th>
+                );
+              })
+            }
           </tr>
         </thead>
         <tbody>
