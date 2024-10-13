@@ -110,16 +110,22 @@ const ScheduleDaily = () => {
       let mycolumn = 0;
       for (let i = startIdx; i <= endIdx; i++) {
         if (i >= 0 && i < timeSlots.length) {
-          if(columnData[tutorId][2][i][mycolumn] !== null) 
+          if(columnData[tutorId][1][i][mycolumn] !== null) 
           {
-            i--;
             mycolumn++;
+            if(mycolumn + 1 > columnData[tutorId][0])
+            {
+              columnData[tutorId][0] = mycolumn + 1;
+              columnData[tutorId][1].push(Array(timeSlots.length).fill(null));
+            }
+             
+            i--;
           }
         }
       }
       for (let i = startIdx; i <= endIdx; i++) {
         if (i >= 0 && i < timeSlots.length) {
-          columnData[tutorId][2][i][mycolumn] = event;
+          columnData[tutorId][1][i][mycolumn] = event;
         }
       }
     }
