@@ -160,7 +160,7 @@ const ScheduleDaily = () => {
                       console.log(`student info: ${col[timeIndex].student}`);
                     })
                     columnData[tutor.tutor_id][1].map((col, colIndex) => (
-                      col[timeIndex]?
+                      col[timeIndex] !== null?
                       (
                         <td className={`${tutor.tutor_id}-${colIndex}-${timeIndex}`}>
                           <div className="session">{col[timeIndex].student}</div>
