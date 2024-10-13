@@ -80,9 +80,9 @@ const ScheduleDaily = () => {
   const calculateRowSpan = (start, end) => Math.ceil((end - start) / (30 * 60 * 1000));
 
   // Step 1: Initialize maxColumnsPerTutor as an array of zeros for each tutor
-  const maxColumnsPerTutor = {};
+  const columnData = {};
   resources.forEach(tutor => {
-    maxColumnsPerTutor[tutor.id] = Array(timeSlots.length).fill(0);
+    columnData[tutor.id] = [1, [Array(timeSlots.length).fill(null)]];
   });
 
   // Helper function to find time slot index
@@ -96,7 +96,6 @@ const ScheduleDaily = () => {
   events.forEach(event => {
     const eventDate = new Date(event.start);
     const clientDate = new Date(date);
-    console.log(`Event date is ${eventDate} and client date is ${clientDate}`);
     if (
       eventDate.getMonth() === clientDate.getMonth() &&
       eventDate.getFullYear() === clientDate.getFullYear()
@@ -104,21 +103,30 @@ const ScheduleDaily = () => {
       const tutorId = event.resource;
 
       // Get start and end indices in timeSlots array
-      const startIdx = findTimeSlotIndex(event.start, 'America/New_York');
+      const startIdx = findTimeSlotIndex(event.start, 'America/New_York'); //might want to Math.min check with 0
       const endIdx = findTimeSlotIndex(event.end, 'America/New_York') - 1;
 
       // Update maxColumnsPerTutor for each overlapping time slot
+      let mycolumn = 0;
       for (let i = startIdx; i <= endIdx; i++) {
-        console.log(i);
         if (i >= 0 && i < timeSlots.length) {
-          maxColumnsPerTutor[tutorId][i]++;
+          if(columnData[tutorId][2][i][mycolumn] !== null) 
+          {
+            i--;
+            mycolumn++;
+          }
+        }
+      }
+      for (let i = startIdx; i <= endIdx; i++) {
+        if (i >= 0 && i < timeSlots.length) {
+          columnData[tutorId][2][i][mycolumn] = event;
         }
       }
     }
   });
 
-  for (const [tutor, columns] of Object.entries(maxColumnsPerTutor)) {
-    console.log(`Tutor: ${tutor}, Columns: ${columns}`);
+  for (const [tutor, arrData] of Object.entries(columnData)) {
+    console.log(`Tutor: ${tutor}, ArrData: ${arrData}`);
   }
 
   return (
@@ -129,7 +137,7 @@ const ScheduleDaily = () => {
           <tr>
             <th className="time-header">Time</th>
             {resources.map(tutor =>
-              Array.from({ length: maxColumnsPerTutor[tutor.id] }).map((_, colIndex) => (
+              Array.from({ length: columnData[tutor.id][0] }).map((_, colIndex) => (
                 <th key={`${tutor.id}-${colIndex}`} className="tutor-header">
                   {tutor.name} {colIndex > 0 ? `(${colIndex + 1})` : ''}
                 </th>
@@ -142,7 +150,7 @@ const ScheduleDaily = () => {
             <tr key={time}>
               <td className="time-cell">{time}</td>
               {resources.map(tutor => {
-                const columns = Array.from({ length: maxColumnsPerTutor[tutor.id] });
+                const columns = Array.from({ length: columnData[tutor.id][0] });
                 return columns.map((_, colIndex) => {
                   const session = events.find(event => {
                     const eventStartTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
