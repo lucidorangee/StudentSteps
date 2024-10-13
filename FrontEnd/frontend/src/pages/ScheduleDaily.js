@@ -44,20 +44,11 @@ const ScheduleDaily = () => {
     hour: '2-digit',
     minute: '2-digit',
     timeZone: 'America/New_York',
-    hour12: false // Set to true if you want 12-hour format
+    hour12: false,
   };
 
-  const {
-    data: tutors,
-    isLoading: tutorsLoading,
-    error: tutorsError,
-  } = useQuery({ queryKey: ['tutors'], queryFn: () => fetchTutors() });
-
-  const {
-    data: tutoringSessionData,
-    isLoading: tutoringSessionsLoading,
-    error: tutoringSessionsError,
-  } = useQuery({ queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions() });
+  const { data: tutors, isLoading: tutorsLoading, error: tutorsError } = useQuery({ queryKey: ['tutors'], queryFn: fetchTutors });
+  const { data: tutoringSessionData, isLoading: tutoringSessionsLoading, error: tutoringSessionsError } = useQuery({ queryKey: ['tutoringSessions'], queryFn: fetchTutoringSessions });
 
   if (tutorsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
 
@@ -70,7 +61,7 @@ const ScheduleDaily = () => {
 
   const resources = tutors.map(tutor => ({
     id: tutor.tutor_id,
-    name: `${tutor.first_name} ${tutor.last_name}`
+    name: `${tutor.first_name} ${tutor.last_name}`,
   }));
 
   const events = tutoringSessionData.map(session => ({
@@ -81,73 +72,77 @@ const ScheduleDaily = () => {
     end: new Date(new Date(session.session_datetime).getTime() + session.duration * 60 * 1000),
   }));
 
-  // Define time slots
   const timeSlots = [];
-  const startHour = 15;
-  const endHour = 20;
-  for (let hour = startHour; hour <= endHour; hour++) {
-    timeSlots.push(`${hour}:00`);
-    timeSlots.push(`${hour}:30`);
+  for (let hour = 15; hour <= 20; hour++) {
+    timeSlots.push(`${hour}:00`, `${hour}:30`);
   }
 
-  const calculateRowSpan = (start, end) => {
-    return Math.ceil((end - start) / (30 * 60 * 1000));
-  };
+  const calculateRowSpan = (start, end) => Math.ceil((end - start) / (30 * 60 * 1000));
 
-  const activeCells = {};
+  // Step 1: Determine max overlap per tutor
+  const maxColumnsPerTutor = {};
+  resources.forEach(tutor => {
+    const tutorEvents = events.filter(event => event.resource === tutor.id);
+    const overlaps = [];
 
-  // Debugging logs
-  console.log(`Today's date is ${new Date(date)} from ${date}`);
-  console.log('Events:', events);
-  console.log('Time Slots:', timeSlots);
+    tutorEvents.forEach((event, i) => {
+      const count = tutorEvents.filter(
+        otherEvent => otherEvent.start < event.end && otherEvent.end > event.start
+      ).length;
+      overlaps.push(count);
+    });
+
+    maxColumnsPerTutor[tutor.id] = Math.max(...overlaps, 1); // Ensure at least 1 column
+  });
 
   return (
     <div className="calendar">
       <h1>Schedule for {date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()}</h1>
       <table className="schedule-table">
-  <thead>
-    <tr>
-      <th className="time-header">Time</th>
-      {resources.map(tutor => (
-        <th key={tutor.id} className="tutor-header">{tutor.name}</th>
-      ))}
-    </tr>
-  </thead>
-  <tbody>
-    {timeSlots.map((time, timeIndex) => (
-      <tr key={time}>
-        <td className="time-cell">{time}</td>
-        {resources.map(tutor => {
-          // Find all sessions for the current tutor at this time slot
-          const sessionsAtTime = events.filter(event => {
-            const eventStartTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
-            return event.resource === tutor.id && eventStartTime === time;
-          });
+        <thead>
+          <tr>
+            <th className="time-header">Time</th>
+            {resources.map(tutor =>
+              Array.from({ length: maxColumnsPerTutor[tutor.id] }).map((_, colIndex) => (
+                <th key={`${tutor.id}-${colIndex}`} className="tutor-header">
+                  {tutor.name} {colIndex > 0 ? `(${colIndex + 1})` : ''}
+                </th>
+              ))
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          {timeSlots.map((time, timeIndex) => (
+            <tr key={time}>
+              <td className="time-cell">{time}</td>
+              {resources.map(tutor => {
+                const columns = Array.from({ length: maxColumnsPerTutor[tutor.id] });
+                return columns.map((_, colIndex) => {
+                  const session = events.find(event => {
+                    const eventStartTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
+                    return (
+                      event.resource === tutor.id &&
+                      eventStartTime === time &&
+                      event.start.getHours() === parseInt(time.split(':')[0], 10) &&
+                      colIndex === 0 // Starting in the first available column
+                    );
+                  });
 
-          if (sessionsAtTime.length > 0) {
-            return (
-              <td key={`${tutor.id}-${timeIndex}`} className="session-cell-container">
-                {sessionsAtTime.map((session, sessionIndex) => {
-                  const rowSpan = calculateRowSpan(session.start, session.end);
-                  return (
-                    <div key={session.id} className="session" style={{ gridRowEnd: `span ${rowSpan}` }}>
-                      {tutor /*session.student*/}
-                    </div>
-                  );
-                })}
-              </td>
-            );
-          }
-
-          // Display an empty cell if no sessions are found for this tutor at this time
-          return <td key={`${tutor.id}-${timeIndex}`} className="no-session">No Sessions</td>;
-        })}
-      </tr>
-    ))}
-  </tbody>
-</table>
-
-
+                  if (session) {
+                    const rowSpan = calculateRowSpan(session.start, session.end);
+                    return (
+                      <td key={`${tutor.id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={rowSpan}>
+                        <div className="session">{session.student}</div>
+                      </td>
+                    );
+                  }
+                  return <td key={`${tutor.id}-${colIndex}-${timeIndex}`} className="no-session">No Sessions</td>;
+                });
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
