@@ -93,16 +93,10 @@ const ScheduleDaily = () => {
     return timeSlots.indexOf(formattedTime);
   };
 
-  console.log(`date is ${date}`);
-
   // Step 2: Count overlaps per time slot for each tutor
   events.forEach(event => {
     const eventDate = new Date(event.start);
     const clientDate = new Date(date);
-    
-    for (const [tutor, arrData] of Object.entries(columnData)) {
-      console.log(`For event at ${eventDate}: Tutor: ${tutor}, ArrData: ${JSON.stringify(arrData)}`);
-    }
 
     if (
       eventDate.getMonth() === clientDate.getMonth() &&
@@ -113,8 +107,6 @@ const ScheduleDaily = () => {
       // Get start and end indices in timeSlots array
       const startIdx = findTimeSlotIndex(event.start, 'America/New_York'); //might want to Math.min check with 0
       const endIdx = findTimeSlotIndex(event.end, 'America/New_York') - 1;
-
-      console.log(`${startIdx} to ${endIdx}`);
 
       // Update maxColumnsPerTutor for each overlapping time slot
       let mycolumn = 0;
@@ -135,7 +127,6 @@ const ScheduleDaily = () => {
         }
       }
     }
-    else console.log(eventDate.getMonth(), clientDate.getMonth());
   });
 
   for (const [tutor, arrData] of Object.entries(columnData)) {
@@ -164,7 +155,7 @@ const ScheduleDaily = () => {
               <tr key={time}>
                 <td className="time-cell">{time}</td>
                 {
-                  columnData.map((tutor, dataArr) => (
+                  Object.entries(columnData).map((tutor, dataArr) => (
                     <td className={`${tutor.id}-${timeIndex}`}>
                       <div className="session">{dataArr[0]}</div>
                     </td>
