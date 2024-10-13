@@ -139,7 +139,7 @@ const ScheduleDaily = () => {
   });
 
   for (const [tutor, arrData] of Object.entries(columnData)) {
-    console.log(`Tutor: ${tutor}, ArrData: ${arrData}`);
+    console.log(`Tutor: ${tutor}, ArrData: ${JSON.stringify(arrData)}`);
   }
 
   return (
@@ -165,7 +165,9 @@ const ScheduleDaily = () => {
                 <td className="time-cell">{time}</td>
                 {
                   columnData.map((tutor, dataArr) => (
-                    <div className="session">{dataArr[1][timeIndex][0]}</div>
+                    <td className={`${tutor.id}-${timeIndex}`}>
+                      <div className="session">{dataArr[0]}</div>
+                    </td>
                   ))
                 }
               </tr>
