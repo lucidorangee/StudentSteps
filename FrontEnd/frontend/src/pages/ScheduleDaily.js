@@ -92,6 +92,7 @@ const ScheduleDaily = () => {
     return timeSlots.indexOf(formattedTime);
   };
 
+  console.log(`date is ${date}`);
 
   // Step 2: Count overlaps per time slot for each tutor
   events.forEach(event => {
