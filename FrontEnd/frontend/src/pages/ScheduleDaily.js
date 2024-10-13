@@ -92,11 +92,11 @@ const ScheduleDaily = () => {
     return timeSlots.indexOf(formattedTime);
   };
 
-  const clientDate = new Date(date);
 
   // Step 2: Count overlaps per time slot for each tutor
   events.forEach(event => {
     const eventDate = new Date(event.start);
+    const clientDate = new Date(date);
     
     for (const [tutor, arrData] of Object.entries(columnData)) {
       console.log(`For event at ${eventDate}: Tutor: ${tutor}, ArrData: ${JSON.stringify(arrData)}`);
