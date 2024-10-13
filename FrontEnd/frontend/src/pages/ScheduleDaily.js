@@ -162,7 +162,7 @@ const ScheduleDaily = () => {
                 {
                   tutors.map((tutor, tutorIndex) => {
                     columnData[tutor.tutor_id][1].map((col, colIndex) => {
-                      col[timeIndex] === null?console.log(`null`):console.log(`student info: ${col[timeIndex].student}`);
+                      col[timeIndex] === null?console.log(`null`):console.log(`student info: ${col[timeIndex].start}`);
                     })
                     return columnData[tutor.tutor_id][1].map((col, colIndex) => (
                       col[timeIndex] !== null?
@@ -170,7 +170,6 @@ const ScheduleDaily = () => {
                         <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={1}>
                           <div className="session">{col[timeIndex].student}</div>
                           <div className="session">length of {col[timeIndex].length}</div>
-                          <div className="session">{col[timeIndex].start} ~ {col[timeIndex].end}</div>
                         </td>
                       ):(
                         <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="no-session"> <div>No session</div> </td>
