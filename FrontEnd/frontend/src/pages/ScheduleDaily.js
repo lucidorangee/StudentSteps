@@ -129,6 +129,8 @@ const ScheduleDaily = () => {
     }
   });
 
+  console.log(columnData);
+
   return (
     <div className="calendar">
       <h1>Schedule for {date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()}</h1>
