@@ -156,9 +156,6 @@ const ScheduleDaily = () => {
                 <td className="time-cell">{time}</td>
                 {
                   tutors.map((tutor, tutorIndex) => {
-                    columnData[tutor.tutor_id][1].map((col, colIndex) => {
-                      console.log(`student info: ${col[timeIndex].student}`);
-                    })
                     columnData[tutor.tutor_id][1].map((col, colIndex) => (
                       col[timeIndex] !== null?
                       (
