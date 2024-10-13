@@ -161,30 +161,30 @@ const ScheduleDaily = () => {
                 <td className="time-cell">{time}</td>
                 {
                   tutors.map((tutor) => {
-                    const rows = [];
-                    const colData = columnData[tutor.tutor_id][1];
+                    let count = 1;
+                    columnData[tutor.tutor_id][1].map((col, colIndex) => {
+                      col[timeIndex] === null?console.log(`null`):console.log(`student info: ${col[timeIndex].start}`);
+                    })
                     
-                    for (let timeIndex = 0; timeIndex < colData.length; ) {
-                      const col = colData[timeIndex];
-                      if (col !== null) {
-                        rows.push(
-                          <td key={`${tutor.tutor_id}-${timeIndex}`} className="session-cell" rowSpan={col.length}>
-                            <div className="session">{col.student}</div>
-                            <div className="session">length of {col.length}</div>
-                          </td>
-                        );
-                        timeIndex += col.length; // Skip indices based on length
-                      } else {
-                        rows.push(
-                          <td key={`${tutor.tutor_id}-${timeIndex}`} className="no-session">
-                            <div>No session</div>
-                          </td>
-                        );
-                        timeIndex++;
-                      }
+                    count--;
+                    if(count > 0) 
+                    {
+                      return;
                     }
-
-                    return rows;
+                    //else
+                    count = col[timeIndex].length;
+                    
+                    return columnData[tutor.tutor_id][1].map((col, colIndex) => (
+                      col[timeIndex] !== null?
+                      (
+                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length}>
+                          <div className="session">{col[timeIndex].student}</div>
+                          <div className="session">length of {col[timeIndex].length}</div>
+                        </td>
+                      ):(
+                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="no-session"> <div>No session</div> </td>
+                      )
+                    ))
                   })
                 }
               </tr>
