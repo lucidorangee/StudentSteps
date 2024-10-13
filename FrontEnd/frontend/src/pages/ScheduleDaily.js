@@ -179,11 +179,15 @@ const ScheduleDaily = () => {
 
                       if( col[timeIndex].occupied )
                       {
-                        return null;
+                        return (
+                          <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="no-session">
+                            <div>Occupied</div>
+                          </td>
+                        );
                       }
 
                       return (
-                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length}>
+                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={1}>
                           <div className="session">{col[timeIndex].student}</div>
                         </td>
                       );
