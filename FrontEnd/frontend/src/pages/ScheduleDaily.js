@@ -95,9 +95,8 @@ const ScheduleDaily = () => {
     maxColumnsPerTutor[tutor.id] = Math.max(...overlaps, 1); // Ensure at least 1 column
   });
 
-  for(const c of maxColumnsPerTutor)
-  {
-    console.log(`C is ${c}`);
+  for (const [tutor, columns] of Object.entries(maxColumnsPerTutor)) {
+    console.log(`Tutor: ${tutor}, Columns: ${columns}`);
   }
 
   return (
