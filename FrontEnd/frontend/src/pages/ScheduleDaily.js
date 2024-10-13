@@ -146,7 +146,21 @@ const ScheduleDaily = () => {
           </tr>
         </thead>
         <tbody>
-          {timeSlots.map((time, timeIndex) => (
+          {
+            timeSlots.map((time, timeIndex) => (
+              <tr key={time}>
+                <td className="time-cell">{time}</td>
+                {
+                  columnData.map((tutor, dataArr) => (
+                    <div className="session">{dataArr[1][timeIndex][0]}</div>
+                  ))
+                }
+              </tr>
+            ))
+            
+          }
+          
+          {/*timeSlots.map((time, timeIndex) => (
             <tr key={time}>
               <td className="time-cell">{time}</td>
               {resources.map(tutor => {
@@ -174,7 +188,7 @@ const ScheduleDaily = () => {
                 });
               })}
             </tr>
-          ))}
+          ))*/}
         </tbody>
       </table>
     </div>
