@@ -153,12 +153,12 @@ const ScheduleDaily = () => {
               <tr key={time}>
                 <td className="time-cell">{time}</td>
                 {
-                  tutors.map((tutor) => {
-                    return columnData[tutor.tutor_id][1].map((col, colIndex) => {
+                  Object.keys(columnData).forEach(tutor_id => {
+                    return columnData[tutor_id][1].map((col, colIndex) => {
                       if( col[timeIndex] === null)
                       {
                         return (
-                          <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="no-session">
+                          <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="no-session">
                             <div>No session</div>
                           </td>
                         );
@@ -170,7 +170,7 @@ const ScheduleDaily = () => {
                       }
 
                       return (
-                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length + 1}>
+                        <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length + 1}>
                           <div className="session">{col[timeIndex].student}</div>
                           {/*<div className="sessionlength">{col[timeIndex].length + 1}</div>*/}
                         </td>
