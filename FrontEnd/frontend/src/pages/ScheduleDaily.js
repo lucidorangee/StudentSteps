@@ -149,7 +149,7 @@ const ScheduleDaily = () => {
               tutors.map((tutor) => {
                 return (
                   <th key={`${tutor.tutor_id}`} className="tutor-header" colSpan={columnData[tutor.tutor_id][0]}>
-                    {tutor.name} 
+                    {tutor.first_name} {tutor.last_name} 
                   </th>
                 );
               })
