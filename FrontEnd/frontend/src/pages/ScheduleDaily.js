@@ -96,6 +96,7 @@ const ScheduleDaily = () => {
       eventDate.getMonth() === clientDate.getMonth() &&
       eventDate.getFullYear() === clientDate.getFullYear()
     ) {
+
       const tutorId = event.resource;
       if(!columnData[tutorId]) columnData[tutorId] = [1, [Array(timeSlots.length).fill(null)]];
 
@@ -136,10 +137,10 @@ const ScheduleDaily = () => {
           <tr>
             <th className="time-header">Time</th>
             {
-              tutors.map((tutor) => {
+              Object.keys(columnData).forEach(tutor_id => {
                 return (
-                  <th key={`${tutor.tutor_id}`} className="tutor-header" colSpan={columnData[tutor.tutor_id][0]}>
-                    {tutor.first_name} {tutor.last_name} 
+                  <th key={`${tutor_id}`} className="tutor-header" colSpan={columnData[tutor_id][0]}>
+                    {tutors.find((id) => id === tutor_id).first_name} {tutors.find((id) => id === tutor_id).last_name} 
                   </th>
                 );
               })
