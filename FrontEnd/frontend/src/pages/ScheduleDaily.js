@@ -83,7 +83,9 @@ const ScheduleDaily = () => {
   const maxColumnsPerTutor = {};
   resources.forEach(tutor => {
     const tutorEvents = events.filter(event => event.resource === tutor.id);
-    console.log(`Tutor Event: ${tutorEvents}`);
+    for (const [event, data] of Object.entries(tutorEvents)) {
+      console.log(`Event: ${event}, Columns: ${data}`);
+    }
     const overlaps = [];
 
     tutorEvents.forEach((event, i) => {
