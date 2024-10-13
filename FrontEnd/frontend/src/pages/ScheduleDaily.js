@@ -72,35 +72,30 @@ const ScheduleDaily = () => {
     end: new Date(new Date(session.session_datetime).getTime() + session.duration * 60 * 1000),
   }));
 
+  // Define time slots
   const timeSlots = [];
   for (let hour = 15; hour <= 20; hour++) {
     timeSlots.push(`${hour}:00`, `${hour}:30`);
   }
 
-  const calculateRowSpan = (start, end) => Math.ceil((end - start) / (30 * 60 * 1000));
-
-  // Step 1: Track each tutor's schedule layout
+  // Track each tutor's sessions per time slot
   const tutorSchedule = {};
-
-  // Initialize the schedule map
   resources.forEach(tutor => {
     tutorSchedule[tutor.id] = timeSlots.map(() => []);
   });
 
-  // Populate the schedule map
+  // Populate each time slot with active sessions
   events.forEach(event => {
     const tutorId = event.resource;
-    const startTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
-    const endTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.end);
+    const start = event.start;
+    const end = event.end;
 
-    // Get start and end indices
-    const startIndex = timeSlots.indexOf(startTime);
-    const endIndex = timeSlots.indexOf(endTime);
-
-    // Track columns by marking occupancy
-    for (let i = startIndex; i < endIndex; i++) {
-      tutorSchedule[tutorId][i].push(event);
-    }
+    timeSlots.forEach((time, index) => {
+      const slotTime = new Date(`${date}T${time}`).getTime();
+      if (slotTime >= start.getTime() && slotTime < end.getTime()) {
+        tutorSchedule[tutorId][index].push(event);
+      }
+    });
   });
 
   return (
@@ -111,7 +106,7 @@ const ScheduleDaily = () => {
           <tr>
             <th className="time-header">Time</th>
             {resources.map(tutor => (
-              <th key={tutor.id} className="tutor-header" colSpan={tutorSchedule[tutor.id].reduce((max, col) => Math.max(max, col.length), 1)}>
+              <th key={tutor.id} className="tutor-header" colSpan={Math.max(1, ...tutorSchedule[tutor.id].map(s => s.length))}>
                 {tutor.name}
               </th>
             ))}
@@ -122,22 +117,16 @@ const ScheduleDaily = () => {
             <tr key={time}>
               <td className="time-cell">{time}</td>
               {resources.map(tutor => {
-                const sessions = tutorSchedule[tutor.id][timeIndex];
-
-                if (sessions.length) {
-                  return (
-                    sessions.map((session, index) => {
-                      const rowSpan = calculateRowSpan(session.start, session.end);
-                      return (
-                        <td key={`${session.id}-${index}`} rowSpan={rowSpan} className="session-cell">
-                          <div className="session">{session.student}</div>
-                        </td>
-                      );
-                    })
-                  );
+                const sessionsAtTime = tutorSchedule[tutor.id][timeIndex];
+                
+                if (sessionsAtTime.length > 0) {
+                  return sessionsAtTime.map((session, index) => (
+                    <td key={`${session.id}-${index}`} rowSpan={Math.ceil((session.end - session.start) / (30 * 60 * 1000))} className="session-cell">
+                      <div className="session">{session.student}</div>
+                    </td>
+                  ));
                 }
 
-                // Return a placeholder for empty slots
                 return <td key={`${tutor.id}-${timeIndex}`} className="no-session">No Sessions</td>;
               })}
             </tr>
