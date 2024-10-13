@@ -175,7 +175,7 @@ const ScheduleDaily = () => {
                       {
                         if(count > 0) 
                         {
-                          return;
+                          return <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="no-session"> <div>No session</div> </td>;
                         }
                         //else
                         count = col[timeIndex].length;
