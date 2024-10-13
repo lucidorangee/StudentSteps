@@ -157,7 +157,7 @@ const ScheduleDaily = () => {
                 {
                   Object.entries(columnData).map((tutor, dataArr) => (
                     <td className={`${tutor.id}-${timeIndex}`}>
-                      <div className="session">{dataArr[0]}</div>
+                      No sessions
                     </td>
                   ))
                 }
