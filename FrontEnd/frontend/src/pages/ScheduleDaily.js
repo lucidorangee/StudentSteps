@@ -59,11 +59,6 @@ const ScheduleDaily = () => {
     return <div>Error loading data: {tutoringSessionsError?.message || tutorsError?.message}</div>;
   }
 
-  const resources = tutors.map(tutor => ({
-    id: tutor.tutor_id,
-    name: `${tutor.first_name} ${tutor.last_name}`,
-  }));
-
   const events = tutoringSessionData.map(session => ({
     id: session.session_id,
     resource: session.tutor_id,
@@ -80,12 +75,11 @@ const ScheduleDaily = () => {
 
   const calculateRowSpan = (start, end) => Math.ceil((end - start) / (30 * 60 * 1000));
 
-  // Step 1: Initialize maxColumnsPerTutor as an array of zeros for each tutor
   const columnData = {};
-  resources.forEach(tutor => {
-    columnData[tutor.id] = [1, [Array(timeSlots.length).fill(null)]];
-    console.log(JSON.stringify(columnData[tutor.id]));
-  });
+  /*
+  tutors.forEach(tutor => {
+    columnData[tutor.tutor_id] = [1, [Array(timeSlots.length).fill(null)]];
+  });*/
 
   // Helper function to find time slot index
   const findTimeSlotIndex = (date, timeZone) => {
@@ -94,7 +88,6 @@ const ScheduleDaily = () => {
     return timeSlots.indexOf(formattedTime);
   };
 
-  // Step 2: Count overlaps per time slot for each tutor
   events.forEach(event => {
     const eventDate = new Date(event.start);
     const clientDate = new Date(date);
@@ -104,6 +97,7 @@ const ScheduleDaily = () => {
       eventDate.getFullYear() === clientDate.getFullYear()
     ) {
       const tutorId = event.resource;
+      if(!columnData[tutorId]) columnData[tutorId] = [1, [Array(timeSlots.length).fill(null)]];
 
       // Get start and end indices in timeSlots array
       const startIdx = Math.max(0, findTimeSlotIndex(event.start, 'America/New_York')); //might want to Math.min check with 0
@@ -134,10 +128,6 @@ const ScheduleDaily = () => {
     }
   });
 
-  for (const [tutor, arrData] of Object.entries(columnData)) {
-    console.log(`Tutor: ${tutor}, ArrData: ${JSON.stringify(arrData)}`);
-  }
-
   return (
     <div className="calendar">
       <h1>Schedule for {date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()}</h1>
@@ -162,13 +152,7 @@ const ScheduleDaily = () => {
               <tr key={time}>
                 <td className="time-cell">{time}</td>
                 {
-                  
                   tutors.map((tutor) => {
-                    columnData[tutor.tutor_id][1].map((col, colIndex) => {
-                      col[timeIndex] === null?console.log(`null`):console.log(`student info: ${col[timeIndex].start}`);
-                    })
-      
-
                     return columnData[tutor.tutor_id][1].map((col, colIndex) => {
                       if( col[timeIndex] === null)
                       {
