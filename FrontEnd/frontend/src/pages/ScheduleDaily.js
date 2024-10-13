@@ -73,47 +73,49 @@ const ScheduleDaily = () => {
   }));
 
   const timeSlots = [];
-for (let hour = 15; hour <= 20; hour++) {
-  timeSlots.push(`${hour}:00`, `${hour}:30`);
-}
+  for (let hour = 15; hour <= 20; hour++) {
+    timeSlots.push(`${hour}:00`, `${hour}:30`);
+  }
 
-const calculateRowSpan = (start, end) => Math.ceil((end - start) / (30 * 60 * 1000));
+  const calculateRowSpan = (start, end) => Math.ceil((end - start) / (30 * 60 * 1000));
 
-// Step 1: Initialize maxColumnsPerTutor as an array of zeros for each tutor
-const maxColumnsPerTutor = {};
-resources.forEach(tutor => {
-  maxColumnsPerTutor[tutor.id] = Array(timeSlots.length).fill(0);
-});
+  // Step 1: Initialize maxColumnsPerTutor as an array of zeros for each tutor
+  const maxColumnsPerTutor = {};
+  resources.forEach(tutor => {
+    maxColumnsPerTutor[tutor.id] = Array(timeSlots.length).fill(0);
+  });
 
-// Helper function to find time slot index
-const findTimeSlotIndex = (date, timeZone) => {
-  const options = { hour: '2-digit', minute: '2-digit', timeZone, hour12: false };
-  const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
-  return timeSlots.indexOf(formattedTime);
-};
+  // Helper function to find time slot index
+  const findTimeSlotIndex = (date, timeZone) => {
+    const options = { hour: '2-digit', minute: '2-digit', timeZone, hour12: false };
+    const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+    return timeSlots.indexOf(formattedTime);
+  };
 
-// Step 2: Count overlaps per time slot for each tutor
-events.forEach(event => {
-  const eventDate = new Date(event.start);
-  const clientDate = new Date(date);
-  if (
-    eventDate.getMonth() === clientDate.getMonth() &&
-    eventDate.getFullYear() === clientDate.getFullYear()
-  ) {
-    const tutorId = event.resource;
+  // Step 2: Count overlaps per time slot for each tutor
+  events.forEach(event => {
+    const eventDate = new Date(event.start);
+    const clientDate = new Date(date);
+    console.log(`Event date is ${eventDate} and client date is ${clientDate}`);
+    if (
+      eventDate.getMonth() === clientDate.getMonth() &&
+      eventDate.getFullYear() === clientDate.getFullYear()
+    ) {
+      const tutorId = event.resource;
 
-    // Get start and end indices in timeSlots array
-    const startIdx = findTimeSlotIndex(event.start, 'America/New_York');
-    const endIdx = findTimeSlotIndex(event.end, 'America/New_York') - 1;
+      // Get start and end indices in timeSlots array
+      const startIdx = findTimeSlotIndex(event.start, 'America/New_York');
+      const endIdx = findTimeSlotIndex(event.end, 'America/New_York') - 1;
 
-    // Update maxColumnsPerTutor for each overlapping time slot
-    for (let i = startIdx; i <= endIdx; i++) {
-      if (i >= 0 && i < timeSlots.length) {
-        maxColumnsPerTutor[tutorId][i]++;
+      // Update maxColumnsPerTutor for each overlapping time slot
+      for (let i = startIdx; i <= endIdx; i++) {
+        console.log(i);
+        if (i >= 0 && i < timeSlots.length) {
+          maxColumnsPerTutor[tutorId][i]++;
+        }
       }
     }
-  }
-});
+  });
 
   for (const [tutor, columns] of Object.entries(maxColumnsPerTutor)) {
     console.log(`Tutor: ${tutor}, Columns: ${columns}`);
