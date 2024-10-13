@@ -167,7 +167,7 @@ const ScheduleDaily = () => {
                           <div className="session">test</div>
                         </td>
                       ):(
-                        <div>No session</div>
+                        <td className={`${tutor.tutor_id}-${colIndex}-${timeIndex}`}> <div>No session</div> </td>
                       )
                     ))
                   })
