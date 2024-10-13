@@ -158,6 +158,9 @@ const ScheduleDaily = () => {
                   tutors.map((tutor, tutorIndex) => {
                     console.log(tutor);
                     console.log(JSON.stringify(columnData[tutor.tutor_id]));
+                    columnData[tutor.tutor_id][1].map((col, colIndex) => {
+                      console.log(col[timeIndex]);
+                    })
                     columnData[tutor.tutor_id][1].map((col, colIndex) => (
                       col[timeIndex]?
                       (
