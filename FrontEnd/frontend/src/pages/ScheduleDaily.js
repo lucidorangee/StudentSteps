@@ -179,6 +179,7 @@ const ScheduleDaily = () => {
                         }
                         //else
                         count = col[timeIndex].length;
+                        console.log(`Count: ${count}`);
                       }
                       
                       return col[timeIndex] !== null?
