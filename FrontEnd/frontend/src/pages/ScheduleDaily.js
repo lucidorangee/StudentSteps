@@ -131,7 +131,7 @@ const ScheduleDaily = () => {
                   const rowSpan = calculateRowSpan(session.start, session.end);
                   return (
                     <div key={session.id} className="session" style={{ gridRowEnd: `span ${rowSpan}` }}>
-                      {session.student}
+                      {tutor /*session.student*/}
                     </div>
                   );
                 })}
