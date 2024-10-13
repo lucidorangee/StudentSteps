@@ -167,7 +167,7 @@ const ScheduleDaily = () => {
                     return columnData[tutor.tutor_id][1].map((col, colIndex) => (
                       col[timeIndex] !== null?
                       (
-                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={1}>
+                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length}>
                           <div className="session">{col[timeIndex].student}</div>
                           <div className="session">length of {col[timeIndex].length}</div>
                         </td>
