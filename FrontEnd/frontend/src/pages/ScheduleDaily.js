@@ -112,6 +112,8 @@ const ScheduleDaily = () => {
       const startIdx = findTimeSlotIndex(event.start, 'America/New_York'); //might want to Math.min check with 0
       const endIdx = findTimeSlotIndex(event.end, 'America/New_York') - 1;
 
+      console.log(`${startIdx} to ${endIdx}`);
+
       // Update maxColumnsPerTutor for each overlapping time slot
       let mycolumn = 0;
       for (let i = startIdx; i <= endIdx; i++) {
