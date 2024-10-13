@@ -79,20 +79,28 @@ const ScheduleDaily = () => {
 
   const calculateRowSpan = (start, end) => Math.ceil((end - start) / (30 * 60 * 1000));
 
-  // Step 1: Determine max overlap per tutor
-  const maxColumnsPerTutor = {};
+  // Step 1: Track each tutor's schedule layout
+  const tutorSchedule = {};
+
+  // Initialize the schedule map
   resources.forEach(tutor => {
-    const tutorEvents = events.filter(event => event.resource === tutor.id);
-    const overlaps = [];
+    tutorSchedule[tutor.id] = timeSlots.map(() => []);
+  });
 
-    tutorEvents.forEach((event, i) => {
-      const count = tutorEvents.filter(
-        otherEvent => otherEvent.start < event.end && otherEvent.end > event.start
-      ).length;
-      overlaps.push(count);
-    });
+  // Populate the schedule map
+  events.forEach(event => {
+    const tutorId = event.resource;
+    const startTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
+    const endTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.end);
 
-    maxColumnsPerTutor[tutor.id] = Math.max(...overlaps, 1); // Ensure at least 1 column
+    // Get start and end indices
+    const startIndex = timeSlots.indexOf(startTime);
+    const endIndex = timeSlots.indexOf(endTime);
+
+    // Track columns by marking occupancy
+    for (let i = startIndex; i < endIndex; i++) {
+      tutorSchedule[tutorId][i].push(event);
+    }
   });
 
   return (
@@ -102,13 +110,11 @@ const ScheduleDaily = () => {
         <thead>
           <tr>
             <th className="time-header">Time</th>
-            {resources.map(tutor =>
-              Array.from({ length: maxColumnsPerTutor[tutor.id] }).map((_, colIndex) => (
-                <th key={`${tutor.id}-${colIndex}`} className="tutor-header">
-                  {tutor.name} {colIndex > 0 ? `(${colIndex + 1})` : ''}
-                </th>
-              ))
-            )}
+            {resources.map(tutor => (
+              <th key={tutor.id} className="tutor-header" colSpan={tutorSchedule[tutor.id].reduce((max, col) => Math.max(max, col.length), 1)}>
+                {tutor.name}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -116,28 +122,23 @@ const ScheduleDaily = () => {
             <tr key={time}>
               <td className="time-cell">{time}</td>
               {resources.map(tutor => {
-                const columns = Array.from({ length: maxColumnsPerTutor[tutor.id] });
-                return columns.map((_, colIndex) => {
-                  const session = events.find(event => {
-                    const eventStartTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
-                    return (
-                      event.resource === tutor.id &&
-                      eventStartTime === time &&
-                      event.start.getHours() === parseInt(time.split(':')[0], 10) &&
-                      colIndex === 0 // Starting in the first available column
-                    );
-                  });
+                const sessions = tutorSchedule[tutor.id][timeIndex];
 
-                  if (session) {
-                    const rowSpan = calculateRowSpan(session.start, session.end);
-                    return (
-                      <td key={`${tutor.id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={rowSpan}>
-                        <div className="session">{session.student}</div>
-                      </td>
-                    );
-                  }
-                  return <td key={`${tutor.id}-${colIndex}-${timeIndex}`} className="no-session">No Sessions</td>;
-                });
+                if (sessions.length) {
+                  return (
+                    sessions.map((session, index) => {
+                      const rowSpan = calculateRowSpan(session.start, session.end);
+                      return (
+                        <td key={`${session.id}-${index}`} rowSpan={rowSpan} className="session-cell">
+                          <div className="session">{session.student}</div>
+                        </td>
+                      );
+                    })
+                  );
+                }
+
+                // Return a placeholder for empty slots
+                return <td key={`${tutor.id}-${timeIndex}`} className="no-session">No Sessions</td>;
               })}
             </tr>
           ))}
