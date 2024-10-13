@@ -155,11 +155,18 @@ const ScheduleDaily = () => {
               <tr key={time}>
                 <td className="time-cell">{time}</td>
                 {
-                  Object.entries(columnData).map((tutor, dataArr) => (
-                    <td className={`${tutor.id}-${timeIndex}`}>
-                      No sessions
-                    </td>
-                  ))
+                  tutors.map((tutor_id, tutorIndex) => {
+                    columnData[tutor_id][1].map((col, colIndex) => (
+                      col[timeIndex]?
+                      (
+                        <td className={`${tutor_id}-${colIndex}-${timeIndex}`}>
+                          <div className="session">{col[timeIndex]}</div>
+                        </td>
+                      ):(
+                        <div>No session</div>
+                      )
+                    ))
+                  })
                 }
               </tr>
             ))
