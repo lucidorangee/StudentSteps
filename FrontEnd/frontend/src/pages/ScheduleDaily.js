@@ -99,7 +99,7 @@ const ScheduleDaily = () => {
     const eventDate = new Date(event.start);
     
     for (const [tutor, arrData] of Object.entries(columnData)) {
-      console.log(`For event at ${eventDate}: Tutor: ${tutor}, ArrData: ${arrData}`);
+      console.log(`For event at ${eventDate}: Tutor: ${tutor}, ArrData: ${JSON.stringify(arrData)}`);
     }
 
     if (
