@@ -70,6 +70,7 @@ const ScheduleDaily = () => {
     student: session.student_name || 'Unnamed Student',
     start: new Date(session.session_datetime),
     end: new Date(new Date(session.session_datetime).getTime() + session.duration * 60 * 1000),
+    slot_length: 1,
   }));
 
   const timeSlots = [];
@@ -105,7 +106,7 @@ const ScheduleDaily = () => {
       const tutorId = event.resource;
 
       // Get start and end indices in timeSlots array
-      const startIdx = findTimeSlotIndex(event.start, 'America/New_York'); //might want to Math.min check with 0
+      const startIdx = Math.max(0, findTimeSlotIndex(event.start, 'America/New_York')); //might want to Math.min check with 0
       const endIdx = findTimeSlotIndex(event.end, 'America/New_York') - 1;
 
       // Update maxColumnsPerTutor for each overlapping time slot
@@ -123,7 +124,11 @@ const ScheduleDaily = () => {
              
             i--;
           }
-          else columnData[tutorId][1][mycolumn][i] = event;
+          else 
+          {
+            event.length = endIdx - startIdx;
+            columnData[tutorId][1][mycolumn][i] = event;
+          }
         }
       }
     }
@@ -162,12 +167,12 @@ const ScheduleDaily = () => {
                     return columnData[tutor.tutor_id][1].map((col, colIndex) => (
                       col[timeIndex] !== null?
                       (
-                        <td className={`${tutor.tutor_id}-${colIndex}-${timeIndex}`}>
+                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={1}>
                           <div className="session">{col[timeIndex].student}</div>
-                          <div className="session">test</div>
+                          <div className="session">length of {col[timeIndex].length}</div>
                         </td>
                       ):(
-                        <td className={`${tutor.tutor_id}-${colIndex}-${timeIndex}`}> <div>No session</div> </td>
+                        <td key={`${tutor.tutor_id}-${colIndex}-${timeIndex}`} className="no-session"> <div>No session</div> </td>
                       )
                     ))
                   })
