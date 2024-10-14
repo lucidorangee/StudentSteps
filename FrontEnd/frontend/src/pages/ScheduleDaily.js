@@ -79,13 +79,7 @@ const ScheduleDaily = () => {
     timeSlots.push(`${hour}:00`, `${hour}:30`);
   }
 
-  const calculateRowSpan = (start, end) => Math.ceil((end - start) / (30 * 60 * 1000));
-
   const columnData = {};
-  /*
-  tutors.forEach(tutor => {
-    columnData[tutor.tutor_id] = [1, [Array(timeSlots.length).fill(null)]];
-  });*/
 
   // Helper function to find time slot index
   const findTimeSlotIndex = (date, timeZone) => {
@@ -142,7 +136,7 @@ const ScheduleDaily = () => {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
-    navigate(`/schedule/daily/${formattedDate}`);
+    return <Navigate to={"/schedule/daily/"+formattedDate} />;
   };
 
   return (
@@ -201,7 +195,7 @@ const ScheduleDaily = () => {
 
                       return (
                         <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length + 1}>
-                          <div className="session">{col[timeIndex].student}</div>
+                          <div className="session">{col[timeIndex].student}\ntest</div>
                           <div className="session">{new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)} - {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].end)}</div>
                           {/*<div className="sessionlength">{col[timeIndex].length + 1}</div>*/}
                         </td>
