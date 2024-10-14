@@ -98,6 +98,7 @@ const ScheduleDaily = () => {
     const clientDate = date;
 
     if (
+      eventDate.getDay() === clientDate.getDay() &&
       eventDate.getMonth() === clientDate.getMonth() &&
       eventDate.getFullYear() === clientDate.getFullYear()
     ) {
@@ -140,7 +141,7 @@ const ScheduleDaily = () => {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
-    navigate(`/Schedule/List/${formattedDate}`);
+    navigate(`/schedule/daily/${formattedDate}`);
   };
 
   return (
