@@ -66,7 +66,7 @@ const ScheduleDaily = () => {
 
   useEffect(() => {
     if(!tutors || !tutoringSessionData) return;
-    
+
     const temp_events = tutoringSessionData.map(session => ({
       id: session.session_id,
       resource: session.tutor_id,
@@ -135,7 +135,7 @@ const ScheduleDaily = () => {
     });
     setColumnData(temp_columnData);
     setLoading(false);
-  }, [date]);
+  }, [date, tutors, tutoringSessionData]);
 
   if (tutorsLoading || tutoringSessionsLoading || loading) return <div>Loading...</div>;
 
