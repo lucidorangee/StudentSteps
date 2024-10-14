@@ -147,7 +147,7 @@ const ScheduleDaily = () => {
                 
                 return (
                   <th key={`${tutor_id}`} className="tutor-header" colSpan={columnData[tutor_id][0]}>
-                    {tutors.find((tutor) => tutor.tutor_id === tutor_id)?.first_name} {tutors.find((tutor) => tutor.tutor_id === tutor_id)?.last_name} 
+                    {tutors.find((tutor) => tutor.tutor_id === Number(tutor_id))?.first_name} {tutors.find((tutor) => tutor.tutor_id === Number(tutor_id))?.last_name} 
                   </th>
                 );
               })
