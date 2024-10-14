@@ -138,9 +138,10 @@ const ScheduleDaily = () => {
             <th className="time-header">Time</th>
             {
               Object.keys(columnData).map((tutor_id) => { 
+                const tutor = tutors.find((tutor) => tutor.tutor_id === Number(tutor_id));
                 return (
                   <th key={`${tutor_id}`} className="tutor-header" colSpan={columnData[tutor_id][0]}>
-                    {tutors.find((tutor) => tutor.tutor_id === Number(tutor_id))?.first_name} 
+                    {tutor?.first_name} {tutor?.last_name} 
                   </th>
                 );
               })
