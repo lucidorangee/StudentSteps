@@ -64,6 +64,13 @@ const ScheduleDaily = () => {
   const { data: tutors, isLoading: tutorsLoading, error: tutorsError } = useQuery({ queryKey: ['tutors'], queryFn: fetchTutors });
   const { data: tutoringSessionData, isLoading: tutoringSessionsLoading, error: tutoringSessionsError } = useQuery({ queryKey: ['tutoringSessions'], queryFn: fetchTutoringSessions });
 
+  // Helper function to find time slot index
+  const findTimeSlotIndex = (date, timeZone) => {
+    const options = { hour: '2-digit', minute: '2-digit', timeZone, hour12: false };
+    const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+    return timeSlots.indexOf(formattedTime);
+  };
+
   useEffect(() => {
     if(!tutoringSessionData) return;
 
@@ -89,13 +96,6 @@ const ScheduleDaily = () => {
   
     const temp_columnData = {};
   
-    // Helper function to find time slot index
-    const findTimeSlotIndex = (date, timeZone) => {
-      const options = { hour: '2-digit', minute: '2-digit', timeZone, hour12: false };
-      const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
-      return timeSlots.indexOf(formattedTime);
-    };
-  
     events.forEach(event => {
       const eventDate = new Date(event.start);
       const clientDate = date;
@@ -103,6 +103,7 @@ const ScheduleDaily = () => {
     });
   
     setColumnData(temp_columnData);
+    setLoading(false);
   }, [events, timeSlots, date]);
 
   if (tutorsLoading || tutoringSessionsLoading || loading) return <div>Loading...</div>;
