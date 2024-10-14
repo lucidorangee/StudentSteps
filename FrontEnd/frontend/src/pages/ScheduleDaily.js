@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import './css/DailyCalendar.css';
 import DatePicker from 'react-datepicker';
 import { useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
 import { FaCalendarAlt } from 'react-icons/fa';
 
 // Fetch functions
