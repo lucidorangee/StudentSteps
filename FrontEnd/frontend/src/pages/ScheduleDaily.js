@@ -3,7 +3,6 @@ import { useParams, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import './css/DailyCalendar.css';
 import DatePicker from 'react-datepicker';
-import { useNavigate } from 'react-router-dom';
 import { FaCalendarAlt } from 'react-icons/fa';
 
 // Fetch functions
@@ -42,21 +41,101 @@ const fetchTutoringSessions = async () => {
 
 const ScheduleDaily = () => {
   const { tempdate } = useParams();
-  const date = (tempdate) ? new Date(tempdate) : new Date();
-  const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [date, setDate] = useState((tempdate) ? new Date(tempdate) : new Date());
+  const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState(null);
+  const [timeSlots, setTimeSlots] = useState([]);
+  const [columnData, setColumnData] = useState({});
 
   const timeonlySetting = {
     hour: '2-digit',
     minute: '2-digit',
     timeZone: 'America/New_York',
-    hour12: false,
+    hour12: true,
   };
+
+  const dateonlySetting = {
+    timeZone: "America/New_York", // Eastern Time zone
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  };
+
+  useEffect(() => {
+    const temp_events = tutoringSessionData.map(session => ({
+      id: session.session_id,
+      resource: session.tutor_id,
+      student: session.student_name || 'Unnamed Student',
+      start: new Date(session.session_datetime),
+      end: new Date(new Date(session.session_datetime).getTime() + session.duration * 60 * 1000),
+      slot_length: 1,
+    }));
+    setEvents(temp_events);
+  
+    const temp_timeSlots = [];
+    for (let hour = 15; hour <= 20; hour++) {
+      temp_timeSlots.push(`${hour}:00`, `${hour}:30`);
+    }
+    setTimeSlots(temp_timeSlots);
+  
+    const temp_columnData = {};
+  
+    // Helper function to find time slot index
+    const findTimeSlotIndex = (date, timeZone) => {
+      const options = { hour: '2-digit', minute: '2-digit', timeZone, hour12: false };
+      const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
+      return timeSlots.indexOf(formattedTime);
+    };
+  
+    events.forEach(event => {
+      const eventDate = new Date(event.start);
+      const clientDate = date;
+  
+      if (
+        eventDate.getDay() === clientDate.getDay() &&
+        eventDate.getMonth() === clientDate.getMonth() &&
+        eventDate.getFullYear() === clientDate.getFullYear()
+      ) {
+  
+        const tutorId = event.resource;
+        if(!temp_columnData[tutorId]) temp_columnData[tutorId] = [1, [Array(timeSlots.length).fill(null)]];
+  
+        // Get start and end indices in timeSlots array
+        const startIdx = Math.max(0, findTimeSlotIndex(event.start, 'America/New_York')); //might want to Math.min check with 0
+        const endIdx = findTimeSlotIndex(event.end, 'America/New_York') - 1;
+  
+        // Update maxColumnsPerTutor for each overlapping time slot
+        let mycolumn = 0;
+        for (let i = startIdx; i <= endIdx; i++) {
+          if (i >= 0 && i < timeSlots.length) {
+            if(temp_columnData[tutorId][1][mycolumn][i] !== null) 
+            {
+              mycolumn++;
+              if(mycolumn + 1 > temp_columnData[tutorId][0])
+              {
+                temp_columnData[tutorId][0] = mycolumn + 1;
+                temp_columnData[tutorId][1].push(Array(timeSlots.length).fill(null));
+              }
+               
+              i--;
+            }
+            else 
+            {
+              event.length = endIdx - startIdx;
+              temp_columnData[tutorId][1][mycolumn][i] = i === startIdx ? event : { occupied: true };
+            }
+          }
+        }
+      }
+    });
+    setColumnData(temp_columnData);
+    setLoading(false);
+  }, [date]);
 
   const { data: tutors, isLoading: tutorsLoading, error: tutorsError } = useQuery({ queryKey: ['tutors'], queryFn: fetchTutors });
   const { data: tutoringSessionData, isLoading: tutoringSessionsLoading, error: tutoringSessionsError } = useQuery({ queryKey: ['tutoringSessions'], queryFn: fetchTutoringSessions });
 
-  if (tutorsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
+  if (tutorsLoading || tutoringSessionsLoading || loading) return <div>Loading...</div>;
 
   if (tutoringSessionsError || tutorsError) {
     if (tutoringSessionsError?.status === 401 || tutorsError?.status === 401) {
@@ -64,84 +143,19 @@ const ScheduleDaily = () => {
     }
     return <div>Error loading data: {tutoringSessionsError?.message || tutorsError?.message}</div>;
   }
-
-  const events = tutoringSessionData.map(session => ({
-    id: session.session_id,
-    resource: session.tutor_id,
-    student: session.student_name || 'Unnamed Student',
-    start: new Date(session.session_datetime),
-    end: new Date(new Date(session.session_datetime).getTime() + session.duration * 60 * 1000),
-    slot_length: 1,
-  }));
-
-  const timeSlots = [];
-  for (let hour = 15; hour <= 20; hour++) {
-    timeSlots.push(`${hour}:00`, `${hour}:30`);
-  }
-
-  const columnData = {};
-
-  // Helper function to find time slot index
-  const findTimeSlotIndex = (date, timeZone) => {
-    const options = { hour: '2-digit', minute: '2-digit', timeZone, hour12: false };
-    const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date);
-    return timeSlots.indexOf(formattedTime);
-  };
-
-  events.forEach(event => {
-    const eventDate = new Date(event.start);
-    const clientDate = date;
-
-    if (
-      eventDate.getDay() === clientDate.getDay() &&
-      eventDate.getMonth() === clientDate.getMonth() &&
-      eventDate.getFullYear() === clientDate.getFullYear()
-    ) {
-
-      const tutorId = event.resource;
-      if(!columnData[tutorId]) columnData[tutorId] = [1, [Array(timeSlots.length).fill(null)]];
-
-      // Get start and end indices in timeSlots array
-      const startIdx = Math.max(0, findTimeSlotIndex(event.start, 'America/New_York')); //might want to Math.min check with 0
-      const endIdx = findTimeSlotIndex(event.end, 'America/New_York') - 1;
-
-      // Update maxColumnsPerTutor for each overlapping time slot
-      let mycolumn = 0;
-      for (let i = startIdx; i <= endIdx; i++) {
-        if (i >= 0 && i < timeSlots.length) {
-          if(columnData[tutorId][1][mycolumn][i] !== null) 
-          {
-            mycolumn++;
-            if(mycolumn + 1 > columnData[tutorId][0])
-            {
-              columnData[tutorId][0] = mycolumn + 1;
-              columnData[tutorId][1].push(Array(timeSlots.length).fill(null));
-            }
-             
-            i--;
-          }
-          else 
-          {
-            event.length = endIdx - startIdx;
-            columnData[tutorId][1][mycolumn][i] = i === startIdx ? event : { occupied: true };
-          }
-        }
-      }
-    }
-  });
-
+  
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    setLoading(true);
+    setDate(date);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
-    return <Navigate to={"/schedule/daily/"+formattedDate} />;
   };
 
   return (
     <div className="calendar">
-      <h1>Schedule for {date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()}</h1>
+      <h1>Schedule for {new Intl.DateTimeFormat('en-US', dateonlySetting).format(date)}</h1>
 
       <div className="d-flex align-items-center gap-3">
         <DatePicker
