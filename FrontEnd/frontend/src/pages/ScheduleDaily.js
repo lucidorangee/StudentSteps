@@ -142,12 +142,12 @@ const ScheduleDaily = () => {
               Object.keys(columnData).forEach(tutor_id => {
                 for(const t of tutors)
                 {
-                  console.log(`NUMBER currently on ${t.tutor_id} and fixed tutor_id is ${tutor_id}. Are they equal? ${t.tutor_id === Number(tutor_id)}`);
+                  console.log(`NUMBER currently on ${t.tutor_id} and fixed tutor_id is ${tutor_id}. Are they equal? ${tutors.find((tutor) => tutor.tutor_id === Number(tutor_id))}`);
                 }
                 
                 return (
                   <th key={`${tutor_id}`} className="tutor-header" colSpan={columnData[tutor_id][0]}>
-                    {tutors.find((tutor) => tutor.tutor_id === Number(tutor_id))?.first_name} {tutors.find((tutor) => tutor.tutor_id === Number(tutor_id))?.last_name} 
+                    {tutors.find((tutor) => tutor.tutor_id === Number(tutor_id))?.first_name} 
                   </th>
                 );
               })
@@ -161,6 +161,8 @@ const ScheduleDaily = () => {
                 <td className="time-cell">{time}</td>
                 {
                   Object.keys(columnData).forEach(tutor_id => {
+                    console.log(`tutor id ${tutor_id}`);
+                    
                     return columnData[tutor_id][1].map((col, colIndex) => {
                       if( col[timeIndex] === null)
                       {
