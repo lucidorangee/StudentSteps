@@ -143,7 +143,7 @@ const ScheduleDaily = () => {
     }
     return <div>Error loading data: {tutoringSessionsError?.message || tutorsError?.message}</div>;
   }
-  
+
   const handleDateChange = (date) => {
     setLoading(true);
     setDate(date);
@@ -159,7 +159,7 @@ const ScheduleDaily = () => {
 
       <div className="d-flex align-items-center gap-3">
         <DatePicker
-          selected={selectedDate}
+          selected={date}
           onChange={handleDateChange}
           dateFormat="yyyy/MM/dd"
           className="form-control w-auto"
