@@ -140,7 +140,7 @@ const ScheduleDaily = () => {
             <th className="time-header">Time</th>
             {
               Object.keys(columnData).forEach(tutor_id => {
-                console.log(tutors.find((tutor) => tutor.tutor_id>0));
+                console.log(`result for comparing ${tutors} and ${tutor_id} ${tutors.find((tutor) => tutor.tutor_id === tutor_id)}`);
                 return (
                   <th key={`${tutor_id}`} className="tutor-header" colSpan={columnData[tutor_id][0]}>
                     {tutors.find((tutor) => tutor.tutor_id === tutor_id)?.first_name} {tutors.find((tutor) => tutor.tutor_id === tutor_id)?.last_name} 
