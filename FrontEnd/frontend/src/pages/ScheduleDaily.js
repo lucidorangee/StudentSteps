@@ -2,6 +2,8 @@ import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import './css/DailyCalendar.css';
+import DatePicker from 'react-datepicker';
+import { useNavigate } from 'react-router-dom';
 
 // Fetch functions
 const fetchTutors = async () => {
@@ -38,7 +40,10 @@ const fetchTutoringSessions = async () => {
 };
 
 const ScheduleDaily = () => {
-  const { date } = useParams();
+  const { tempdate } = useParams();
+  const date = (tempdate) ? new Date(tempdate) : new Date();
+  const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const timeonlySetting = {
     hour: '2-digit',
@@ -90,7 +95,7 @@ const ScheduleDaily = () => {
 
   events.forEach(event => {
     const eventDate = new Date(event.start);
-    const clientDate = new Date(date);
+    const clientDate = date;
 
     if (
       eventDate.getMonth() === clientDate.getMonth() &&
@@ -129,9 +134,31 @@ const ScheduleDaily = () => {
     }
   });
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    navigate(`/Schedule/List/${formattedDate}`);
+  };
+
   return (
     <div className="calendar">
       <h1>Schedule for {date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()}</h1>
+
+      <div className="d-flex align-items-center gap-3">
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChange}
+          dateFormat="yyyy/MM/dd"
+          className="form-control w-auto"
+          placeholderText="Select a date"
+        />
+        <FaCalendarAlt className="me-2 text-secondary" /> 
+      </div>
+      
+
       <table className="schedule-table">
         <thead>
           <tr>
@@ -173,7 +200,7 @@ const ScheduleDaily = () => {
                       return (
                         <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length + 1}>
                           <div className="session">{col[timeIndex].student}</div>
-                          <div className="session">{new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)}</div>
+                          <div className="session">{new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)} - {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].end)}</div>
                           {/*<div className="sessionlength">{col[timeIndex].length + 1}</div>*/}
                         </td>
                       );
