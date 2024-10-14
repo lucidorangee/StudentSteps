@@ -142,7 +142,7 @@ const ScheduleDaily = () => {
               Object.keys(columnData).forEach(tutor_id => {
                 for(const t of tutors)
                 {
-                  console.log(`currently on ${t.tutor_id} and fixed tutor_id is ${tutor_id}. Are they equal? ${t.tutor_id === tutor_id}`);
+                  console.log(`STRING currently on ${t.tutor_id} and fixed tutor_id is ${tutor_id}. Are they equal? ${String(t.tutor_id) === tutor_id}`);
                 }
                 
                 return (
