@@ -195,9 +195,8 @@ const ScheduleDaily = () => {
 
                       return (
                         <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length + 1}>
-                          <div className="session">{col[timeIndex].student}\ntest</div>
-                          <div className="session">{new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)} - {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].end)}</div>
-                          {/*<div className="sessionlength">{col[timeIndex].length + 1}</div>*/}
+                          <div className="session">{col[timeIndex].student}<br />
+                          {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)} - {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].end)}</div>
                         </td>
                       );
                     });
@@ -207,36 +206,6 @@ const ScheduleDaily = () => {
             ))
             
           }
-          
-          {/*timeSlots.map((time, timeIndex) => (
-            <tr key={time}>
-              <td className="time-cell">{time}</td>
-              {resources.map(tutor => {
-                const columns = Array.from({ length: columnData[tutor.id][0] });
-                return columns.map((_, colIndex) => {
-                  const session = events.find(event => {
-                    const eventStartTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
-                    return (
-                      event.resource === tutor.id &&
-                      eventStartTime === time &&
-                      event.start.getHours() === parseInt(time.split(':')[0], 10) &&
-                      colIndex === 0 // Starting in the first available column
-                    );
-                  });
-
-                  if (session) {
-                    const rowSpan = calculateRowSpan(session.start, session.end);
-                    return (
-                      <td key={`${tutor.id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={rowSpan}>
-                        <div className="session">{session.student}</div>
-                      </td>
-                    );
-                  }
-                  return <td key={`${tutor.id}-${colIndex}-${timeIndex}`} className="no-session">No Sessions</td>;
-                });
-              })}
-            </tr>
-          ))*/}
         </tbody>
       </table>
     </div>
