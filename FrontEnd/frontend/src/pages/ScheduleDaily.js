@@ -129,8 +129,6 @@ const ScheduleDaily = () => {
     }
   });
 
-  console.log(columnData);
-
   return (
     <div className="calendar">
       <h1>Schedule for {date ? new Date(date).toLocaleDateString() : new Date().toLocaleDateString()}</h1>
@@ -139,8 +137,7 @@ const ScheduleDaily = () => {
           <tr>
             <th className="time-header">Time</th>
             {
-              Object.keys(columnData).forEach(tutor_id => { 
-                console.log(`length for ${tutor_id} is ${columnData[tutor_id][0]}`);
+              Object.keys(columnData).map((tutor_id) => { 
                 return (
                   <th key={`${tutor_id}`} className="tutor-header" colSpan={columnData[tutor_id][0]}>
                     {tutors.find((tutor) => tutor.tutor_id === Number(tutor_id))?.first_name} 
@@ -156,8 +153,7 @@ const ScheduleDaily = () => {
               <tr key={time}>
                 <td className="time-cell">{time}</td>
                 {
-                  Object.keys(columnData).forEach(tutor_id => {      
-                    console.log(`${tutor_id} has column of ${JSON.stringify(columnData[tutor_id][1])}`);              
+                  Object.keys(columnData).map((tutor_id) => {                 
                     return columnData[tutor_id][1].map((col, colIndex) => {
                       if( col[timeIndex] === null)
                       {
