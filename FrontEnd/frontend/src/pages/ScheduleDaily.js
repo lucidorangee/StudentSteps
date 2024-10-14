@@ -139,12 +139,7 @@ const ScheduleDaily = () => {
           <tr>
             <th className="time-header">Time</th>
             {
-              Object.keys(columnData).forEach(tutor_id => {
-                for(const t of tutors)
-                {
-                  console.log(`NUMBER currently on ${t.tutor_id} and fixed tutor_id is ${tutor_id}. Are they equal? ${tutors.find((tutor) => tutor.tutor_id === Number(tutor_id))?.first_name}`);
-                }
-                
+              Object.keys(columnData).forEach(tutor_id => {                
                 return (
                   <th key={`${tutor_id}`} className="tutor-header" colSpan={columnData[tutor_id][0]}>
                     {tutors.find((tutor) => tutor.tutor_id === Number(tutor_id))?.first_name} 
@@ -154,74 +149,7 @@ const ScheduleDaily = () => {
             }
           </tr>
         </thead>
-        <tbody>
-          {
-            timeSlots.map((time, timeIndex) => (
-              <tr key={time}>
-                <td className="time-cell">{time}</td>
-                {
-                  Object.keys(columnData).forEach(tutor_id => {
-                    console.log(`tutor id ${tutor_id}`);
-                    
-                    return columnData[tutor_id][1].map((col, colIndex) => {
-                      if( col[timeIndex] === null)
-                      {
-                        return (
-                          <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="no-session">
-                            <div>No session</div>
-                          </td>
-                        );
-                      }
-
-                      if( col[timeIndex].occupied )
-                      {
-                        return null;
-                      }
-
-                      return (
-                        <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length + 1}>
-                          <div className="session">{col[timeIndex].student}</div>
-                          {/*<div className="sessionlength">{col[timeIndex].length + 1}</div>*/}
-                        </td>
-                      );
-                    });
-                  })
-                }
-              </tr>
-            ))
-            
-          }
-          
-          {/*timeSlots.map((time, timeIndex) => (
-            <tr key={time}>
-              <td className="time-cell">{time}</td>
-              {resources.map(tutor => {
-                const columns = Array.from({ length: columnData[tutor.id][0] });
-                return columns.map((_, colIndex) => {
-                  const session = events.find(event => {
-                    const eventStartTime = new Intl.DateTimeFormat('en-US', timeonlySetting).format(event.start);
-                    return (
-                      event.resource === tutor.id &&
-                      eventStartTime === time &&
-                      event.start.getHours() === parseInt(time.split(':')[0], 10) &&
-                      colIndex === 0 // Starting in the first available column
-                    );
-                  });
-
-                  if (session) {
-                    const rowSpan = calculateRowSpan(session.start, session.end);
-                    return (
-                      <td key={`${tutor.id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={rowSpan}>
-                        <div className="session">{session.student}</div>
-                      </td>
-                    );
-                  }
-                  return <td key={`${tutor.id}-${colIndex}-${timeIndex}`} className="no-session">No Sessions</td>;
-                });
-              })}
-            </tr>
-          ))*/}
-        </tbody>
+        
       </table>
     </div>
   );
