@@ -105,8 +105,9 @@ const ScheduleDaily = () => {
         eventDate.getDay() === clientDate.getDay() &&
         eventDate.getMonth() === clientDate.getMonth() &&
         eventDate.getFullYear() === clientDate.getFullYear()
+        
       ) {
-  
+        console.log("yes");
         const tutorId = event.resource;
         if(!columnData[tutorId]) columnData[tutorId] = [1, [Array(timeSlots.length).fill(null)]];
   
