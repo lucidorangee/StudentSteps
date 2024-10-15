@@ -214,7 +214,7 @@ const ScheduleDaily = () => {
 
       {alert ? (
         <div>
-          <div class="alert alert-danger" role="alert">
+          <div className="alert alert-danger no-print" role="alert">
             {alert}
           </div>
         </div>
@@ -222,7 +222,7 @@ const ScheduleDaily = () => {
         <div></div>
       )}
 
-      <div className="row">
+      <div className="row no-print">
         <div className="d-flex align-items-center gap-3">
           {/* Date Picker */}
           <DatePicker

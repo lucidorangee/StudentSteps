@@ -7,10 +7,10 @@ import { Outlet, Link } from "react-router-dom";
 const Layout = () => {
   return (
     <div className="container-fluid">
-      <div className="row">
+      <div className="row no-print">
         <Topbar />
       </div>
-      <div className="row">
+      <div className="row no-print">
         <div className="col-2 p-0">
           <Sidebar />
         </div>

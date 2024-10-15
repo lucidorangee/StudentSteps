@@ -64,27 +64,3 @@ th {
     font-size: 14px;
   }
 }
-
-@media print {
-  body * {
-    display: none !important; /* Hide all elements */
-  }
-
-  .schedule-table {
-    display: table !important; /* Ensure the table is displayed */
-    visibility: visible !important; /* Ensure it is visible */
-    position: static; /* Reset position to avoid layout issues */
-  }
-
-  .schedule-table th,
-  .schedule-table td,
-  .schedule-table tr {
-    display: table-cell !important; /* Ensure table cells and rows are displayed */
-    visibility: visible !important; /* Ensure they are visible */
-  }
-
-  /* Optional: Customize the printed styles as needed */
-  h1 {
-    display: none; /* Hide the header if you don't want it printed */
-  }
-}
