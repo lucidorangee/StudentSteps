@@ -210,6 +210,7 @@ const ScheduleDaily = () => {
   return (
     <div className="calendar">
       <h1>Schedule for {new Intl.DateTimeFormat('en-US', dateonlySetting).format(date)}</h1>
+      <button className="btn btn-secondary" onClick={() => window.print()}>Print Schedule</button>
 
       {alert ? (
         <div>
