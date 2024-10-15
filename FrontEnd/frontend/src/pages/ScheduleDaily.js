@@ -99,8 +99,44 @@ const ScheduleDaily = () => {
     events.forEach(event => {
       const eventDate = new Date(event.start);
       const clientDate = date;
-      // Processing logic here
-    });
+  
+      if (
+        eventDate.getDay() === clientDate.getDay() &&
+        eventDate.getMonth() === clientDate.getMonth() &&
+        eventDate.getFullYear() === clientDate.getFullYear()
+      ) {
+  
+        const tutorId = event.resource;
+        if(!columnData[tutorId]) columnData[tutorId] = [1, [Array(timeSlots.length).fill(null)]];
+  
+        // Get start and end indices in timeSlots array
+        const startIdx = Math.max(0, findTimeSlotIndex(event.start, 'America/New_York')); //might want to Math.min check with 0
+        const endIdx = findTimeSlotIndex(event.end, 'America/New_York') - 1;
+  
+        // Update maxColumnsPerTutor for each overlapping time slot
+        let mycolumn = 0;
+        for (let i = startIdx; i <= endIdx; i++) {
+          if (i >= 0 && i < timeSlots.length) {
+            if(columnData[tutorId][1][mycolumn][i] !== null) 
+            {
+              mycolumn++;
+              if(mycolumn + 1 > columnData[tutorId][0])
+              {
+                columnData[tutorId][0] = mycolumn + 1;
+                columnData[tutorId][1].push(Array(timeSlots.length).fill(null));
+              }
+               
+              i--;
+            }
+            else 
+            {
+              event.length = endIdx - startIdx;
+              columnData[tutorId][1][mycolumn][i] = i === startIdx ? event : { occupied: true };
+            }
+          }
+        }
+      }
+    })
   
     setColumnData(temp_columnData);
     setLoading(false);
@@ -118,10 +154,6 @@ const ScheduleDaily = () => {
   const handleDateChange = (date) => {
     setLoading(true);
     setDate(date);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
   };
 
   return (
