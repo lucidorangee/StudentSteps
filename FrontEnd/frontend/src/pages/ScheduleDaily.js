@@ -174,6 +174,12 @@ const ScheduleDaily = () => {
       return;
     }
 
+    if(startHourTemp <= endHourTemp)
+    {
+      setAlert('Please set a valid time range');
+      return;
+    }
+
     setLoading(true);
     setStartHour(startHourTemp);
     setEndHour(endHourTemp);
@@ -238,8 +244,8 @@ const ScheduleDaily = () => {
             <FaCalendarAlt className="text-secondary" /> 
 
             {/* Start Hour Input */}
+            Time Range:
             <div className="d-flex flex-column align-items-center">
-              <label htmlFor="start-hour" className="form-label mb-1">Start Hour:</label>
               <input 
                 type="number" 
                 className="form-control" 
@@ -251,10 +257,9 @@ const ScheduleDaily = () => {
                 style={{ width: "4rem" }} 
               />
             </div>
-
+             ~ 
             {/* End Hour Input */}
             <div className="d-flex flex-column align-items-center">
-              <label htmlFor="end-hour" className="form-label mb-1">End Hour:</label>
               <input 
                 type="number" 
                 className="form-control" 
@@ -301,7 +306,7 @@ const ScheduleDaily = () => {
                       {
                         return (
                           <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="no-session">
-                            <div>No session</div>
+                            <div> </div>
                           </td>
                         );
                       }

@@ -4,6 +4,38 @@ import { Nav, Navbar } from 'react-bootstrap'
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 
+const fetchTutors = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutors');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
+
+const fetchStudents = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch students');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
+
 const fetchComments = async() => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
     credentials: 'include',
@@ -41,6 +73,12 @@ const deleteCommentByID = async (id) => {
 
 const ManageComments = () => {
   const queryClient = useQueryClient();
+  
+  const [studentOptions, setStudentOptions] = useState([]);
+  const [selectedStudentID, setSelectedStudentID] = useState(-1);
+  const [tutorOptions, setTutorOptions] = useState([]);
+  const [selectedTutorID, setSelectedTutorID] = useState(-1);
+  
 
   const { mutate: deleteComment, isLoading, isError, error } = useMutation({
     mutationFn: (id) => deleteCommentByID(id),
@@ -57,22 +95,125 @@ const ManageComments = () => {
     data: comments,
     isLoading: commentsLoading,
     error: commentsError,
-  } = useQuery({queryKey: ['users'], queryFn: () => fetchComments()});
+  } = useQuery({queryKey: ['comments'], queryFn: () => fetchComments()});
+
+  const {
+    data: students,
+    isLoading: studentsLoading,
+    error: studentsError,
+  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
   
-  if (commentsLoading) return <div>Loading...</div>;
-  if (commentsError) {
-    if(commentsError.status === 401) //unauthorized
+  const {
+    data: tutors,
+    isLoading: tutorsLoading,
+    error: tutorsError,
+  } = useQuery({queryKey: ['tutors'], queryFn: () => fetchTutors()});
+  
+
+  const [filteredComments, setFilteredComments] = useState([]);
+
+  useEffect(() => {
+    if(!comments) return;
+    setFilteredComments(comments);
+  }, [comments])
+
+  useEffect(() => {
+    if(tutors)
+    {
+      const tutorOptions = [
+        { value: -1, label: 'No Filter' },
+        ...tutors.map(tutor => ({
+          value: tutor.tutor_id,
+          label: `${tutor.first_name} (ID: ${tutor.tutor_id})`,
+        }))
+      ];
+      setTutorOptions(tutorOptions);
+      setSelectedTutorID(-1);
+    }
+  }, [tutors]);
+
+  useEffect(() => {
+    if(students){
+      const options = [
+        { value: -1, label: 'No Filter' },
+        ...students.map(student => ({
+          value: student.student_id,
+          label: `${student.first_name} (ID: ${student.student_id})`,
+        }))
+      ];
+      setStudentOptions(options);
+      setSelectedStudentID(-1);
+    }
+  }, [students]);
+
+  //filter
+  useEffect(() => {
+    if(comments)
+    {
+      setFilteredComments(
+        comments.filter((comment) => {
+          if(selectedStudentID === -1 && selectedTutorID === -1) return false;
+          if(selectedStudentID === -1) return selectedTutorID === -1 ? false : selectedTutorID === comment.tutor_id;
+          if(selectedTutorID === -1) return selectedStudentID === comment.student_id;
+          
+          return selectedStudentID === comment.student_id && selectedTutorID === comment.tutor_id;
+        })
+      );
+    }
+  }, [selectedStudentID, selectedTutorID])
+
+  if (commentsLoading || tutorsLoading || studentsLoading) return <div>Loading...</div>;
+  if (commentsError || tutorsError || studentsError) {
+    if(commentsError?.status === 401 || tutorsError?.status === 401 || studentsError?.status === 401) //unauthorized
     {
       console.log("unathorized");
       return <Navigate to="/login" />;
     }
-    console.log(commentsError.status);
     return <div>Error loading data</div>;
   }
+
+  const handleTutorChange = (selectedOption) => {
+    if(selectedOption === null)
+    {
+      setSelectedTutorID(-1);
+    }
+    else setSelectedTutorID(selectedOption.value);
+  };
+
+  const handleStudentChange = (selectedOption) => {
+    if(selectedOption === null)
+    {
+      setSelectedStudentID(-1);
+    }
+    else setSelectedStudentID(selectedOption.value);
+  };
 
   return (
     <div className="App">
       <h2>Welcome, User!</h2>
+      <div className="row ms-4 mt-2">
+        <div className="col">
+          <Select
+              options={studentOptions}
+              onChange={handleStudentChange}
+              placeholder="Search for a student..."
+              isClearable
+              classNamePrefix="react-select"
+            />
+        </div>
+        <div className="col">
+          <Select
+            options={tutorOptions}
+            onChange={handleTutorChange}
+            placeholder="Search for a tutor..."
+            isClearable
+            classNamePrefix="react-select"
+          />
+        </div>
+        <div className="col">
+          hi
+        </div>
+      </div>
       <table className="table">
         <thead>
           <tr>

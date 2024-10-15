@@ -246,7 +246,7 @@ const WeeklyCalendar = () => {
     setEvents(events);
   }, [filteredData]);
 
-  if (homeworkListLoading || studentsLoading || tutorsLoading || tutoringSessionLoading || !filteredData) return <div>Loading...</div>;
+  if (homeworkListLoading || studentsLoading || tutorsLoading || tutoringSessionLoading || !filteredData || !tutors) return <div>Loading...</div>;
   if (homeworkListError || studentsError || tutorsError || tutoringSessionError){
     if(homeworkListError?.status === 401 || studentsError?.status === 401 || tutorsError?.status === 401 || tutoringSessionError?.status === 401)
     {
