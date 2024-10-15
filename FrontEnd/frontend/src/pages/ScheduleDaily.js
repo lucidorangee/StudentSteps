@@ -174,6 +174,7 @@ const ScheduleDaily = () => {
       return;
     }
 
+    setLoading(true);
     setStartHour(startHourTemp);
     setEndHour(endHourTemp);
   };
