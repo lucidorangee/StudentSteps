@@ -53,10 +53,15 @@ label{margin-left: 20px;}
 .react-select__value-container {
   cursor: text;
 }
-/*
+
 @media print {
   .no-print {
-    display: none !important; 
+    width: auto;
+    display: block!important;
   }
+  /*
+  .no-print {
+    display: none !important; 
+  }*/
 
-}*/
+}
