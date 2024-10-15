@@ -10,8 +10,8 @@ const Layout = () => {
       <div className="row no-print">
         <Topbar />
       </div>
-      <div className="row no-print">
-        <div className="col-2 p-0">
+      <div className="row">
+        <div className="col-2 p-0 no-print">
           <Sidebar />
         </div>
         <div className="col-10">
