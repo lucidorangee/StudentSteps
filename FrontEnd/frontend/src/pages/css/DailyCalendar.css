@@ -64,3 +64,23 @@ th {
     font-size: 14px;
   }
 }
+
+@media print {
+  /* Ensure table and columns retain structure */
+  .schedule-table {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  .schedule-table th,
+  .schedule-table td {
+    display: table-cell !important;
+    width: auto !important; /* Allow cells to adjust width */
+    visibility: visible !important;
+  }
+
+  .calendar, .calendar * {
+    visibility: visible !important;
+  }
+}
