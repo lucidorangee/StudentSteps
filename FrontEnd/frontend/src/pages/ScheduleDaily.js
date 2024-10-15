@@ -193,39 +193,51 @@ const ScheduleDaily = () => {
         <div></div>
       )}
 
-      <div className="d-flex align-items-center gap-3">
-        <DatePicker
-          selected={date}
-          onChange={handleDateChange}
-          dateFormat="yyyy/MM/dd"
-          className="form-control w-auto"
-          placeholderText="Select a date"
-        />
-        <FaCalendarAlt className="me-2 text-secondary" /> 
-      </div>
-
       <div className="row">
-        <div>
-          {/* Input for Start Hour */}
-          <label htmlFor="start-hour">Start Hour:</label>
-          <input 
-            type="number" 
-            id="start-hour" 
-            placeholder="Enter start hour" 
-            onChange={(e) => setStartHourTemp(Number(e.target.value))}
+        <div className="d-flex align-items-center gap-3">
+          <DatePicker
+            selected={date}
+            onChange={handleDateChange}
+            dateFormat="yyyy/MM/dd"
+            className="form-control w-auto"
+            placeholderText="Select a date"
           />
+          <FaCalendarAlt className="me-2 text-secondary" /> 
+        </div>
+
+        <div className="container mt-3">
+          {/* Input for Start Hour */}
+          <div className="mb-3">
+            <label htmlFor="start-hour" className="form-label">Start Hour:</label>
+            <input 
+              type="number" 
+              className="form-control" 
+              id="start-hour" 
+              min="0" 
+              max="24" 
+              placeholder={startHourTemp} 
+              onChange={(e) => setStartHourTemp(Number(e.target.value))}
+              style={{ width: "4rem" }} 
+            />
+          </div>
 
           {/* Input for End Hour */}
-          <label htmlFor="end-hour">End Hour:</label>
-          <input 
-            type="number" 
-            id="end-hour" 
-            placeholder="Enter end hour" 
-            onChange={(e) => setEndHourTemp(Number(e.target.value))}
-          />
+          <div className="mb-3">
+            <label htmlFor="end-hour" className="form-label">End Hour:</label>
+            <input 
+              type="number" 
+              className="form-control" 
+              id="end-hour" 
+              min="0" 
+              max="24" 
+              placeholder={endHourTemp}
+              onChange={(e) => setEndHourTemp(Number(e.target.value))}
+              style={{ width: "4rem" }} 
+            />
+          </div>
 
           {/* Apply Button */}
-          <button onClick={applyHourRange}>Apply</button>
+          <button className="btn btn-primary" onClick={applyHourRange}>Apply</button>
         </div>
       </div>
       
