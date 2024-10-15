@@ -70,10 +70,15 @@ th {
     display: none !important; /* Hide all elements */
   }
 
-  .schedule-table {
+  table.schedule-table {
     display: table !important; /* Ensure the table is displayed */
     visibility: visible !important; /* Ensure it is visible */
     position: static; /* Reset position to avoid layout issues */
     width: 100%; /* Ensure table uses full width */
+  }
+
+  table.schedule-table th, table.schedule-table td {
+    border: 1px solid #ccc; /* Add border for visibility */
+    padding: 10px; /* Add padding for readability */
   }
 }
