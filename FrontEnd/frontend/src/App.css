@@ -59,9 +59,9 @@ label{margin-left: 20px;}
     display: none !important; /* Hide all elements with the .no-print class */
   }
 
-  /* Ensure other elements display as intended */
+  /* Ensure other elements display as intended 
   body * {
     display: block !important;
     visibility: visible !important;
-  }
+  }*/
 }
