@@ -46,6 +46,11 @@ const ScheduleDaily = () => {
   const [events, setEvents] = useState(null);
   const [timeSlots, setTimeSlots] = useState([]);
   const [columnData, setColumnData] = useState({});
+  const [startHour, setStartHour] = useState(15);
+  const [endHour, setEndHour] = useState(20);
+  const [startHourTemp, setStartHourTemp] = useState(15);
+  const [endHourTemp, setEndHourTemp] = useState(20);
+  const [alert, setAlert] = useState('');
 
   const timeonlySetting = {
     hour: '2-digit',
@@ -71,6 +76,7 @@ const ScheduleDaily = () => {
     return timeSlots.indexOf(formattedTime);
   };
 
+
   useEffect(() => {
     if(!tutoringSessionData) return;
 
@@ -85,11 +91,11 @@ const ScheduleDaily = () => {
     setEvents(temp_events);
   
     const temp_timeSlots = [];
-    for (let hour = 15; hour <= 20; hour++) {
+    for (let hour = startHour; hour <= endHour; hour++) {
       temp_timeSlots.push(`${hour}:00`, `${hour}:30`);
     }
     setTimeSlots(temp_timeSlots);
-  }, [tutoringSessionData]);
+  }, [tutoringSessionData, startHour, endHour]);
   
   useEffect(() => {
     if (!events || !timeSlots.length) return;
@@ -99,15 +105,12 @@ const ScheduleDaily = () => {
     events.forEach(event => {
       const eventDate = new Date(event.start);
       const clientDate = date;
-      console.log(`eventDate is ${eventDate} and clientDate is ${date}`);
   
       if (
         eventDate.getDay() === clientDate.getDay() &&
         eventDate.getMonth() === clientDate.getMonth() &&
         eventDate.getFullYear() === clientDate.getFullYear()
-        
       ) {
-  
         const tutorId = event.resource;
         if(!temp_columnData[tutorId]) temp_columnData[tutorId] = [1, [Array(timeSlots.length).fill(null)]];
   
@@ -115,7 +118,7 @@ const ScheduleDaily = () => {
         const startIdx = Math.max(0, findTimeSlotIndex(event.start, 'America/New_York')); //might want to Math.min check with 0
         const endIdx = findTimeSlotIndex(event.end, 'America/New_York') - 1;
   
-        // Update maxColumnsPerTutor for each overlapping time slot
+        // Update columnData for each overlapping time slot
         let mycolumn = 0;
         for (let i = startIdx; i <= endIdx; i++) {
           if (i >= 0 && i < timeSlots.length) {
@@ -140,7 +143,6 @@ const ScheduleDaily = () => {
       }
     })
   
-    console.log(temp_columnData);
     setColumnData(temp_columnData);
     setLoading(false);
   }, [events, timeSlots, date]);
@@ -159,9 +161,36 @@ const ScheduleDaily = () => {
     setDate(date);
   };
 
+  const applyHourRange = () => {
+    if(startHourTemp < 0 || startHourTemp > 24)
+    {
+      setAlert('Please set start hour to a valid hour');
+      return;
+    }
+
+    if(endHourTemp < 0 || endHourTemp > 24)
+    {
+      setAlert('Please set end hour to a valid hour');
+      return;
+    }
+
+    setStartHour(startHourTemp);
+    setEndHour(endHourTemp);
+  };
+
   return (
     <div className="calendar">
       <h1>Schedule for {new Intl.DateTimeFormat('en-US', dateonlySetting).format(date)}</h1>
+
+      {alert ? (
+        <div>
+          <div class="alert alert-danger" role="alert">
+            {alert}
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
 
       <div className="d-flex align-items-center gap-3">
         <DatePicker
@@ -173,8 +202,32 @@ const ScheduleDaily = () => {
         />
         <FaCalendarAlt className="me-2 text-secondary" /> 
       </div>
-      
 
+      <div className="row">
+        <div>
+          {/* Input for Start Hour */}
+          <label htmlFor="start-hour">Start Hour:</label>
+          <input 
+            type="number" 
+            id="start-hour" 
+            placeholder="Enter start hour" 
+            onChange={(e) => setStartHourTemp(Number(e.target.value))}
+          />
+
+          {/* Input for End Hour */}
+          <label htmlFor="end-hour">End Hour:</label>
+          <input 
+            type="number" 
+            id="end-hour" 
+            placeholder="Enter end hour" 
+            onChange={(e) => setEndHourTemp(Number(e.target.value))}
+          />
+
+          {/* Apply Button */}
+          <button onClick={applyHourRange}>Apply</button>
+        </div>
+      </div>
+      
       <table className="schedule-table">
         <thead>
           <tr>
