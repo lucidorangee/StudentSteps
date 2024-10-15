@@ -66,13 +66,13 @@ th {
 }
 
 @media print {
-  /* Hide all elements by default */
   body * {
-    display: none !important;
+    display: none !important; /* Hide all elements */
   }
 
-  /* Only display the specific component */
   .schedule-table {
-    display: block !important;
+    display: table !important; /* Ensure the table is displayed */
+    visibility: visible !important; /* Ensure it is visible */
+    position: static; /* Reset position to avoid layout issues */
   }
 }
