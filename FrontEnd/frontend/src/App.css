@@ -56,12 +56,12 @@ label{margin-left: 20px;}
 
 @media print {
   .no-print {
-    width: auto;
-    display: block!important;
+    display: none !important; /* Hide all elements with the .no-print class */
   }
-  /*
-  .no-print {
-    display: none !important; 
-  }*/
 
+  /* Ensure other elements display as intended */
+  body * {
+    display: block !important;
+    visibility: visible !important;
+  }
 }
