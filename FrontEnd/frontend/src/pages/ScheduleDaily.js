@@ -107,9 +107,9 @@ const ScheduleDaily = () => {
         eventDate.getFullYear() === clientDate.getFullYear()
         
       ) {
-        console.log("yes");
+  
         const tutorId = event.resource;
-        if(!columnData[tutorId]) columnData[tutorId] = [1, [Array(timeSlots.length).fill(null)]];
+        if(!temp_columnData[tutorId]) temp_columnData[tutorId] = [1, [Array(timeSlots.length).fill(null)]];
   
         // Get start and end indices in timeSlots array
         const startIdx = Math.max(0, findTimeSlotIndex(event.start, 'America/New_York')); //might want to Math.min check with 0
@@ -119,13 +119,13 @@ const ScheduleDaily = () => {
         let mycolumn = 0;
         for (let i = startIdx; i <= endIdx; i++) {
           if (i >= 0 && i < timeSlots.length) {
-            if(columnData[tutorId][1][mycolumn][i] !== null) 
+            if(temp_columnData[tutorId][1][mycolumn][i] !== null) 
             {
               mycolumn++;
-              if(mycolumn + 1 > columnData[tutorId][0])
+              if(mycolumn + 1 > temp_columnData[tutorId][0])
               {
-                columnData[tutorId][0] = mycolumn + 1;
-                columnData[tutorId][1].push(Array(timeSlots.length).fill(null));
+                temp_columnData[tutorId][0] = mycolumn + 1;
+                temp_columnData[tutorId][1].push(Array(timeSlots.length).fill(null));
               }
                
               i--;
@@ -133,7 +133,7 @@ const ScheduleDaily = () => {
             else 
             {
               event.length = endIdx - startIdx;
-              columnData[tutorId][1][mycolumn][i] = i === startIdx ? event : { occupied: true };
+              temp_columnData[tutorId][1][mycolumn][i] = i === startIdx ? event : { occupied: true };
             }
           }
         }
