@@ -72,15 +72,15 @@ th {
     width: 100% !important;
     table-layout: fixed !important;
   }
-
+/*
   .schedule-table th,
   .schedule-table td {
     display: table-cell !important;
-    width: auto !important; /* Allow cells to adjust width */
+    width: auto !important; /* Allow cells to adjust width 
     visibility: visible !important;
   }
 
   .calendar, .calendar * {
     visibility: visible !important;
-  }
+  }*/
 }
