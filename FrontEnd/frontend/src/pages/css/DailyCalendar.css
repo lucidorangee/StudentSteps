@@ -75,4 +75,14 @@ th {
     visibility: visible !important; /* Ensure it is visible */
     position: static; /* Reset position to avoid layout issues */
   }
+
+  /* Optional: Add styles specific to printing */
+  th, td {
+    color: black; /* Ensure text is readable */
+    background-color: transparent !important; /* Remove background for better visibility */
+  }
+
+  .session {
+    background-color: #ffe0b2 !important; /* Keep session background for readability */
+  }
 }
