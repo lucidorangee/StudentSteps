@@ -179,6 +179,34 @@ const ScheduleDaily = () => {
     setEndHour(endHourTemp);
   };
 
+  // Created by help from OpenAI ChatGPT
+  function intToHexSpread(integer) {
+    const MAX_HEX_VALUE = 0xFFFFFF;
+
+    let scrambledInt = integer ^ 0xABCDEF;
+    scrambledInt = (scrambledInt << 3) ^ (scrambledInt >> 5);
+
+    let hexValue = Math.abs(scrambledInt % (MAX_HEX_VALUE + 1))
+        .toString(16)
+        .padStart(6, '0')
+        .toUpperCase();
+
+    // Convert hex to RGB
+    const r = parseInt(hexValue.substring(0, 2), 16);
+    const g = parseInt(hexValue.substring(2, 4), 16);
+    const b = parseInt(hexValue.substring(4, 6), 16);
+
+    // Calculate brightness using a standard formula
+    const brightness = (r * 0.299 + g * 0.587 + b * 0.114);
+
+    // If too dark, lighten the color
+    if (brightness < 128) {
+        hexValue = (parseInt(hexValue, 16) + 0x888888).toString(16).slice(-6).toUpperCase();
+    }
+
+    return hexValue;
+  }
+
   return (
     <div className="calendar">
       <h1>Schedule for {new Intl.DateTimeFormat('en-US', dateonlySetting).format(date)}</h1>
@@ -195,6 +223,7 @@ const ScheduleDaily = () => {
 
       <div className="row">
         <div className="d-flex align-items-center gap-3">
+          {/* Date Picker */}
           <DatePicker
             selected={date}
             onChange={handleDateChange}
@@ -202,13 +231,11 @@ const ScheduleDaily = () => {
             className="form-control w-auto"
             placeholderText="Select a date"
           />
-          <FaCalendarAlt className="me-2 text-secondary" /> 
-        </div>
+          <FaCalendarAlt className="text-secondary" /> 
 
-        <div className="container mt-3">
-          {/* Input for Start Hour */}
-          <div className="mb-3">
-            <label htmlFor="start-hour" className="form-label">Start Hour:</label>
+          {/* Start Hour Input */}
+          <div className="d-flex flex-column align-items-center">
+            <label htmlFor="start-hour" className="form-label mb-1">Start Hour:</label>
             <input 
               type="number" 
               className="form-control" 
@@ -221,9 +248,9 @@ const ScheduleDaily = () => {
             />
           </div>
 
-          {/* Input for End Hour */}
-          <div className="mb-3">
-            <label htmlFor="end-hour" className="form-label">End Hour:</label>
+          {/* End Hour Input */}
+          <div className="d-flex flex-column align-items-center">
+            <label htmlFor="end-hour" className="form-label mb-1">End Hour:</label>
             <input 
               type="number" 
               className="form-control" 
@@ -240,6 +267,7 @@ const ScheduleDaily = () => {
           <button className="btn btn-primary" onClick={applyHourRange}>Apply</button>
         </div>
       </div>
+
       
       <table className="schedule-table">
         <thead>
@@ -281,7 +309,7 @@ const ScheduleDaily = () => {
 
                       return (
                         <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length + 1}>
-                          <div className="session">{col[timeIndex].student}<br />
+                          <div className="session" style={{ backgroundColor: `#${intToHexSpread(tutor_id)}` }}>{col[timeIndex].student}<br />
                           {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)} - {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].end)}</div>
                         </td>
                       );
