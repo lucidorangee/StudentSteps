@@ -138,6 +138,7 @@ const ScheduleDaily = () => {
       }
     })
   
+    console.log(temp_columnData);
     setColumnData(temp_columnData);
     setLoading(false);
   }, [events, timeSlots, date]);
