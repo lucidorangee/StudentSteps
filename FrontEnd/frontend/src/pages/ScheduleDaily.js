@@ -99,6 +99,7 @@ const ScheduleDaily = () => {
     events.forEach(event => {
       const eventDate = new Date(event.start);
       const clientDate = date;
+      console.log(`eventDate is ${eventDate} and clientDate is ${date}`);
   
       if (
         eventDate.getDay() === clientDate.getDay() &&
