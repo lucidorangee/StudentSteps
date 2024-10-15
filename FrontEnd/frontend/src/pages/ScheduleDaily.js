@@ -210,65 +210,68 @@ const ScheduleDaily = () => {
   return (
     <div className="calendar">
       <h1>Schedule for {new Intl.DateTimeFormat('en-US', dateonlySetting).format(date)}</h1>
-      <button className="btn btn-secondary" onClick={() => window.print()}>Print Schedule</button>
 
-      {alert ? (
-        <div>
-          <div className="alert alert-danger no-print" role="alert">
-            {alert}
+      
+      <div className="no-print">
+        <button className="btn btn-secondary" onClick={() => window.print()}>Print Schedule</button>
+
+        {alert ? (
+          <div>
+            <div className="alert alert-danger no-print" role="alert">
+              {alert}
+            </div>
           </div>
-        </div>
-      ) : (
-        <div></div>
-      )}
+        ) : (
+          <div></div>
+        )}
 
-      <div className="row no-print">
-        <div className="d-flex align-items-center gap-3">
-          {/* Date Picker */}
-          <DatePicker
-            selected={date}
-            onChange={handleDateChange}
-            dateFormat="yyyy/MM/dd"
-            className="form-control w-auto"
-            placeholderText="Select a date"
-          />
-          <FaCalendarAlt className="text-secondary" /> 
-
-          {/* Start Hour Input */}
-          <div className="d-flex flex-column align-items-center">
-            <label htmlFor="start-hour" className="form-label mb-1">Start Hour:</label>
-            <input 
-              type="number" 
-              className="form-control" 
-              id="start-hour" 
-              min="0" 
-              max="24" 
-              placeholder={startHourTemp} 
-              onChange={(e) => setStartHourTemp(Number(e.target.value))}
-              style={{ width: "4rem" }} 
+        <div className="row">
+          <div className="d-flex align-items-center gap-3">
+            {/* Date Picker */}
+            <DatePicker
+              selected={date}
+              onChange={handleDateChange}
+              dateFormat="yyyy/MM/dd"
+              className="form-control w-auto"
+              placeholderText="Select a date"
             />
-          </div>
+            <FaCalendarAlt className="text-secondary" /> 
 
-          {/* End Hour Input */}
-          <div className="d-flex flex-column align-items-center">
-            <label htmlFor="end-hour" className="form-label mb-1">End Hour:</label>
-            <input 
-              type="number" 
-              className="form-control" 
-              id="end-hour" 
-              min="0" 
-              max="24" 
-              placeholder={endHourTemp}
-              onChange={(e) => setEndHourTemp(Number(e.target.value))}
-              style={{ width: "4rem" }} 
-            />
-          </div>
+            {/* Start Hour Input */}
+            <div className="d-flex flex-column align-items-center">
+              <label htmlFor="start-hour" className="form-label mb-1">Start Hour:</label>
+              <input 
+                type="number" 
+                className="form-control" 
+                id="start-hour" 
+                min="0" 
+                max="24" 
+                placeholder={startHourTemp} 
+                onChange={(e) => setStartHourTemp(Number(e.target.value))}
+                style={{ width: "4rem" }} 
+              />
+            </div>
 
-          {/* Apply Button */}
-          <button className="btn btn-primary" onClick={applyHourRange}>Apply</button>
+            {/* End Hour Input */}
+            <div className="d-flex flex-column align-items-center">
+              <label htmlFor="end-hour" className="form-label mb-1">End Hour:</label>
+              <input 
+                type="number" 
+                className="form-control" 
+                id="end-hour" 
+                min="0" 
+                max="24" 
+                placeholder={endHourTemp}
+                onChange={(e) => setEndHourTemp(Number(e.target.value))}
+                style={{ width: "4rem" }} 
+              />
+            </div>
+
+            {/* Apply Button */}
+            <button className="btn btn-primary" onClick={applyHourRange}>Apply</button>
+          </div>
         </div>
       </div>
-
       
       <table className="schedule-table">
         <thead>
