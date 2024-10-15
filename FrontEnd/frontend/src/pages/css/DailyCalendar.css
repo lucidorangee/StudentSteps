@@ -64,3 +64,15 @@ th {
     font-size: 14px;
   }
 }
+
+@media print {
+  /* Hide all elements by default */
+  body * {
+    display: none !important;
+  }
+
+  /* Only display the specific component */
+  .schedule-table {
+    display: block !important;
+  }
+}
