@@ -70,15 +70,21 @@ th {
     display: none !important; /* Hide all elements */
   }
 
-  table.schedule-table {
+  .schedule-table {
     display: table !important; /* Ensure the table is displayed */
     visibility: visible !important; /* Ensure it is visible */
     position: static; /* Reset position to avoid layout issues */
-    width: 100%; /* Ensure table uses full width */
   }
 
-  table.schedule-table th, table.schedule-table td {
-    border: 1px solid #ccc; /* Add border for visibility */
-    padding: 10px; /* Add padding for readability */
+  .schedule-table th,
+  .schedule-table td,
+  .schedule-table tr {
+    display: table-cell !important; /* Ensure table cells and rows are displayed */
+    visibility: visible !important; /* Ensure they are visible */
+  }
+
+  /* Optional: Customize the printed styles as needed */
+  h1 {
+    display: none; /* Hide the header if you don't want it printed */
   }
 }
