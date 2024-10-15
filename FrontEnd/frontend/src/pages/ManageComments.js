@@ -3,6 +3,9 @@ import { Outlet, Link, NavLink } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
+import Select from 'react-select';
+import DatePicker from 'react-datepicker';
+import { FaCalendarAlt } from 'react-icons/fa';
 
 const fetchTutors = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
@@ -73,6 +76,8 @@ const deleteCommentByID = async (id) => {
 
 const ManageComments = () => {
   const queryClient = useQueryClient();
+  const { tempdate } = useParams();
+  const [date, setDate] = useState((tempdate) ? new Date(tempdate) : null);
   
   const [studentOptions, setStudentOptions] = useState([]);
   const [selectedStudentID, setSelectedStudentID] = useState(-1);
@@ -152,15 +157,16 @@ const ManageComments = () => {
     {
       setFilteredComments(
         comments.filter((comment) => {
-          if(selectedStudentID === -1 && selectedTutorID === -1) return false;
-          if(selectedStudentID === -1) return selectedTutorID === -1 ? false : selectedTutorID === comment.tutor_id;
-          if(selectedTutorID === -1) return selectedStudentID === comment.student_id;
-          
-          return selectedStudentID === comment.student_id && selectedTutorID === comment.tutor_id;
+          let studentMatch = selectedStudentID === -1 ? true : selectedStudentID === comment.student_id;
+          let tutorMatch = selectedTutorID === -1 ? true : selectedTutorID === comment.tutor_id;
+          let commentDate = new Date(comment.datetime);
+          let dateMatch = date === null?true:(commentDate.getDay() === date.getDay() && commentDate.getMonth() === date.getMonth() && commentDate.getYear() === date.getYear());
+
+          return studentMatch && tutorMatch && dateMatch;
         })
       );
     }
-  }, [selectedStudentID, selectedTutorID])
+  }, [selectedStudentID, selectedTutorID, date])
 
   if (commentsLoading || tutorsLoading || studentsLoading) return <div>Loading...</div>;
   if (commentsError || tutorsError || studentsError) {
@@ -188,10 +194,30 @@ const ManageComments = () => {
     else setSelectedStudentID(selectedOption.value);
   };
 
+  const handleDateChange = (date) => {
+    setDate(new Date(date));
+  };
+
+  const handleDateReset = () => {
+    setDate(null);
+  };
+
   return (
     <div className="App">
       <h2>Welcome, User!</h2>
       <div className="row ms-4 mt-2">
+        <div className="col">
+          {/* Date Picker */}
+          <DatePicker
+              selected={date}
+              onChange={handleDateChange}
+              dateFormat="yyyy/MM/dd"
+              className="form-control w-auto"
+              placeholderText="Select a date"
+            />
+            <FaCalendarAlt className="text-secondary" /> 
+            <button type="button" className="btn btn-info px-4" onClick={handleDateReset}>Show All</button>
+        </div>
         <div className="col">
           <Select
               options={studentOptions}
@@ -229,8 +255,8 @@ const ManageComments = () => {
           </tr>
         </thead>
         <tbody>
-        {Array.isArray(comments) && (comments).length > 0 ? (
-          (comments).map((comment, index) => (
+        {Array.isArray(filteredComments) && (filteredComments).length > 0 ? (
+          (filteredComments).map((comment, index) => (
             <tr key={index}>
               <td>{comment.comment_id}</td>
               <td>{comment.student_id}</td>
