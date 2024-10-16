@@ -105,7 +105,7 @@ const ManageUsers = () => {
 
         {/* Dropdown Menu */}
         <select
-          value={role}
+          value={filterRole}
           onChange={(e) => setFilterRole(e.target.value)}
           className="form-select w-auto"
         >
