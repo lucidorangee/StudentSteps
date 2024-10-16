@@ -160,17 +160,16 @@ const CalendarPage = () => {
     {
       setFilteredTutoringSessions(
         tutoringSessions.filter((session) => {
-          if(selectedStudentID === -1 && selectedTutorID === -1) return false;
-          if(selectedStudentID === -1) return selectedTutorID === -1 ? false : selectedTutorID === session.tutor_id;
-          if(selectedTutorID === -1) return selectedStudentID === session.student_id;
-          
-          return selectedStudentID === session.student_id && selectedTutorID === session.tutor_id;
+          const tutorFilter = selectedTutorID === -1 || selectedTutorID === session.tutor_id;
+          const studentFilter = selectedStudentID === -1 || selectedStudentID === session.student_id;
+
+          return tutorFilter && studentFilter;
         })
       );
 
       setFilteredAssessments(
         assessments.filter((session) => {        
-          return selectedStudentID === -1 ? false : selectedStudentID === session.student_id;
+          return selectedStudentID === -1 ? true : selectedStudentID === session.student_id;
         })
       );
     }
