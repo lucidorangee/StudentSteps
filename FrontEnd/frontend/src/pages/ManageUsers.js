@@ -78,14 +78,18 @@ const ManageUsers = () => {
   }
 
   const applyFilter = () => {
-    const temp_userData = userData.map((user) => {
-      if(!(filterRole === '' || user.role === filterRole)) return false;
-      if(String(user.id).includes(filterText)) return true;
-      if(String(user.name).includes(filterText)) return true;
-      if(String(user.username).includes(filterText)) return true;
-      return false;
+    const temp_userData = userData.filter((user) => {
+      const roleMatch = filterRole === '' || user.role === filterRole;
+      const textMatch =
+        String(user.id).includes(filterText) ||
+        user.name.includes(filterText) ||
+        user.username.includes(filterText);
+  
+      console.log(filterRole, filterText, user);
+      return roleMatch && textMatch;
+      
     });
-
+  
     setFilteredUserData(temp_userData);
   };
 
