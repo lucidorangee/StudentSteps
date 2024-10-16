@@ -41,20 +41,10 @@ const deleteUserByID = async (id) => {
 
 const ManageUsers = () => {
   const queryClient = useQueryClient();
+  const [filterText, setFilterText] = useState('');
+  const [filterRole, setFilterRole] = useState('');
+  const [filteredUserData, setFilteredUserData] = useState([]);
 
-  //const [userData, setUserData] = useState(null);
-/*
-  useEffect(() => {
-    //Fetch authentication status
-    fetch('http://localhost:4000/users/status')
-      .then(response => response.json())
-      .then(data => {
-        setAuthenticated(data.isAuthenticated);
-      })
-      .catch(error => {
-        console.error('Error fetching authentication status: ', error);
-      })
-  }, []);*/
   const { mutate: deleteUser, isLoading, isError, error } = useMutation({
     mutationFn: (id) => deleteUserByID(id),
     onSuccess: () => {
@@ -72,6 +62,10 @@ const ManageUsers = () => {
     error: userDataError,
   } = useQuery({queryKey: ['users'], queryFn: () => fetchUsers()});
 
+  useEffect(() => {
+    if(userData) setFilteredUserData(userData);
+  }, [userData])
+
   if (userDataLoading) return <div>Loading...</div>;
   if (userDataError) {
     if(userDataError.status === 401) //unauthorized
@@ -82,25 +76,53 @@ const ManageUsers = () => {
     console.log(userDataError.status);
     return <div>Error loading data</div>;
   }
-  /*
 
-  useEffect(() => {
-    //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/users`, {
-      credentials: 'include'
-    })
-      .then(response => response.json())
-      .then(data => {
-        setUserData(data);
-      })
-      .catch(error => {
-        console.error('Error fetching user data: ', error);
-      })
-  }, []);*/
+  const applyFilter = () => {
+    const temp_userData = userData.map((user) => {
+      if(!(filterRole === '' || user.role === filterRole)) return false;
+      if(String(user.id).includes(filterText)) return true;
+      if(String(user.name).includes(filterText)) return true;
+      if(String(user.username).includes(filterText)) return true;
+      return false;
+    });
+
+    setFilteredUserData(temp_userData);
+  };
 
   return (
     <div className="App">
       <h2>Welcome, User!</h2>
+
+      <div className="filter-container d-flex align-items-center gap-3">
+        {/* Text Input */}
+        <input
+          type="text"
+          value={filterText}
+          onChange={(e) => setFilterText(e.target.value)}
+          placeholder="Enter text"
+          className="form-control w-auto"
+        />
+
+        {/* Dropdown Menu */}
+        <select
+          value={role}
+          onChange={(e) => setFilterRole(e.target.value)}
+          className="form-select w-auto"
+        >
+          <option value="">All Roles</option>
+          <option value="admin">Admin</option>
+          <option value="manager">Manager</option>
+          <option value="student">Student</option>
+          <option value="tutor">Tutor</option>
+        </select>
+
+        {/* Apply Button */}
+        <button className="btn btn-primary" onClick={applyFilter}>
+          Apply
+        </button>
+      </div>
+
+      {/* Table of users */}
       <table className="table">
         <thead>
           <tr>
