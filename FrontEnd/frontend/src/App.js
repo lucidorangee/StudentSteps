@@ -10,7 +10,6 @@ import Register from './pages/Register.js';
 import ManageUsers from './pages/ManageUsers.js';
 import ManageTutoringSessions from './pages/ManageTutoringSessions.js';
 import Layout from './pages/Layout.js';
-import ScheduleList from './pages/ScheduleList.js';
 import CreateTutoringSession from './pages/CreateTutoringSession.js';
 import CreateStudent from './pages/CreateStudent.js';
 import CreateTutor from './pages/CreateTutor.js';
@@ -22,6 +21,8 @@ import ManageDueHomework from './pages/ManageDueHomework.js';
 import ManageTutors from './pages/ManageTutors.js';
 import ManageRoles from './pages/ManageRoles.js';
 import StudentDetail from './pages/StudentDetail.js';
+import ScheduleList from './pages/ScheduleList.js';
+import ApprovalList from './pages/ApprovalList.js';
 import ScheduleCalendar from './pages/ScheduleCalendar.js';
 import WeeklyCalendar from './pages/WeeklyCalendar.js';
 import TutorDetail from './pages/TutorDetail.js';
@@ -46,6 +47,7 @@ function App() {
           <Route path="/admin/roles" element={<ProtectedRouteWrapper element={ManageRoles} />} />
           <Route path="/admin/homework" element={<ProtectedRouteWrapper element={ManageHomework} />} />
 
+          <Route path="/schedule/approval" element={<ProtectedRouteWrapper element={ScheduleList} />} />
           <Route path="/schedule/list/:date?" element={<ProtectedRouteWrapper element={ScheduleList} />} />
           <Route path="/schedule/daily/:date?" element={<ProtectedRouteWrapper element={ScheduleDaily} />} />
           <Route path="/schedule/weekly/:date?" element={<ProtectedRouteWrapper element={WeeklyCalendar} />} />

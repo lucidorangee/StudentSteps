@@ -90,20 +90,21 @@ const fetchAssessments = async () => {
 
 
 const postComment = async (session_id, tutor_id, student_id, datetime, stamps, comment, private_comment, prev_homework, new_homework, new_assessments) => {
+  const comments = { public_comment: comment, private_comment: private_comment };
+
   const jsonfile = JSON.stringify({
     tutor_id: tutor_id,
     student_id: student_id,
     datetime: new Date(datetime).toISOString(), // Ensure datetime is correctly serialized
     stamps:stamps,
-    comment: comment,
-    private_comment: private_comment,
+    comments: comments,
     prev_homework: prev_homework,
     new_homework: new_homework,
     new_assessments: new_assessments
   }) // Adjust according to your backend API
   console.log(jsonfile);
 
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessiondrafts/${session_id}`, {
     credentials: 'include',
     method: 'POST',
     headers: {

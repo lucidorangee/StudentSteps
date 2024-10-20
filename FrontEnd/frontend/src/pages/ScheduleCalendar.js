@@ -268,9 +268,6 @@ const CalendarPage = () => {
             classNamePrefix="react-select"
           />
         </div>
-        <div className="col">
-          hi
-        </div>
       </div>
       <div className="row ms-4 me-4 mt-3">
         <div className="col">
