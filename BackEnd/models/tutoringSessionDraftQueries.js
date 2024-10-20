@@ -1,6 +1,6 @@
 const addTutoringSessionDraft = `
   INSERT INTO tutoring_session_drafts (
-    tutor_id, student_id, datetime, stamps, comments, prev_homework, new_homework, new_assessments
+    tutor_id, student_id, datetime, stamps, comments, homework_update, homework, assessments
   ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 `;
 

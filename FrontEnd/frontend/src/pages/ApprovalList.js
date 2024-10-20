@@ -120,7 +120,7 @@ const fetchTutoringSessionDrafts = async () => {
   return response.json();
 };
 
-const postComment = async (session_id, tutor_id, student_id, datetime, stamps, comment, private_comment, prev_homework, new_homework, new_assessments) => {
+const postComment = async (session_id, tutor_id, student_id, datetime, stamps, comment, private_comment, homework_update, homework, assessments) => {
   const jsonfile = JSON.stringify({
     tutor_id: tutor_id,
     student_id: student_id,
@@ -128,9 +128,9 @@ const postComment = async (session_id, tutor_id, student_id, datetime, stamps, c
     stamps:stamps,
     comment: comment,
     private_comment: private_comment,
-    prev_homework: prev_homework,
-    new_homework: new_homework,
-    new_assessments: new_assessments
+    homework_update: homework_update,
+    homework: homework,
+    assessments: assessments
   }) // Adjust according to your backend API
   console.log(jsonfile);
 
@@ -357,7 +357,7 @@ const ScheduleList = () => {
                       <h6 className="text-muted">Homework:</h6>
                       
                       {/* Existing Homework Rows */}
-                      {tutoringSession.prev_homework.map((homework, hwIndex) => (
+                      {tutoringSession.homework_update.map((homework, hwIndex) => (
                         <div key={hwIndex} className="d-flex justify-content-between align-items-center mb-2">
                           <div>Subject: {homework.subject}</div>
                           <div>Due: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(homework.due_date))}</div>
@@ -367,7 +367,7 @@ const ScheduleList = () => {
                       ))}
 
                       {/* New Homework Rows */}
-                      {tutoringSession.new_homework.map((homework, hwIndex) => (
+                      {tutoringSession.homework.map((homework, hwIndex) => (
                         <div key={hwIndex} className="d-flex justify-content-between align-items-center mb-2">
                           <div>Subject: {homework.subject}</div>
                           <div>Due: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(homework.due_date))}</div>
@@ -376,7 +376,7 @@ const ScheduleList = () => {
                       ))}
 
                       {/* New Assessments Rows */}
-                      {tutoringSession.new_assessments.map((assessment, asmtIndex) => (
+                      {tutoringSession.assessments.map((assessment, asmtIndex) => (
                         <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
                           <div>Subject: {assessment.title}</div>
                           <div>Due: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(assessment.date))}</div>
