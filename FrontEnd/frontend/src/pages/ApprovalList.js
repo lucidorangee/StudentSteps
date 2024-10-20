@@ -399,7 +399,7 @@ const ScheduleList = () => {
                           className="form-control"
                           aria-label="With textarea"
                           rows="3"
-                          value={tutoringSession.comments[public_comment] || ''}
+                          value={tutoringSession.comments['public_comment'] || ''}
                           onChange={temp}
                         />
                       </div>
@@ -409,7 +409,7 @@ const ScheduleList = () => {
                           className="form-control"
                           aria-label="With textarea"
                           rows="3"
-                          value={tutoringSession.comments[private_comment] || ''}
+                          value={tutoringSession.comments['private_comment'] || ''}
                           onChange={temp}
                         />
                       </div>
