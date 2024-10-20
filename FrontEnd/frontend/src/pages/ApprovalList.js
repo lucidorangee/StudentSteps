@@ -284,8 +284,6 @@ const ScheduleList = () => {
       <div className="row justify-content-center">
         {Array.isArray(filteredDataDrafts) && filteredDataDrafts.length > 0 ? (
           filteredDataDrafts.map((tutoringSession, index) => {
-            const sessionDateTime = new Date(tutoringSession.datetime);
-            const endDateTime = new Date(sessionDateTime.getTime() + tutoringSession.duration * 60000);
             
             // Fetch the student data and homework list based on student_id
             const studentData = students.find(student => student.student_id === tutoringSession.student_id);
@@ -318,7 +316,7 @@ const ScheduleList = () => {
                     {/* Row 2: Date and Stamps */}
                     <div className="d-flex justify-content-between mt-3">
                       <h5 className="card-title">
-                        Date: {`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(sessionDateTime)} ~ ${new Intl.DateTimeFormat('en-US', timeonlySetting).format(endDateTime)}`}
+                        Date: {`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(tutoringSession.datetime)}`}
                       </h5>
                     </div>
 
