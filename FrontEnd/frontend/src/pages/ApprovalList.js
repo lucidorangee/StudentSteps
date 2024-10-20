@@ -316,7 +316,7 @@ const ScheduleList = () => {
                     {/* Row 2: Date and Stamps */}
                     <div className="d-flex justify-content-between mt-3">
                       <h5 className="card-title">
-                        Date: {`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(tutoringSession.datetime)}`}
+                        Date: {`${tutoringSession.datetime}`}
                       </h5>
                     </div>
 
