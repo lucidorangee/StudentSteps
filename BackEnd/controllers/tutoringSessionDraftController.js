@@ -2,11 +2,7 @@ const pool = require('../db.js');
 const queries = require("../models/tutoringSessionDraftQueries.js");
 
 const getTutoringSessionDrafts = (req, res) => {
-    const { datetime } = req.query;
-
-    const values = [datetime]; // Adjust this based on your actual query needs
-
-    pool.query(queries.getTutoringSessionDrafts, values, (error, results) => {
+    pool.query(queries.getTutoringSessionDrafts, (error, results) => {
         if (error) {
             return res.status(500).json({ error: 'An error occurred while fetching sessions.' });
         }
