@@ -380,7 +380,7 @@ const ScheduleList = () => {
                       {tutoringSession.assessments.map((assessment, asmtIndex) => (
                         <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
                           <div>Subject: {assessment.title}</div>
-                          <div>Due: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(assessment.date))}</div>
+                          <div>Date: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(assessment.date))}</div>
                           <div>Notes: {assessment.description}</div>
                         </div>
                       ))}
