@@ -228,6 +228,10 @@ const ScheduleList = () => {
     error: assessmentsError,
   } = useQuery({queryKey: ['assessments'], queryFn: () => fetchAssessments()});
 
+  useEffect(() => {
+    if(tutoringSessionDraftData) setFilteredDataDrafts(tutoringSessionDraftData);
+  }, [tutoringSessionDraftData]);
+
   if (tutorsLoading || assessmentsLoading || commentsLoading || studentsLoading || homeworkListLoading || tutoringSessionsLoading || tutoringSessionDraftsLoading) return <div>Loading...</div>;
   if (tutorsError || assessmentsError || commentsError || studentsError || homeworkListError || tutoringSessionsError || tutoringSessionDraftsError) {
     if(tutorsError?.status === 401 || assessmentsError?.status === 401 || commentsError?.status === 401 
