@@ -47,7 +47,7 @@ function App() {
           <Route path="/admin/roles" element={<ProtectedRouteWrapper element={ManageRoles} />} />
           <Route path="/admin/homework" element={<ProtectedRouteWrapper element={ManageHomework} />} />
 
-          <Route path="/schedule/approval" element={<ProtectedRouteWrapper element={ScheduleList} />} />
+          <Route path="/schedule/approval" element={<ProtectedRouteWrapper element={ApprovalList} />} />
           <Route path="/schedule/list/:date?" element={<ProtectedRouteWrapper element={ScheduleList} />} />
           <Route path="/schedule/daily/:date?" element={<ProtectedRouteWrapper element={ScheduleDaily} />} />
           <Route path="/schedule/weekly/:date?" element={<ProtectedRouteWrapper element={WeeklyCalendar} />} />

@@ -4,7 +4,7 @@ const controller = require('../controllers/tutoringSessionDraftController.js')
 const tutoringSessionDraftRouter = Router();
 
 tutoringSessionDraftRouter.get("/", controller.getTutoringSessionDrafts);
-tutoringSessionDraftRouter.post("/", controller.addTutoringSessionDraft);
+tutoringSessionDraftRouter.post("/:id", controller.addTutoringSessionDraft);
 tutoringSessionDraftRouter.delete("/:id", controller.removeTutoringSessionDraft);
 
 module.exports = tutoringSessionDraftRouter;

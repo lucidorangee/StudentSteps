@@ -28,8 +28,9 @@ const getTutoringSessionDraftById = (req, res) => {
 };
 
 const addTutoringSessionDraft = (req, res) => {
+    const session_id = parseInt(req.params.id);
     console.log(req.body);
-    const { session_id, tutor_id, student_id, datetime, stamps, comments, prev_homework, new_homework, new_assessments } = req.body;
+    const { tutor_id, student_id, datetime, stamps, comments, prev_homework, new_homework, new_assessments } = req.body;
 
     pool.query(
         queries.addTutoringSessionDraft,
