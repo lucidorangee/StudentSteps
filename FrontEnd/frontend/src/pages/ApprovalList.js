@@ -289,7 +289,7 @@ const ScheduleList = () => {
             const studentData = students.find(student => student.student_id === tutoringSession.student_id);
             const tutorData = tutors.find(tutor => tutor.tutor_id === tutoringSession.tutor_id);
 
-            console.log(`Tutoring homeworkupdate: ${tutoringSession.homework_update}`);
+            console.log(`Tutoring homeworkupdate: ${JSON.stringify(tutoringSession.homework_update, null, 2)}`);
 
             return (
               <div className="col-12 mt-3" key={index}>
