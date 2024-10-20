@@ -288,7 +288,8 @@ const ScheduleList = () => {
             // Fetch the student data and homework list based on student_id
             const studentData = students.find(student => student.student_id === tutoringSession.student_id);
             const tutorData = tutors.find(tutor => tutor.tutor_id === tutoringSession.tutor_id);
-            
+
+            console.log(`Tutoring homeworkupdate: ${tutoringSession.homework_update}`);
 
             return (
               <div className="col-12 mt-3" key={index}>
