@@ -97,10 +97,10 @@ const postComment = async (session_id, tutor_id, student_id, datetime, stamps, c
     student_id: student_id,
     datetime: new Date(datetime).toISOString(), // Ensure datetime is correctly serialized
     stamps:stamps,
-    comments: comments,
-    prev_homework: prev_homework,
-    new_homework: new_homework,
-    new_assessments: new_assessments
+    comments: JSON.stringify(comments),
+    prev_homework: JSON.stringify(prev_homework),
+    new_homework: JSON.stringify(new_homework),
+    new_assessments: JSON.stringify(new_assessments)
   }) // Adjust according to your backend API
   console.log(jsonfile);
 

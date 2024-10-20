@@ -289,7 +289,7 @@ const ScheduleList = () => {
             const studentData = students.find(student => student.student_id === tutoringSession.student_id);
             const tutorData = tutors.find(tutor => tutor.tutor_id === tutoringSession.tutor_id);
 
-            console.log(`Tutoring homeworkupdate: ${JSON.stringify(tutoringSession.homework_update, null, 2)}`);
+            console.log(`Tutoring homework: ${JSON.stringify(tutoringSession.homework, null, 2)}`);
 
             return (
               <div className="col-12 mt-3" key={index}>
@@ -360,12 +360,12 @@ const ScheduleList = () => {
                       <h6 className="text-muted">Homework:</h6>
                       
                       {/* Existing Homework Rows */}
-                      {tutoringSession.homework_update.map((homework, hwIndex) => (
+                      {tutoringSession.homework_update && Object.keys(tutoringSession.homework_update).map((homework_id, hwIndex) => (
                         <div key={hwIndex} className="d-flex justify-content-between align-items-center mb-2">
-                          <div>Subject: {homework.subject}</div>
-                          <div>Due: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(homework.due_date))}</div>
-                          <div>Notes: {homework.notes}</div>
-                          <div>Completedness: {homework.completedness}</div>
+                          <div>Subject: {tutoringSession.homework_update[homework_id].subject}</div>
+                          <div>Due: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(tutoringSession.homework_update[homework_id].due_date))}</div>
+                          <div>Notes: {tutoringSession.homework_update[homework_id].notes}</div>
+                          <div>Completedness: {tutoringSession.homework_update[homework_id].completedness}</div>
                         </div>
                       ))}
 
