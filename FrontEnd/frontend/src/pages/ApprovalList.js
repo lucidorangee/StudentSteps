@@ -72,6 +72,22 @@ const fetchStudents = async () => {
   return response.json();
 };
 
+const fetchTutors = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutors');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
+
 const fetchAssessments = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/assessments/`, {
     credentials: 'include',
@@ -194,6 +210,12 @@ const ScheduleList = () => {
   } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
 
   const {
+    data: tutors,
+    isLoading: tutorsLoading,
+    error: tutorsError,
+  } = useQuery({queryKey: ['tutors'], queryFn: () => fetchTutors()});
+
+  const {
     data: comments,
     isLoading: commentsLoading,
     error: commentsError,
@@ -206,13 +228,13 @@ const ScheduleList = () => {
     error: assessmentsError,
   } = useQuery({queryKey: ['assessments'], queryFn: () => fetchAssessments()});
 
-  if (assessmentsLoading || commentsLoading || studentsLoading || homeworkListLoading || tutoringSessionsLoading || tutoringSessionDraftsLoading) return <div>Loading...</div>;
-  if (assessmentsError || commentsError || studentsError || homeworkListError || tutoringSessionsError || tutoringSessionDraftsError) {
-    if(assessmentsError?.status === 401 || commentsError?.status === 401 
+  if (tutorsLoading || assessmentsLoading || commentsLoading || studentsLoading || homeworkListLoading || tutoringSessionsLoading || tutoringSessionDraftsLoading) return <div>Loading...</div>;
+  if (tutorsError || assessmentsError || commentsError || studentsError || homeworkListError || tutoringSessionsError || tutoringSessionDraftsError) {
+    if(tutorsError?.status === 401 || assessmentsError?.status === 401 || commentsError?.status === 401 
       || studentsError?.status === 401 || homeworkListError?.status === 401 || tutoringSessionsError?.status === 401 || tutoringSessionDraftsError?.status === 401) //unauthorized
     {
       console.log("unathorized");
-      localStorage.setItem('tempComments', JSON.stringify(tempComments));
+      //  ge.setItem('tempComments', JSON.stringify(tempComments));
       return <Navigate to="/login" />;
     }
     return <div>Error loading data</div>;
@@ -220,6 +242,13 @@ const ScheduleList = () => {
 
   const temp = () => {
     return;
+  };
+
+  const toggleExpand = (index) => {
+    setExpandedSessions((prev) => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
   };
 
   return (
@@ -245,7 +274,7 @@ const ScheduleList = () => {
           placeholderText="Select a date"
         />
         <FaCalendarAlt className="me-2 text-secondary" /> 
-        <button type="button" className="btn btn-info px-4" onClick={handleDateReset}>Show All</button>
+        <button type="button" className="btn btn-info px-4" onClick={temp}>Show All</button>
       </div>
       
       <div className="row justify-content-center">
@@ -347,7 +376,7 @@ const ScheduleList = () => {
                       ))}
 
                       {/* New Assessments Rows */}
-                      {tutoringSession.new_assessments.map((assessment, amstIndex) => (
+                      {tutoringSession.new_assessments.map((assessment, asmtIndex) => (
                         <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
                           <div>Subject: {assessment.title}</div>
                           <div>Due: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(assessment.date))}</div>
