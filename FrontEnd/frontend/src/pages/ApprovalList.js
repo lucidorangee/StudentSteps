@@ -362,9 +362,7 @@ const ScheduleList = () => {
                       {/* Existing Homework Rows */}
                       {tutoringSession.homework_update && Object.keys(tutoringSession.homework_update).map((homework_id, hwIndex) => (
                         <div key={hwIndex} className="d-flex justify-content-between align-items-center mb-2">
-                          <div>Subject: {tutoringSession.homework_update[homework_id].subject}</div>
-                          <div>Due: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(tutoringSession.homework_update[homework_id].due_date))}</div>
-                          <div>Notes: {tutoringSession.homework_update[homework_id].notes}</div>
+                          <div>ID: {homework_id}</div>
                           <div>Completedness: {tutoringSession.homework_update[homework_id].completedness}</div>
                         </div>
                       ))}
