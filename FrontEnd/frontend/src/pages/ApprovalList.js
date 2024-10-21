@@ -137,7 +137,7 @@ const postSession = async (id, jsonfile) => {
     throw new Error('Failed to post comment: ' + responseText); // Include responseText in the error for context
   }
 
-  return session_id;
+  return id;
 }
 
 const removeSessionDraft = async (draft_id, session_id) => {
