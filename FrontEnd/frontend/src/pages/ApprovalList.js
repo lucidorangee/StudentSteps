@@ -120,13 +120,13 @@ const fetchTutoringSessionDrafts = async () => {
   return response.json();
 };
 
-const postComment = async (session_id, tutor_id, student_id, datetime, stamps, comment, private_comment, homework_update, homework, assessments) => {
+const postSession = async (session_id, tutor_id, student_id, datetime, stamps, public_comment, private_comment, homework_update, homework, assessments) => {
   const jsonfile = JSON.stringify({
     tutor_id: tutor_id,
     student_id: student_id,
     datetime: new Date(datetime).toISOString(), // Ensure datetime is correctly serialized
     stamps:stamps,
-    comment: comment,
+    public_comment: public_comment,
     private_comment: private_comment,
     homework_update: homework_update,
     homework: homework,
@@ -227,6 +227,18 @@ const ScheduleList = () => {
     isLoading: assessmentsLoading,
     error: assessmentsError,
   } = useQuery({queryKey: ['assessments'], queryFn: () => fetchAssessments()});
+
+  const { mutate: submitSession, isLoading, isError, error } = useMutation({
+    mutationFn: ({session_id, draftdata}) => postSession(session_id, draftdata.tutor_id, draftdata.student_id, draftdata.datetime, draftdata.stamps, draftdata.public_comment, draftdata.private_comment, draftdata.prev_homework, draftdata.new_homework, draftdata.new_assessments),
+    onSuccess: (session_id) => {
+      console.log("Successfully posted");
+      
+      queryClient.invalidateQueries(['tutoringSessionDrafts']);
+    },
+    onError: (error) => {
+      console.log('Error posting comments:', error.message);
+    }
+  });
 
   useEffect(() => {
     if(tutoringSessionDraftData) setFilteredDataDrafts(tutoringSessionDraftData);
@@ -413,8 +425,11 @@ const ScheduleList = () => {
                       </div>
                       <button
                         className="btn btn-primary"
-                        onClick={temp}
-                      >
+                        onClick={() => submitSession({
+                            session_id: index,
+                            draftdata: tutoringSession
+                          })
+                        }>
                         Approve Session
                       </button>
                     </div>

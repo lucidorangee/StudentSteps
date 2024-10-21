@@ -20,7 +20,7 @@ const Topbar = () => {
                     <Nav.Link as={NavLink} to='/admin/students' exact>Students</Nav.Link>
                     <Nav.Link as={NavLink} to='/admin/roles' exact>Roles</Nav.Link>
                     <Nav.Link as={NavLink} to='/admin/homework' exact>Homework</Nav.Link>
-                    <Nav.Link as={NavLink} to='/admin/homework/due' exact>HomeworkList</Nav.Link>
+                    <Nav.Link as={NavLink} to='/admin/homework/due'>Homework List</Nav.Link>
                     <Nav.Link as={NavLink} to='/comments' exact>Comments</Nav.Link>
                     <Nav.Link as={NavLink} to='/tutoringsessions' exact>Sessions</Nav.Link>
                 </div>

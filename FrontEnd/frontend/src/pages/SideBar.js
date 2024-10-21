@@ -51,7 +51,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink to={`/schedule/daily`} className="nav-link text-white" activeclassname="active">
+          <NavLink to={`/schedule/approval`} className="nav-link text-white" activeclassname="active">
             <i className="bi bi-person-add me-2"></i> Approve Comments
           </NavLink>
         </li>
