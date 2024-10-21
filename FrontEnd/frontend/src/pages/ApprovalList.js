@@ -120,18 +120,8 @@ const fetchTutoringSessionDrafts = async () => {
   return response.json();
 };
 
-const postSession = async (session_id, tutor_id, student_id, datetime, stamps, public_comment, private_comment, homework_update, homework, assessments) => {
-  const jsonfile = JSON.stringify({
-    tutor_id: tutor_id,
-    student_id: student_id,
-    datetime: new Date(datetime).toISOString(), // Ensure datetime is correctly serialized
-    stamps:stamps,
-    public_comment: public_comment,
-    private_comment: private_comment,
-    homework_update: homework_update,
-    homework: homework,
-    assessments: assessments
-  }) // Adjust according to your backend API
+const postSession = async (session_id, jsonfile) => {
+  console.log('jsonfile');
   console.log(jsonfile);
 
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
@@ -229,8 +219,8 @@ const ScheduleList = () => {
   } = useQuery({queryKey: ['assessments'], queryFn: () => fetchAssessments()});
 
   const { mutate: submitSession, isLoading, isError, error } = useMutation({
-    mutationFn: ({session_id, draftdata}) => postSession(session_id, draftdata.tutor_id, draftdata.student_id, draftdata.datetime, draftdata.stamps, draftdata.public_comment, draftdata.private_comment, draftdata.prev_homework, draftdata.new_homework, draftdata.new_assessments),
-    onSuccess: (session_id) => {
+    mutationFn: ({session_id, draftdata}) => postSession(session_id, draftdata),
+    onSuccess: () => {
       console.log("Successfully posted");
       
       queryClient.invalidateQueries(['tutoringSessionDrafts']);
