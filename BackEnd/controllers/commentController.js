@@ -143,17 +143,17 @@ const completeAndAddComment = async (req, res) => {
         await client.query('BEGIN'); // Start transaction
 
         const { id } = req.params;
-        const { tutor_id, student_id, datetime, stamps, public_comment, private_comment, homework_update, homework, assessments } = req.body;
+        const { tutor_id, student_id, datetime, stamps, comments, homework_update, homework, assessments } = req.body;
 
 
         // Add comment
         await client.query(queries.addComment, [
-            student_id, tutor_id, datetime, public_comment, 'public', stamps, false,
+            student_id, tutor_id, datetime, comments['public_comment'], 'public', stamps, false,
         ]);
 
         // Add private comment
         await client.query(queries.addComment, [
-            student_id, tutor_id, datetime, private_comment, 'private', 0, false,
+            student_id, tutor_id, datetime, comments['private_comment'], 'private', 0, false,
         ]);
 
         // Add new assessments
