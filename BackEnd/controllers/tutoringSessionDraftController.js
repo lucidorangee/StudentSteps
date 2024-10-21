@@ -54,6 +54,8 @@ const addTutoringSessionDraft = async (req, res) => {
 };
 
 const removeTutoringSessionDraft = async (req, res) => {
+    console.log("removeTutoringSessionDraft");
+    console.log(req);
     const id = parseInt(req.params.id);
     const { session_id } = req.body;
     const client = await pool.connect();  // Connect to the client for transaction
