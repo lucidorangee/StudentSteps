@@ -22,7 +22,6 @@ const fetchComments = async() => {
     throw err;
   }
 
-  console.log("successfully fetched comments");
   return response.json();
 }
 
@@ -414,7 +413,7 @@ const ScheduleList = () => {
                       <button
                         className="btn btn-primary"
                         onClick={() => submitSession({
-                            session_id: index,
+                            session_id: tutoringSession.id,
                             draftdata: tutoringSession
                           })
                         }>

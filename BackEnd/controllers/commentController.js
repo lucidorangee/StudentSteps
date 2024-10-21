@@ -156,9 +156,6 @@ const completeAndAddComment = async (req, res) => {
             student_id, tutor_id, datetime, private_comment, 'private', 0, false,
         ]);
 
-        console.log("assessments:");
-        console.log(JSON.stringify(assessments));
-
         // Add new assessments
         for(const assessment of assessments)
         {
