@@ -39,7 +39,10 @@ const addTutoringSessionDraft = async (req, res) => {
         );
 
         // Complete tutoring session
-        await client.query(tutoringSessionQueries.completeTutoringSession, [id]);
+        await client.query(tutoringSessionQueries.completeTutoringSession, [session_id]);
+        
+        await client.query('COMMIT');  // Commit transaction
+        res.status(201).send("Tutoring session draft added successfully");
 
     } catch (error) {
         await client.query('ROLLBACK'); // Rollback if any error occurs
@@ -50,22 +53,34 @@ const addTutoringSessionDraft = async (req, res) => {
     }
 };
 
-const removeTutoringSessionDraft = (req, res) => {
+const removeTutoringSessionDraft = async (req, res) => {
     const id = parseInt(req.params.id);
-    
-    pool.query(queries.getTutoringSessionDraftById, [id], (error, results) => {
-        const noSessionFound = !results.rows.length;
-        if(noSessionFound){
-            res.send("The session does not exist in the database, could not remove");
-        }
+    const { session_id } = req.body;
+    const client = await pool.connect();  // Connect to the client for transaction
 
-        else{
-            pool.query(queries.removeTutoringSessionDraft, [id], (error, result) => {
-                if (error) throw error;
-                res.status(200).send("Session "+id+" removed successfully");
-            })
-        }
-    });
+    try {
+        await client.query('BEGIN'); // Start transaction
+
+        // remove draft
+        await client.query(
+            queries.removeTutoringSessionDraft,
+            [ id ]
+        );
+
+        // Complete tutoring session
+        await client.query(tutoringSessionQueries.rollbackTutoringSession, [session_id]);
+
+        
+        await client.query('COMMIT');  // Commit transaction
+        res.status(201).send("Tutoring session draft successfully removed");
+
+    } catch (error) {
+        await client.query('ROLLBACK'); // Rollback if any error occurs
+        console.error("Transaction failed:", error);
+        res.status(500).send("Error completing tutoring session and adding comment");
+    } finally {
+        client.release();  // Release the client back to the pool
+    }
 }
 
 module.exports = {

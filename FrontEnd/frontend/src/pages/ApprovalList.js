@@ -119,11 +119,11 @@ const fetchTutoringSessionDrafts = async () => {
   return response.json();
 };
 
-const postSession = async (session_id, jsonfile) => {
+const postSession = async (id, jsonfile) => {
   console.log('jsonfile');
   console.log(jsonfile);
 
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${session_id}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${id}`, {
     credentials: 'include',
     method: 'POST',
     headers: {
@@ -138,6 +138,24 @@ const postSession = async (session_id, jsonfile) => {
   }
 
   return session_id;
+}
+
+const removeSessionDraft = async (draft_id, session_id) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${draft_id}`, {
+    credentials: 'include',
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(session_id),
+  })
+
+  if (!response.ok) {
+    const responseText = await response.text();
+    throw new Error('Failed to remove draft: ' + responseText); // Include responseText in the error for context
+  }
+
+  return draft_id;
 }
 
 const ScheduleList = () => {
@@ -218,7 +236,7 @@ const ScheduleList = () => {
   } = useQuery({queryKey: ['assessments'], queryFn: () => fetchAssessments()});
 
   const { mutate: submitSession, isLoading, isError, error } = useMutation({
-    mutationFn: ({session_id, draftdata}) => postSession(session_id, draftdata),
+    mutationFn: ({id, draftdata}) => postSession(id, draftdata),
     onSuccess: () => {
       console.log("Successfully posted");
       
@@ -410,15 +428,24 @@ const ScheduleList = () => {
                           onChange={temp}
                         />
                       </div>
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => submitSession({
-                            session_id: tutoringSession.id,
+                      <div className="d-flex justify-content-between">
+                        <button
+                          className="btn btn-primary"
+                          onClick={() => submitSession({
+                            id: tutoringSession.id,
                             draftdata: tutoringSession
-                          })
-                        }>
-                        Approve Session
-                      </button>
+                          })}
+                        >
+                          Approve Session
+                        </button>
+
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => removeSessionDraft(tutoringSession.id, tutoringSession.session_id)}
+                        >
+                          Delete Session
+                        </button>
+                      </div>
                     </div>
 
                   </div>
