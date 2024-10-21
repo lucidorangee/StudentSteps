@@ -1,6 +1,6 @@
 const pool = require('../db.js');
 const queries = require("../models/commentQueries.js");
-const tutoringSessionQueries = require("../models/tutoringSessionQueries.js");
+const tutoringSessionDraftQueries = require("../models/tutoringSessionDraftQueries.js");
 const homeworkQueries = require("../models/homeworkQueries.js");
 const assessmentQueries = require("../models/assessmentQueries.js");
 
@@ -143,14 +143,12 @@ const completeAndAddComment = async (req, res) => {
         await client.query('BEGIN'); // Start transaction
 
         const { id } = req.params;
-        const { tutor_id, student_id, datetime, stamps, comment, private_comment, prev_homework, new_homework, new_assessments } = req.body;
+        const { tutor_id, student_id, datetime, stamps, public_comment, private_comment, homework_update, homework, assessments } = req.body;
 
-        // Complete tutoring session
-        await client.query(tutoringSessionQueries.completeTutoringSession, [id]);
 
         // Add comment
         await client.query(queries.addComment, [
-            student_id, tutor_id, datetime, comment, 'public', stamps, false,
+            student_id, tutor_id, datetime, public_comment, 'public', stamps, false,
         ]);
 
         // Add private comment
@@ -158,26 +156,34 @@ const completeAndAddComment = async (req, res) => {
             student_id, tutor_id, datetime, private_comment, 'private', 0, false,
         ]);
 
-        for(const assessment of new_assessments)
+        // Add new assessments
+        for(const assessment of assessments)
         {
             await client.query(assessmentQueries.addAssessment, [
                 assessment.title, assessment.description, assessment.date, student_id, 'empty subject', 'no notes'
             ]);
         }
 
-        for(const hm of new_homework)
+        // Add new homework
+        for(const hm of homework)
         {
             await client.query(homeworkQueries.addHomework, [
                 student_id, hm.due_date, hm.due_date, 0, hm.subject, hm.notes
             ]);
         }
 
-        for(const hm of prev_homework)
-            {
-                await client.query(homeworkQueries.updateHomeworkCompletion, [
-                    hm.homework_id, hm.completedness
-                ]);
-            }
+        // Update previous homework
+        for(const hm of homework_update)
+        {
+            await client.query(homeworkQueries.updateHomeworkCompletion, [
+                hm.homework_id, hm.completedness
+            ]);
+        }
+
+        // Remove current draft
+        await client.query(tutoringSessionDraftQueries.removeTutoringSessionDraft, [
+            id
+        ]);
 
         await client.query('COMMIT');  // Commit transaction
         res.status(201).send("Tutoring session completed and comment added successfully");

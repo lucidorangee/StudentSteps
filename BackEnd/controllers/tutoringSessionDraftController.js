@@ -1,5 +1,6 @@
 const pool = require('../db.js');
 const queries = require("../models/tutoringSessionDraftQueries.js");
+const tutoringSessionQueries = require("../models/tutoringSessionQueries.js");
 
 const getTutoringSessionDrafts = (req, res) => {
     pool.query(queries.getTutoringSessionDrafts, (error, results) => {
@@ -23,19 +24,30 @@ const getTutoringSessionDraftById = (req, res) => {
     });
 };
 
-const addTutoringSessionDraft = (req, res) => {
+const addTutoringSessionDraft = async (req, res) => {
+    const client = await pool.connect();  // Connect to the client for transaction
     const session_id = parseInt(req.params.id);
     console.log(req.body);
     const { tutor_id, student_id, datetime, stamps, comments, prev_homework, new_homework, new_assessments } = req.body;
 
-    pool.query(
-        queries.addTutoringSessionDraft,
-        [ session_id, tutor_id, student_id, datetime, stamps, comments, prev_homework, new_homework, new_assessments ],
-        (error, results) => {
-            if(error) throw error;
-            res.status(201).send("Session Draft has been created successfully");
-        }
-    )
+    try {
+        await client.query('BEGIN'); // Start transaction
+
+        await client.query(
+            queries.addTutoringSessionDraft,
+            [ session_id, tutor_id, student_id, datetime, stamps, comments, prev_homework, new_homework, new_assessments ]
+        );
+
+        // Complete tutoring session
+        await client.query(tutoringSessionQueries.completeTutoringSession, [id]);
+
+    } catch (error) {
+        await client.query('ROLLBACK'); // Rollback if any error occurs
+        console.error("Transaction failed:", error);
+        res.status(500).send("Error completing tutoring session and adding comment");
+    } finally {
+        client.release();  // Release the client back to the pool
+    }
 };
 
 const removeTutoringSessionDraft = (req, res) => {
