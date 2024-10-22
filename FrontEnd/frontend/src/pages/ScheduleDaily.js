@@ -73,9 +73,14 @@ const ScheduleDaily = () => {
   const [alert, setAlert] = useState('');
   
   const [showModal, setShowModal] = useState(false);
+  const [selectedSession, setSelectedSession] = useState(null);
   const [selectedTutor, setSelectedTutor] = useState(null);
 
-  const handleShow = () => setShowModal(true);
+  const handleShow = (sessionData) => {
+    setShowModal(true);
+    setSelectedSession(sessionData);
+  }
+
   const handleClose = () => setShowModal(false);
 
 
@@ -257,7 +262,7 @@ const ScheduleDaily = () => {
     //updateTutoringSession()
     const selectedTutorObj = tutors.find(tutor => String(tutor.tutor_id) === String());
     console.log(`The tutor id of ${selectedTutor} has been selected.`);
-    console.log(`The session selected: ${JSON.stringify(col[timeIndex])}.`);
+    console.log(`The session selected: ${JSON.stringify(selectedSession)}.`);
     
     handleClose();
   };
@@ -389,7 +394,7 @@ const ScheduleDaily = () => {
                           <div
                             className="session"
                             style={{ backgroundColor: `#${intToHexSpread(tutor_id)}`, width: '100%', height: '100%', cursor: 'pointer' }}
-                            onClick={handleShow}
+                            onClick={() => handleShow(col[timeIndex])}
                           >
                             {col[timeIndex].student}<br />
                             {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)} - {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].end)}
