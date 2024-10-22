@@ -59,11 +59,6 @@ const ScheduleDaily = () => {
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
-  const applySessionChange = () => {
-    console.log(`The tutor ${tutors[selectedTutor].first_name} has been selected.`);
-    
-    handleClose();
-  };
 
   const timeonlySetting = {
     hour: '2-digit',
@@ -226,6 +221,14 @@ const ScheduleDaily = () => {
     return hexValue;
   }
 
+
+  const applySessionChange = () => {
+    console.log(`The tutor id of ${selectedTutor} has been selected.`);
+    console.log(`The tutor ${tutors[selectedTutor].first_name} has been selected.`);
+    
+    handleClose();
+  };
+  
   return (
     <div className="calendar">
       <h1>Schedule for {new Intl.DateTimeFormat('en-US', dateonlySetting).format(date)}</h1>
