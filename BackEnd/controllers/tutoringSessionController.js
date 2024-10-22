@@ -160,8 +160,64 @@ const submitTutoringSession = (req, res) => {
             })
         }
     });
-
 }
+
+const editTutoringSession = (req, res) => {
+    const session_id = parseInt(req.params.id); // Get session_id from the route params
+    const { student_id, tutor_id, date, duration, notes } = req.body;
+
+    let updateFields = [];
+    let updateValues = [];
+    let queryIndex = 1;
+
+    // Add each property to the query if it's provided in req.body
+    if (student_id !== undefined) {
+        updateFields.push(`student_id = $${queryIndex++}`);
+        updateValues.push(student_id);
+    }
+    if (tutor_id !== undefined) {
+        updateFields.push(`tutor_id = $${queryIndex++}`);
+        updateValues.push(tutor_id);
+    }
+    if (date !== undefined) {
+        updateFields.push(`session_datetime = $${queryIndex++}`);
+        updateValues.push(date.replace("T", " ").replace("Z", "+00:00")); // Ensure date is formatted correctly
+    }
+    if (duration !== undefined) {
+        updateFields.push(`duration = $${queryIndex++}`);
+        updateValues.push(duration);
+    }
+    if (notes !== undefined) {
+        updateFields.push(`notes = $${queryIndex++}`);
+        updateValues.push(notes);
+    }
+
+    // Ensure we have fields to update
+    if (updateFields.length === 0) {
+        return res.status(400).json({ error: 'No fields to update' });
+    }
+
+    // Add session_id to the update values
+    updateValues.push(session_id);
+
+    // Add session_id placeholder at the current queryIndex
+    const updateQuery = `
+        UPDATE tutoring_session
+        SET ${updateFields.join(', ')}
+        WHERE session_id = $${queryIndex}
+    `;
+
+    // Execute the query
+    pool.query(updateQuery, updateValues, (error, results) => {
+        if (error) {
+            console.error('Error updating tutoring session:', error);
+            return res.status(500).json({ error: 'Failed to update tutoring session' });
+        }
+
+        res.status(200).json({ message: 'Tutoring session updated successfully' });
+    });
+};
+
 
 module.exports = {
     getTutoringSessions,
@@ -169,4 +225,5 @@ module.exports = {
     addTutoringSession,
     removeTutoringSession,
     submitTutoringSession,
+    editTutoringSession,
 };

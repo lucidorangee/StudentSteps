@@ -40,6 +40,25 @@ const fetchTutoringSessions = async () => {
   return response.json();
 };
 
+const patchTutoringSession = async (id, jsonfile) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsession/${id}`, {
+    credentials: 'include',
+    method: 'PATCH',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(jsonfile),
+  })
+
+  if (!response.ok) {
+    const responseText = await response.text();
+    throw new Error('Failed to update tutoring session: ' + responseText); // Include responseText in the error for context
+  }
+
+  return id;
+}
+
+
 const ScheduleDaily = () => {
   const { tempdate } = useParams();
   const [date, setDate] = useState((tempdate) ? new Date(tempdate) : new Date());
@@ -76,6 +95,18 @@ const ScheduleDaily = () => {
 
   const { data: tutors, isLoading: tutorsLoading, error: tutorsError } = useQuery({ queryKey: ['tutors'], queryFn: fetchTutors });
   const { data: tutoringSessionData, isLoading: tutoringSessionsLoading, error: tutoringSessionsError } = useQuery({ queryKey: ['tutoringSessions'], queryFn: fetchTutoringSessions });
+
+  const { mutate: updateTutoringSession, isLoading, isError, error } = useMutation({
+    mutationFn: ({id, changeData}) => patchTutoringSession(id, changeData),
+    onSuccess: () => {
+      console.log("Successfully updated");
+      
+      queryClient.invalidateQueries(['tutoringSessions']);
+    },
+    onError: (error) => {
+      console.log('Error updating the tutoring session:', error.message);
+    }
+  });
 
   // Helper function to find time slot index
   const findTimeSlotIndex = (date, timeZone) => {
@@ -223,9 +254,10 @@ const ScheduleDaily = () => {
 
 
   const applySessionChange = () => {
-    const selectedTutorObj = tutors.find(tutor => String(tutor.tutor_id) === String(selectedTutor));
+    //updateTutoringSession()
+    const selectedTutorObj = tutors.find(tutor => String(tutor.tutor_id) === String());
     console.log(`The tutor id of ${selectedTutor} has been selected.`);
-    console.log(`The tutor ${selectedTutorObj.first_name} has been selected.`);
+    console.log(`The session selected: ${JSON.stringify(col[timeIndex])}.`);
     
     handleClose();
   };
