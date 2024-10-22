@@ -141,7 +141,7 @@ const postSession = async (id, jsonfile) => {
 }
 
 const removeSessionDraft = async (draft_id, session_id) => {
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/${draft_id}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessiondrafts/${draft_id}`, {
     credentials: 'include',
     method: 'DELETE',
     headers: {
