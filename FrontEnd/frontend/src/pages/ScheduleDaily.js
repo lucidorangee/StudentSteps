@@ -223,7 +223,7 @@ const ScheduleDaily = () => {
 
 
   const applySessionChange = () => {
-    const selectedTutorObj = tutors.find(tutor => tutor.tutor_id === selectedTutor);
+    const selectedTutorObj = tutors.find(tutor => String(tutor.tutor_id) === String(selectedTutor));
     console.log(`The tutor id of ${selectedTutor} has been selected.`);
     console.log(`The tutor ${selectedTutorObj.first_name} has been selected.`);
     
