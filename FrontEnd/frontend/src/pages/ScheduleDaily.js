@@ -59,8 +59,9 @@ const ScheduleDaily = () => {
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
-  const applyTutor = () => {
-    // Your function to apply the selected tutor
+  const applySessionChange = () => {
+    console.log(`The tutor ${tutors[selectedTutor].first_name} has been selected.`);
+    
     handleClose();
   };
 
@@ -238,13 +239,13 @@ const ScheduleDaily = () => {
           <select className="form-select" onChange={(e) => setSelectedTutor(e.target.value)}>
             <option>Select a tutor</option>
             {tutors.map((tutor) => (
-              <option key={tutor.id} value={tutor.id}>{tutor.name}</option>
+              <option key={tutor.tutor_id} value={tutor.tutor_id}>{tutor.first_name} {tutor.last_name}</option>
             ))}
           </select>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="primary" onClick={applyTutor}>Apply</Button>
+          <Button variant="primary" onClick={applySessionChange}>Apply</Button>
         </Modal.Footer>
       </Modal>
       
