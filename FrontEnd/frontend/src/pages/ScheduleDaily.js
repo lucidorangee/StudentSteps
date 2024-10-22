@@ -75,6 +75,8 @@ const ScheduleDaily = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedSession, setSelectedSession] = useState(null);
   const [selectedTutor, setSelectedTutor] = useState(null);
+  
+  const queryClient = useQueryClient();
 
   const handleShow = (sessionData) => {
     setShowModal(true);
