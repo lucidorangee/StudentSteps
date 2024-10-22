@@ -60,6 +60,9 @@ const removeTutoringSessionDraft = async (req, res) => {
     try {
         await client.query('BEGIN'); // Start transaction
 
+
+        console.log("ID IS");
+        console.log(id);
         // remove draft
         await client.query(
             queries.removeTutoringSessionDraft,
@@ -74,6 +77,8 @@ const removeTutoringSessionDraft = async (req, res) => {
         }
 
         const session_id = session_draft.session_id;
+
+        console.log(session_id);
 
         // Complete tutoring session
         await client.query(tutoringSessionQueries.rollbackTutoringSession, [session_id]);
