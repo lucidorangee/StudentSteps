@@ -51,6 +51,17 @@ const ScheduleDaily = () => {
   const [startHourTemp, setStartHourTemp] = useState(15);
   const [endHourTemp, setEndHourTemp] = useState(20);
   const [alert, setAlert] = useState('');
+  
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTutor, setSelectedTutor] = useState(null);
+
+  const handleShow = () => setShowModal(true);
+  const handleClose = () => setShowModal(false);
+
+  const applyTutor = () => {
+    // Your function to apply the selected tutor
+    handleClose();
+  };
 
   const timeonlySetting = {
     hour: '2-digit',
@@ -217,6 +228,24 @@ const ScheduleDaily = () => {
     <div className="calendar">
       <h1>Schedule for {new Intl.DateTimeFormat('en-US', dateonlySetting).format(date)}</h1>
 
+      <Modal show={showModal} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Select Tutor</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Which tutor should I send this to?</p>
+          <select className="form-select" onChange={(e) => setSelectedTutor(e.target.value)}>
+            <option>Select a tutor</option>
+            {tutors.map((tutor) => (
+              <option key={tutor.id} value={tutor.id}>{tutor.name}</option>
+            ))}
+          </select>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>Close</Button>
+          <Button variant="primary" onClick={applyTutor}>Apply</Button>
+        </Modal.Footer>
+      </Modal>
       
       <div className="no-print">
         <button className="btn btn-secondary" onClick={() => window.print()}>Print Schedule</button>
@@ -318,8 +347,10 @@ const ScheduleDaily = () => {
 
                       return (
                         <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length + 1}>
-                          <div className="session" style={{ backgroundColor: `#${intToHexSpread(tutor_id)}` }}>{col[timeIndex].student}<br />
-                          {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)} - {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].end)}</div>
+                          <button className="session" style={{ backgroundColor: `#${intToHexSpread(tutor_id)}` }} onClick={handleShow}>
+                            {col[timeIndex].student}<br />
+                            {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)} - {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].end)}
+                          </button>
                         </td>
                       );
                     });
