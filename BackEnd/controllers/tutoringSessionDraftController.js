@@ -63,11 +63,6 @@ const removeTutoringSessionDraft = async (req, res) => {
 
         console.log("ID IS");
         console.log(id);
-        // remove draft
-        await client.query(
-            queries.removeTutoringSessionDraft,
-            [ id ]
-        );
 
         const sessionDraftResult = await client.query(queries.getTutoringSessionDraftById, [id]);
         const session_draft = sessionDraftResult.rows[0];  // Assuming query returns rows array
@@ -82,7 +77,12 @@ const removeTutoringSessionDraft = async (req, res) => {
 
         // Complete tutoring session
         await client.query(tutoringSessionQueries.rollbackTutoringSession, [session_id]);
-
+        
+        // remove draft
+        await client.query(
+            queries.removeTutoringSessionDraft,
+            [ id ]
+        );
         
         await client.query('COMMIT');  // Commit transaction
         res.status(201).send("Tutoring session draft successfully removed");
