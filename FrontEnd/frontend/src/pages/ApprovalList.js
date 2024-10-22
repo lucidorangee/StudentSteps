@@ -147,7 +147,6 @@ const removeSessionDraft = async (draft_id, session_id) => {
     headers: {
         'Content-Type': 'application/json',
     },
-    body: JSON.stringify(session_id),
   })
 
   if (!response.ok) {

@@ -54,10 +54,7 @@ const addTutoringSessionDraft = async (req, res) => {
 };
 
 const removeTutoringSessionDraft = async (req, res) => {
-    console.log("removeTutoringSessionDraft");
-    console.log(req);
     const id = parseInt(req.params.id);
-    const { session_id } = req.body;
     const client = await pool.connect();  // Connect to the client for transaction
 
     try {
@@ -68,6 +65,15 @@ const removeTutoringSessionDraft = async (req, res) => {
             queries.removeTutoringSessionDraft,
             [ id ]
         );
+
+        const sessionDraftResult = await client.query(queries.getTutoringSessionDraftById, [id]);
+        const session_draft = sessionDraftResult.rows[0];  // Assuming query returns rows array
+
+        if (!session_draft) {
+            throw new Error(`Session draft with id ${id} not found`);
+        }
+
+        const session_id = session_draft.session_id;
 
         // Complete tutoring session
         await client.query(tutoringSessionQueries.rollbackTutoringSession, [session_id]);
