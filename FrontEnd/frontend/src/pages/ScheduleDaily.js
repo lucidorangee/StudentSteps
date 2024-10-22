@@ -349,15 +349,16 @@ const ScheduleDaily = () => {
                       return (
                         
                         <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length + 1}>
-                          <Button
+                          <div
+                            className="session"
+                            style={{ backgroundColor: `#${intToHexSpread(tutor_id)}`, width: '100%', height: '100%', cursor: 'pointer' }}
                             onClick={handleShow}
                           >
-                            <div className="session" style={{ backgroundColor: `#${intToHexSpread(tutor_id)}` }}>
-                              {col[timeIndex].student}<br />
-                              {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)} - {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].end)}
-                            </div>
-                          </Button>
+                            {col[timeIndex].student}<br />
+                            {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)} - {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].end)}
+                          </div>
                         </td>
+
 
                       );
                     });
