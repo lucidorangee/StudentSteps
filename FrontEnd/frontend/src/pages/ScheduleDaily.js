@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import './css/DailyCalendar.css';
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
+import { Modal, Button } from 'react-bootstrap';
 
 // Fetch functions
 const fetchTutors = async () => {
