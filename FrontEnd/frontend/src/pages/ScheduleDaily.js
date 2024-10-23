@@ -395,25 +395,20 @@ const ScheduleDaily = () => {
 
                       return (
                         
-                        <td
-  key={`${tutor_id}-${colIndex}-${timeIndex}`}
-  className="session-cell"
-  rowSpan={col[timeIndex].length + 1}
-  style={{
-    padding: 0, // Remove padding in the cell
-    height: '100%', // Ensure td takes full height of the row
-    verticalAlign: 'top', // Align content to the top of the cell
-  }}
+                        <td key={`${tutor_id}-${colIndex}-${timeIndex}`} 
+    style={{ padding: '0', boxSizing: 'border-box' }} // Styles for the <td>
+    className="session-cell" 
+    rowSpan={col[timeIndex].length + 1}
 >
   <div
-    className="session"
-    style={{
+    style={{ 
       backgroundColor: `#${intToHexSpread(tutor_id)}`,
       width: '100%',
-      height: '100%', // Ensure div takes full height
+      height: '100%',
       cursor: 'pointer',
       display: 'block',
-      boxSizing: 'border-box', // Ensure padding/border is considered in sizing
+      boxSizing: 'border-box', // Ensures borders and padding are included in the total width/height
+      padding: '8px'
     }}
     onClick={() => handleShow(col[timeIndex].id)}
   >
@@ -421,6 +416,7 @@ const ScheduleDaily = () => {
     {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)} - {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].end)}
   </div>
 </td>
+
 
 
 
