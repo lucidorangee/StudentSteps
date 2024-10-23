@@ -40,23 +40,23 @@ const fetchTutoringSessions = async () => {
   return response.json();
 };
 
-const patchTutoringSession = async (id, jsonfile) => {
+const patchTutoringSession = async (id, changeData) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsession/${id}`, {
     credentials: 'include',
     method: 'PATCH',
     headers: {
         'Content-Type': 'application/json',
     },
-    body: JSON.stringify(jsonfile),
-  })
+    body: JSON.stringify(changeData),
+  });
 
   if (!response.ok) {
     const responseText = await response.text();
-    throw new Error('Failed to update tutoring session: ' + responseText); // Include responseText in the error for context
+    throw new Error('Failed to update tutoring session: ' + responseText);
   }
 
   return id;
-}
+};
 
 
 const ScheduleDaily = () => {
@@ -106,7 +106,7 @@ const ScheduleDaily = () => {
   const { data: tutoringSessionData, isLoading: tutoringSessionsLoading, error: tutoringSessionsError } = useQuery({ queryKey: ['tutoringSessions'], queryFn: fetchTutoringSessions });
 
   const { mutate: updateTutoringSession, isLoading, isError, error } = useMutation({
-    mutationFn: ({id, changeData}) => patchTutoringSession(id, changeData),
+    mutationFn: ({ id, changeData }) => patchTutoringSession(id, changeData),
     onSuccess: () => {
       console.log("Successfully updated");
       
@@ -263,11 +263,12 @@ const ScheduleDaily = () => {
 
 
   const applySessionChange = () => {
-    //updateTutoringSession()
     const selectedSession = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(selectedSessionId));
+
     console.log(`The tutor id of ${selectedTutor} has been selected.`);
     console.log(`The session selected: ${JSON.stringify(selectedSession)}.`);
-    
+
+    updateTutoringSession({ id: selectedSession.session_id, changeData: { tutor_id: Number(selectedTutor) } });
     handleClose();
   };
   
