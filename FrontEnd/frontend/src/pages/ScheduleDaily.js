@@ -222,7 +222,7 @@ const ScheduleDaily = () => {
       return;
     }
 
-    if(startHourTemp <= endHourTemp)
+    if(startHourTemp >= endHourTemp)
     {
       setAlert('Please set a valid time range');
       return;
