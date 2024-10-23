@@ -41,7 +41,7 @@ const fetchTutoringSessions = async () => {
 };
 
 const patchTutoringSession = async (id, changeData) => {
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsession/${id}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/${id}`, {
     credentials: 'include',
     method: 'PATCH',
     headers: {
