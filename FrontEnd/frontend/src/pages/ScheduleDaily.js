@@ -399,19 +399,17 @@ const ScheduleDaily = () => {
   key={`${tutor_id}-${colIndex}-${timeIndex}`}
   className="session-cell"
   rowSpan={col[timeIndex].length + 1}
-  style={{ padding: 0, height: '100%' }}
+  style={{ padding: 0 }}
 >
   <div
     className="session"
     style={{
       backgroundColor: `#${intToHexSpread(tutor_id)}`,
       width: '100%',
-      height: '100%',
+      height: '100%', // Ensure div takes full height of the cell
       cursor: 'pointer',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
+      display: 'block', // Ensures it behaves like a block-level element
+      boxSizing: 'border-box', // Ensure padding and border are included in width/height
     }}
     onClick={() => handleShow(col[timeIndex].id)}
   >
@@ -419,6 +417,7 @@ const ScheduleDaily = () => {
     {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].start)} - {new Intl.DateTimeFormat('en-US', timeonlySetting).format(col[timeIndex].end)}
   </div>
 </td>
+
 
 
                       );
