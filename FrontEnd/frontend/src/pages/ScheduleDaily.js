@@ -73,14 +73,14 @@ const ScheduleDaily = () => {
   const [alert, setAlert] = useState('');
   
   const [showModal, setShowModal] = useState(false);
-  const [selectedSession, setSelectedSession] = useState(null);
+  const [selectedSessionId, setSelectedSessionId] = useState(null);
   const [selectedTutor, setSelectedTutor] = useState(null);
   
   const queryClient = useQueryClient();
 
   const handleShow = (sessionData) => {
     setShowModal(true);
-    setSelectedSession(sessionData);
+    setSelectedSessionId(sessionData.id);
   }
 
   const handleClose = () => setShowModal(false);
@@ -262,7 +262,7 @@ const ScheduleDaily = () => {
 
   const applySessionChange = () => {
     //updateTutoringSession()
-    const selectedSession = tutoringSessionData.find(session_id => String(session_id) === String(selectedSession.id));
+    const selectedSession = tutoringSessionData.find(session_id => String(session_id) === String(selectedSessionId));
     console.log(`The tutor id of ${selectedTutor} has been selected.`);
     console.log(`The session selected: ${JSON.stringify(selectedSession)}.`);
     
