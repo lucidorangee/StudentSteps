@@ -395,20 +395,16 @@ const ScheduleDaily = () => {
 
                       return (
                         
-                        <td key={`${tutor_id}-${colIndex}-${timeIndex}`} 
-    style={{ padding: '0', boxSizing: 'border-box' }} // Styles for the <td>
-    className="session-cell" 
-    rowSpan={col[timeIndex].length + 1}
->
+                        <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length + 1}>
   <div
+    className="session"
     style={{ 
       backgroundColor: `#${intToHexSpread(tutor_id)}`,
       width: '100%',
       height: '100%',
       cursor: 'pointer',
       display: 'block',
-      boxSizing: 'border-box', // Ensures borders and padding are included in the total width/height
-      padding: '8px'
+      boxSizing: 'border-box'
     }}
     onClick={() => handleShow(col[timeIndex].id)}
   >
