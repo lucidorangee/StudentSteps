@@ -262,7 +262,7 @@ const ScheduleDaily = () => {
 
   const applySessionChange = () => {
     //updateTutoringSession()
-    const selectedTutorObj = tutors.find(tutor => String(tutor.tutor_id) === String());
+    const selectedSession = tutoringSessionData.find(session_id => String(session_id) === String(selectedSession.id));
     console.log(`The tutor id of ${selectedTutor} has been selected.`);
     console.log(`The session selected: ${JSON.stringify(selectedSession)}.`);
     
