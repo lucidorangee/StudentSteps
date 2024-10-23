@@ -395,16 +395,23 @@ const ScheduleDaily = () => {
 
                       return (
                         
-                        <td key={`${tutor_id}-${colIndex}-${timeIndex}`} className="session-cell" rowSpan={col[timeIndex].length + 1}>
+                        <td 
+  key={`${tutor_id}-${colIndex}-${timeIndex}`} 
+  style={{ padding: '0', display: 'block', width: '100%', height: '100%' }} 
+  className="session-cell" 
+  rowSpan={col[timeIndex].length + 1}
+>
   <div
-    className="session"
     style={{ 
       backgroundColor: `#${intToHexSpread(tutor_id)}`,
       width: '100%',
       height: '100%',
       cursor: 'pointer',
-      display: 'block',
-      boxSizing: 'border-box'
+      display: 'flex',  // Flexbox ensures the content is stretched
+      justifyContent: 'center',
+      alignItems: 'center',
+      boxSizing: 'border-box',
+      padding: '8px'
     }}
     onClick={() => handleShow(col[timeIndex].id)}
   >
