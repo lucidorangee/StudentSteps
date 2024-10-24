@@ -406,6 +406,7 @@ const ScheduleList = () => {
                         </div>
                       ))}
 
+                      <h6 className="text-muted">Assessments:</h6>
                       
                       {/* Existing Assessment Rows */}
                       {tutoringSession.assessments_update && Object.keys(tutoringSession.assessments_update).map((assessment_id, asmtIndex) => (

@@ -271,6 +271,7 @@ const ScheduleList = () => {
     const new_assessments = tempComments[tutoringSession.session_id]?.new_assessments?.filter(asmt => {
       return !(asmt.title === '' && asmt.date === '' && asmt.description === '');
     }) || [];
+    const prev_assessments = tempComments[tutoringSession.session_id]?.prev_assessments || [];
 
     if(stamps > 20)
     {
@@ -295,13 +296,13 @@ const ScheduleList = () => {
     }
 
     for(const asmt of new_assessments)
+    {
+      if(asmt['subject'] === '' || asmt['due_date'] === '' || asmt['notes'] === '')
       {
-        if(asmt['subject'] === '' || asmt['due_date'] === '' || asmt['notes'] === '')
-        {
-          setAlert("Please fill in all the information for non-empty homework rows");
-          return;
-        }
+        setAlert("Please fill in all the information for non-empty homework rows");
+        return;
       }
+    }
 
     setAlert(''); // Show there is nothing to alert
 
@@ -315,6 +316,7 @@ const ScheduleList = () => {
       comments: JSON.stringify(comments),
       prev_homework: JSON.stringify(prev_homework),
       new_homework: JSON.stringify(new_homework),
+      prev_assessments : JSON.stringify(prev_assessments),
       new_assessments: JSON.stringify(new_assessments)
     });
 
@@ -430,7 +432,7 @@ const ScheduleList = () => {
   };
 
   const handleExistingAssessmentUpdate = (session_id, assessment_id, event) => {
-    const previousAssessment = tempComments[session_id]?.prev_assessment || []; // Ensure an array exists
+    const previousAssessment = tempComments[session_id]?.prev_assessments || []; // Ensure an array exists
 
     // Check if assessment_id already exists
     const index = previousAssessment.findIndex(asmt => asmt.assessment_id === assessment_id);
@@ -453,7 +455,7 @@ const ScheduleList = () => {
       ...tempComments,
       [session_id]: {
         ...tempComments[session_id],
-        prev_assessment: updatedAssessmentList,
+        prev_assessments: updatedAssessmentList,
       },
     });
   };
@@ -584,7 +586,7 @@ const ScheduleList = () => {
                             <input
                               type="number"
                               className="form-control"
-                              placeholder="0-9"
+                              value={tempComments[tutoringSession.session_id]?.prev_homework?.find(hw => hw.homework_id === homework.homework_id)?.completedness || 0}
                               min="0"
                               max="9"
                               style={{ width: '60px' }}
@@ -652,7 +654,7 @@ const ScheduleList = () => {
                             <input
                               type="text"
                               className="form-control"
-                              placeholder={tempComments[tutoringSession.session_id]?.prev_assessment?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.notes || ''}
+                              value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.notes || ''}
                               style={{ width: '60px' }}
                               onChange={(e) => handleExistingAssessmentUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
                             />
