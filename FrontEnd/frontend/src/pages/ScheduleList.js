@@ -439,7 +439,7 @@ const ScheduleList = () => {
         ? previousAssessment.map((asmt, idx) =>
             idx === index ? { ...asmt, notes: event.target.value } : asmt
           )
-        : [...previousAssessment, { assessment_id, notes: event.target.value }];
+        : [...previousAssessment, { assessment_id, date: assessments.find((asmt) => {asmt.assessment_id === assessment_id})?.id||new Date(), notes: event.target.value }];
 
         console.log(session_id, updatedAssessmentList);
         setTempComments({

@@ -28,14 +28,14 @@ const addTutoringSessionDraft = async (req, res) => {
     const client = await pool.connect();  // Connect to the client for transaction
     const session_id = parseInt(req.params.id);
     console.log(req.body);
-    const { tutor_id, student_id, datetime, stamps, comments, prev_homework, new_homework, new_assessments } = req.body;
+    const { tutor_id, student_id, datetime, stamps, comments, prev_homework, new_homework, new_assessments, prev_assessments } = req.body;
 
     try {
         await client.query('BEGIN'); // Start transaction
 
         await client.query(
             queries.addTutoringSessionDraft,
-            [ session_id, tutor_id, student_id, datetime, stamps, comments, prev_homework, new_homework, new_assessments ]
+            [ session_id, tutor_id, student_id, datetime, stamps, comments, prev_homework, new_homework, new_assessments, prev_assessments ]
         );
 
         // Complete tutoring session

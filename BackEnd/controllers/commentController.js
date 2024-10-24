@@ -143,7 +143,7 @@ const completeAndAddComment = async (req, res) => {
         await client.query('BEGIN'); // Start transaction
 
         const { id } = req.params;
-        const { tutor_id, student_id, datetime, stamps, comments, homework_update, homework, assessments } = req.body;
+        const { tutor_id, student_id, datetime, stamps, comments, homework_update, homework, assessments, assessments_update } = req.body;
 
 
         // Add comment
@@ -161,6 +161,14 @@ const completeAndAddComment = async (req, res) => {
         {
             await client.query(assessmentQueries.addAssessment, [
                 assessment.title, assessment.description, assessment.date, student_id, 'empty subject', 'no notes'
+            ]);
+        }
+
+        // Update previous assessments
+        for(const assessment of assessments_update)
+        {
+            await client.query(assessmentQueries.updateAssessment, [
+                assessment.assessment_id, assessment.date, assessment.notes
             ]);
         }
 
