@@ -89,20 +89,7 @@ const fetchAssessments = async () => {
 };
 
 
-const postComment = async (session_id, tutor_id, student_id, datetime, stamps, comment, private_comment, prev_homework, new_homework, new_assessments) => {
-  const comments = { public_comment: comment, private_comment: private_comment };
-
-  const jsonfile = JSON.stringify({
-    tutor_id: tutor_id,
-    student_id: student_id,
-    datetime: new Date(datetime).toISOString(), // Ensure datetime is correctly serialized
-    stamps:stamps,
-    comments: JSON.stringify(comments),
-    prev_homework: JSON.stringify(prev_homework),
-    new_homework: JSON.stringify(new_homework),
-    new_assessments: JSON.stringify(new_assessments)
-  }) // Adjust according to your backend API
-  console.log(jsonfile);
+const postComment = async (session_id, jsonfile) => {
 
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessiondrafts/${session_id}`, {
     credentials: 'include',
@@ -136,6 +123,7 @@ const ScheduleList = () => {
       stamps (integer between 0 and 20, both inclusive)
       new_homework (list of [subject, due_date, notes] as we have right now)
       prev_homework (list of [homework_id, is_completed])
+      update_assessments (list of [assessment_id, date, notes])
       new_assessments (list of [title, date, description]) 
    */
   const [tempComments, setTempComments] = useState(() => {
@@ -202,7 +190,7 @@ const ScheduleList = () => {
   } = useQuery({queryKey: ['assessments'], queryFn: () => fetchAssessments()});
 
   const { mutate: submitComment, isLoading, isError, error } = useMutation({
-    mutationFn: ({session_id, tutor_id, student_id, datetime, stamps, comment, private_comment, prev_homework, new_homework, new_assessments}) => postComment(session_id, tutor_id, student_id, datetime, stamps, comment, private_comment, prev_homework, new_homework, new_assessments),
+    mutationFn: ({session_id, jsonfile}) => postComment(session_id, jsonfile),
     onSuccess: (session_id) => {
       console.log("Successfully posted");
 
@@ -274,11 +262,11 @@ const ScheduleList = () => {
     const comment = tempComments[tutoringSession.session_id]?.comment || '';
     const private_comment = tempComments[tutoringSession.session_id]?.private_comment || '';
     const stamps = tempComments[tutoringSession.session_id]?.stamps || 0;
-    const new_homework = tempComments[tutoringSession.session_id]?.new_homework.filter(hmwk => {
+    const new_homework = tempComments[tutoringSession.session_id]?.new_homework?.filter(hmwk => {
       return !(hmwk.subject === '' && hmwk.due_date === '' && hmwk.notes === '');
     }) || [];
     const prev_homework = tempComments[tutoringSession.session_id]?.prev_homework || [];
-    const new_assessments = tempComments[tutoringSession.session_id]?.new_assessments.filter(asmt => {
+    const new_assessments = tempComments[tutoringSession.session_id]?.new_assessments?.filter(asmt => {
       return !(asmt.title === '' && asmt.date === '' && asmt.description === '');
     }) || [];
 
@@ -315,17 +303,22 @@ const ScheduleList = () => {
 
     setAlert(''); // Show there is nothing to alert
 
-    submitComment({
-      session_id: tutoringSession.session_id, 
+    const comments = { public_comment: comment, private_comment: private_comment };
+
+    const jsonfile = JSON.stringify({
       tutor_id: tutoringSession.tutor_id, 
       student_id: tutoringSession.student_id, 
-      datetime: tutoringSession.session_datetime, 
+      datetime: new Date(tutoringSession.session_datetime).toISOString(), 
       stamps: stamps,
-      comment: comment,
-      private_comment: private_comment,
-      prev_homework: prev_homework,
-      new_homework: new_homework,
-      new_assessments: new_assessments
+      comments: JSON.stringify(comments),
+      prev_homework: JSON.stringify(prev_homework),
+      new_homework: JSON.stringify(new_homework),
+      new_assessments: JSON.stringify(new_assessments)
+    });
+
+    submitComment({
+      session_id: tutoringSession.session_id, 
+      jsonfile
     });
   }
 
@@ -426,19 +419,36 @@ const ScheduleList = () => {
         : [...previousHomework, { homework_id, completedness: Number(event.target.value) }];
 
         console.log(session_id, updatedHomeworkList);
+        setTempComments({
+          ...tempComments,
+          [session_id]: {
+              ...tempComments[session_id],
+              prev_homework: updatedHomeworkList,
+          }
+      });
+  };
 
-    setTempComments({
-        ...tempComments,
-        [session_id]: {
-            ...tempComments[session_id],
-            comment: tempComments[session_id]?.comment || '',
-            private_comment: tempComments[session_id]?.private_comment || '',
-            stamps: tempComments[session_id]?.stamps || 0,
-            new_homework: tempComments[session_id]?.new_homework || [],
-            prev_homework: updatedHomeworkList,
-            new_assessments: tempComments[session_id]?.new_assessments || [],
-        }
-    });
+  const handleExistingAssessmentUpdate = (session_id, assessment_id, event) => {
+    const previousAssessment = tempComments[session_id]?.prev_assessment || []; // Ensure an array exists
+
+    // Check if homework_id already exists in previousHomework
+    const index = previousHomework.findIndex(asmt => asmt.assessment_id === assessment_id);
+    
+    // If found, update the completedness; otherwise, add a new entry
+    const updatedAssessmentList = index !== -1
+        ? previousAssessment.map((asmt, idx) =>
+            idx === index ? { ...asmt, notes: event.target.value } : asmt
+          )
+        : [...previousAssessment, { assessment_id, notes: event.target.value }];
+
+        console.log(session_id, updatedAssessmentList);
+        setTempComments({
+          ...tempComments,
+          [session_id]: {
+              ...tempComments[session_id],
+              prev_assessment: updatedAssessmentList,
+          }
+      });
   };
 
   return (
@@ -477,7 +487,7 @@ const ScheduleList = () => {
               // Fetch the student data and homework list based on student_id
               const studentData = students.find(student => student.student_id === tutoringSession.student_id);
               const studentHomeworkList = homeworkList.filter(homework => homework.student_id === tutoringSession.student_id && homework.is_completed === 0);
-              const studentAssessments = assessments.filter(assessment => assessment.student_id === tutoringSession.student_id);
+              const studentAssessments = assessments.filter(assessment => assessment.student_id === tutoringSession.student_id && assessment.notes !== '');
               const latestComment = comments
                 .filter(comment => comment.student_id === tutoringSession.student_id)
                 .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))[0];
@@ -505,12 +515,7 @@ const ScheduleList = () => {
                                 ...tempComments,
                                 [tutoringSession.session_id]: {
                                   ...tempComments[tutoringSession.session_id],
-                                  comment: tempComments[tutoringSession.session_id]?.comment || '',
-                                  private_comment: tempComments[tutoringSession.session_id]?.private_comment || '',
                                   stamps: Number(e.target.value),
-                                  new_homework: tempComments[tutoringSession.session_id]?.new_homework || [],
-                                  prev_homework: tempComments[tutoringSession.session_id]?.prev_homework || [],
-                                  new_assessments: tempComments[tutoringSession.session_id]?.new_assessments || [],
                                 }
                               })
                             }
@@ -637,6 +642,13 @@ const ScheduleList = () => {
                             <div>Title: {assessment.title}</div>
                             <div>Date: {assessment.date}</div>
                             <div>Detail: {assessment.description}</div>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder=""
+                              style={{ width: '60px' }}
+                              onChange={(e) => handleExistingAssessmentUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
+                            />
                           </div>
                         ))}
 
@@ -703,27 +715,31 @@ const ScheduleList = () => {
                                 [tutoringSession.session_id]: {
                                   ...tempComments[tutoringSession.session_id],
                                   comment: e.target.value,
-                                  private_comment: tempComments[tutoringSession.session_id]?.private_comment || '',
+                                }
+                              })
+                            }
+                          />
+                        </div>
+                        <div className="input-group mb-3">
+                          <span className="input-group-text">Private Comment:</span>
+                          <textarea
+                            className="form-control"
+                            aria-label="With textarea"
+                            rows="3"
+                            value={tempComments[tutoringSession.session_id]?.private_comment || ''}
+                            onChange={(e) =>
+                              setTempComments({
+                                ...tempComments,
+                                [tutoringSession.session_id]: {
+                                  ...tempComments[tutoringSession.session_id],
+                                  comment: tempComments[tutoringSession.session_id]?.comment || '',
+                                  private_comment: e.target.value,
                                   stamps: tempComments[tutoringSession.session_id]?.stamps || 0,
                                   new_homework: tempComments[tutoringSession.session_id]?.new_homework || [],
                                   prev_homework: tempComments[tutoringSession.session_id]?.prev_homework || [],
                                   new_assessments: tempComments[tutoringSession.session_id]?.new_assessments || [],
                                 }
                               })
-                              /*
-                              setTempComments({
-                                ...tempComments,
-                                [tutoringSession.session_id]: {
-                                  ...tempComments[tutoringSession.session_id],
-                                  comment: tempComments[tutoringSession.session_id]?.comment || '',
-                                  private_comment: tempComments[tutoringSession.session_id]?.private_comment || '',
-                                  stamps: tempComments[tutoringSession.session_id]?.stamps || 0,
-                                  new_homework: tempComments[tutoringSession.session_id]?.new_homework || [],
-                                  prev_homework: tempComments[tutoringSession.session_id]?.prev_homework || [],
-                                  new_assessments: tempComments[tutoringSession.session_id]?.new_assessments || [],
-                                }
-                              });
-                              */
                             }
                           />
                         </div>
