@@ -128,8 +128,7 @@ const ScheduleList = () => {
    */
   const [tempComments, setTempComments] = useState(() => {
     try {
-      const tc = JSON.parse(localStorage.getItem('tempComments')) || {};
-      return tc;
+      return JSON.parse(localStorage.getItem('tempComments')) || {};
     } catch {
       return {};
     }
@@ -214,6 +213,8 @@ const ScheduleList = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       localStorage.setItem('tempComments', JSON.stringify(tempComments));
+      console.log('tempComments');
+      console.log(JSON.stringify(tempComments));
     }, 500); // delay of 500ms
   
     return () => clearTimeout(handler); // cleanup on component unmount or tempComments change
