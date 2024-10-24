@@ -431,10 +431,10 @@ const ScheduleList = () => {
   const handleExistingAssessmentUpdate = (session_id, assessment_id, event) => {
     const previousAssessment = tempComments[session_id]?.prev_assessment || []; // Ensure an array exists
 
-    // Check if homework_id already exists in previousHomework
-    const index = previousHomework.findIndex(asmt => asmt.assessment_id === assessment_id);
+    // Check if assessment_id already exists
+    const index = previousAssessment.findIndex(asmt => asmt.assessment_id === assessment_id);
     
-    // If found, update the completedness; otherwise, add a new entry
+    // If found, update the notes; otherwise, add a new entry
     const updatedAssessmentList = index !== -1
         ? previousAssessment.map((asmt, idx) =>
             idx === index ? { ...asmt, notes: event.target.value } : asmt
