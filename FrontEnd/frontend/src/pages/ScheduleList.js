@@ -128,7 +128,8 @@ const ScheduleList = () => {
    */
   const [tempComments, setTempComments] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem('tempComments')) || {};
+      const tc = JSON.parse(localStorage.getItem('tempComments')) || {};
+      return tc;
     } catch {
       return {};
     }
@@ -213,8 +214,6 @@ const ScheduleList = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       localStorage.setItem('tempComments', JSON.stringify(tempComments));
-      console.log('tempComments');
-      console.log(JSON.stringify(tempComments));
     }, 500); // delay of 500ms
   
     return () => clearTimeout(handler); // cleanup on component unmount or tempComments change
@@ -222,6 +221,16 @@ const ScheduleList = () => {
 
   useEffect(() => {
     if (tutoringSessionData && Array.isArray(tutoringSessionData)) {
+
+      Object.keys(tempComments).forEach(key => {
+        const session = tutoringSessionData.find(session => session.id == key);
+      
+        // Delete if session exists and is completed, or if session doesn't exist
+        if (!session || (session && session.completed === true)) {
+          delete tempComments[key];
+        }
+      });
+
       if (date) {
         const filteredSessions = tutoringSessionData.filter(session =>
           session.session_datetime.startsWith(date)
