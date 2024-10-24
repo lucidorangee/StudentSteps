@@ -652,7 +652,7 @@ const ScheduleList = () => {
                             <input
                               type="text"
                               className="form-control"
-                              placeholder={assessment.notes}
+                              placeholder={tempComments[tutoringSession.session_id]?.prev_assessment?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.notes || ''}
                               style={{ width: '60px' }}
                               onChange={(e) => handleExistingAssessmentUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
                             />
