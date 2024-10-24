@@ -246,6 +246,20 @@ const ScheduleList = () => {
     }
   });
 
+  const { mutate: deleteSessionDraft, isDeleteSessionDraftLoading, isDeleteSessionDraftError, deleteSessionDraftError } = useMutation({
+    mutationFn: ({id, session_id}) => removeSessionDraft(id, session_id),
+    onSuccess: () => {
+      console.log("Successfully posted");
+      
+      queryClient.invalidateQueries(['tutoringSessionDrafts']);
+    },
+    onError: (error) => {
+      console.log('Error removing session draft:', error.message);
+    }
+  });
+
+  
+
   useEffect(() => {
     if(tutoringSessionDraftData) setFilteredDataDrafts(tutoringSessionDraftData);
   }, [tutoringSessionDraftData]);
@@ -450,7 +464,7 @@ const ScheduleList = () => {
 
                         <button
                           className="btn btn-danger"
-                          onClick={() => removeSessionDraft(tutoringSession.id, tutoringSession.session_id)}
+                          onClick={() => deleteSessionDraft({ id: tutoringSession.id, session_id: tutoringSession.session_id })}
                         >
                           Delete Session
                         </button>

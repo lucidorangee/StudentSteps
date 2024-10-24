@@ -438,7 +438,7 @@ const ScheduleList = () => {
     // If found, update the notes; otherwise, add a new entry
     const updatedAssessmentList = index !== -1
       ? previousAssessment.map((asmt, idx) =>
-          idx === index ? { ...asmt, notes: event.target.value } : asmt
+          idx === index ? { ...asmt, notes: String(event.target.value) } : asmt
         )
       : [
           ...previousAssessment,
@@ -704,8 +704,6 @@ const ScheduleList = () => {
                           + Add Assessment
                         </button>
                       </div>
-
-                      
 
                       {/* Row 5: Comment Area and Submit Button */}
                       <div className="mt-4">
