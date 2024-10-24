@@ -436,19 +436,26 @@ const ScheduleList = () => {
     
     // If found, update the notes; otherwise, add a new entry
     const updatedAssessmentList = index !== -1
-        ? previousAssessment.map((asmt, idx) =>
-            idx === index ? { ...asmt, notes: event.target.value } : asmt
-          )
-        : [...previousAssessment, { assessment_id, date: assessments.find((asmt) => {asmt.assessment_id === assessment_id})?.id||new Date(), notes: event.target.value }];
+      ? previousAssessment.map((asmt, idx) =>
+          idx === index ? { ...asmt, notes: event.target.value } : asmt
+        )
+      : [
+          ...previousAssessment,
+          {
+            assessment_id,
+            date: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.id || new Date(),
+            notes: event.target.value,
+          },
+        ];
 
-        console.log(session_id, updatedAssessmentList);
-        setTempComments({
-          ...tempComments,
-          [session_id]: {
-              ...tempComments[session_id],
-              prev_assessment: updatedAssessmentList,
-          }
-      });
+    console.log(session_id, updatedAssessmentList);
+    setTempComments({
+      ...tempComments,
+      [session_id]: {
+        ...tempComments[session_id],
+        prev_assessment: updatedAssessmentList,
+      },
+    });
   };
 
   return (
