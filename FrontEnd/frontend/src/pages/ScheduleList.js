@@ -127,11 +127,11 @@ const ScheduleList = () => {
       new_assessments (list of [title, date, description]) 
    */
   const [tempComments, setTempComments] = useState(() => {
-  try {
-    return JSON.parse(localStorage.getItem('tempComments')) || {};
-  } catch {
-    return {};
-  }
+    try {
+      return JSON.parse(localStorage.getItem('tempComments')) || {};
+    } catch {
+      return {};
+    }
   });
 
 
@@ -652,7 +652,7 @@ const ScheduleList = () => {
                             <input
                               type="text"
                               className="form-control"
-                              placeholder=""
+                              placeholder={assessment.notes}
                               style={{ width: '60px' }}
                               onChange={(e) => handleExistingAssessmentUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
                             />
