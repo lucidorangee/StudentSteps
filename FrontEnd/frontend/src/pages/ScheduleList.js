@@ -213,6 +213,8 @@ const ScheduleList = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       localStorage.setItem('tempComments', JSON.stringify(tempComments));
+      console.log('tempComments');
+      console.log(JSON.stringify(tempComments));
     }, 500); // delay of 500ms
   
     return () => clearTimeout(handler); // cleanup on component unmount or tempComments change
@@ -418,7 +420,6 @@ const ScheduleList = () => {
           )
         : [...previousHomework, { homework_id, completedness: Number(event.target.value) }];
 
-        console.log(session_id, updatedHomeworkList);
         setTempComments({
           ...tempComments,
           [session_id]: {
@@ -448,7 +449,6 @@ const ScheduleList = () => {
           },
         ];
 
-    console.log(session_id, updatedAssessmentList);
     setTempComments({
       ...tempComments,
       [session_id]: {
