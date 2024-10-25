@@ -70,8 +70,8 @@ const AnalysisPage = () => {
     }
 
     const temp_noshowdata = [
-      { ...noShowData[0], value: count },
-      { ...noShowData[1], value: total - count },
+      { ...noShowData[0], value: total - count },
+      { ...noShowData[1], value: count },
     ];
     setNoShowData(temp_noshowdata);
 
@@ -90,6 +90,17 @@ const AnalysisPage = () => {
 
   
   const COLORS = ["#0088FE", "#00C49F"/*, "#FFBB28", "#FF8042"*/];
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+    const RADIAN = Math.PI / 180;
+    const x = cx + (outerRadius + 10) * Math.cos(-midAngle * RADIAN);
+    const y = cy + (outerRadius + 10) * Math.sin(-midAngle * RADIAN);
+  
+    return (
+      <text x={x} y={y} fill="black" textAnchor={x > cx ? "start" : "end"} dominantBaseline="central">
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
 
   
   return (
@@ -99,13 +110,14 @@ const AnalysisPage = () => {
         <Pie
           data={noShowData}
           dataKey="value"
-          nameKey="name"
           cx="50%"
           cy="50%"
-          outerRadius={150}
+          outerRadius={100}
           fill="#8884d8"
+          labelLine={false}
+          label={renderCustomizedLabel}
         >
-          {noShowData.map((_, index) => (
+          {noShowData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
