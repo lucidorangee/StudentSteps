@@ -5,6 +5,24 @@ import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
+const fetchComments = async() => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch comments');
+    err.status = response.status;
+    throw err;
+  }
+
+  console.log("successfully fetched comments");
+  return response.json();
+}
+
 const fetchTutoringSessions = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
     credentials: 'include',
@@ -22,18 +40,46 @@ const fetchTutoringSessions = async () => {
 }
 
 const AnalysisPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [noShowData, setNoShowData] = useState([
+    { name: "Showed up", value: 1 },
+    { name: "NoShow", value: 1 },
+  ]);
+
   const {
     data: tutoringSessions,
     isLoading: tutoringSessionsLoading,
     error: tutoringSessionsError,
   } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
 
+  const {
+    data: comments,
+    isLoading: commentsLoading,
+    error: commentsError,
+  } = useQuery({queryKey: ['comments'], queryFn: () => fetchComments()});
+
   useEffect(() => {
-    if(!tutoringSessions) return;
+    if(!comments) return;
+    let total = 0;
+    let count = 0;
+
+    for(const comment of comments)
+    {
+      if(comment.content === 'noshow') count++;
+      total++;
+    }
+
+    const temp_noshowdata = [
+      { ...noShowData[0], value: count },
+      { ...noShowData[1], value: total - count },
+    ];
+    setNoShowData(temp_noshowdata);
+
+    setLoading(false);
 
   }, [tutoringSessions]);
 
-  if (tutoringSessionsLoading) return <div>Loading...</div>;
+  if (loading) return <div>Loading...</div>;
 
   if (tutoringSessionsError) {
     if (tutoringSessionsError?.status === 401) {
@@ -42,14 +88,8 @@ const AnalysisPage = () => {
     return <div>Error loading data: {tutoringSessionsError?.message}</div>;
   }
 
-  const data = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-  ];
   
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+  const COLORS = ["#0088FE", "#00C49F"/*, "#FFBB28", "#FF8042"*/];
 
   
   return (
@@ -57,7 +97,7 @@ const AnalysisPage = () => {
       <h2>Welcome, User!</h2>
       <PieChart width={400} height={400}>
         <Pie
-          data={data}
+          data={noShowData}
           dataKey="value"
           nameKey="name"
           cx="50%"
