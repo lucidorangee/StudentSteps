@@ -91,6 +91,8 @@ const AnalysisPage = () => {
   
   const COLORS = ["#0088FE", "#00C49F"/*, "#FFBB28", "#FF8042"*/];
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+    if (percent === 0) return null;
+
     const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius) / 2; // Position at midpoint
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
