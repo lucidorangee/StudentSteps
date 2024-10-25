@@ -2,118 +2,114 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, Link, NavLink } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 
-const ManageUsers = () => {
-  const [authenticated, setAuthenticated] = useState(true);
-  const [tutoringsessions, setTutoringSessions] = useState(null);
+const fetchTutoringSessions = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
 
-  useEffect(() => {
-    //Fetch authentication status
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
-      credentials: 'include'
-    })
-      .then(response => response.json())
-      .then(data => {
-        setTutoringSessions(data);
-      })
-      .catch(error => {
-        console.error('Error fetching comments: ', error);
-      })
-  }, []);
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutoring sessions');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+}
+
+const deleteTutoringSession = async (session_id) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/${session_id}`, {
+    credentials: 'include',
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    const responseText = await response.text();
+    throw new Error('Failed to update tutoring session: ' + responseText);
+  }
+
+  return session_id;
+};
+
+const ManageTutoringSessions = () => {
+  const {
+    data: tutoringSessions,
+    isLoading: tutoringSessionsLoading,
+    error: tutoringSessionsError,
+  } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
+
+  if (tutoringSessionsLoading) return <div>Loading...</div>;
+
+  if (tutoringSessionsError) {
+    if (tutoringSessionsError?.status === 401) {
+      return <Navigate to="/login" />;
+    }
+    return <div>Error loading data: {tutoringSessionsError?.message}</div>;
+  }
   
-  //{JSON.stringify(comments, null, 2)}
-    return (
-      <div>
-        {authenticated ? (
-          <AuthenticatedOptions tutoringsessions={tutoringsessions} />
-        ) : (
-          <UnauthenticatedOptions />
-        )}
-      </div>
-    );
-  };
-
-  const handleDelete = (session_id) => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/${session_id}`, {
-      credentials: 'include',
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      console.log("HERE");
-      return response.text();
-    })
-    .then(data => {
+  const { mutate: removeTutoringSession, isLoading, isError, error } = useMutation({
+    mutationFn: ({ session_id }) => deleteTutoringSession( session_id ),
+    onSuccess: () => {
       console.log(`Session with ID ${session_id} deleted successfully`);
 
       // Refresh after successful deletion
-      window.location.reload();
-    })
-    .catch(error => {
-      console.error('Error deleting session:', error);
-    });
-  };
+      // window.location.reload();
+      queryClient.invalidateQueries(['tutoringSessions']);
+    },
+    onError: (error) => {
+      console.log('Error updating the tutoring session:', error.message);
+    }
+  });
 
-  // session_id | student_id | tutor_id | session_datetime | duration | notes | complete
-  const AuthenticatedOptions = ( {tutoringsessions} ) => {    
-    return (
-      <div className="App">
-        <h2>Welcome, User!</h2>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Student</th>
-              <th>Tutor</th>
-              <th>Datetime</th>
-              <th>Duration</th>
-              <th>Notes</th>
-              <th>Complete?</th>
-              <th>Delete</th>
+  return (
+    <div className="App">
+      <h2>Welcome, User!</h2>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Student</th>
+            <th>Tutor</th>
+            <th>Datetime</th>
+            <th>Duration</th>
+            <th>Notes</th>
+            <th>Complete?</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+        {Array.isArray(tutoringSessions) && (tutoringSessions).length > 0 ? (
+          (tutoringSessions).map((tutoringsession, index) => (
+            <tr key={index}>
+              <td>{tutoringsession.session_id}</td>
+              <td>{tutoringsession.student_name}</td>
+              <td>{tutoringsession.tutor_name}</td>
+              <td>{tutoringsession.session_datetime}</td>
+              <td>{tutoringsession.duration}</td>
+              <td>{tutoringsession.notes}</td>
+              <td>{tutoringsession.complete?'O':'X'}</td>
+              <td>
+                <i
+                  className="bi bi-trash"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => removeTutoringSession({session_id: tutoringsession.session_id})}
+                ></i>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-          {Array.isArray(tutoringsessions) && (tutoringsessions).length > 0 ? (
-            (tutoringsessions).map((tutoringsession, index) => (
-              <tr key={index}>
-                <td>{tutoringsession.session_id}</td>
-                <td>{tutoringsession.student_name}</td>
-                <td>{tutoringsession.tutor_name}</td>
-                <td>{tutoringsession.session_datetime}</td>
-                <td>{tutoringsession.duration}</td>
-                <td>{tutoringsession.notes}</td>
-                <td>{tutoringsession.complete?'O':'X'}</td>
-                <td>
-                  <i
-                    className="bi bi-trash"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => handleDelete(tutoringsession.session_id)}
-                  ></i>
-                </td>
-              </tr>
-            ))):(
-              <tr>
-                <td colSpan="9">No data available</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-      
-    );
-  };
-
-  const UnauthenticatedOptions = () => {
+          ))):(
+            <tr>
+              <td colSpan="9">No data available</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
     
-    return (
-      <div>
-        <h2>Please Log In</h2>
-      </div>
-    );
-  };
+  );
+};
 
-  export default ManageUsers;
+  export default ManageTutoringSessions;

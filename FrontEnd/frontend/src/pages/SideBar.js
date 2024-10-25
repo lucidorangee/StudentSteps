@@ -11,6 +11,11 @@ const Sidebar = () => {
     <div className="sidebar d-flex flex-column min-vh-100 position-sticky top-0 p-3 bg-dark">
       <ul className="nav nav-pills flex-column mb-10">
         <li className="nav-item">
+          <NavLink to={`/admin/analysis`} className="nav-link text-white" activeclassname="active">
+            <i className="bi bi-clipboard-data me-2"></i> Analysis
+          </NavLink>
+        </li>
+        <li className="nav-item">
           <NavLink to={`/schedule/list/${currentDate}`} className="nav-link text-white" activeclassname="active">
             <i className="bi bi-house-door-fill me-2"></i> List View
           </NavLink>
