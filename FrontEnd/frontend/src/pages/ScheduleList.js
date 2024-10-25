@@ -224,6 +224,7 @@ const ScheduleList = () => {
     if (tutoringSessionData && Array.isArray(tutoringSessionData)) {
 
       Object.keys(tempComments).forEach(key => {
+        console.log(`key is ${key}`);
         const session = tutoringSessionData.find(session => session.id == key);
       
         // Delete if session exists and is completed, or if session doesn't exist
