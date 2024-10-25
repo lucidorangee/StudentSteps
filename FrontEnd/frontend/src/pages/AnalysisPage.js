@@ -77,7 +77,7 @@ const AnalysisPage = () => {
 
     setLoading(false);
 
-  }, [tutoringSessions]);
+  }, [comments]);
 
   if (loading) return <div>Loading...</div>;
 
