@@ -105,7 +105,7 @@ const AnalysisPage = () => {
           outerRadius={150}
           fill="#8884d8"
         >
-          {data.map((_, index) => (
+          {noShowData.map((_, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
