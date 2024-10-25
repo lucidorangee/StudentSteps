@@ -28,6 +28,11 @@ const AnalysisPage = () => {
     error: tutoringSessionsError,
   } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
 
+  useEffect(() => {
+    if(!tutoringSessions) return;
+
+  }, [tutoringSessions]);
+
   if (tutoringSessionsLoading) return <div>Loading...</div>;
 
   if (tutoringSessionsError) {
@@ -36,11 +41,6 @@ const AnalysisPage = () => {
     }
     return <div>Error loading data: {tutoringSessionsError?.message}</div>;
   }
-
-  useEffect(() => {
-    if(!tutoringSessions) return;
-
-  }, [tutoringSessions]);
 
   const data = [
     { name: "Group A", value: 400 },
