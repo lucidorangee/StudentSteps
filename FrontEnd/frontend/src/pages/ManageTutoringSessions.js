@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Link, NavLink } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+import { Navigate } from 'react-router-dom';
 
 const fetchTutoringSessions = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
@@ -36,24 +38,17 @@ const deleteTutoringSession = async (session_id) => {
 };
 
 const ManageTutoringSessions = () => {
+  const queryClient = useQueryClient();
+
   const {
     data: tutoringSessions,
     isLoading: tutoringSessionsLoading,
     error: tutoringSessionsError,
   } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
 
-  if (tutoringSessionsLoading) return <div>Loading...</div>;
-
-  if (tutoringSessionsError) {
-    if (tutoringSessionsError?.status === 401) {
-      return <Navigate to="/login" />;
-    }
-    return <div>Error loading data: {tutoringSessionsError?.message}</div>;
-  }
-  
   const { mutate: removeTutoringSession, isLoading, isError, error } = useMutation({
     mutationFn: ({ session_id }) => deleteTutoringSession( session_id ),
-    onSuccess: () => {
+    onSuccess: (session_id) => {
       console.log(`Session with ID ${session_id} deleted successfully`);
 
       // Refresh after successful deletion
@@ -64,6 +59,16 @@ const ManageTutoringSessions = () => {
       console.log('Error updating the tutoring session:', error.message);
     }
   });
+
+  
+  if (tutoringSessionsLoading) return <div>Loading...</div>;
+
+  if (tutoringSessionsError) {
+    if (tutoringSessionsError?.status === 401) {
+      return <Navigate to="/login" />;
+    }
+    return <div>Error loading data: {tutoringSessionsError?.message}</div>;
+  }
 
   return (
     <div className="App">
