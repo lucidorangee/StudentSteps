@@ -3,6 +3,7 @@ import { Outlet, Link, NavLink } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
 const fetchTutoringSessions = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
@@ -20,37 +21,6 @@ const fetchTutoringSessions = async () => {
   return response.json();
 }
 
-const PieChart = ({ data, colors }) => {
-  const total = data.reduce((sum, value) => sum + value, 0);
-
-  // Function to convert value to an SVG path for each slice
-  const getPath = (value, index) => {
-    const angle = (value / total) * 360;
-    const largeArcFlag = angle > 180 ? 1 : 0;
-    const rotation = data.slice(0, index).reduce((sum, val) => sum + (val / total) * 360, 0);
-
-    const x = Math.cos((rotation * Math.PI) / 180);
-    const y = Math.sin((rotation * Math.PI) / 180);
-    const x1 = Math.cos(((rotation + angle) * Math.PI) / 180);
-    const y1 = Math.sin(((rotation + angle) * Math.PI) / 180);
-
-    return `
-      M 0 0
-      L ${x} ${y}
-      A 1 1 0 ${largeArcFlag} 1 ${x1} ${y1}
-      Z
-    `;
-  };
-
-  return (
-    <svg viewBox="-1 -1 2 2" style={{ transform: "rotate(-90deg)", width: "100%", height: "100%" }}>
-      {data.map((value, index) => (
-        <path key={index} d={getPath(value, index)} fill={colors[index]} />
-      ))}
-    </svg>
-  );
-};
-
 const AnalysisPage = () => {
   const {
     data: tutoringSessions,
@@ -67,14 +37,41 @@ const AnalysisPage = () => {
     return <div>Error loading data: {tutoringSessionsError?.message}</div>;
   }
 
-  const data = [10, 20, 30, 40]; // Example data values
-  const colors = ["#ff6384", "#36a2eb", "#cc65fe", "#ffce56"]; // Colors for each slice
+  useEffect(() => {
+    if(!tutoringSessions) return;
+
+  }, [tutoringSessions]);
+
+  const data = [
+    { name: "Group A", value: 400 },
+    { name: "Group B", value: 300 },
+    { name: "Group C", value: 300 },
+    { name: "Group D", value: 200 },
+  ];
+  
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   
   return (
     <div className="App">
       <h2>Welcome, User!</h2>
-      <PieChart data={data} colors={colors} />
+      <PieChart width={400} height={400}>
+        <Pie
+          data={data}
+          dataKey="value"
+          nameKey="name"
+          cx="50%"
+          cy="50%"
+          outerRadius={150}
+          fill="#8884d8"
+        >
+          {data.map((_, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <Tooltip />
+        <Legend />
+      </PieChart>
     </div>
     
   );
