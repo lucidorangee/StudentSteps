@@ -43,7 +43,7 @@ const PieChart = ({ data, colors }) => {
   };
 
   return (
-    <svg viewBox="-1 -1 2 2" style={{ transform: "rotate(-90deg)", width: "200px", height: "200px" }}>
+    <svg viewBox="-1 -1 2 2" style={{ transform: "rotate(-90deg)", width: "100%", height: "100%" }}>
       {data.map((value, index) => (
         <path key={index} d={getPath(value, index)} fill={colors[index]} />
       ))}
