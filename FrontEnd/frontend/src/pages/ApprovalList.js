@@ -271,8 +271,6 @@ const ScheduleList = () => {
 
   useEffect(() => {
     if (Array.isArray(tutoringSessionDraftData)) {
-      console.log(JSON.stringify(localDataDrafts));
-
       // Create sets of session IDs for quick lookup
       const draftDataIds = new Set(tutoringSessionDraftData.map(session => session.session_id));
       const localDataIds = new Set(localDataDrafts.map(session => session.session_id));
@@ -479,7 +477,7 @@ const ScheduleList = () => {
                           aria-label="With textarea"
                           rows="3"
                           value={tutoringSession.comments['public_comment'] || ''}
-                          onChange={temp}
+                          onChange={(e) => handleCommentChange(tutoringSession.session_id, e)}
                           disabled={noshow}
                         />
                       </div>
