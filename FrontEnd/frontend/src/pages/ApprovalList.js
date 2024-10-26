@@ -267,6 +267,8 @@ const ScheduleList = () => {
 
   useEffect(() => {
     if (Array.isArray(tutoringSessionDraftData)) {
+      console.log(JSON.stringify(localDataDrafts));
+
       // Create sets of session IDs for quick lookup
       const draftDataIds = new Set(tutoringSessionDraftData.map(session => session.session_id));
       const localDataIds = new Set(localDataDrafts.map(session => session.session_id));
@@ -282,12 +284,6 @@ const ScheduleList = () => {
         setLocalDataDrafts([...updatedLocalDataDrafts, ...toAdd]);
       }
     }
-  }, [tutoringSessionDraftData, localDataDrafts]);
-
-  useEffect(() => {
-    /*
-
-    */
   }, [tutoringSessionDraftData]);
 
   if (tutorsLoading || assessmentsLoading || commentsLoading || studentsLoading || homeworkListLoading || tutoringSessionsLoading || tutoringSessionDraftsLoading) return <div>Loading...</div>;
@@ -311,6 +307,18 @@ const ScheduleList = () => {
       ...prev,
       [index]: !prev[index]
     }));
+  };
+
+  const handleCommentChange = (session_id, e) => {
+    const newComment = e.target.value;
+    
+    setLocalDataDrafts(prevDrafts =>
+      prevDrafts.map(session =>
+        session.session_id === session_id 
+          ? { ...session, comment: newComment } 
+          : session
+      )
+    );
   };
 
   return (
