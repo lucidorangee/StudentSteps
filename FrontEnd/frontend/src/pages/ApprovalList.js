@@ -266,6 +266,10 @@ const ScheduleList = () => {
   });
 
   useEffect(() => {
+    setFilteredDataDrafts(localDataDrafts);
+  }, [localDataDrafts])
+
+  useEffect(() => {
     if (Array.isArray(tutoringSessionDraftData)) {
       console.log(JSON.stringify(localDataDrafts));
 
