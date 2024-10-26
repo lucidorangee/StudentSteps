@@ -465,7 +465,7 @@ const ScheduleList = () => {
       });
   };
 
-  const handleExistingAssessmentUpdate = (session_id, assessment_id, event) => {
+  const handleExistingAssessmentNoteUpdate = (session_id, assessment_id, event) => {
     const previousAssessment = tempComments[session_id]?.prev_assessments || []; // Ensure an array exists
 
     // Check if assessment_id already exists
@@ -480,7 +480,7 @@ const ScheduleList = () => {
           ...previousAssessment,
           {
             assessment_id,
-            date: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.id || new Date(),
+            date: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.date || new Date().toISOString(),
             notes: event.target.value,
           },
         ];
@@ -493,6 +493,37 @@ const ScheduleList = () => {
       },
     });
   };
+
+
+  const handleExistingAssessmentDateUpdate = (session_id, assessment_id, event) => {
+    const previousAssessment = tempComments[session_id]?.prev_assessments || []; // Ensure an array exists
+
+    // Check if assessment_id already exists
+    const index = previousAssessment.findIndex(asmt => asmt.assessment_id === assessment_id);
+
+    // If found, update the date; otherwise, add a new entry
+    const updatedAssessmentList = index !== -1
+      ? previousAssessment.map((asmt, idx) =>
+          idx === index ? { ...asmt, date: event.target.value } : asmt
+        )
+      : [
+          ...previousAssessment,
+          {
+            assessment_id,
+            date: event.target.value,
+            notes: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.notes || '',
+          },
+        ];
+
+    setTempComments({
+      ...tempComments,
+      [session_id]: {
+        ...tempComments[session_id],
+        prev_assessments: updatedAssessmentList,
+      },
+    });
+  };
+
 
   return (
     <div className="App">
@@ -680,20 +711,38 @@ const ScheduleList = () => {
                         <h6 className="text-muted">Upcoming Assessments:</h6>
                         
                         {/* Existing Assessments Row */}
-                        {studentAssessments.map((assessment, asmtIndex) => (
-                          <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
-                            <div>Title: {assessment.title}</div>
-                            <div>Date: {assessment.date}</div>
-                            <div>Detail: {assessment.description}</div>
-                            <input
-                              type="text"
-                              className="form-control"
-                              value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.notes || ''}
-                              style={{ width: '60px' }}
-                              onChange={(e) => handleExistingAssessmentUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
-                            />
-                          </div>
-                        ))}
+                        {studentAssessments.map((assessment, asmtIndex) => {
+                          const originalAssessment = tutoringSession.assessments?.find(
+                            (asmt) => asmt.assessment_id === assessment.assessment_id
+                          );
+
+                          const isDateModified = originalAssessment && new Date(assessment.date).getTime() !== new Date(originalAssessment.date).getTime();
+
+                          return(
+                            <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
+                              <div>Title: {assessment.title}</div>
+                              {/* Date Input Field */}
+                              <input
+                                type="date"
+                                className="form-control"
+                                value={assessment.date}
+                                style={{
+                                  width: '150px',
+                                  backgroundColor: isDateModified ? 'lightgreen' : 'white'  // Highlight if modified
+                                }}
+                                onChange={(e) => handleExistingAssessmentDateUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
+                              />
+                              <div>Detail: {assessment.description}</div>
+                              <input
+                                type="text"
+                                className="form-control"
+                                value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.notes || ''}
+                                style={{ width: '60px' }}
+                                onChange={(e) => handleExistingAssessmentNoteUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
+                              />
+                            </div>
+                          );
+                        })}
 
                         {/* New Assessments Rows for Adding Additional Assessments */}
                         <h6 className="text-muted mt-4">Add New Assessment:</h6>
