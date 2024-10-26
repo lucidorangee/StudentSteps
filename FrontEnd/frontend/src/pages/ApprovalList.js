@@ -266,6 +266,8 @@ const ScheduleList = () => {
   });
 
   useEffect(() => {
+    console.log("JSON.stringify(localDataDrafts)");
+    console.log(JSON.stringify(localDataDrafts));
     setFilteredDataDrafts(localDataDrafts);
   }, [localDataDrafts])
 
