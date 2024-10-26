@@ -718,6 +718,9 @@ const ScheduleList = () => {
 
                           const isDateModified = originalAssessment && new Date(assessment.date).getTime() !== new Date(originalAssessment.date).getTime();
 
+                          console.log("assessment");
+                          console.log(JSON.stringify(assessment));
+
                           return(
                             <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
                               <div>Title: {assessment.title}</div>
