@@ -319,7 +319,7 @@ const ScheduleList = () => {
     setLocalDataDrafts(prevDrafts =>
       prevDrafts.map(session =>
         session.session_id === session_id 
-          ? { ...session, public_comment: newComment } 
+          ? { ...session, comments: {...session.comments, public_comment: newComment }} 
           : session
       )
     );
