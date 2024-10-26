@@ -712,13 +712,13 @@ const ScheduleList = () => {
                         
                         {/* Existing Assessments Row */}
                         {studentAssessments.map((assessment, asmtIndex) => {
-                          const originalAssessment = tutoringSession.assessments?.find(
+                          const originalAssessment = assessments?.find(
                             (asmt) => asmt.assessment_id === assessment.assessment_id
                           );
 
                           const isDateModified = originalAssessment && new Date(assessment.date).getTime() !== new Date(originalAssessment.date).getTime();
                           console.log(`new: ${new Date(assessment.date).getTime()}`);
-                          console.log(`org: ${new Date(originalAssessment.date).getTime()}`);
+                          console.log(`org: ${new Date(originalAssessment?.date || '').getTime()}`);
 
                           console.log("assessment");
                           console.log(JSON.stringify(assessment));
