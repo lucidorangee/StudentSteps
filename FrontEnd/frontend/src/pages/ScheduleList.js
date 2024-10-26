@@ -337,6 +337,29 @@ const ScheduleList = () => {
     });
   }
 
+  const handleSubmitNoshow = (tutoringSession) => {
+    setAlert(''); // Show there is nothing to alert
+
+    const comments = { public_comment: 'noshow', private_comment: '' };
+
+    const jsonfile = JSON.stringify({
+      tutor_id: tutoringSession.tutor_id, 
+      student_id: tutoringSession.student_id, 
+      datetime: new Date(tutoringSession.session_datetime).toISOString(), 
+      stamps: 0,
+      comments: JSON.stringify(comments),
+      prev_homework: JSON.stringify([]),
+      new_homework: JSON.stringify([]),
+      prev_assessments : JSON.stringify([]),
+      new_assessments: JSON.stringify([])
+    });
+
+    submitComment({
+      session_id: tutoringSession.session_id, 
+      jsonfile
+    });
+  }
+
   const toggleExpand = (index) => {
     setExpandedSessions((prev) => ({
       ...prev,
@@ -764,6 +787,12 @@ const ScheduleList = () => {
                         <button
                           className="btn btn-primary"
                           onClick={() => handleCommentSubmit(tutoringSession)}
+                        >
+                          Submit Comment
+                        </button>
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => handleSubmitNoshow(tutoringSession)}
                         >
                           Submit Comment
                         </button>
