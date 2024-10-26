@@ -728,7 +728,7 @@ const ScheduleList = () => {
                               <input
                                 type="date"
                                 className="form-control"
-                                value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.date || new Date(assessment.date)}
+                                value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.date || new Date(assessment.date).toISOString().split('T')[0]}
                                 style={{
                                   width: '150px',
                                   backgroundColor: isDateModified ? 'lightgreen' : 'white'  // Highlight if modified
