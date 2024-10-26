@@ -168,7 +168,7 @@ const ScheduleList = () => {
 
   const [localDataDrafts, setLocalDataDrafts] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem('tempPreApproveComments')) || {};
+      return JSON.parse(localStorage.getItem('tempPreApproveComments')) || [];
     } catch {
       return {};
     }
