@@ -473,13 +473,23 @@ const ScheduleList = () => {
                       <h6 className="text-muted">Assessments:</h6>
                       
                       {/* Existing Assessment Rows */}
-                      {tutoringSession.assessments_update && Object.keys(tutoringSession.assessments_update).map((assessment_id, asmtIndex) => (
-                        <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
-                          <div>ID: {assessment_id}</div>
-                          <div>Date: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(tutoringSession.assessments_update[assessment_id].date))}</div>
-                          <div>Note: {tutoringSession.assessments_update[assessment_id].notes}</div>
-                        </div>
-                      ))}
+                      {tutoringSession.assessments_update && Object.keys(tutoringSession.assessments_update).map((assessment_id, asmtIndex) => {
+                        const matchingAssessment = assessments?.find(
+                          session => session.session_id === tutoringSession.session_id && 
+                              new Date(session.datetime).getTime() === new Date(tutoringSession.assessments_update[assessment_id].date).getTime()
+                        );
+
+                        // Set background color based on the match
+                        const rowStyle = matchingAssessment ? { backgroundColor: 'lightgreen' } : {};
+                        
+                        return (
+                          <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2" style={rowStyle}>
+                            <div>ID: {assessment_id}</div>
+                            <div>Date: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(tutoringSession.assessments_update[assessment_id].date))}</div>
+                            <div>Note: {tutoringSession.assessments_update[assessment_id].notes}</div>
+                          </div>
+                        );
+                      })}
 
                       {/* New Assessments Rows */}
                       {tutoringSession.assessments.map((assessment, asmtIndex) => (
