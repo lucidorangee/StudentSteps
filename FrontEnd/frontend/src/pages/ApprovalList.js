@@ -163,9 +163,16 @@ const ScheduleList = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [expandedSessions, setExpandedSessions] = useState({});
   const { date } = useParams();
-  const [filteredDataDrafts, setFilteredDataDrafts] = useState([]);
+  const [filteredDataDrafts, setFilteredDataDrafts] = useState(null);
   const [alert, setAlert] = useState('');
 
+  const [localDataDrafts, setLocalDataDrafts] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('tempPreApproveComments')) || {};
+    } catch {
+      return {};
+    }
+  });
 
   const datetimeSetting = {
     timeZone: "America/New_York", // Eastern Time zone
@@ -258,10 +265,29 @@ const ScheduleList = () => {
     }
   });
 
+  useEffect(() => {
+    if (Array.isArray(tutoringSessionDraftData)) {
+      // Create sets of session IDs for quick lookup
+      const draftDataIds = new Set(tutoringSessionDraftData.map(session => session.session_id));
+      const localDataIds = new Set(localDataDrafts.map(session => session.session_id));
   
+      // Add any sessions in tutoringSessionDraftData that are missing in localDataDrafts
+      const toAdd = tutoringSessionDraftData.filter(session => !localDataIds.has(session.session_id));
+  
+      // Remove any sessions from localDataDrafts that are not in tutoringSessionDraftData
+      const updatedLocalDataDrafts = localDataDrafts.filter(session => draftDataIds.has(session.session_id));
+  
+      // Only update localDataDrafts if there are changes
+      if (toAdd.length > 0 || updatedLocalDataDrafts.length !== localDataDrafts.length) {
+        setLocalDataDrafts([...updatedLocalDataDrafts, ...toAdd]);
+      }
+    }
+  }, [tutoringSessionDraftData, localDataDrafts]);
 
   useEffect(() => {
-    if(tutoringSessionDraftData) setFilteredDataDrafts(tutoringSessionDraftData);
+    /*
+
+    */
   }, [tutoringSessionDraftData]);
 
   if (tutorsLoading || assessmentsLoading || commentsLoading || studentsLoading || homeworkListLoading || tutoringSessionsLoading || tutoringSessionDraftsLoading) return <div>Loading...</div>;
