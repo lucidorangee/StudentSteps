@@ -313,13 +313,37 @@ const ScheduleList = () => {
     }));
   };
 
-  const handleCommentChange = (session_id, e) => {
+  const handleStampChange = (session_id, e) => {
+    const newStamp = Number(e.target.value);
+    
+    setLocalDataDrafts(prevDrafts =>
+      prevDrafts.map(session =>
+        session.session_id === session_id 
+          ? { ...session, stamps: newStamp} 
+          : session
+      )
+    );
+  };
+
+  const handlePublicCommentChange = (session_id, e) => {
     const newComment = e.target.value;
     
     setLocalDataDrafts(prevDrafts =>
       prevDrafts.map(session =>
         session.session_id === session_id 
           ? { ...session, comments: {...session.comments, public_comment: newComment }} 
+          : session
+      )
+    );
+  };
+
+  const handlePrivateCommentChange = (session_id, e) => {
+    const newComment = e.target.value;
+    
+    setLocalDataDrafts(prevDrafts =>
+      prevDrafts.map(session =>
+        session.session_id === session_id 
+          ? { ...session, comments: {...session.comments, private_comment: newComment }} 
           : session
       )
     );
@@ -378,7 +402,7 @@ const ScheduleList = () => {
                           placeholder="Enter stamps"
                           style={{ width: '80px' }}
                           value={tutoringSession.stamps} // Default to 0 if nonexistent
-                          onChange={temp}
+                          onChange={(e) => handleStampChange(tutoringSession.session_id, e)}
                           disabled={noshow}
                         />
                       </div>
@@ -479,7 +503,7 @@ const ScheduleList = () => {
                           aria-label="With textarea"
                           rows="3"
                           value={tutoringSession.comments['public_comment'] || ''}
-                          onChange={(e) => handleCommentChange(tutoringSession.session_id, e)}
+                          onChange={(e) => handlePublicCommentChange(tutoringSession.session_id, e)}
                           disabled={noshow}
                         />
                       </div>
@@ -490,7 +514,7 @@ const ScheduleList = () => {
                           aria-label="With textarea"
                           rows="3"
                           value={tutoringSession.comments['private_comment'] || ''}
-                          onChange={temp}
+                          onChange={(e) => handlePrivateCommentChange(tutoringSession.session_id, e)}
                           disabled={noshow}
                         />
                       </div>
