@@ -794,7 +794,7 @@ const ScheduleList = () => {
                           className="btn btn-warning"
                           onClick={() => handleSubmitNoshow(tutoringSession)}
                         >
-                          Submit Comment
+                          No-Show
                         </button>
                       </div>
 
