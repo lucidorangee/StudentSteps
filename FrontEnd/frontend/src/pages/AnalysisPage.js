@@ -86,6 +86,33 @@ const AnalysisPage = () => {
 
   }, [comments]);
 
+  useEffect(() => {
+    if(!comments) return;
+    let total = 0;
+    let count = 0;
+
+    for(const comment of comments)
+    {
+      const comment_datetime = new Date(comment.datetime);
+      if(selectedDay !== '' &&  comment_datetime.getDate() !== selectedDay) continue;
+      if(selectedMonth !== '' &&  comment_datetime.getMonth() !== selectedMonth) continue;
+      if(selectedYear !== '' &&  comment_datetime.getDate() !== selectedYear) continue;
+      
+      console.log(`selectedDay: ${selectedDay} / comment_datetime.getDate: ${comment_datetime.getDate()}`);
+      console.log(`selectedDay: ${selectedMonth} / comment_datetime.getDate: ${comment_datetime.getMonth()}`);
+      console.log(`selectedDay: ${selectedYear} / comment_datetime.getDate: ${comment_datetime.getYear()}`);
+
+      if(comment.content === 'noshow') count++;
+      total++;
+    }
+
+    const temp_noshowdata = [
+      { ...noShowData[0], value: total - count },
+      { ...noShowData[1], value: count },
+    ];
+    setNoShowData(temp_noshowdata);
+  }, [selectedDay, selectedMonth, selectedYear])
+
   if (loading) return <div>Loading...</div>;
 
   if (tutoringSessionsError) {
@@ -122,14 +149,14 @@ const AnalysisPage = () => {
       .filter(Boolean) // Remove empty values
       .join('-');
     
-    navigate(`/Admin/Analysis/${formattedDate}`);
+    navigate(`/admin/analysis/${formattedDate}`);
   };
 
   const handleDateReset = () => {
     setSelectedYear('');
     setSelectedMonth('');
     setSelectedDay('');
-    navigate(`/Schedule/Admin/Analysis/`);
+    navigate(`/admin/analysis/`);
   };
 
   // Generate options

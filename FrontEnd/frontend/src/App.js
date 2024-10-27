@@ -42,7 +42,7 @@ function App() {
           <Route path="/" element={<ProtectedRouteWrapper element={Home} />}  />
           <Route path="/tutoringsessions" element={<ProtectedRouteWrapper element={ManageTutoringSessions} />} />
           
-          <Route path="/admin/analysis" element={<ProtectedRouteWrapper element={AnalysisPage} />} />
+          <Route path="/admin/analysis/:date?" element={<ProtectedRouteWrapper element={AnalysisPage} />} />
           <Route path="/admin/users" element={<ProtectedRouteWrapper element={ManageUsers} />} />
           <Route path="/admin/tutors" element={<ProtectedRouteWrapper element={ManageTutors} />} />
           <Route path="/admin/students" element={<ProtectedRouteWrapper element={ManageStudents} />} />
