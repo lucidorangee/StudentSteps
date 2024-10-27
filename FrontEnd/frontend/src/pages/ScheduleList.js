@@ -274,7 +274,7 @@ const ScheduleList = () => {
     } else {
       setFilteredData([]);
     }
-  }, [date, tutoringSessionData]);
+  }, [date, tutoringSessionData, selectedTutorID, selectedStudentID]);
 
   useEffect(() => {
     if(tutors)
