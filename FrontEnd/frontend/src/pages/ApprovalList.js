@@ -475,8 +475,8 @@ const ScheduleList = () => {
                       {/* Existing Assessment Rows */}
                       {tutoringSession.assessments_update?.map((assessment, asmtIndex) => {
                         const updatedDate = new Date(`${assessment.date}Z`);
-                        console.log(`ID is ${assessment.assessment_id}, date is ${assessment.date} and updatedData is ${updatedDate}`);
                         const updatedDateString = updatedDate.toISOString().split("T")[0];
+                        console.log(`ID is ${assessment.assessment_id}, date is ${assessment.date} and updatedData is ${updatedDateString}`);
 
                         const matchingAssessment = assessments?.find(
                           match_assessment =>
@@ -484,11 +484,8 @@ const ScheduleList = () => {
                             new Date(match_assessment.date).toISOString().split("T")[0] === updatedDateString
                         );
 
-                        console.log(`assessments_update's date: ${JSON.stringify(new Date(assessment.date).getTime())}`);
-
                         // Set background color based on the match
                         const rowStyle = matchingAssessment ? {} : { backgroundColor: 'lightgreen' };
-                        console.log(`this date should be ${assessment.date}`);
 
                         return (
                           <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2" style={rowStyle}>
