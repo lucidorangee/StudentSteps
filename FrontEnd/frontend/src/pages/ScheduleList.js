@@ -712,17 +712,16 @@ const ScheduleList = () => {
                         
                         {/* Existing Assessments Row */}
                         {studentAssessments.map((assessment, asmtIndex) => {
-                          const originalAssessment = assessments?.find(
-                            (asmt) => asmt.assessment_id === assessment.assessment_id
-                          );
-
-                          const isDateModified = originalAssessment && new Date(assessment.date).getTime() !== new Date(originalAssessment.date).getTime();
-                          console.log(`new: ${new Date(assessment.date).getTime()}`);
-                          console.log(`org: ${new Date(originalAssessment?.date || '').getTime()}`);
+                          const assessment_date = tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.date || new Date(assessment.date).toISOString().split('T')[0];
+                          
+                          const isDateModified = new Date(assessment.date).getTime() !== assessment_date.getTime();
+                          
+                          console.log(`org: ${new Date(assessment.date).getTime()}`);
+                          console.log(`new: ${new Date(assessment_date).getTime()}`);
 
                           console.log("assessment");
                           console.log(JSON.stringify(assessment));
-
+                          
                           return(
                             <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
                               <div>Title: {assessment.title}</div>
@@ -730,7 +729,7 @@ const ScheduleList = () => {
                               <input
                                 type="date"
                                 className="form-control"
-                                value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.date || new Date(assessment.date).toISOString().split('T')[0]}
+                                value={assessment_date}
                                 style={{
                                   width: '150px',
                                   backgroundColor: isDateModified ? 'lightgreen' : 'white'  // Highlight if modified
