@@ -490,9 +490,9 @@ const ScheduleList = () => {
 
                         return (
                           <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2" style={rowStyle}>
-                            <div>ID: {assessment.assessment_id}</div>
-                            <div>Date: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(updatedDateString))}</div>
-                            <div>Note: {assessment.notes}</div>
+                            <div className="col-2">ID: {assessment.assessment_id}</div>
+                            <div className="col-4">Date: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(updatedDateString))}</div>
+                            <div className="col-6">Note: {assessment.notes}</div>
                           </div>
                         );
                       })}
