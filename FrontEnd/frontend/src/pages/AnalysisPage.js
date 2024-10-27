@@ -122,14 +122,14 @@ const AnalysisPage = () => {
       .filter(Boolean) // Remove empty values
       .join('-');
     
-    navigate(`/Schedule/List/${formattedDate}`);
+    navigate(`/Admin/Analysis/${formattedDate}`);
   };
 
   const handleDateReset = () => {
     setSelectedYear('');
     setSelectedMonth('');
     setSelectedDay('');
-    navigate(`/Schedule/List/`);
+    navigate(`/Schedule/Admin/Analysis/`);
   };
 
   // Generate options
