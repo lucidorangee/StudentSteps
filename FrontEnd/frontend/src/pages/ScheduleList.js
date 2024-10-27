@@ -716,30 +716,37 @@ const ScheduleList = () => {
                           
                           const isDateModified = new Date(assessment.date).getTime() !== new Date(assessment_date).getTime();
 
-                          return(
-                            <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
-                              <div className="col-2">Title: {assessment.title}</div>
-                              <input
-                                type="date"
-                                className="form-control col-4"
-                                value={assessment_date}
-                                style={{
-                                  width: '150px',
-                                  backgroundColor: isDateModified ? 'lightgreen' : 'white'  // Highlight if modified
-                                }}
-                                onChange={(e) => handleExistingAssessmentDateUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
-                              />
-                              <div>Detail: {assessment.description}</div>
-                              <input
-                                type="text"
-                                className="form-control col-6"
-                                value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.notes ?? assessment.notes}
-                                style={{ width: '60px' }}
-                                onChange={(e) => handleExistingAssessmentNoteUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
-                              />
+                          return (
+                            <div key={asmtIndex} className="row align-items-center mb-2" style={{ margin: 0 }}>
+                              <div className="col-2">
+                                <strong>Title:</strong> {assessment.title}
+                              </div>
+                              <div className="col-3">
+                                <input
+                                  type="date"
+                                  className="form-control"
+                                  value={assessment_date}
+                                  style={{
+                                    backgroundColor: isDateModified ? 'lightgreen' : 'white',
+                                  }}
+                                  onChange={(e) => handleExistingAssessmentDateUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
+                                />
+                              </div>
+                              <div className="col-4">
+                                <strong>Detail:</strong> {assessment.description}
+                              </div>
+                              <div className="col-3">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.notes ?? assessment.notes}
+                                  onChange={(e) => handleExistingAssessmentNoteUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
+                                />
+                              </div>
                             </div>
                           );
                         })}
+
 
                         {/* New Assessments Rows for Adding Additional Assessments */}
                         <h6 className="text-muted mt-4">Add New Assessment:</h6>
