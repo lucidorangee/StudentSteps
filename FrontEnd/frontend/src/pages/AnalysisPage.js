@@ -239,24 +239,33 @@ const AnalysisPage = () => {
           Show All
         </button>
       </div>
-      <PieChart width={400} height={400}>
-        <Pie
-          data={noShowData}
-          dataKey="value"
-          cx="50%"
-          cy="50%"
-          outerRadius={100}
-          fill="#8884d8"
-          labelLine={false}
-          label={renderCustomizedLabel}
-        >
-          {noShowData.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-        <Tooltip />
-        <Legend />
-      </PieChart>
+      {
+        noShowData[0]+noShowData[1] === 0?
+        (
+          <div>No approved tutoring session comments on this date</div>
+        )
+        :
+        (
+          <PieChart width={400} height={400}>
+            <Pie
+              data={noShowData}
+              dataKey="value"
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              fill="#8884d8"
+              labelLine={false}
+              label={renderCustomizedLabel}
+            >
+              {noShowData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        )
+      }
     </div>
     
   );
