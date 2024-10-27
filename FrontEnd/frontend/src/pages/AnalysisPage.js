@@ -240,7 +240,7 @@ const AnalysisPage = () => {
         </button>
       </div>
       {
-        noShowData[0]+noShowData[1] === 0?
+        noShowData[0]['value']+noShowData[1]['value'] === 0?
         (
           <div>No approved tutoring session comments on this date</div>
         )
