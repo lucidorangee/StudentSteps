@@ -487,10 +487,20 @@ const ScheduleList = () => {
                         // Set background color based on the match
                         const rowStyle = matchingAssessment ? {} : { backgroundColor: 'lightgreen' };
 
+                        // Get UTC values
+                        const year = updatedDate.getUTCFullYear();
+                        const monthIndex = updatedDate.getUTCMonth(); // Note: January is 0, December is 11
+                        const day = updatedDate.getUTCDate();
+                        const weekdayIndex = date.getUTCDay();
+
+                        // Get full month name from the month index
+                        const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(year, monthIndex));
+                        const weekday = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date(year, monthIndex, day));
+
                         return (
                           <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2" style={rowStyle}>
                             <div>ID: {assessment.assessment_id}</div>
-                            <div>Date: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(updatedDate)}</div>
+                            <div>Date: {`${weekday}, ${month} ${day}`}</div>
                             <div>Note: {assessment.notes}</div>
                           </div>
                         );
