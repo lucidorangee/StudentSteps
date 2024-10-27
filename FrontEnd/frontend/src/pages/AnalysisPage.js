@@ -164,8 +164,8 @@ const AnalysisPage = () => {
     const today = new Date();
     
     setSelectedYear(String(today.getFullYear()));
-    setSelectedMonth(String(today.getMonth()).padStart(2, '0'));
-    setSelectedDay(String(today.getDate().padStart(2, '0')));
+    setSelectedMonth(String(today.getMonth() + 1).padStart(2, '0'));
+    setSelectedDay(String(today.getDate()).padStart(2, '0'));
 
     const formattedDate = [
       selectedYear,
