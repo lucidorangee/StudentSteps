@@ -479,6 +479,8 @@ const ScheduleList = () => {
                               new Date(session.datetime).getTime() === new Date(tutoringSession.assessments_update[assessment_id].date).getTime()
                         );
 
+                        console.log(`assessments_update's date: ${JSON.stringify(new Date(tutoringSession.assessments_update[assessment_id].date).getTime())}`);
+
                         // Set background color based on the match
                         const rowStyle = matchingAssessment ? { backgroundColor: 'lightgreen' } : {};
                         
