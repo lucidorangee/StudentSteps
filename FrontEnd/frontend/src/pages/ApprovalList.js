@@ -474,7 +474,7 @@ const ScheduleList = () => {
                       
                       {/* Existing Assessment Rows */}
                       {tutoringSession.assessments_update?.map((assessment, asmtIndex) => {
-                        const updatedDate = new Date(assessment.date + "T00:00");
+                        const updatedDate = new Date(assessment.date);
                         console.log(`ID is ${assessment.assessment_id}, date is ${assessment.date} and updatedData is ${updatedDate}`);
                         const updatedDateString = updatedDate.toISOString().split("T")[0];
 
