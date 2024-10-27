@@ -330,7 +330,7 @@ const ScheduleList = () => {
   };
 
   const handleCommentSubmit = (tutoringSession) => {
-    const comment = tempComments[tutoringSession.session_id]?.comment || '';
+    const comment = tempComments[tutoringSession.session_id]?.comment.trim() || '';
     const private_comment = tempComments[tutoringSession.session_id]?.private_comment || '';
     const stamps = tempComments[tutoringSession.session_id]?.stamps || 0;
     const new_homework = tempComments[tutoringSession.session_id]?.new_homework?.filter(hmwk => {
@@ -349,11 +349,15 @@ const ScheduleList = () => {
     }
 
     // Validate if comment is empty or any other necessary validation
-    if (comment.trim() === '') {
+    if (comment === '') {
         setAlert('Please enter a comment.');
-        console.log(`Comment is ${comment}`);
         return;
     }
+
+    if (comment === 'noshow') {
+      setAlert('Please use the noshow button for noshows.\n(This is to invalidate all other fields)');
+      return;
+  }
 
     for(const hmwk of new_homework)
     {
