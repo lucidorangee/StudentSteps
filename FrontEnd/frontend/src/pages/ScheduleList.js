@@ -647,10 +647,10 @@ const ScheduleList = () => {
                           <div key={hwIndex} className="d-flex justify-content-between align-items-center mb-2">
                             <div className="col-2">Subject: {homework.subject}</div>
                             <div className="col-4">Due: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(homework.due_date))}</div>
-                            <div className="col-6">Notes: {homework.notes}</div>
+                            <div className="col-4">Notes: {homework.notes}</div>
                             <input
                               type="number"
-                              className="form-control"
+                              className="form-control col-2"
                               value={tempComments[tutoringSession.session_id]?.prev_homework?.find(hw => hw.homework_id === homework.homework_id)?.completedness || 0}
                               min="0"
                               max="9"
@@ -708,7 +708,7 @@ const ScheduleList = () => {
 
                       {/* Assessments Box */}
                       <div className="mt-4 border p-3 rounded">
-                        <h6 className="text-muted">Upcoming Assessments:</h6>
+                        <h6 className="text-muted">Pending Assessments:</h6>
                         
                         {/* Existing Assessments Row */}
                         {studentAssessments.map((assessment, asmtIndex) => {
