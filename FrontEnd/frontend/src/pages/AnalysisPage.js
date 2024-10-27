@@ -160,6 +160,26 @@ const AnalysisPage = () => {
     navigate(`/admin/analysis/`);
   };
 
+  const setDateToToday = () => {
+    const today = new Date();
+    
+    setSelectedYear(String(today.getFullYear()));
+    setSelectedMonth(String(today.getMonth()).padStart(2, '0'));
+    setSelectedDay(String(today.getDate().padStart(2, '0')));
+
+    const formattedDate = [
+      selectedYear,
+      selectedMonth.padStart(2, '0'),
+      selectedDay.padStart(2, '0')
+    ]
+      .filter(Boolean) // Remove empty values
+      .join('-');
+    
+    navigate(`/admin/analysis/${formattedDate}`);
+  };
+
+  
+
   // Generate options
   const years = Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i);
   const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
@@ -212,8 +232,8 @@ const AnalysisPage = () => {
         </select>
 
         <FaCalendarAlt className="me-2 text-secondary" />
-        <button type="button" className="btn btn-info px-4" onClick={handleDateChange} disabled={!selectedYear}>
-          Go
+        <button type="button" className="btn btn-info px-4" onClick={setDateToToday} disabled={!selectedYear}>
+          Today
         </button>
         <button type="button" className="btn btn-secondary ms-2 px-4" onClick={handleDateReset}>
           Show All
