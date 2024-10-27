@@ -94,13 +94,14 @@ const AnalysisPage = () => {
     for(const comment of comments)
     {
       const comment_datetime = new Date(comment.datetime);
+      
+      console.log(`selectedDay: ${selectedDay} / comment_datetime.getDate: ${comment_datetime.getDate()}`);
+      console.log(`selectedMonth: ${selectedMonth} / comment_datetime.getMonth: ${comment_datetime.getMonth()}`);
+      console.log(`selectedYear: ${selectedYear} / comment_datetime.getYear: ${comment_datetime.getYear()}`);
+
       if(selectedDay !== '' &&  comment_datetime.getDate() !== selectedDay) continue;
       if(selectedMonth !== '' &&  comment_datetime.getMonth() !== selectedMonth) continue;
       if(selectedYear !== '' &&  comment_datetime.getDate() !== selectedYear) continue;
-      
-      console.log(`selectedDay: ${selectedDay} / comment_datetime.getDate: ${comment_datetime.getDate()}`);
-      console.log(`selectedDay: ${selectedMonth} / comment_datetime.getDate: ${comment_datetime.getMonth()}`);
-      console.log(`selectedDay: ${selectedYear} / comment_datetime.getDate: ${comment_datetime.getYear()}`);
 
       if(comment.content === 'noshow') count++;
       total++;
