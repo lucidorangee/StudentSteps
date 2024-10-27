@@ -474,9 +474,13 @@ const ScheduleList = () => {
                       
                       {/* Existing Assessment Rows */}
                       {tutoringSession.assessments_update && Object.keys(tutoringSession.assessments_update).map((assessment_id, asmtIndex) => {
+                        const updatedDate = new Date(tutoringSession.assessments_update[assessment_id].date + "T00:00")
+                        const updatedDateString = updatedDate.toISOString().split("T")[0];
+
                         const matchingAssessment = assessments?.find(
-                          session => session.session_id === tutoringSession.session_id && 
-                              new Date(session.datetime).getTime() === new Date(tutoringSession.assessments_update[assessment_id].date).getTime()
+                          assessment =>
+                            assessment.assessment_id === assessment_id &&
+                            new Date(assessment.date).toISOString().split("T")[0] === updatedDateString
                         );
 
                         console.log(`assessments_update's date: ${JSON.stringify(new Date(tutoringSession.assessments_update[assessment_id].date).getTime())}`);
@@ -488,7 +492,7 @@ const ScheduleList = () => {
                         return (
                           <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2" style={rowStyle}>
                             <div>ID: {assessment_id}</div>
-                            <div>Date: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(tutoringSession.assessments_update[assessment_id].date))}</div>
+                            <div>Date: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(updatedDate)}</div>
                             <div>Note: {tutoringSession.assessments_update[assessment_id].notes}</div>
                           </div>
                         );
