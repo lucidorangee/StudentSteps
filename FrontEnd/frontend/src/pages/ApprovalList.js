@@ -473,28 +473,28 @@ const ScheduleList = () => {
                       <h6 className="text-muted">Assessments:</h6>
                       
                       {/* Existing Assessment Rows */}
-                      {tutoringSession.assessments_update && Object.keys(tutoringSession.assessments_update).map((assessment_id, asmtIndex) => {
-                        const updatedDate = new Date(tutoringSession.assessments_update[assessment_id].date + "T00:00");
-                        console.log(`ID is ${assessment_id}, date is ${tutoringSession.assessments_update[assessment_id].date} and updatedData is ${updatedDate}`);
+                      {tutoringSession.assessments_update?.map((assessment, asmtIndex) => {
+                        const updatedDate = new Date(assessment.date + "T00:00");
+                        console.log(`ID is ${assessment.assessment_id}, date is ${assessment.date} and updatedData is ${updatedDate}`);
                         const updatedDateString = updatedDate.toISOString().split("T")[0];
 
                         const matchingAssessment = assessments?.find(
-                          assessment =>
-                            assessment.assessment_id === assessment_id &&
-                            new Date(assessment.date).toISOString().split("T")[0] === updatedDateString
+                          match_assessment =>
+                            match_assessment.assessment_id === assessment.assessment_id &&
+                            new Date(match_assessment.date).toISOString().split("T")[0] === updatedDateString
                         );
 
-                        console.log(`assessments_update's date: ${JSON.stringify(new Date(tutoringSession.assessments_update[assessment_id].date).getTime())}`);
+                        console.log(`assessments_update's date: ${JSON.stringify(new Date(assessment.date).getTime())}`);
 
                         // Set background color based on the match
                         const rowStyle = matchingAssessment ? { backgroundColor: 'lightgreen' } : {};
-                        console.log(`this date should be ${tutoringSession.assessments_update[assessment_id].date}`);
+                        console.log(`this date should be ${assessment.date}`);
 
                         return (
                           <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2" style={rowStyle}>
-                            <div>ID: {assessment_id}</div>
+                            <div>ID: {assessment.assessment_id}</div>
                             <div>Date: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(updatedDate)}</div>
-                            <div>Note: {tutoringSession.assessments_update[assessment_id].notes}</div>
+                            <div>Note: {assessment.notes}</div>
                           </div>
                         );
                       })}
