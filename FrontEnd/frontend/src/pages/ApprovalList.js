@@ -296,15 +296,10 @@ const ScheduleList = () => {
       || studentsError?.status === 401 || homeworkListError?.status === 401 || tutoringSessionsError?.status === 401 || tutoringSessionDraftsError?.status === 401) //unauthorized
     {
       console.log("unathorized");
-      //  ge.setItem('tempComments', JSON.stringify(tempComments));
       return <Navigate to="/login" />;
     }
     return <div>Error loading data</div>;
   }
-
-  const temp = () => {
-    return;
-  };
 
   const toggleExpand = (index) => {
     setExpandedSessions((prev) => ({
@@ -362,19 +357,6 @@ const ScheduleList = () => {
         <div></div>
       )}
 
-
-      <div className="d-flex align-items-center gap-3">
-        <DatePicker
-          selected={selectedDate}
-          onChange={temp}
-          dateFormat="yyyy/MM/dd"
-          className="form-control w-auto"
-          placeholderText="Select a date"
-        />
-        <FaCalendarAlt className="me-2 text-secondary" /> 
-        <button type="button" className="btn btn-info px-4" onClick={temp}>Show All</button>
-      </div>
-      
       <div className="row justify-content-center">
         {Array.isArray(filteredDataDrafts) && filteredDataDrafts.length > 0 ? (
           filteredDataDrafts.map((tutoringSession, index) => {

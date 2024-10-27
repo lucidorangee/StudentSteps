@@ -117,6 +117,11 @@ const ScheduleList = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [alert, setAlert] = useState('');
 
+  const [studentOptions, setStudentOptions] = useState([]);
+  const [selectedStudentID, setSelectedStudentID] = useState(-1);
+  const [tutorOptions, setTutorOptions] = useState([]);
+  const [selectedTutorID, setSelectedTutorID] = useState(-1);
+
   /**
    * comment (text)
       private_comment (text)
@@ -233,19 +238,48 @@ const ScheduleList = () => {
         }
       });
 
-      if (date) {
-        const filteredSessions = tutoringSessionData.filter(session =>
-          session.session_datetime.startsWith(date)
-        ).sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-        setFilteredData(filteredSessions);
-      } else {
-        const filteredSessions = tutoringSessionData.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-        setFilteredData(filteredSessions);
-      }
+      const filteredSessions = tutoringSessionData.filter((session) => {
+        const tutorFilter = selectedTutorID === -1 || selectedTutorID === session.tutor_id;
+        const studentFilter = selectedStudentID === -1 || selectedStudentID === session.student_id;
+        const dateFilter = !date || session.session_datetime.startsWith(date);
+
+        return tutorFilter && studentFilter && dateFilter;
+      })
+
+      setFilteredData(filteredSessions.sort((a, b) => new Date(b.datetime) - new Date(a.datetime)))
     } else {
       setFilteredData([]);
     }
   }, [date, tutoringSessionData]);
+
+  useEffect(() => {
+    if(tutors)
+    {
+      const tutorOptions = [
+        { value: -1, label: 'No Filter' },
+        ...tutors.map(tutor => ({
+          value: tutor.tutor_id,
+          label: `${tutor.first_name} (ID: ${tutor.tutor_id})`,
+        }))
+      ];
+      setTutorOptions(tutorOptions);
+      setSelectedTutorID(-1);
+    }
+  }, [tutors]);
+
+  useEffect(() => {
+    if(students){
+      const options = [
+        { value: -1, label: 'No Filter' },
+        ...students.map(student => ({
+          value: student.student_id,
+          label: `${student.first_name} (ID: ${student.student_id})`,
+        }))
+      ];
+      setStudentOptions(options);
+      setSelectedStudentID(-1);
+    }
+  }, [students]);
 
   if (assessmentsLoading || commentsLoading || studentsLoading || homeworkListLoading || tutoringSessionsLoading) return <div>Loading...</div>;
   if (assessmentsError || commentsError || studentsError || homeworkListError || tutoringSessionsError) {
@@ -524,6 +558,25 @@ const ScheduleList = () => {
     });
   };
 
+  const handleTutorChange = (selectedOption) => {
+
+    if(selectedOption === null)
+    {
+      setSelectedTutorID(-1);
+    }
+    else setSelectedTutorID(selectedOption.value);
+  };
+
+  const handleStudentChange = (selectedOption) => {
+
+    if(selectedOption === null)
+    {
+      setSelectedStudentID(-1);
+    }
+    else setSelectedStudentID(selectedOption.value);
+  };
+
+
 
   return (
     <div className="App">
@@ -544,11 +597,29 @@ const ScheduleList = () => {
           selected={selectedDate}
           onChange={handleDateChange}
           dateFormat="yyyy/MM/dd"
-          className="form-control w-auto"
+          className="form-control w-auto col-6"
           placeholderText="Select a date"
         />
         <FaCalendarAlt className="me-2 text-secondary" /> 
         <button type="button" className="btn btn-info px-4" onClick={handleDateReset}>Show All</button>
+        <div className="col-3">
+          <Select
+              options={studentOptions}
+              onChange={handleStudentChange}
+              placeholder="Search for a student..."
+              isClearable
+              classNamePrefix="react-select"
+            />
+        </div>
+        <div className="col-3">
+          <Select
+            options={tutorOptions}
+            onChange={handleTutorChange}
+            placeholder="Search for a tutor..."
+            isClearable
+            classNamePrefix="react-select"
+          />
+        </div>
       </div>
       
       <div className="row justify-content-center">

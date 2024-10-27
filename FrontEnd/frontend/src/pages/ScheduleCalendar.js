@@ -81,10 +81,8 @@ const CalendarPage = () => {
   //const [assessments, setAssessments] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   
-  const [selectedStudent, setSelectedStudent] = useState(null);
   const [studentOptions, setStudentOptions] = useState([]);
   const [selectedStudentID, setSelectedStudentID] = useState(-1);
-  const [selectedTutor, setSelectedTutor] = useState(null);
   const [tutorOptions, setTutorOptions] = useState([]);
   const [selectedTutorID, setSelectedTutorID] = useState(-1);
 
@@ -126,7 +124,6 @@ const CalendarPage = () => {
         }))
       ];
       setTutorOptions(tutorOptions);
-      setSelectedTutor(tutorOptions[0]);
       setSelectedTutorID(-1);
     }
   }, [tutors]);
@@ -141,7 +138,6 @@ const CalendarPage = () => {
         }))
       ];
       setStudentOptions(options);
-      setSelectedStudent(studentOptions[0]);
       setSelectedStudentID(-1);
     }
   }, [students]);
@@ -228,7 +224,6 @@ const CalendarPage = () => {
   };
 
   const handleTutorChange = (selectedOption) => {
-    setSelectedTutor(selectedOption);
 
     if(selectedOption === null)
     {
@@ -238,7 +233,6 @@ const CalendarPage = () => {
   };
 
   const handleStudentChange = (selectedOption) => {
-    setSelectedStudent(selectedOption);
 
     if(selectedOption === null)
     {
