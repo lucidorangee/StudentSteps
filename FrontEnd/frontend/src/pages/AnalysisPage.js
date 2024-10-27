@@ -4,6 +4,8 @@ import { Nav, Navbar } from 'react-bootstrap'
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { useNavigate } from 'react-router-dom';
+import { FaCalendarAlt } from 'react-icons/fa';
 
 const fetchComments = async() => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
@@ -40,6 +42,11 @@ const fetchTutoringSessions = async () => {
 }
 
 const AnalysisPage = () => {
+  const navigate = useNavigate();
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedDay, setSelectedDay] = useState('');
+
   const [loading, setLoading] = useState(true);
   const [noShowData, setNoShowData] = useState([
     { name: "Showed up", value: 1 },
@@ -105,10 +112,85 @@ const AnalysisPage = () => {
     );
   };
 
+  const handleDateChange = () => {
+    // Build formatted date based on selected parts
+    const formattedDate = [
+      selectedYear,
+      selectedMonth.padStart(2, '0'),
+      selectedDay.padStart(2, '0')
+    ]
+      .filter(Boolean) // Remove empty values
+      .join('-');
+    
+    navigate(`/Schedule/List/${formattedDate}`);
+  };
+
+  const handleDateReset = () => {
+    setSelectedYear('');
+    setSelectedMonth('');
+    setSelectedDay('');
+    navigate(`/Schedule/List/`);
+  };
+
+  // Generate options
+  const years = Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i);
+  const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
+  const days = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
+
   
   return (
     <div className="App">
       <h2>Welcome, User!</h2>
+      <div className="d-flex align-items-center">
+        <select
+          className="form-control me-2 w-auto"
+          value={selectedYear}
+          onChange={(e) => setSelectedYear(e.target.value)}
+        >
+          <option value="">Year</option>
+          {years.map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
+
+        <select
+          className="form-control me-2 w-auto"
+          value={selectedMonth}
+          onChange={(e) => setSelectedMonth(e.target.value)}
+          disabled={!selectedYear} // Enable only after selecting the year
+        >
+          <option value="">Month</option>
+          {months.map((month) => (
+            <option key={month} value={month}>
+              {month}
+            </option>
+          ))}
+        </select>
+
+        <select
+          className="form-control me-2 w-auto"
+          value={selectedDay}
+          onChange={(e) => setSelectedDay(e.target.value)}
+          disabled={!selectedMonth} // Enable only after selecting the month
+        >
+          <option value="">Day</option>
+          {days.map((day) => (
+            <option key={day} value={day}>
+              {day}
+            </option>
+          ))}
+        </select>
+
+        <FaCalendarAlt className="me-2 text-secondary" />
+        <button type="button" className="btn btn-info px-4" onClick={handleDateChange} disabled={!selectedYear}>
+          Go
+        </button>
+        <button type="button" className="btn btn-secondary ms-2 px-4" onClick={handleDateReset}>
+          Show All
+        </button>
+      </div>
       <PieChart width={400} height={400}>
         <Pie
           data={noShowData}

@@ -146,15 +146,18 @@ const completeAndAddComment = async (req, res) => {
         const { tutor_id, student_id, datetime, stamps, comments, homework_update, homework, assessments, assessments_update } = req.body;
 
 
-        // Add comment
+        // Add public comment - assumed to never be empty
         await client.query(queries.addComment, [
             student_id, tutor_id, datetime, comments['public_comment'], 'public', stamps, false,
         ]);
 
         // Add private comment
-        await client.query(queries.addComment, [
-            student_id, tutor_id, datetime, comments['private_comment'], 'private', 0, false,
-        ]);
+        if(comments['private_comment'] !== "")
+        {
+            await client.query(queries.addComment, [
+                student_id, tutor_id, datetime, comments['private_comment'], 'private', 0, false,
+            ]);
+        }
 
         // Add new assessments
         for(const assessment of assessments)
