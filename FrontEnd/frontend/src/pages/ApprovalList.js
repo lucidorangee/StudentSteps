@@ -475,7 +475,7 @@ const ScheduleList = () => {
                       {/* Existing Assessment Rows */}
                       {tutoringSession.assessments_update && Object.keys(tutoringSession.assessments_update).map((assessment_id, asmtIndex) => {
                         const updatedDate = new Date(tutoringSession.assessments_update[assessment_id].date + "T00:00");
-                        console.log(`updatedData is ${updatedDate}`);
+                        console.log(`ID is ${assessment_id}, date is ${tutoringSession.assessments_update[assessment_id].date} and updatedData is ${updatedDate}`);
                         const updatedDateString = updatedDate.toISOString().split("T")[0];
 
                         const matchingAssessment = assessments?.find(
