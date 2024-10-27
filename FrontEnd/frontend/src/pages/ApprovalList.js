@@ -456,8 +456,8 @@ const ScheduleList = () => {
                       {/* Existing Homework Rows */}
                       {tutoringSession.homework_update && Object.keys(tutoringSession.homework_update).map((homework_id, hwIndex) => (
                         <div key={hwIndex} className="d-flex justify-content-between align-items-center mb-2">
-                          <div>ID: {homework_id}</div>
-                          <div>Completedness: {tutoringSession.homework_update[homework_id].completedness}</div>
+                          <div className="col-2">ID: {homework_id}</div>
+                          <div className="col-10">Completedness: {tutoringSession.homework_update[homework_id].completedness}</div>
                         </div>
                       ))}
 
