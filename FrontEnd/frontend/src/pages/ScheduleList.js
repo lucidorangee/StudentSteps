@@ -561,7 +561,7 @@ const ScheduleList = () => {
               // Fetch the student data and homework list based on student_id
               const studentData = students.find(student => student.student_id === tutoringSession.student_id);
               const studentHomeworkList = homeworkList.filter(homework => homework.student_id === tutoringSession.student_id && homework.is_completed === 0);
-              const studentAssessments = assessments.filter(assessment => assessment.student_id === tutoringSession.student_id && assessment.notes !== '');
+              const studentAssessments = assessments.filter(assessment => assessment.student_id === tutoringSession.student_id && assessment.notes === '');
               const latestComment = comments
                 .filter(comment => comment.student_id === tutoringSession.student_id)
                 .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))[0];
