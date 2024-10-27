@@ -232,7 +232,7 @@ const AnalysisPage = () => {
         </select>
 
         <FaCalendarAlt className="me-2 text-secondary" />
-        <button type="button" className="btn btn-info px-4" onClick={setDateToToday} disabled={!selectedYear}>
+        <button type="button" className="btn btn-info px-4" onClick={setDateToToday}>
           Today
         </button>
         <button type="button" className="btn btn-secondary ms-2 px-4" onClick={handleDateReset}>
