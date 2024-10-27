@@ -483,7 +483,8 @@ const ScheduleList = () => {
 
                         // Set background color based on the match
                         const rowStyle = matchingAssessment ? { backgroundColor: 'lightgreen' } : {};
-                        
+                        console.log(`this date should be ${tutoringSession.assessments_update[assessment_id].date}`);
+
                         return (
                           <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2" style={rowStyle}>
                             <div>ID: {assessment_id}</div>
@@ -501,10 +502,9 @@ const ScheduleList = () => {
                           <div>Description: {assessment.description}</div>
                         </div>
                       ))}
-                    
                     </div>
 
-                    
+                
 
                     {/* Row 5: Comment Area and Submit Button */}
                     <div className="mt-4">
