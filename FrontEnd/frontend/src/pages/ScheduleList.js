@@ -714,14 +714,14 @@ const ScheduleList = () => {
                         {studentAssessments.map((assessment, asmtIndex) => {
                           const assessment_date = tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.date || new Date(assessment.date).toISOString().split('T')[0];
                           
-                          const isDateModified = new Date(assessment.date).getTime() !== assessment_date.getTime();
+                          const isDateModified = new Date(assessment.date).getTime() !== new Date(assessment_date).getTime();
                           
                           console.log(`org: ${new Date(assessment.date).getTime()}`);
                           console.log(`new: ${new Date(assessment_date).getTime()}`);
 
                           console.log("assessment");
                           console.log(JSON.stringify(assessment));
-                          
+
                           return(
                             <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
                               <div>Title: {assessment.title}</div>
