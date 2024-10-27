@@ -645,9 +645,9 @@ const ScheduleList = () => {
                         {/* Existing Homework Rows */}
                         {studentHomeworkList.map((homework, hwIndex) => (
                           <div key={hwIndex} className="d-flex justify-content-between align-items-center mb-2">
-                            <div>Subject: {homework.subject}</div>
-                            <div>Due: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(homework.due_date))}</div>
-                            <div>Notes: {homework.notes}</div>
+                            <div className="col-2">Subject: {homework.subject}</div>
+                            <div className="col-4">Due: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(homework.due_date))}</div>
+                            <div className="col-6">Notes: {homework.notes}</div>
                             <input
                               type="number"
                               className="form-control"
@@ -718,11 +718,10 @@ const ScheduleList = () => {
 
                           return(
                             <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
-                              <div>Title: {assessment.title}</div>
-                              {/* Date Input Field */}
+                              <div className="col-2">Title: {assessment.title}</div>
                               <input
                                 type="date"
-                                className="form-control"
+                                className="form-control col-4"
                                 value={assessment_date}
                                 style={{
                                   width: '150px',
@@ -733,7 +732,7 @@ const ScheduleList = () => {
                               <div>Detail: {assessment.description}</div>
                               <input
                                 type="text"
-                                className="form-control"
+                                className="form-control col-6"
                                 value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.notes ?? assessment.notes}
                                 style={{ width: '60px' }}
                                 onChange={(e) => handleExistingAssessmentNoteUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
@@ -748,7 +747,7 @@ const ScheduleList = () => {
                           <div key={`new-${asmtIndex}`} className="d-flex justify-content-between align-items-center mb-2">
                             <input
                               type="text"
-                              className="form-control"
+                              className="form-control col-2"
                               placeholder="Title"
                               value={assessment.title}
                               onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'title')}
@@ -756,7 +755,7 @@ const ScheduleList = () => {
                             />
                             <input
                               type="date"
-                              className="form-control"
+                              className="form-control col-4"
                               placeholder="Date"
                               value={assessment.date}
                               onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'date')}
@@ -764,7 +763,7 @@ const ScheduleList = () => {
                             />
                             <input
                               type="text"
-                              className="form-control"
+                              className="form-control col-6"
                               placeholder="Description"
                               value={assessment.description}
                               onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'description')}
