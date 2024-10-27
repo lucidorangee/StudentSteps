@@ -204,7 +204,7 @@ const ScheduleList = () => {
     data: tutors,
     isLoading: tutorsLoading,
     error: tutorsError,
-  } = useQuery({queryKey: ['tutors'], queryFn: () => fetchStudents()});
+  } = useQuery({queryKey: ['tutors'], queryFn: () => fetchTutors()});
 
   const {
     data: comments,
