@@ -185,7 +185,7 @@ const ScheduleList = () => {
   };
 
   const dateonlySetting = {
-    //timeZone: "America/New_York", // Eastern Time zone
+    timeZone: "UTC",
     weekday: "long",
     month: "long",
     day: "numeric",
