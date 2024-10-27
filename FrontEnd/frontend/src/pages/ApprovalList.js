@@ -476,7 +476,7 @@ const ScheduleList = () => {
                       {tutoringSession.assessments_update?.map((assessment, asmtIndex) => {
                         const updatedDate = new Date(`${assessment.date}Z`);
                         const updatedDateString = updatedDate.toISOString().split("T")[0];
-                        console.log(`ID is ${assessment.assessment_id}, date is ${assessment.date} and updatedData is ${updatedDateString}`);
+                        console.log(`ID is ${assessment.assessment_id}, date is ${assessment.date} and updatedData is ${new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(updatedDateString))}`);
 
                         const matchingAssessment = assessments?.find(
                           match_assessment =>
