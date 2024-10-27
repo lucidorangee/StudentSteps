@@ -715,12 +715,6 @@ const ScheduleList = () => {
                           const assessment_date = tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.date || new Date(assessment.date).toISOString().split('T')[0];
                           
                           const isDateModified = new Date(assessment.date).getTime() !== new Date(assessment_date).getTime();
-                          
-                          console.log(`org: ${new Date(assessment.date).getTime()}`);
-                          console.log(`new: ${new Date(assessment_date).getTime()}`);
-
-                          console.log("assessment");
-                          console.log(JSON.stringify(assessment));
 
                           return(
                             <div key={asmtIndex} className="d-flex justify-content-between align-items-center mb-2">
@@ -740,7 +734,7 @@ const ScheduleList = () => {
                               <input
                                 type="text"
                                 className="form-control"
-                                value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.notes || assessment.notes}
+                                value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.notes ?? assessment.notes}
                                 style={{ width: '60px' }}
                                 onChange={(e) => handleExistingAssessmentNoteUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
                               />

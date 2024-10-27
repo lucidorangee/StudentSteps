@@ -160,7 +160,7 @@ const completeAndAddComment = async (req, res) => {
         for(const assessment of assessments)
         {
             await client.query(assessmentQueries.addAssessment, [
-                assessment.title, assessment.description, assessment.date, student_id, 'empty subject', 'no notes'
+                assessment.title, assessment.description, assessment.date, student_id, 'empty subject', ''
             ]);
         }
 
