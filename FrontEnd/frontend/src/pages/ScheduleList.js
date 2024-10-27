@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
+import Select from 'react-select';
 
 const fetchComments = async() => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments`, {
@@ -71,6 +72,23 @@ const fetchStudents = async () => {
   }
   return response.json();
 };
+
+const fetchTutors = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutors');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
+
 
 const fetchAssessments = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/assessments/`, {
@@ -183,6 +201,12 @@ const ScheduleList = () => {
   } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
 
   const {
+    data: tutors,
+    isLoading: tutorsLoading,
+    error: tutorsError,
+  } = useQuery({queryKey: ['tutors'], queryFn: () => fetchStudents()});
+
+  const {
     data: comments,
     isLoading: commentsLoading,
     error: commentsError,
@@ -281,9 +305,9 @@ const ScheduleList = () => {
     }
   }, [students]);
 
-  if (assessmentsLoading || commentsLoading || studentsLoading || homeworkListLoading || tutoringSessionsLoading) return <div>Loading...</div>;
-  if (assessmentsError || commentsError || studentsError || homeworkListError || tutoringSessionsError) {
-    if(assessmentsError?.status === 401 || commentsError?.status === 401 || studentsError?.status === 401 || homeworkListError?.status === 401 || tutoringSessionsError?.status === 401) //unauthorized
+  if (assessmentsLoading || commentsLoading || studentsLoading || tutorsLoading || homeworkListLoading || tutoringSessionsLoading) return <div>Loading...</div>;
+  if (assessmentsError || commentsError || studentsError || tutorsError || homeworkListError || tutoringSessionsError) {
+    if(assessmentsError?.status === 401 || commentsError?.status === 401 || studentsError?.status === 401 || tutorsError?.status === 401 || homeworkListError?.status === 401 || tutoringSessionsError?.status === 401) //unauthorized
     {
       console.log("unathorized");
       localStorage.setItem('tempComments', JSON.stringify(tempComments));
