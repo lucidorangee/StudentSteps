@@ -100,7 +100,7 @@ const AnalysisPage = () => {
       console.log(`selectedYear: ${selectedYear} / comment_datetime.getFullYear: ${comment_datetime.getFullYear()}`);
 
       if(selectedDay !== '' && comment_datetime.getDate() !== Number(selectedDay)) continue;
-      if(selectedMonth !== '' && comment_datetime.getMonth() !== Number(selectedMonth) + 1) continue;
+      if(selectedMonth !== '' && comment_datetime.getMonth() + 1 !== Number(selectedMonth)) continue;
       if(selectedYear !== '' && comment_datetime.getFullYear() !== Number(selectedYear)) continue;
 
       if(comment.content === 'noshow') count++;
