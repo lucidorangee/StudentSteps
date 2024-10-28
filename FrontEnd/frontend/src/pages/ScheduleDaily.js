@@ -96,7 +96,7 @@ const ScheduleDaily = () => {
   };
 
   const dateonlySetting = {
-    timeZone: "America/New_York", // Eastern Time zone
+    timeZone: "UTC", // Eastern Time zone
     weekday: "long",
     month: "long",
     day: "numeric",
