@@ -51,20 +51,6 @@ const deleteStudentByID = async (student_id) => {
     throw new Error('Failed to fetch comments');
   }
 
-  /*
-  const deleteCommentsResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments?student_id=${student_id}`, {
-    credentials: 'include',
-    method: 'delete',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!deleteCommentsResponse.ok) {
-    const deleteCommentsText = await deleteCommentsResponse.text();
-    throw new Error('Failed to delete comments: ' + deleteCommentsText);
-  }*/
-
   const tutoringSessionsResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions?student_id=${student_id}`, {
     credentials: 'include',
     method: 'GET',
@@ -76,6 +62,18 @@ const deleteStudentByID = async (student_id) => {
   if (!tutoringSessionsResponse.ok) {
     throw new Error('Failed to fetch tutoring sessions');
   }
+
+  const assessmentsResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/assessments?student_id=${student_id}`, {
+    credentials: 'include',
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!assessmentsResponse.ok) {
+    throw new Error('Failed to fetch tutoring sessions');
+  }
   
   const comments = await commentsResponse.json();
   const commentsText = comments.map(comment => `${comment.datetime} - ${comment.content}`).join('\n\n');
@@ -83,7 +81,11 @@ const deleteStudentByID = async (student_id) => {
   const tutoringSessions = await tutoringSessionsResponse.json();
   const tutoringsessionsText = tutoringSessions.map(tutoringSession => `${tutoringSession.session_datetime} - ${tutoringSession.notes}`).join('\n\n');
 
-  const blob = new Blob([commentsText, "\n\n\n", tutoringsessionsText], { type: 'text/plain' });
+  const assessments = await assessmentsResponse.json();
+  const assessmentsText = tutoringSessions.map(tutoringSession => `${tutoringSession.session_datetime} - ${tutoringSession.notes}`).join('\n\n');
+
+
+  const blob = new Blob([commentsText, "\n\nTutoringSessions:\n", tutoringsessionsText], { type: 'text/plain' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = `student_${student_id}_comments.txt`;

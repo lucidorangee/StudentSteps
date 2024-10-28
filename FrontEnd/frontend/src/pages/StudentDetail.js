@@ -42,6 +42,39 @@ const fetchComments = async() => {
   return await response.json();
 }
 
+const requestDataDownload = async (id) => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/download/${id}`, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const err = new Error('Failed to fetch file');
+      err.status = response.status;
+      throw err;
+    }
+
+    // Get the binary data as a Blob
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+
+    // Create a temporary download link
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `data-files.zip`; // Set the filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    console.log("Successfully downloaded zip file");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const updateStudent = async (id, student) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
     credentials: 'include',
@@ -569,6 +602,7 @@ const StudentList = () => {
           )}
         </div>
       </div>
+      <button className="btn btn-primary" onClick={() => requestDataDownload(student.student_id)}>Download Student</button>
       <div>
         <div className="card" style={{ width: '95%' }}>
           <div className="card-body text-left">

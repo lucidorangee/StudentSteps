@@ -1,6 +1,12 @@
 const pool = require('../db.js');
 const queries = require("../models/studentQueries.js");
+const tutoringSessionQueries = require("../models/tutoringSessionQueries.js");
+const assessmentQueries = require("../models/assessmentQueries.js");
+const homeworkQueries = require("../models/homeworkQueries.js");
+const commentQueries = require("../models/commentQueries.js");
 const bcrypt = require("bcrypt");
+const { parse } = require("json2csv");
+const archiver = require("archiver");
 
 const getStudents = (req, res) => {
     pool.query("SELECT * FROM students", (error, results) => {
@@ -10,7 +16,6 @@ const getStudents = (req, res) => {
 };
 
 const getStudentById = (req, res) => {
-  console.log("hi");
     const id = parseInt(req.params.id);
     pool.query(queries.getStudentById, [id], (error, results) => {
         if(error) throw error;
@@ -159,7 +164,57 @@ const removeStudent = (req, res) => {
             })
         }
     });
+}
 
+const downloadStudent = async (req, res) => {
+  const id = parseInt(req.params.id);
+  let assessments = [];
+  let homework = [];
+  let tutoringSessions = [];
+  let comments = [];
+
+  try {
+    // Retrieve assessments data
+    const assessmentResults = await pool.query(assessmentQueries.getAssessments);
+    assessments = assessmentResults.rows.filter(assessment => assessment.student_id === id);
+
+    // Retrieve homework data
+    const homeworkResults = await pool.query(homeworkQueries.getHomework);
+    homework = homeworkResults.rows.filter(hmwk => hmwk.student_id === id);
+    
+    // Retrieve tutoring session data
+    const tutoringSessionResults = await pool.query(tutoringSessionQueries.getTutoringSessions);
+    tutoringSessions = tutoringSessionResults.rows.filter(session => session.student_id === id);
+    
+    // Retrieve tutoring session data
+    const commentResults = await pool.query(commentQueries.getComments);
+    comments = commentResults.rows.filter(comment => comment.student_id === id);
+
+    // Convert to CSV
+    const csv1 = parse(assessments);
+    const csv2 = parse(homework);
+    const csv3 = parse(tutoringSessions);
+    const csv4 = parse(comments);
+
+    const student = 
+
+    // Set up response as a zip file
+    res.attachment(`Student${id}.zip`);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+    archive.pipe(res);
+
+    // Append CSV files to archive
+    archive.append(csv1, { name: 'assessments.csv' });
+    archive.append(csv2, { name: 'homework.csv' });
+    archive.append(csv3, { name: 'sessions.csv' });
+    archive.append(csv4, { name: 'comments.csv' });
+
+    // Finalize and send the archive
+    await archive.finalize();
+  } catch (error) {
+    console.error('Error generating CSV files:', error);
+    res.status(500).send('Error generating files');
+  }
 }
 
 const updateStudent = async (req, res) => {
@@ -196,5 +251,6 @@ module.exports = {
     getStudentById,
     addStudent,
     removeStudent,
+    downloadStudent,
     updateStudent
 };
