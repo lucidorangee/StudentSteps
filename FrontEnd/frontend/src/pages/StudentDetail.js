@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
@@ -42,9 +42,9 @@ const fetchComments = async() => {
   return await response.json();
 }
 
-const requestDataDownload = async (id) => {
+const requestDataDownload = async (student) => {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/download/${id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/download/${student.student_id}`, {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const requestDataDownload = async (id) => {
     // Create a temporary download link
     const link = document.createElement('a');
     link.href = url;
-    link.download = `data-files.zip`; // Set the filename
+    link.download = `${student.first_name}_${student.last_name}.zip`; // Set the filename
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -93,8 +93,30 @@ const updateStudent = async (id, student) => {
   return;
 }
 
+const deleteStudentByID = async (student_id) => {
+  const url = `${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`;
+  
+  const response = await fetch(url, {
+    credentials: 'include',
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const responseText = await response.text();
+    throw new Error(`Failed to delete student: ${responseText}`);
+  }
+
+  return;
+};
+
+
+
 const StudentList = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { id } = useParams();
   const [student, setStudent] = useState(null);
   const [tempStudent, setTempStudent] = useState(null);
@@ -113,6 +135,17 @@ const StudentList = () => {
     },
     onError: (error) => {
       console.log('Error updating student:', error.message);
+    }
+  });
+
+  const { mutate: deleteStudent, isDeleteStudentLoading, isDeleteStudentError, deleteStudentError } = useMutation({
+    mutationFn: (student_id) => deleteStudentByID(student_id),
+    onSuccess: () => {
+      console.log("Successfully deleted");
+      navigate(`/admin/students`)
+    },
+    onError: (error) => {
+      console.log('Error deleting student:', error.message);
     }
   });
 
@@ -243,12 +276,39 @@ const StudentList = () => {
   const handleSelect = (type) => {
     setCommentType(type);
   };  
+
+  
+  const handleShow = () => {
+    setShowModal(true);
+  }
+
+  const handleClose = () => setShowModal(false);
   
   return (
     <div> 
       <h1 className="m-2 mt-4">
         Student Information
       </h1>
+      <Modal show={showModal} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Select Tutor</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>This operation is <bold>irreversible</bold>.</p>
+          <p>This operation is <bold>irreversible</bold>.</p>
+          <select className="form-select" onChange={(e) => setSelectedTutor(e.target.value)}>
+            <option>Select a tutor</option>
+            {tutors.map((tutor) => (
+              <option key={tutor.tutor_id} value={tutor.tutor_id}>{tutor.first_name} {tutor.last_name}</option>
+            ))}
+          </select>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleClose}>Return</Button>
+          <Button variant="danger" onClick={() => deleteStudent(student.student_id)}>DELETE</Button>
+        </Modal.Footer>
+      </Modal>
+
       {isEditing?(
         <div className="m-2">
           <button className="btn btn-primary me-2" onClick={handleApply}>Apply</button>
@@ -602,7 +662,8 @@ const StudentList = () => {
           )}
         </div>
       </div>
-      <button className="btn btn-primary" onClick={() => requestDataDownload(student.student_id)}>Download Student</button>
+      <button className="btn btn-primary" onClick={() => requestDataDownload(student)}>Download Student</button>
+      <button className="btn btn-danger" onClick={() => handleShow()}>DELETE STUDENT</button>
       <div>
         <div className="card" style={{ width: '95%' }}>
           <div className="card-body text-left">

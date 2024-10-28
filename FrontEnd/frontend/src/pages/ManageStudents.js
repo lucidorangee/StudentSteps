@@ -38,75 +38,6 @@ const fetchComments = async () => {
   return response.json();
 };
 
-const deleteStudentByID = async (student_id) => {
-  const commentsResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments?student_id=${student_id}`, {
-    credentials: 'include',
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!commentsResponse.ok) {
-    throw new Error('Failed to fetch comments');
-  }
-
-  const tutoringSessionsResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions?student_id=${student_id}`, {
-    credentials: 'include',
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!tutoringSessionsResponse.ok) {
-    throw new Error('Failed to fetch tutoring sessions');
-  }
-
-  const assessmentsResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/assessments?student_id=${student_id}`, {
-    credentials: 'include',
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!assessmentsResponse.ok) {
-    throw new Error('Failed to fetch tutoring sessions');
-  }
-  
-  const comments = await commentsResponse.json();
-  const commentsText = comments.map(comment => `${comment.datetime} - ${comment.content}`).join('\n\n');
-
-  const tutoringSessions = await tutoringSessionsResponse.json();
-  const tutoringsessionsText = tutoringSessions.map(tutoringSession => `${tutoringSession.session_datetime} - ${tutoringSession.notes}`).join('\n\n');
-
-  const assessments = await assessmentsResponse.json();
-  const assessmentsText = tutoringSessions.map(tutoringSession => `${tutoringSession.session_datetime} - ${tutoringSession.notes}`).join('\n\n');
-
-
-  const blob = new Blob([commentsText, "\n\nTutoringSessions:\n", tutoringsessionsText], { type: 'text/plain' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = `student_${student_id}_comments.txt`;
-  link.click();
-  
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${student_id}`, {
-    credentials: 'include',
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    const responseText = await response.text();
-    throw new Error('Failed to delete student: ' + responseText); // Include responseText in the error for context
-  }
-
-  return;
-}
-
 const ManageStudents = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -134,17 +65,6 @@ const ManageStudents = () => {
     isLoading: commentsLoading,
     error: commentsError,
   } = useQuery({queryKey: ['comments'], queryFn: () => fetchComments()});
-
-  const { mutate: deleteStudent, isLoading, isError, error } = useMutation({
-    mutationFn: (student_id) => deleteStudentByID(student_id),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['students']);
-      console.log("Successfully deleted");
-    },
-    onError: (error) => {
-      console.log('Error deleting student:', error.message);
-    }
-  });
 
   if (studentsLoading) return <div>Loading...</div>;
   if (studentsError) {
@@ -221,7 +141,6 @@ const ManageStudents = () => {
             <th>Phone Number</th>
             <th>Email</th>
             <th>Stamps</th>
-            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -234,13 +153,6 @@ const ManageStudents = () => {
               <td>{student.student_phone}</td>
               <td>{student.student_email}</td>
               <td>{student.stamps}</td>
-              <td>
-                <i
-                  className="bi bi-trash"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => deleteStudent(student.student_id)}
-                ></i>
-              </td>
             </tr>
           ))):(
             <tr>
