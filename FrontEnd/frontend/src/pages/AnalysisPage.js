@@ -141,19 +141,6 @@ const AnalysisPage = () => {
     );
   };
 
-  const handleDateChange = () => {
-    // Build formatted date based on selected parts
-    const formattedDate = [
-      selectedYear,
-      selectedMonth.padStart(2, '0'),
-      selectedDay.padStart(2, '0')
-    ]
-      .filter(Boolean) // Remove empty values
-      .join('-');
-    
-    navigate(`/admin/analysis/${formattedDate}`);
-  };
-
   const handleDateReset = () => {
     setSelectedYear('');
     setSelectedMonth('');
@@ -179,14 +166,11 @@ const AnalysisPage = () => {
     navigate(`/admin/analysis/${formattedDate}`);
   };
 
-  
-
   // Generate options
   const years = Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i);
   const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
   const days = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
 
-  
   return (
     <div className="App">
       <h2>Welcome, User!</h2>

@@ -194,6 +194,16 @@ const StudentList = () => {
     return <div>Error loading data</div>;
   }
 
+  const datetimeSetting = {
+    timeZone: "America/New_York", // Eastern Time zone
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true, // Use 12-hour format
+  };
+
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
   };
@@ -293,7 +303,7 @@ const StudentList = () => {
       </h1>
       <Modal show={showModal} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Select Tutor</Modal.Title>
+          <Modal.Title>DELETE STUDENT</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>This operation is <strong>irreversible</strong>.</p>
@@ -644,9 +654,9 @@ const StudentList = () => {
               <tr key={index}>
                 <div className="card" style={{ width: '95%' }}>
                   <div className="card-body text-left">
-                    <h5 className="card-title">{comment.datetime}</h5>
+                    <h5 className="card-title">{`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(comment.datetime)}`}</h5>
                     <div className="input-group mb-3">
-                      <p class="card-text">Date: {comment.datetime}</p>
+                      <p class="card-text">Comment type: {comment.type}</p>
                       <p class="card-text">Content: {comment.content}</p>
                     </div>
                   </div>
@@ -659,8 +669,8 @@ const StudentList = () => {
           )}
         </div>
       </div>
-      <button className="btn btn-primary" onClick={() => requestDataDownload(student)}>Download Student</button>
-      <button className="btn btn-danger" onClick={() => handleShow()}>DELETE STUDENT</button>
+      <button className="btn btn-primary" onClick={() => requestDataDownload(student)}>Download Student Data</button>
+      <button className="btn btn-danger" onClick={() => handleShow()}>Delete Student</button>
       <div>
         <div className="card" style={{ width: '95%' }}>
           <div className="card-body text-left">
@@ -680,6 +690,11 @@ const StudentList = () => {
                   <li>
                     <button className="dropdown-item" onClick={() => handleSelect('admin')}>
                       Admin
+                    </button>
+                  </li>
+                  <li>
+                    <button className="dropdown-item" onClick={() => handleSelect('private')}>
+                      Private
                     </button>
                   </li>
                   <li>
