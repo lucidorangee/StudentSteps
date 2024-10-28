@@ -94,13 +94,13 @@ const AnalysisPage = () => {
     for(const comment of comments)
     {
       const comment_datetime = new Date(comment.datetime);
-      
+
       console.log(`selectedDay: ${selectedDay} / comment_datetime.getDate: ${comment_datetime.getDate()}`);
       console.log(`selectedMonth: ${selectedMonth} / comment_datetime.getMonth: ${comment_datetime.getMonth()}`);
       console.log(`selectedYear: ${selectedYear} / comment_datetime.getFullYear: ${comment_datetime.getFullYear()}`);
 
       if(selectedDay !== '' && comment_datetime.getDate() !== Number(selectedDay)) continue;
-      if(selectedMonth !== '' && comment_datetime.getMonth() !== Number(selectedMonth)) continue;
+      if(selectedMonth !== '' && comment_datetime.getMonth() !== Number(selectedMonth) + 1) continue;
       if(selectedYear !== '' && comment_datetime.getFullYear() !== Number(selectedYear)) continue;
 
       if(comment.content === 'noshow') count++;
@@ -240,7 +240,7 @@ const AnalysisPage = () => {
         </button>
       </div>
       {
-        noShowData[0]['value']+noShowData[1]['value'] === 0?
+        noShowData[0].value === 0 && noShowData[1].value === 0?
         (
           <div>No approved tutoring session comments on this date</div>
         )
