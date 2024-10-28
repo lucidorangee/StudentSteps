@@ -206,7 +206,6 @@ const StudentList = () => {
 
   const dateonlySetting = {
     timeZone: "UTC", // Eastern Time zone
-    weekday: "long",
     month: "long",
     day: "numeric",
   };
@@ -337,7 +336,7 @@ const StudentList = () => {
       )}
       <hr className="m-4" />
       <div className="row mt-3">
-        <div className="col-9">
+        <div className="col-7">
           <div className="card mt-3">
             <div className="card-body">
               <div className="container-fluid">
@@ -656,7 +655,7 @@ const StudentList = () => {
             </div>
           </div>
         </div>
-        <div className="col-3">
+        <div className="col-5">
           {Array.isArray(comments) && (comments).length > 0 ? (
             (comments).map((comment, index) => (
               <tr key={index}>
