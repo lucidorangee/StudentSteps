@@ -172,8 +172,13 @@ const downloadStudent = async (req, res) => {
   let homework = [];
   let tutoringSessions = [];
   let comments = [];
+  let student = [];
 
   try {
+    // Retrieve student data
+    const studentResults = await pool.query(queries.getStudentById, [id]);
+    student = studentResults.rows;
+
     // Retrieve assessments data
     const assessmentResults = await pool.query(assessmentQueries.getAssessments);
     assessments = assessmentResults.rows.filter(assessment => assessment.student_id === id);
@@ -191,10 +196,11 @@ const downloadStudent = async (req, res) => {
     comments = commentResults.rows.filter(comment => comment.student_id === id);
 
     // Convert to CSV
-    const csv1 = parse(assessments);
-    const csv2 = parse(homework);
-    const csv3 = parse(tutoringSessions);
-    const csv4 = parse(comments);
+    const csv1 = parse(student);
+    const csv2 = parse(assessments);
+    const csv3 = parse(homework);
+    const csv4 = parse(tutoringSessions);
+    const csv5 = parse(comments);
 
     const student = 
 
@@ -204,10 +210,11 @@ const downloadStudent = async (req, res) => {
     archive.pipe(res);
 
     // Append CSV files to archive
-    archive.append(csv1, { name: 'assessments.csv' });
-    archive.append(csv2, { name: 'homework.csv' });
-    archive.append(csv3, { name: 'sessions.csv' });
-    archive.append(csv4, { name: 'comments.csv' });
+    archive.append(csv1, { name: 'student_detail.csv' });
+    archive.append(csv2, { name: 'assessments.csv' });
+    archive.append(csv3, { name: 'homework.csv' });
+    archive.append(csv4, { name: 'sessions.csv' });
+    archive.append(csv5, { name: 'comments.csv' });
 
     // Finalize and send the archive
     await archive.finalize();
