@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
+import { Modal, Button } from 'react-bootstrap';
 
 const fetchStudents = async () => {
 
@@ -121,6 +122,7 @@ const StudentList = () => {
   const [student, setStudent] = useState(null);
   const [tempStudent, setTempStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const [commentType, setCommentType] = useState('admin');
 
@@ -294,20 +296,15 @@ const StudentList = () => {
           <Modal.Title>Select Tutor</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>This operation is <bold>irreversible</bold>.</p>
-          <p>This operation is <bold>irreversible</bold>.</p>
-          <select className="form-select" onChange={(e) => setSelectedTutor(e.target.value)}>
-            <option>Select a tutor</option>
-            {tutors.map((tutor) => (
-              <option key={tutor.tutor_id} value={tutor.tutor_id}>{tutor.first_name} {tutor.last_name}</option>
-            ))}
-          </select>
+          <p>This operation is <strong>irreversible</strong>.</p>
+          <p>Please ensure you have downloaded related tutoring sessions, comments, assessments, and homework via the <strong>DOWNLOAD</strong> button first.</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>Return</Button>
-          <Button variant="danger" onClick={() => deleteStudent(student.student_id)}>DELETE</Button>
+          <Button variant="primary" onClick={handleClose}>Cancel</Button>
+          <Button variant="danger" onClick={() => deleteStudent(student.student_id)}>Confirm Delete</Button>
         </Modal.Footer>
       </Modal>
+
 
       {isEditing?(
         <div className="m-2">
