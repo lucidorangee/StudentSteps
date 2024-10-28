@@ -172,12 +172,12 @@ const downloadStudent = async (req, res) => {
   let homework = [];
   let tutoringSessions = [];
   let comments = [];
-  let student = [];
+  let student_detail = [];
 
   try {
     // Retrieve student data
     const studentResults = await pool.query(queries.getStudentById, [id]);
-    student = studentResults.rows;
+    student_detail = studentResults.rows;
 
     // Retrieve assessments data
     const assessmentResults = await pool.query(assessmentQueries.getAssessments);
@@ -196,13 +196,11 @@ const downloadStudent = async (req, res) => {
     comments = commentResults.rows.filter(comment => comment.student_id === id);
 
     // Convert to CSV
-    const csv1 = parse(student);
+    const csv1 = parse(student_detail);
     const csv2 = parse(assessments);
     const csv3 = parse(homework);
     const csv4 = parse(tutoringSessions);
     const csv5 = parse(comments);
-
-    const student = 
 
     // Set up response as a zip file
     res.attachment(`Student${id}.zip`);
