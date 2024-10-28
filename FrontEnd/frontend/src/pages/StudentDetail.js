@@ -655,9 +655,9 @@ const StudentList = () => {
                 <div className="card" style={{ width: '95%' }}>
                   <div className="card-body text-left">
                     <h5 className="card-title">{`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(comment.datetime))}`}</h5>
-                    <div className="input-group mb-3">
-                      <p class="card-text">Comment type: {comment.type}</p>
-                      <p class="card-text">Content: {comment.content}</p>
+                    <div className="mb-3">
+                      <p className="card-text d-block">Comment type: {comment.type}</p>
+                      <p className="card-text d-block">Content: {comment.content}</p>
                     </div>
                   </div>
                 </div>
