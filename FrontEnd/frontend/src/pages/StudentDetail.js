@@ -204,6 +204,13 @@ const StudentList = () => {
     hour12: true, // Use 12-hour format
   };
 
+  const dateonlySetting = {
+    timeZone: "UTC", // Eastern Time zone
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  };
+
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
   };
@@ -224,10 +231,11 @@ const StudentList = () => {
     });
   };
 
-  const setDate = (value) => {
+  const setDate = (date) => {
+    const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     setStudent({
       ...student,
-      'date_of_birth': value.toISOString(),
+      'date_of_birth': utcDate.toISOString(),
     });
   }
 
@@ -382,7 +390,7 @@ const StudentList = () => {
                     {isEditing?(
                       <div className="d-flex align-items-center">
                       <DatePicker
-                        selected={student.date_of_birth}
+                        selected={new Date(student.date_of_birth)}
                         onChange={setDate}
                         dateFormat="yyyy/MM/dd"
                         className="form-control"
@@ -391,7 +399,7 @@ const StudentList = () => {
                       <FaCalendarAlt className="ms-2 text-secondary" />
                     </div>
                     ):(
-                      <p>{student.date_of_birth}</p>
+                      <p>{`${new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(student.date_of_birth))}`}</p>
                     )}
                   </div>
                   <div className="col-md-4">
