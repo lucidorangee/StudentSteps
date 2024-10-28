@@ -655,25 +655,27 @@ const StudentList = () => {
             </div>
           </div>
         </div>
-        <div className="col-5">
-          {Array.isArray(comments) && (comments).length > 0 ? (
-            (comments).map((comment, index) => (
-              <tr key={index}>
-                <div className="card" style={{ width: '95%' }}>
-                  <div className="card-body text-left">
-                    <h5 className="card-title">{`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(comment.datetime))}`}</h5>
-                    <div className="mb-3">
-                      <p className="card-text d-block">Comment type: {comment.type}</p>
-                      <p className="card-text d-block">Content: {comment.content}</p>
+        <div className="row">
+          <div className="col-5">
+            {Array.isArray(comments) && (comments).length > 0 ? (
+              (comments).map((comment, index) => (
+                <tr key={index}>
+                  <div className="card" style={{ width: '95%' }}>
+                    <div className="card-body text-left">
+                      <h5 className="card-title">{`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(comment.datetime))}`}</h5>
+                      <div className="mb-3">
+                        <p className="card-text d-block">Comment type: {comment.type}</p>
+                        <p className="card-text d-block">Content: {comment.content}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </tr>
-            ))):(
-              <tr>
-                <td colSpan="9">No data available</td>
-              </tr>
-          )}
+                </tr>
+              ))):(
+                <tr>
+                  <td colSpan="9">No comment available</td>
+                </tr>
+            )}
+          </div>
         </div>
       </div>
       <button className="btn btn-primary" onClick={() => requestDataDownload(student)}>Download Student Data</button>
