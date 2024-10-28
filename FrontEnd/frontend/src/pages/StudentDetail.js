@@ -658,7 +658,7 @@ const StudentList = () => {
         <div className="col-5">
           {Array.isArray(comments) && (comments).length > 0 ? (
             (comments).map((comment, index) => (
-              <tr key={index}>
+              <div key={index}>
                 <div className="card" style={{ width: '95%' }}>
                   <div className="card-body text-left">
                     <h5 className="card-title">{`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(comment.datetime))}`}</h5>
@@ -668,7 +668,7 @@ const StudentList = () => {
                     </div>
                   </div>
                 </div>
-              </tr>
+              </div>
             ))):(
               <tr>
                 <td colSpan="9">No comment available</td>
