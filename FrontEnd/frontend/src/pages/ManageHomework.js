@@ -119,69 +119,7 @@ const ManageHomework = () => {
     return <div>Error loading data</div>;
   }
 
-/*
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
-      credentials: 'include',
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        setStudents(data);
-        })
-      .catch(error => {
-        console.error('Error fetching students data: ', error);
-      })
-  }, []);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/`, {
-      credentials: 'include',
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-          setHomework(data);
-          setFilteredHomework(data);
-          setLoading(false);
-        })
-      .catch(error => {
-        console.error('Error fetching homework data: ', error);
-      })
-  }, []);*/
-/*
-  const handleDelete = (homework_id) => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/homework/${homework_id}`, {
-      credentials: 'include',
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.text();
-    })
-    .then(data => {
-      console.log(`Homework with ID ${homework_id} deleted successfully`);
-
-      // Refresh after successful deletion
-      window.location.reload();
-    })
-    .catch(error => {
-      console.error('Error deleting session:', error);
-    });
-  };*/
-
-  const redirectStudentProfile  = (homework_id) => {
+  const redirectHomeworkProfile  = (homework_id) => {
     navigate(`/homework/detail/${homework_id}`, { replace : true});
   }
 
@@ -253,11 +191,14 @@ const ManageHomework = () => {
         {Array.isArray(filteredHomework) && (filteredHomework).length > 0 ? (
           (filteredHomework).map((ahomework, index) => {
             const cur_student = students.find((s) => s.student_id === ahomework.student_id);
+            if(!cur_student)
+            {
+              console.log(`cur homework: ${JSON.stringify(ahomework)}`)
+              return null;
+            }
 
             return(
             <tr key={index}>
-              {//<td onClick={() => redirectStudentProfile(student.student_id)}>{student.student_id}</td>
-              }
               <td>{ahomework.homework_id}</td>
               <td>{cur_student.first_name} {cur_student.last_name}</td>
               <td>{ahomework.subject}</td>
