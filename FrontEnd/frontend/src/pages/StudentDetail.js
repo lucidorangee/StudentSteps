@@ -91,7 +91,7 @@ const updateStudent = async (id, student) => {
     throw new Error('Failed to update student: ' + responseText); // Include responseText in the error for context
   }
 
-  return;
+  return response.json();
 }
 
 const deleteStudentByID = async (student_id) => {
@@ -110,10 +110,8 @@ const deleteStudentByID = async (student_id) => {
     throw new Error(`Failed to delete student: ${responseText}`);
   }
 
-  return;
+  return response.json();
 };
-
-
 
 const StudentList = () => {
   const queryClient = useQueryClient();

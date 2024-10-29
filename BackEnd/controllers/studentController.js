@@ -163,9 +163,13 @@ const removeStudent = async (req, res) => {
     await client.query( queries.removeStudent, [id] );
 
     await client.query('COMMIT');
+
+    res.status(200).send({ message: 'Student removed successfully' });
   } catch (error) {
     console.error('Error removing student:', error);
     res.status(500).send('Error removing student');
+  } finally {
+    client.release(); // Release the database client back to the pool
   }
 }
 
@@ -245,10 +249,10 @@ const updateStudent = async (req, res) => {
       ]
     );
 
-    res.status(200).send('Student updated successfully');
+    res.status(200).send( {message:'Student updated successfully'} );
   } catch (error) {
     console.error('Error updating student:', error);
-    res.status(500).send('Internal server error');
+    res.status(500).send( 'Internal server error' );
   }
 };
 
