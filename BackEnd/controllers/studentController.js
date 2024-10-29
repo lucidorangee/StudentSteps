@@ -1,6 +1,7 @@
 const pool = require('../db.js');
 const queries = require("../models/studentQueries.js");
 const tutoringSessionQueries = require("../models/tutoringSessionQueries.js");
+const tutoringSessionDraftQueries = require("../models/tutoringSessionDraftQueries.js");
 const assessmentQueries = require("../models/assessmentQueries.js");
 const homeworkQueries = require("../models/homeworkQueries.js");
 const commentQueries = require("../models/commentQueries.js");
@@ -157,6 +158,8 @@ const removeStudent = async (req, res) => {
     await client.query( assessmentQueries.removeAssessmentByStudentId, [id] );
     await client.query( homeworkQueries.removeHomeworkByStudentId, [id] );
     await client.query( commentQueries.removeCommentByStudentId, [id] );
+    await client.query( tutoringSessionQueries.removeTutoringSessionByStudentId, [id] );
+    await client.query( tutoringSessionDraftQueries.removeTutoringSessionDraftByStudentId, [id] );
     await client.query( queries.removeStudent, [id] );
 
     await client.query('COMMIT');
