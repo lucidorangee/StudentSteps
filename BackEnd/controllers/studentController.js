@@ -147,23 +147,23 @@ const addStudentbefore = async (req, res) => {
     }
   };
 
-const removeStudent = (req, res) => {
-    const id = parseInt(req.params.id);
-    
-    pool.query(queries.getStudentById, [id], (error, results) => {
-        if (error) throw error;
-        const noStudentFound = !results.rows.length;
-        if(noStudentFound){
-            res.send("Student does not exist in the database, could not remove");
-        }
+const removeStudent = async (req, res) => {
+  const client = await pool.connect();  // Connect to the client for transaction
+  const id = parseInt(req.params.id);
 
-        else{
-            pool.query(queries.removeStudent, [id], (error, result) => {
-                if (error) throw error;
-                res.status(200).send("Student "+id+" removed successfully");
-            })
-        }
-    });
+  try{
+    await client.query('BEGIN'); // Start transaction
+
+    await client.query( assessmentQueries.removeAssessmentByStudentId, [id] );
+    await client.query( homeworkQueries.removeHomeworkByStudentId, [id] );
+    await client.query( commentQueries.removeCommentByStudentId, [id] );
+    await client.query( queries.removeStudent, [id] );
+
+    await client.query('COMMIT');
+  } catch (error) {
+    console.error('Error removing student:', error);
+    res.status(500).send('Error removing student');
+  }
 }
 
 const downloadStudent = async (req, res) => {
