@@ -178,7 +178,7 @@ const CreateTutoringSession = () => {
     const formData = {
       student_id: student_id,
       tutor_id: tutor_id,
-      dateTimeList: JSON.stringify(dateTimeList),
+      dateTimeList: dateTimeList,
       repeatCount: repeatCount,
       notes: notes,
     };
