@@ -371,7 +371,7 @@ const StudentList = () => {
 
   return (
     <div>
-      <h1 className="m-2 mt-4">Student Information</h1>
+      <h1 className="m-2 mt-4">Profile: {student.first_name} {student.last_name}</h1>
       <Modal show={showModal} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>DELETE STUDENT</Modal.Title>
@@ -386,20 +386,9 @@ const StudentList = () => {
         </Modal.Footer>
       </Modal>
 
-      {isEditing ? (
-        <div className="m-2">
-          <button className="btn btn-primary me-2" onClick={handleApply}>Apply</button>
-          <button className="btn btn-secondary" onClick={handleBack}>Back</button>
-        </div>
-      ) : (
-        <div>
-          <button onClick={handleEditToggle}>Edit</button>
-        </div>
-      )}
-
-      <hr className="m-4" />
 
       <Tabs defaultActiveKey="personalInfo" id="uncontrolled-tab-example" className="mb-3">
+        <hr className="m-4" />
         <Tab eventKey="personalInfo" title="Personal Information">
           <div className="row mt-3">
             <div className="col-12">
@@ -407,6 +396,16 @@ const StudentList = () => {
                 <div className="card-body">
                   <div className="container-fluid">
                     <div className="row g-3">
+                      {isEditing ? (
+                        <div className="m-2">
+                          <button className="btn btn-primary me-2" onClick={handleApply}>Apply</button>
+                          <button className="btn btn-secondary" onClick={handleBack}>Back</button>
+                        </div>
+                      ) : (
+                        <div>
+                        <button className="btn btn-primary me-2" onClick={handleEditToggle}>Edit</button>
+                        </div>
+                      )}
                       {renderPersonalInformation()}
                     </div>
                   </div>
