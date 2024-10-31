@@ -387,25 +387,25 @@ const StudentList = () => {
       </Modal>
 
 
-      <Tabs defaultActiveKey="personalInfo" id="uncontrolled-tab-example" className="mb-3">
+      <Tabs defaultActiveKey="personalInfo" id="uncontrolled-tab-example" className="mt-3">
         <Tab eventKey="personalInfo" title="Personal Information">
-          <div className="row mt-3">
+          <div className="row">
             <div className="col-12">
               <div className="card mt-3">
                 <div className="card-body">
                   <div className="container-fluid">
                     <div className="row g-3">
+                      {renderPersonalInformation()}
                       {isEditing ? (
-                        <div className="m-2">
+                        <div className="m-2 d-flex justify-content-end">
                           <button className="btn btn-primary me-2" onClick={handleApply}>Apply</button>
                           <button className="btn btn-secondary" onClick={handleBack}>Back</button>
                         </div>
                       ) : (
-                        <div className="m-2">
+                        <div className="m-2 d-flex justify-content-end">
                           <button className="btn btn-primary me-2" onClick={handleEditToggle}>Edit</button>
                         </div>
                       )}
-                      {renderPersonalInformation()}
                     </div>
                   </div>
                 </div>
@@ -449,8 +449,10 @@ const StudentList = () => {
         </Tab>
       </Tabs>
 
-      <button className="btn btn-primary" onClick={() => requestDataDownload(student)}>Download Student Data</button>
-      <button className="btn btn-danger" onClick={handleShow}>Delete Student</button>
+      <div className="row mt-3">
+        <button className="btn btn-primary m-2" onClick={() => requestDataDownload(student)}>Download Student Data</button>
+        <button className="btn btn-danger m-2" onClick={handleShow}>Delete Student</button>
+      </div>
     </div>
   );
   
