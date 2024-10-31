@@ -111,6 +111,8 @@ const getTutoringSessionById = (req, res) => {
 const addTutoringSession = async (req, res) => {
     //console.log(req.body);
     const { student_id, tutor_id, dateTimeList, repeatCount, notes } = req.body;
+    
+    console.log(`Current dateTimeList ${JSON.stringify(dateTimeList)}`);
 
     if (!Number.isInteger(repeatCount) || repeatCount < 1 || repeatCount > 100) {
         return res.status(400).json({ error: "repeatCount must be an integer between 1 and 100." });
@@ -124,7 +126,6 @@ const addTutoringSession = async (req, res) => {
         for (let count = 0; count < repeatCount; count++) {
             const dateTime = dateTimeList[count % dateTimeList.length];
 
-            console.log(`Current dateTime ${JSON.stringify(dateTime)}`);
 
             // Ensure dateTime has the correct format
             const formattedDateTime = dateTime.date.replace("T", " ").replace("Z", "+00:00");
