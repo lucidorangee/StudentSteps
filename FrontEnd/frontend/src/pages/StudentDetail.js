@@ -391,7 +391,7 @@ const StudentList = () => {
         <Tab eventKey="personalInfo" title="Personal Information">
           <div className="row">
             <div className="col-12">
-              <div className="card mt-3">
+              <div className="card">
                 <div className="card-body">
                   <div className="container-fluid">
                     <div className="row g-3">
@@ -415,29 +415,37 @@ const StudentList = () => {
         </Tab>
 
         <Tab eventKey="scheduling" title="Scheduling">
-          <div className="mt-3">
-            <p>Nothing here yet</p>
+          <div className="card">
+            <div className="card-body">
+              <div className="mt-3">
+                <p>Nothing here yet</p>
+              </div>
+            </div>
           </div>
         </Tab>
 
         <Tab eventKey="comments" title="Comments">
-          <div className="row mt-3">
-            <div className="col-12">
-              {Array.isArray(comments) && comments.length > 0 ? (
-                comments.map((comment, index) => (
-                  <div key={index} className="card mb-2" style={{ width: '95%' }}>
-                    <div className="card-body text-left">
-                      <h5 className="card-title">{new Intl.DateTimeFormat('en-US').format(new Date(comment.datetime))}</h5>
-                      <div className="mb-3">
-                        <p className="card-text d-block">Comment type: {comment.type}</p>
-                        <p className="card-text d-block">Content: {comment.content}</p>
+          <div className="card">
+            <div className="card-body">
+              <div className="row mt-3">
+                <div className="col-12">
+                  {Array.isArray(comments) && comments.length > 0 ? (
+                    comments.map((comment, index) => (
+                      <div key={index} className="card mb-2" style={{ width: '95%' }}>
+                        <div className="card-body text-left">
+                          <h5 className="card-title">{new Intl.DateTimeFormat('en-US').format(new Date(comment.datetime))}</h5>
+                          <div className="mb-3">
+                            <p className="card-text d-block">Comment type: {comment.type}</p>
+                            <p className="card-text d-block">Content: {comment.content}</p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p>No comment available</p>
-              )}
+                    ))
+                  ) : (
+                    <p>No comment available</p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
           <div className="card mt-3" style={{ width: '95%' }}>
@@ -449,9 +457,9 @@ const StudentList = () => {
         </Tab>
       </Tabs>
 
-      <div className="row mt-3">
-        <button className="btn btn-primary m-2" onClick={() => requestDataDownload(student)}>Download Student Data</button>
-        <button className="btn btn-danger m-2" onClick={handleShow}>Delete Student</button>
+      <div className="row m-2">
+        <button className="btn btn-primary col-2 m-2" onClick={() => requestDataDownload(student)}>Download Student Data</button>
+        <button className="btn btn-danger col-2 m-2" onClick={handleShow}>Delete Student</button>
       </div>
     </div>
   );
