@@ -1,3 +1,4 @@
+const { session } = require('passport');
 const pool = require('../db.js');
 const queries = require("../models/tutoringSessionQueries.js");
 
@@ -111,7 +112,7 @@ const getTutoringSessionById = (req, res) => {
 const addTutoringSession = async (req, res) => {
     //console.log(req.body);
     const { student_id, tutor_id, dateTimeList, repeatCount, notes } = req.body;
-
+    let currentDateTimeList = [...dateTimeList];
     console.log(`Current dateTimeList ${JSON.stringify(dateTimeList)}`);
 
     if (!Number.isInteger(repeatCount) || repeatCount < 1 || repeatCount > 100) {
@@ -124,18 +125,18 @@ const addTutoringSession = async (req, res) => {
         await client.query('BEGIN'); // Start transaction
 
         for (let count = 0; count < repeatCount; count++) {
-            const dateTime = dateTimeList[count % dateTimeList.length];
-
+            const index = count % dateTimeList.length;
+            const dateTime = currentDateTimeList[index];
+            let sessionDate = new Date(dateTime.date);
 
             // Ensure dateTime has the correct format
-            const formattedDateTime = dateTime.date.replace("T", " ").replace("Z", "+00:00");
+            const formattedDateTime = sessionDate.toISOString().replace("T", " ").replace("Z", "+00:00");
 
             await client.query(
                 queries.addTutoringSession,
                 [student_id, tutor_id, formattedDateTime, dateTime.hour * 60 + dateTime.minute, notes]
             );
-            
-            let sessionDate = new Date(dateTime.date);
+
             sessionDate.setDate(sessionDate.getDate() + 7);
             currentDateTimeList[index].date = sessionDate;
         }
