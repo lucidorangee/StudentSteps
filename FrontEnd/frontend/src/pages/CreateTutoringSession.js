@@ -135,6 +135,12 @@ const CreateTutoringSession = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (dateTimeList.length === 0)
+    {
+      setAlert("Please add at least one tutoring session.");
+      return;
+    }
+
     for(const dateTime of dateTimeList)
     {
       if (!(Number.isInteger(dateTime.hour) && dateTime.hour >= 0 && dateTime.hour <= 9))
@@ -186,7 +192,7 @@ const CreateTutoringSession = () => {
   const handleAddDateTime = () => {
     setDateTimeList([...dateTimeList, { date: new Date(), hour: '', minute: '' }]);
   };
-  
+
   const handleRemoveDateTime = (index) => {
     const updatedList = dateTimeList.filter((_, i) => i !== index);
     setDateTimeList(updatedList);
@@ -254,14 +260,16 @@ const CreateTutoringSession = () => {
                   <div className="d-flex align-items-center ms-4">
                     <label className="form-label me-2">Hour:</label>
                     <input
-                      type="text"
+                      type="number"
                       className="form-control w-50"
                       value={entry.hour}
                       onChange={(e) => {
                         const updatedList = [...dateTimeList];
-                        updatedList[index].hour = e.target.value;
+                        updatedList[index].hour = parseInt(e.target.value, 10) || '';
                         setDateTimeList(updatedList);
                       }}
+                      min="0"
+                      max="9"
                       style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
                     />
                   </div>
@@ -269,15 +277,17 @@ const CreateTutoringSession = () => {
                   <div className="d-flex align-items-center ms-3">
                     <label className="form-label me-2">Minutes:</label>
                     <input
-                      type="text"
+                      type="number" // Input type is number
                       className="form-control w-50"
                       value={entry.minute}
                       onChange={(e) => {
                         const updatedList = [...dateTimeList];
-                        updatedList[index].minute = e.target.value;
+                        updatedList[index].minute = parseInt(e.target.value, 10) || ''; // Convert to number
                         setDateTimeList(updatedList);
                       }}
-                      style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
+                      min="0"
+                      max="59"
+                      style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }} // To hide spinner
                     />
                   </div>
 
