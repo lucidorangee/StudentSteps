@@ -187,6 +187,11 @@ const CreateTutoringSession = () => {
     setDateTimeList([...dateTimeList, { date: new Date(), hour: '', minute: '' }]);
   };
   
+  const handleRemoveDateTime = (index) => {
+    const updatedList = dateTimeList.filter((_, i) => i !== index);
+    setDateTimeList(updatedList);
+  };
+  
   const handleRepeatCountChange = (e) => {
     setRepeatCount(e.target.value);
   };
