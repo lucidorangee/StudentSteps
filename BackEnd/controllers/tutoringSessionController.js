@@ -108,22 +108,45 @@ const getTutoringSessionById = (req, res) => {
     });
 };
 
-const addTutoringSession = (req, res) => {
-    console.log(req.body);
-    const { student_id, tutor_id, date, duration, notes } = req.body;
+const addTutoringSession = async (req, res) => {
+    //console.log(req.body);
+    const { student_id, tutor_id, dateTimeList, repeatCount, notes } = req.body;
 
-    // Search the student_id via student_name
+    if (!Number.isInteger(repeatCount) || repeatCount < 1 || repeatCount > 100) {
+        return res.status(400).json({ error: "repeatCount must be an integer between 1 and 100." });
+    }
 
-    // Search the tutor_id via tutor_name
+    const client = await pool.connect();  // Connect to the client for transaction
 
-    pool.query(
-        queries.addTutoringSession,
-        [ student_id, tutor_id, date.replace("T", " ").replace("Z", "+00:00"), duration, notes ],
-        (error, results) => {
-            if(error) throw error;
-            res.status(201).send("Session has been created successfully");
+    try {
+        await client.query('BEGIN'); // Start transaction
+
+        for (let count = 0; count < repeatCount; count++) {
+            const dateTime = dateTimeList[count % dateTimeList.length];
+
+            // Ensure dateTime has the correct format
+            const formattedDateTime = dateTime.date.replace("T", " ").replace("Z", "+00:00");
+
+            await client.query(
+                queries.addTutoringSession,
+                [student_id, tutor_id, formattedDateTime, dateTime.hour * 60 + dateTime.minute, notes]
+            );
+
+            sessionDate.setDate(sessionDate.getDate() + 7);
+            currentDateTimeList[index].date = sessionDate;
         }
-    )
+
+        
+        await client.query('COMMIT');  // Commit transaction
+        res.status(201).send("Tutoring sessions successfully added");
+
+    } catch (error) {
+        await client.query('ROLLBACK'); // Rollback if any error occurs
+        console.error("Transaction failed:", error);
+        res.status(500).send("Error adding tutoring sessions");
+    } finally {
+        client.release();  // Release the client back to the pool
+    }
 };
 
 const removeTutoringSession = (req, res) => {

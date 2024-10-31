@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
-import { FaCalendarAlt, FaPlus } from 'react-icons/fa';
+import { FaCalendarAlt, FaPlus, FaTrash } from 'react-icons/fa';
 import Select from 'react-select';
 import TimePicker from 'react-time-picker';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -60,12 +60,9 @@ const CreateTutoringSession = () => {
 
   const [student_id, setStudent] = useState(-1);
   const [tutor_id, setTutor] = useState(-1);
-  const [date, setDate] = useState(new Date());
-  const [durationHour, setHour] = useState('1');
-  const [durationMinute, setMinute] = useState('0');
   const [notes, setNotes] = useState('');
   const [alert, setAlert] = useState('');
-  const [dateTimeList, setDateTimeList] = useState([{ date: new Date(), hour: '', minute: '' }]);
+  const [dateTimeList, setDateTimeList] = useState([{ date: new Date(), hour: '1', minute: '0' }]);
   const [repeatCount, setRepeatCount] = useState(1);
 
   const [studentOptions, setStudentOptions] = useState([]);
@@ -138,16 +135,24 @@ const CreateTutoringSession = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let durationHourToUse = durationHour === "" ? "1" : durationHour;
-    let durationMinuteToUse = durationMinute === "" ? "0" : durationMinute;
+    for(const dateTime of dateTimeList)
+    {
+      if (!(Number.isInteger(dateTime.hour) && dateTime.hour >= 0 && dateTime.hour <= 9))
+      {
+        setAlert("The hour field for a session is not valid. It must be an integer between 0 and 9.");
+        return;
+      }
 
-    if (isNaN(durationHourToUse) || isNaN(durationMinuteToUse)) {
-      setAlert("The value in hour or minute is not a valid number");
-      return;
+      if (!(Number.isInteger(dateTime.minute) && dateTime.minute >= 0 && dateTime.minute <= 59))
+        {
+          setAlert("The minute field for a session is not valid. It must be an integer between 0 and 59.");
+          return;
+        }
     }
 
-    if (date === "") {
-      setAlert("Please select a date");
+    if (!(Number.isInteger(repeatCount) && repeatCount >= 1 && repeatCount <= 100))
+    {
+      setAlert("The Repeat Count is not a valid number. It must be an integer between 1 and 100.");
       return;
     }
 
@@ -164,12 +169,10 @@ const CreateTutoringSession = () => {
     const formData = {
       student_id: student_id,
       tutor_id: tutor_id,
-      date: date.toISOString(),
-      duration: (parseInt(durationHourToUse) * 60 + parseInt(durationMinuteToUse)),
+      dateTimeList: JSON.stringify(dateTimeList),
+      repeatCount: repeatCount,
       notes: notes,
     };
-
-    console.log("Going through: " + JSON.stringify(formData));
 
     createTutoringSession(formData);
   };
@@ -272,6 +275,14 @@ const CreateTutoringSession = () => {
                       style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
                     />
                   </div>
+
+                  <button
+                    type="button"
+                    className="btn btn-outline-danger ms-3"
+                    onClick={() => handleRemoveDateTime(index)}
+                  >
+                    <FaTrash /> Remove
+                  </button>
                 </div>
               ))}
               
