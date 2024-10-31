@@ -387,7 +387,7 @@ const StudentList = () => {
       </Modal>
 
 
-      <Tabs defaultActiveKey="personalInfo" id="uncontrolled-tab-example" className="mb-3">
+      <Tabs defaultActiveKey="personalInfo" id="uncontrolled-tab-example" className="mb-3 border">
         <hr className="m-4" />
         <Tab eventKey="personalInfo" title="Personal Information">
           <div className="row mt-3">
@@ -402,8 +402,8 @@ const StudentList = () => {
                           <button className="btn btn-secondary" onClick={handleBack}>Back</button>
                         </div>
                       ) : (
-                        <div>
-                        <button className="btn btn-primary me-2" onClick={handleEditToggle}>Edit</button>
+                        <div className="m-2">
+                          <button className="btn btn-primary me-2" onClick={handleEditToggle}>Edit</button>
                         </div>
                       )}
                       {renderPersonalInformation()}
