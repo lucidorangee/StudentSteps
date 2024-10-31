@@ -303,11 +303,74 @@ const StudentList = () => {
 
   const handleClose = () => setShowModal(false);
   
+  const renderPersonalInformation = () => {
+    const fields = [
+      { label: "FIRST NAME", key: "first_name" },
+      { label: "LAST NAME", key: "last_name" },
+      { label: "ID", key: "student_id", isStatic: true },
+      { label: "GRADE", key: "grade_level" },
+      { label: "Date of Birth", key: "date_of_birth", isDate: true },
+      { label: "Student Phone", key: "student_phone" },
+      { label: "Student Email", key: "student_email" },
+      { label: "Emergency Contact Name", key: "emergency_name" },
+      { label: "Emergency Contact Relationship", key: "emergency_relationship" },
+      { label: "Emergency Contact Phone", key: "emergency_phone" },
+      { label: "Stamps", key: "stamps" },
+      { label: "School", key: "school" },
+      { label: "Caregiver Name", key: "caregiver" },
+      { label: "Secondary Phone", key: "secondary_phone" },
+      { label: "Work Phone", key: "work_phone" },
+      { label: "Address", key: "address" },
+      { label: "Postal Code", key: "postalcode" },
+      { label: "Signed?", key: "signed", isBoolean: true },
+      { label: "Marketing Agreement", key: "marketing_agreement", isBoolean: true },
+      { label: "Can Email", key: "can_email", isBoolean: true },
+      { label: "Academic Goal", key: "academic_goal" },
+      { label: "Behavioural Goal", key: "behavioural_goal" },
+    ];
+
+    return fields.map(({ label, key, isStatic, isDate, isBoolean }) => (
+      <div className="col-md-4" key={key}>
+        <p className="fw-bold">{label}</p>
+        {isEditing ? (
+          isDate ? (
+            <div className="d-flex align-items-center">
+              <DatePicker
+                selected={new Date(student[key])}
+                onChange={setDate}
+                dateFormat="yyyy/MM/dd"
+                className="form-control"
+                placeholderText="Select a date"
+              />
+              <FaCalendarAlt className="ms-2 text-secondary" />
+            </div>
+          ) : isBoolean ? (
+            <select
+              name={key}
+              value={student[key]}
+              onChange={handleBooleanChange}
+            >
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          ) : (
+            <input
+              type={typeof student[key] === 'number' ? 'number' : 'text'}
+              name={key}
+              value={student[key]}
+              onChange={handleInputChange}
+            />
+          )
+        ) : (
+          <p>{key === "date_of_birth" ? new Intl.DateTimeFormat('en-US').format(new Date(student[key])) : student[key]}</p>
+        )}
+      </div>
+    ));
+  };
+
   return (
     <div>
       <h1 className="m-2 mt-4">Student Information</h1>
-      
-      {/* Delete Student Modal */}
       <Modal show={showModal} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>DELETE STUDENT</Modal.Title>
@@ -321,8 +384,7 @@ const StudentList = () => {
           <Button variant="danger" onClick={() => deleteStudent(student.student_id)}>Confirm Delete</Button>
         </Modal.Footer>
       </Modal>
-  
-      {/* Edit/Save Buttons */}
+
       {isEditing ? (
         <div className="m-2">
           <button className="btn btn-primary me-2" onClick={handleApply}>Apply</button>
@@ -333,122 +395,63 @@ const StudentList = () => {
           <button onClick={handleEditToggle}>Edit</button>
         </div>
       )}
+
       <hr className="m-4" />
-  
-      <div className="row mt-3">
-        {/* Student Info Form */}
-        <div className="col-7">
-          <div className="card mt-3">
-            <div className="card-body">
-              <div className="container-fluid">
-                <div className="row g-3">
-                  {/* Personal Information */}
-                  <StudentInfoField label="FIRST NAME" isEditing={isEditing} name="first_name" value={student.first_name} onChange={handleInputChange} />
-                  <StudentInfoField label="LAST NAME" isEditing={isEditing} name="last_name" value={student.last_name} onChange={handleInputChange} />
-                  <StudentInfoField label="ID" value={student.student_id} />
-                  <StudentInfoField label="GRADE" isEditing={isEditing} type="number" name="grade_level" value={student.grade_level} onChange={handleInputChange} />
-                  
-                  {/* Date of Birth */}
-                  <div className="col-md-4">
-                    <p className="fw-bold">Date of Birth</p>
-                    {isEditing ? (
-                      <div className="d-flex align-items-center">
-                        <DatePicker
-                          selected={new Date(student.date_of_birth)}
-                          onChange={setDate}
-                          dateFormat="yyyy/MM/dd"
-                          className="form-control"
-                          placeholderText="Select a date"
-                        />
-                        <FaCalendarAlt className="ms-2 text-secondary" />
-                      </div>
-                    ) : (
-                      <p>{`${new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(student.date_of_birth))}`}</p>
-                    )}
-                  </div>
-                  
-                  {/* Contact Information */}
-                  <StudentInfoField label="Student Phone" isEditing={isEditing} name="student_phone" value={student.student_phone} onChange={handleInputChange} />
-                  <StudentInfoField label="Student Email" isEditing={isEditing} name="student_email" value={student.student_email} onChange={handleInputChange} />
-                  <StudentInfoField label="Emergency Contact Name" isEditing={isEditing} name="emergency_name" value={student.emergency_name} onChange={handleInputChange} />
-                  <StudentInfoField label="Emergency Contact Relationship" isEditing={isEditing} name="emergency_relationship" value={student.emergency_relationship} onChange={handleInputChange} />
-                  <StudentInfoField label="Emergency Contact Phone" isEditing={isEditing} name="emergency_phone" value={student.emergency_phone} onChange={handleInputChange} />
-                  
-                  {/* Additional Information */}
-                  <StudentInfoField label="Stamps" isEditing={isEditing} type="number" name="stamps" value={student.stamps} onChange={handleInputChange} />
-                  <StudentInfoField label="School" isEditing={isEditing} name="school" value={student.school} onChange={handleInputChange} />
-                  <StudentInfoField label="Caregiver Name" isEditing={isEditing} name="caregiver" value={student.caregiver} onChange={handleInputChange} />
-                  <StudentInfoField label="Secondary Phone" isEditing={isEditing} name="secondary_phone" value={student.secondary_phone} onChange={handleInputChange} />
-                  <StudentInfoField label="Work Phone" isEditing={isEditing} name="work_phone" value={student.work_phone} onChange={handleInputChange} />
-                  <StudentInfoField label="Address" isEditing={isEditing} name="address" value={student.address} onChange={handleInputChange} />
-                  <StudentInfoField label="Postal Code" isEditing={isEditing} name="postalcode" value={student.postalcode} onChange={handleInputChange} />
-                  
-                  {/* Select Dropdowns */}
-                  <StudentDropdownField label="Signed?" name="signed" value={student.signed} isEditing={isEditing} onChange={handleBooleanChange} />
-                  <StudentDropdownField label="Marketing Agreement" name="marketing_agreement" value={student.marketing_agreement} isEditing={isEditing} onChange={handleBooleanChange} />
-                  <StudentDropdownField label="Can Email" name="can_email" value={student.can_email} isEditing={isEditing} onChange={handleBooleanChange} />
-  
-                  {/* Goals */}
-                  <StudentInfoField label="Academic Goal" isEditing={isEditing} name="academic_goal" value={student.academic_goal} onChange={handleInputChange} />
-                  <StudentInfoField label="Behavioural Goal" isEditing={isEditing} name="behavioural_goal" value={student.behavioural_goal} onChange={handleInputChange} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        {/* Comments Section */}
-        <div className="col-5">
-          {Array.isArray(comments) && comments.length > 0 ? (
-            comments.map((comment, index) => (
-              <div key={index}>
-                <div className="card" style={{ width: '95%' }}>
-                  <div className="card-body text-left">
-                    <h5 className="card-title">{`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(comment.datetime))}`}</h5>
-                    <div className="mb-3">
-                      <p className="card-text d-block">Comment type: {comment.type}</p>
-                      <p className="card-text d-block">Content: {comment.content}</p>
+
+      <Tabs defaultActiveKey="personalInfo" id="uncontrolled-tab-example" className="mb-3">
+        <Tab eventKey="personalInfo" title="Personal Information">
+          <div className="row mt-3">
+            <div className="col-12">
+              <div className="card mt-3">
+                <div className="card-body">
+                  <div className="container-fluid">
+                    <div className="row g-3">
+                      {renderPersonalInformation()}
                     </div>
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
-            <p>No comment available</p>
-          )}
-        </div>
-      </div>
-  
-      {/* Download and Delete Buttons */}
-      <button className="btn btn-primary" onClick={() => requestDataDownload(student)}>Download Student Data</button>
-      <button className="btn btn-danger" onClick={handleShow}>Delete Student</button>
-      
-      {/* New Comment Section */}
-      <div className="card" style={{ width: '95%' }}>
-        <div className="card-body text-left">
-          <div className="row-m-3">
-            <h5 className="card-title">New Comment</h5>
-            <div className="dropdown">
-              <button
-                className="btn btn-secondary dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                {commentType ? commentType : 'Select Comment Type'}
-              </button>
-              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li>
-                  <button className="dropdown-item" onClick={() => handleSelect('admin')}>
-                    Admin
-                  </button>
-                </li>
-              </ul>
             </div>
           </div>
-        </div>
-      </div>
+        </Tab>
+
+        <Tab eventKey="scheduling" title="Scheduling">
+          <div className="mt-3">
+            <p>Nothing here yet</p>
+          </div>
+        </Tab>
+
+        <Tab eventKey="comments" title="Comments">
+          <div className="row mt-3">
+            <div className="col-12">
+              {Array.isArray(comments) && comments.length > 0 ? (
+                comments.map((comment, index) => (
+                  <div key={index} className="card mb-2" style={{ width: '95%' }}>
+                    <div className="card-body text-left">
+                      <h5 className="card-title">{new Intl.DateTimeFormat('en-US').format(new Date(comment.datetime))}</h5>
+                      <div className="mb-3">
+                        <p className="card-text d-block">Comment type: {comment.type}</p>
+                        <p className="card-text d-block">Content: {comment.content}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No comment available</p>
+              )}
+            </div>
+          </div>
+          <div className="card mt-3" style={{ width: '95%' }}>
+            <div className="card-body text-left">
+              <h5 className="card-title">New Comment</h5>
+              {/* Add your comment input fields and submission logic here */}
+            </div>
+          </div>
+        </Tab>
+      </Tabs>
+
+      <button className="btn btn-primary" onClick={() => requestDataDownload(student)}>Download Student Data</button>
+      <button className="btn btn-danger" onClick={handleShow}>Delete Student</button>
     </div>
   );
   
