@@ -192,7 +192,7 @@ const CreateTutoringSession = () => {
     <div className="App">
       <header className="App-header">
         <div className="d-flex justify-content-center mt-5 mb-5">
-          <div className="col-12 col-md-8 col-lg-6 shadow p-4 bg-body-tertiary rounded">
+          <div className="col-12 col-md-10 col-lg-8 shadow p-4 bg-body-tertiary rounded">
             {alert && (
               <div className="alert alert-danger" role="alert">
                 {alert}
@@ -238,12 +238,12 @@ const CreateTutoringSession = () => {
                     timeFormat="h:mm aa"
                     timeIntervals={30}
                     dateFormat="yyyy/MM/dd h:mm aa"
-                    className="form-control"
+                    className="form-control me-3 flex-grow-1"
                     placeholderText="Select date and time"
                   />
                   <FaCalendarAlt className="ms-2 text-secondary" />
 
-                  <div className="d-flex ms-3">
+                  <div className="d-flex align-items-center ms-4">
                     <label className="form-label me-2">Hour:</label>
                     <input
                       type="text"
@@ -258,7 +258,7 @@ const CreateTutoringSession = () => {
                     />
                   </div>
                   
-                  <div className="d-flex ms-3">
+                  <div className="d-flex align-items-center ms-3">
                     <label className="form-label me-2">Minutes:</label>
                     <input
                       type="text"
