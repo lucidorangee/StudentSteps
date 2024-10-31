@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Tabs, Tab  } from 'react-bootstrap';
 import StudentInfoField from '../components/StudentInfoField';
 
 const fetchStudents = async () => {
@@ -283,6 +283,7 @@ const StudentList = () => {
     
         // Refresh after successful submission
         window.location.reload();
+
     })
     .catch(error => {
         // Handle errors
