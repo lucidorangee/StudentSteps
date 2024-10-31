@@ -146,12 +146,14 @@ const CreateTutoringSession = () => {
       if (!(Number.isInteger(dateTime.hour) && dateTime.hour >= 0 && dateTime.hour <= 9))
       {
         setAlert("The hour field for a session is not valid. It must be an integer between 0 and 9.");
+        console.log(`hour is ${dateTime.hour} and is ${typeof dateTime.hour}`);
         return;
       }
 
       if (!(Number.isInteger(dateTime.minute) && dateTime.minute >= 0 && dateTime.minute <= 59))
         {
           setAlert("The minute field for a session is not valid. It must be an integer between 0 and 59.");
+          console.log(`hour is ${dateTime.minute} and is ${typeof dateTime.minute}`);
           return;
         }
     }
@@ -159,6 +161,7 @@ const CreateTutoringSession = () => {
     if (!(Number.isInteger(repeatCount) && repeatCount >= 1 && repeatCount <= 100))
     {
       setAlert("The Repeat Count is not a valid number. It must be an integer between 1 and 100.");
+      console.log(`hour is ${repeatCount} and is ${typeof repeatCount}`);
       return;
     }
 
@@ -199,7 +202,7 @@ const CreateTutoringSession = () => {
   };
   
   const handleRepeatCountChange = (e) => {
-    setRepeatCount(e.target.value);
+    setRepeatCount(parseInt(e.target.value));
   };
 
   return (
@@ -308,7 +311,7 @@ const CreateTutoringSession = () => {
               <div className="mb-3">
                 <label className="form-label">Number of Sessions to Repeat</label>
                 <input
-                  type="text"
+                  type="number"
                   className="form-control"
                   value={repeatCount}
                   onChange={handleRepeatCountChange}
