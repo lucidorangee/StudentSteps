@@ -100,19 +100,19 @@ const ManageComments = () => {
     data: comments,
     isLoading: commentsLoading,
     error: commentsError,
-  } = useQuery({queryKey: ['comments'], queryFn: () => fetchComments()});
+  } = useQuery({queryKey: ['comments'], refetchOnMount: 'always', queryFn: () => fetchComments()});
 
   const {
     data: students,
     isLoading: studentsLoading,
     error: studentsError,
-  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
+  } = useQuery({queryKey: ['students'], refetchOnMount: 'always', queryFn: () => fetchStudents()});
   
   const {
     data: tutors,
     isLoading: tutorsLoading,
     error: tutorsError,
-  } = useQuery({queryKey: ['tutors'], queryFn: () => fetchTutors()});
+  } = useQuery({queryKey: ['tutors'], refetchOnMount: 'always', queryFn: () => fetchTutors(),});
   
 
   const [filteredComments, setFilteredComments] = useState([]);

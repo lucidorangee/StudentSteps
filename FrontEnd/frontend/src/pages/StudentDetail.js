@@ -131,6 +131,7 @@ const StudentList = () => {
       setTempStudent({ ...student });
       setIsEditing(false);
       queryClient.invalidateQueries(['students']);
+      queryClient.invalidateQueries(['homework']);
       console.log("Successfully updated");
     },
     onError: (error) => {

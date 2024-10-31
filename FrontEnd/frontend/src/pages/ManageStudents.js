@@ -52,7 +52,7 @@ const ManageStudents = () => {
     data: students,
     isLoading: studentsLoading,
     error: studentsError,
-  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
+  } = useQuery({queryKey: ['students'], refetchOnMount: 'always',queryFn: () => fetchStudents()});
 
   useEffect(() => {
     if (students) {
@@ -64,7 +64,7 @@ const ManageStudents = () => {
     data: comments,
     isLoading: commentsLoading,
     error: commentsError,
-  } = useQuery({queryKey: ['comments'], queryFn: () => fetchComments()});
+  } = useQuery({queryKey: ['comments'], refetchOnMount: 'always', queryFn: () => fetchComments()});
 
   if (studentsLoading) return <div>Loading...</div>;
   if (studentsError) {

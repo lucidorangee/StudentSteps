@@ -65,6 +65,8 @@ const CreateTutoringSession = () => {
   const [durationMinute, setMinute] = useState('0');
   const [notes, setNotes] = useState('');
   const [alert, setAlert] = useState('');
+  const [dateTimeList, setDateTimeList] = useState([{ date: new Date(), hour: '', minute: '' }]);
+  const [repeatCount, setRepeatCount] = useState(1);
 
   const [studentOptions, setStudentOptions] = useState([]);
   const [tutorOptions, setTutorOptions] = useState([]);
@@ -172,93 +174,141 @@ const CreateTutoringSession = () => {
     createTutoringSession(formData);
   };
 
+  const handleDateChange = (index, date) => {
+    const updatedList = [...dateTimeList];
+    updatedList[index].date = date;
+    setDateTimeList(updatedList);
+  };
+
+  const handleAddDateTime = () => {
+    setDateTimeList([...dateTimeList, { date: new Date(), hour: '', minute: '' }]);
+  };
+  
+  const handleRepeatCountChange = (e) => {
+    setRepeatCount(e.target.value);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <div className="position-absolute top-50 start-50 translate-middle h-50 w-50 container-fluid">
-          <div className="position-relative mb-3" >
-            <div className="shadow p-3 mb-5 bg-body-tertiary rounded">
-              {alert ? (
-                <div>
-                  <div class="alert alert-danger" role="alert">
-                    {alert}
-                  </div>
-                </div>
-              ) : (
-                <div></div>
-              )}
-              <div className="container-fluid m-3">
-                <h1>Add Session</h1>
+        <div className="position-absolute top-50 start-50 translate-middle h-75 w-75 container-fluid">
+          <div className="shadow p-4 mb-5 bg-body-tertiary rounded">
+            {alert && (
+              <div className="alert alert-danger" role="alert">
+                {alert}
               </div>
-              <form onSubmit={handleSubmit}>
-                <div className="container-fluid m-3">
-                  <div className="col">
-                    <label htmlFor="FormControlInput1" className="form-label">Student</label>
-                    {loading ? (
-                      <p>Loading students...</p>
-                    ) : (
-                      <Select
-                        options={studentOptions}
-                        onChange={handleStudentChange}
-                        placeholder="Search for a student..."
-                        classNamePrefix="react-select"
-                      />
-                    )}
-                  </div>
-                  <div className="col">
-                    <label htmlFor="FormControlInput1" className="form-label">Tutor</label>
-                    {loading ? (
-                      <p>Loading tutors...</p>
-                    ) : (
-                      <Select
-                        options={tutorOptions}
-                        onChange={handleTutorChange}
-                        placeholder="Search for a tutor..."
-                        isClearable
-                        classNamePrefix="react-select"
-                      />
-                    )}
-                  </div>
-                  <label htmlFor="FormControlInput1" className="form-label">Date</label>
-                  <div className="d-flex align-items-center">
+            )}
+            <div className="container-fluid m-3">
+              <h1>Add Session</h1>
+            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="container-fluid m-3">
+                <div className="mb-3">
+                  <label className="form-label">Student</label>
+                  {loading ? (
+                    <p>Loading students...</p>
+                  ) : (
+                    <Select
+                      options={studentOptions}
+                      onChange={handleStudentChange}
+                      placeholder="Search for a student..."
+                      classNamePrefix="react-select"
+                    />
+                  )}
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Tutor</label>
+                  {loading ? (
+                    <p>Loading tutors...</p>
+                  ) : (
+                    <Select
+                      options={tutorOptions}
+                      onChange={handleTutorChange}
+                      placeholder="Search for a tutor..."
+                      isClearable
+                      classNamePrefix="react-select"
+                    />
+                  )}
+                </div>
+
+                <label className="form-label">Date and Time</label>
+                {dateTimeList.map((entry, index) => (
+                  <div className="d-flex align-items-center mb-3" key={index}>
                     <DatePicker
-                      selected={date}
-                      onChange={(date) => setDate(date)}
+                      selected={entry.date}
+                      onChange={(date) => handleDateChange(index, date)}
                       showTimeSelect
                       timeFormat="h:mm aa"
-                      timeIntervals={30} // Set time interval to 30 minutes
-                      dateFormat="yyyy/MM/dd h:mm aa" // Date and time format
+                      timeIntervals={30}
+                      dateFormat="yyyy/MM/dd h:mm aa"
                       className="form-control"
-                      placeholderText="Select a date and time"
+                      placeholderText="Select date and time"
                     />
                     <FaCalendarAlt className="ms-2 text-secondary" />
+
+                    <div className="d-flex ms-3">
+                      <label className="form-label me-2">Hour:</label>
+                      <input
+                        type="text"
+                        className="form-control w-50"
+                        value={entry.hour}
+                        onChange={(e) => {
+                          const updatedList = [...dateTimeList];
+                          updatedList[index].hour = e.target.value;
+                          setDateTimeList(updatedList);
+                        }}
+                        style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
+                      />
+                    </div>
+                    
+                    <div className="d-flex ms-3">
+                      <label className="form-label me-2">Minutes:</label>
+                      <input
+                        type="text"
+                        className="form-control w-50"
+                        value={entry.minute}
+                        onChange={(e) => {
+                          const updatedList = [...dateTimeList];
+                          updatedList[index].minute = e.target.value;
+                          setDateTimeList(updatedList);
+                        }}
+                        style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
+                      />
+                    </div>
                   </div>
-                  <label htmlFor="FormControlInput1" className="form-label">Duration</label>
-                  <div class="row">
-                    <div class="col-md-2">
-                      Hour: 
-                    </div>
-                    <div class="col-md-4">
-                      <input type="text" className="form-control" id="FormControlInput1" defaultValue={durationHour} aria-describedby="hourDuration" onChange={(e) => setHour(e.target.value)} />
-                    </div>
-                    <div class="col-md-2">
-                      Minutes: 
-                    </div>
-                    <div class="col-md-4"> 
-                      <input type="text" className="form-control" id="FormControlInput1" defaultValue={durationMinute} aria-describedby="minuteDuration" onChange={(e) => setMinute(e.target.value)} />
-                    </div>
-                  </div>
-                  
-                  <label htmlFor="FormControlInput1" className="form-label">Notes</label>
-                  <textarea className="form-control" id="FormControlInput1" aria-describedby="sessionNotes" rows="4" onChange={(e) => setNotes(e.target.value)} />
+                ))}
+                
+                <button type="button" className="btn btn-outline-primary mb-3" onClick={handleAddDateTime}>
+                  <FaPlus /> Add Date and Time
+                </button>
+
+                <div className="mb-3">
+                  <label className="form-label">Number of Sessions to Repeat</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={repeatCount}
+                    onChange={handleRepeatCountChange}
+                    style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
+                  />
                 </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Notes</label>
+                  <textarea
+                    className="form-control"
+                    rows="4"
+                    onChange={(e) => setNotes(e.target.value)}
+                  />
+                </div>
+
                 <div className="row align-items-start m-3">
                   <div className="col-10">
-                    <button type="submit" className="btn btn-primary mb-3">Add</button>
+                    <button type="submit" className="btn btn-primary mb-3">Add Session</button>
                   </div>
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
       </header>

@@ -74,13 +74,13 @@ const ManageHomework = () => {
     data: students,
     isLoading: studentsLoading,
     error: studentsError,
-  } = useQuery({queryKey: ['students'], queryFn: () => fetchStudents()});
+  } = useQuery({queryKey: ['students'], refetchOnMount: 'always', queryFn: () => fetchStudents()});
 
   const {
     data: homeworkList,
     isLoading: homeworkListLoading,
     error: homeworkListError,
-  } = useQuery({queryKey: ['homework'], queryFn: () => fetchHomework()});
+  } = useQuery({queryKey: ['homework'], refetchOnMount: 'always', queryFn: () => fetchHomework()});
 
   const { mutate: deleteHomework, isLoading, isError, error } = useMutation({
     mutationFn: (id) => deleteHomeworkByID(id),
@@ -191,11 +191,6 @@ const ManageHomework = () => {
         {Array.isArray(filteredHomework) && (filteredHomework).length > 0 ? (
           (filteredHomework).map((ahomework, index) => {
             const cur_student = students.find((s) => s.student_id === ahomework.student_id);
-            if(!cur_student)
-            {
-              console.log(`cur homework: ${JSON.stringify(ahomework)}`)
-              return null;
-            }
 
             return(
             <tr key={index}>
