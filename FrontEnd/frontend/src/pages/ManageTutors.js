@@ -53,11 +53,11 @@ const ManageUsers = () => {
     error: tutorsError,
   } = useQuery({
     queryKey: ['tutors'], 
-    queryFn: () => fetchTutors(),
+    queryFn: () => fetchTutors(),/*
     retry: (failureCount, error) => {
       // Only retry if error is not 401
       return error.status !== 401;
-    },
+    },*/
   });
 
   useEffect(() => {

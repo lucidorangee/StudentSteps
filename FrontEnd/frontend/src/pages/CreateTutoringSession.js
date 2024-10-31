@@ -191,122 +191,116 @@ const CreateTutoringSession = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <div className="position-absolute top-50 start-50 translate-middle h-75 w-75 container-fluid">
-          <div className="shadow p-4 mb-5 bg-body-tertiary rounded">
+        <div className="d-flex justify-content-center mt-5 mb-5">
+          <div className="col-12 col-md-8 col-lg-6 shadow p-4 bg-body-tertiary rounded">
             {alert && (
               <div className="alert alert-danger" role="alert">
                 {alert}
               </div>
             )}
-            <div className="container-fluid m-3">
-              <h1>Add Session</h1>
-            </div>
+            <h1 className="mb-4">Add Session</h1>
             <form onSubmit={handleSubmit}>
-              <div className="container-fluid m-3">
-                <div className="mb-3">
-                  <label className="form-label">Student</label>
-                  {loading ? (
-                    <p>Loading students...</p>
-                  ) : (
-                    <Select
-                      options={studentOptions}
-                      onChange={handleStudentChange}
-                      placeholder="Search for a student..."
-                      classNamePrefix="react-select"
-                    />
-                  )}
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Tutor</label>
-                  {loading ? (
-                    <p>Loading tutors...</p>
-                  ) : (
-                    <Select
-                      options={tutorOptions}
-                      onChange={handleTutorChange}
-                      placeholder="Search for a tutor..."
-                      isClearable
-                      classNamePrefix="react-select"
-                    />
-                  )}
-                </div>
+              <div className="mb-3">
+                <label className="form-label">Student</label>
+                {loading ? (
+                  <p>Loading students...</p>
+                ) : (
+                  <Select
+                    options={studentOptions}
+                    onChange={handleStudentChange}
+                    placeholder="Search for a student..."
+                    classNamePrefix="react-select"
+                  />
+                )}
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Tutor</label>
+                {loading ? (
+                  <p>Loading tutors...</p>
+                ) : (
+                  <Select
+                    options={tutorOptions}
+                    onChange={handleTutorChange}
+                    placeholder="Search for a tutor..."
+                    isClearable
+                    classNamePrefix="react-select"
+                  />
+                )}
+              </div>
 
-                <label className="form-label">Date and Time</label>
-                {dateTimeList.map((entry, index) => (
-                  <div className="d-flex align-items-center mb-3" key={index}>
-                    <DatePicker
-                      selected={entry.date}
-                      onChange={(date) => handleDateChange(index, date)}
-                      showTimeSelect
-                      timeFormat="h:mm aa"
-                      timeIntervals={30}
-                      dateFormat="yyyy/MM/dd h:mm aa"
-                      className="form-control"
-                      placeholderText="Select date and time"
-                    />
-                    <FaCalendarAlt className="ms-2 text-secondary" />
+              <label className="form-label">Date and Time</label>
+              {dateTimeList.map((entry, index) => (
+                <div className="d-flex align-items-center mb-3" key={index}>
+                  <DatePicker
+                    selected={entry.date}
+                    onChange={(date) => handleDateChange(index, date)}
+                    showTimeSelect
+                    timeFormat="h:mm aa"
+                    timeIntervals={30}
+                    dateFormat="yyyy/MM/dd h:mm aa"
+                    className="form-control"
+                    placeholderText="Select date and time"
+                  />
+                  <FaCalendarAlt className="ms-2 text-secondary" />
 
-                    <div className="d-flex ms-3">
-                      <label className="form-label me-2">Hour:</label>
-                      <input
-                        type="text"
-                        className="form-control w-50"
-                        value={entry.hour}
-                        onChange={(e) => {
-                          const updatedList = [...dateTimeList];
-                          updatedList[index].hour = e.target.value;
-                          setDateTimeList(updatedList);
-                        }}
-                        style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
-                      />
-                    </div>
-                    
-                    <div className="d-flex ms-3">
-                      <label className="form-label me-2">Minutes:</label>
-                      <input
-                        type="text"
-                        className="form-control w-50"
-                        value={entry.minute}
-                        onChange={(e) => {
-                          const updatedList = [...dateTimeList];
-                          updatedList[index].minute = e.target.value;
-                          setDateTimeList(updatedList);
-                        }}
-                        style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
-                      />
-                    </div>
+                  <div className="d-flex ms-3">
+                    <label className="form-label me-2">Hour:</label>
+                    <input
+                      type="text"
+                      className="form-control w-50"
+                      value={entry.hour}
+                      onChange={(e) => {
+                        const updatedList = [...dateTimeList];
+                        updatedList[index].hour = e.target.value;
+                        setDateTimeList(updatedList);
+                      }}
+                      style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
+                    />
                   </div>
-                ))}
-                
-                <button type="button" className="btn btn-outline-primary mb-3" onClick={handleAddDateTime}>
-                  <FaPlus /> Add Date and Time
-                </button>
-
-                <div className="mb-3">
-                  <label className="form-label">Number of Sessions to Repeat</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={repeatCount}
-                    onChange={handleRepeatCountChange}
-                    style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Notes</label>
-                  <textarea
-                    className="form-control"
-                    rows="4"
-                    onChange={(e) => setNotes(e.target.value)}
-                  />
-                </div>
-
-                <div className="row align-items-start m-3">
-                  <div className="col-10">
-                    <button type="submit" className="btn btn-primary mb-3">Add Session</button>
+                  
+                  <div className="d-flex ms-3">
+                    <label className="form-label me-2">Minutes:</label>
+                    <input
+                      type="text"
+                      className="form-control w-50"
+                      value={entry.minute}
+                      onChange={(e) => {
+                        const updatedList = [...dateTimeList];
+                        updatedList[index].minute = e.target.value;
+                        setDateTimeList(updatedList);
+                      }}
+                      style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
+                    />
                   </div>
                 </div>
+              ))}
+              
+              <button type="button" className="btn btn-outline-primary mb-3" onClick={handleAddDateTime}>
+                <FaPlus /> Add Date and Time
+              </button>
+
+              <div className="mb-3">
+                <label className="form-label">Number of Sessions to Repeat</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={repeatCount}
+                  onChange={handleRepeatCountChange}
+                  style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Notes</label>
+                <textarea
+                  className="form-control"
+                  rows="4"
+                  onChange={(e) => setNotes(e.target.value)}
+                />
+              </div>
+
+              <div className="text-end">
+                <button type="submit" className="btn btn-primary">Add Session</button>
               </div>
             </form>
           </div>
