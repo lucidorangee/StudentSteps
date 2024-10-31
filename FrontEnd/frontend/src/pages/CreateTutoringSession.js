@@ -62,7 +62,7 @@ const CreateTutoringSession = () => {
   const [tutor_id, setTutor] = useState(-1);
   const [notes, setNotes] = useState('');
   const [alert, setAlert] = useState('');
-  const [dateTimeList, setDateTimeList] = useState([{ date: new Date(), hour: '1', minute: '0' }]);
+  const [dateTimeList, setDateTimeList] = useState([{ date: new Date(), hour: 1, minute: 0 }]);
   const [repeatCount, setRepeatCount] = useState(1);
 
   const [studentOptions, setStudentOptions] = useState([]);
@@ -193,7 +193,7 @@ const CreateTutoringSession = () => {
   };
 
   const handleAddDateTime = () => {
-    setDateTimeList([...dateTimeList, { date: new Date(), hour: '', minute: '' }]);
+    setDateTimeList([...dateTimeList, { date: new Date(), hour: 1, minute: 0 }]);
   };
 
   const handleRemoveDateTime = (index) => {
@@ -268,11 +268,10 @@ const CreateTutoringSession = () => {
                       value={entry.hour}
                       onChange={(e) => {
                         const updatedList = [...dateTimeList];
-                        updatedList[index].hour = parseInt(e.target.value, 10) || '';
+                        const newHour = Math.max(0, Math.min(9, parseInt(e.target.value, 10) || 0)); // Convert to number
+                        updatedList[index].hour = newHour;
                         setDateTimeList(updatedList);
                       }}
-                      min="0"
-                      max="9"
                       style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
                     />
                   </div>
@@ -282,14 +281,13 @@ const CreateTutoringSession = () => {
                     <input
                       type="number" // Input type is number
                       className="form-control w-50"
-                      value={entry.minute}
+                      value={entry.minute.toString().padStart(2, '0')}
                       onChange={(e) => {
                         const updatedList = [...dateTimeList];
-                        updatedList[index].minute = parseInt(e.target.value, 10) || ''; // Convert to number
+                        const newMinute = Math.max(0, Math.min(59, parseInt(e.target.value, 10) || 0)); // Convert to number
+                        updatedList[index].minute = newMinute;
                         setDateTimeList(updatedList);
                       }}
-                      min="0"
-                      max="59"
                       style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }} // To hide spinner
                     />
                   </div>
