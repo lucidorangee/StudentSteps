@@ -124,6 +124,8 @@ const addTutoringSession = async (req, res) => {
         for (let count = 0; count < repeatCount; count++) {
             const dateTime = dateTimeList[count % dateTimeList.length];
 
+            console.log(`Current dateTime ${JSON.stringify(dateTime)}`);
+
             // Ensure dateTime has the correct format
             const formattedDateTime = dateTime.date.replace("T", " ").replace("Z", "+00:00");
 
