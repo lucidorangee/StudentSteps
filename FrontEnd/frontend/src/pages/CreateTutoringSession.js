@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
-import { FaCalendarAlt } from 'react-icons/fa';
+import { FaCalendarAlt, FaPlus } from 'react-icons/fa';
 import Select from 'react-select';
 import TimePicker from 'react-time-picker';
 import { useQuery, useMutation } from '@tanstack/react-query';
