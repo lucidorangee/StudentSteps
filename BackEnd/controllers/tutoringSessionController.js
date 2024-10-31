@@ -111,7 +111,7 @@ const getTutoringSessionById = (req, res) => {
 const addTutoringSession = async (req, res) => {
     //console.log(req.body);
     const { student_id, tutor_id, dateTimeList, repeatCount, notes } = req.body;
-    
+
     console.log(`Current dateTimeList ${JSON.stringify(dateTimeList)}`);
 
     if (!Number.isInteger(repeatCount) || repeatCount < 1 || repeatCount > 100) {
@@ -134,7 +134,8 @@ const addTutoringSession = async (req, res) => {
                 queries.addTutoringSession,
                 [student_id, tutor_id, formattedDateTime, dateTime.hour * 60 + dateTime.minute, notes]
             );
-
+            
+            let sessionDate = new Date(dateTime.date);
             sessionDate.setDate(sessionDate.getDate() + 7);
             currentDateTimeList[index].date = sessionDate;
         }
