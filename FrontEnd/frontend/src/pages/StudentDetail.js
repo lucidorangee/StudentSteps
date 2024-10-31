@@ -387,10 +387,9 @@ const StudentList = () => {
       </Modal>
 
 
-      <Tabs defaultActiveKey="personalInfo" id="uncontrolled-tab-example" className="mb-3 border">
-        <hr className="m-4" />
+      <Tabs defaultActiveKey="personalInfo" id="uncontrolled-tab-example" className="mb-3">
         <Tab eventKey="personalInfo" title="Personal Information">
-          <div className="row mt-3 border p-3">
+          <div className="row mt-3">
             <div className="col-12">
               <div className="card mt-3">
                 <div className="card-body">
@@ -416,13 +415,13 @@ const StudentList = () => {
         </Tab>
 
         <Tab eventKey="scheduling" title="Scheduling">
-          <div className="mt-3 border p-3">
+          <div className="mt-3">
             <p>Nothing here yet</p>
           </div>
         </Tab>
 
         <Tab eventKey="comments" title="Comments">
-          <div className="row mt-3 border p-3">
+          <div className="row mt-3">
             <div className="col-12">
               {Array.isArray(comments) && comments.length > 0 ? (
                 comments.map((comment, index) => (
