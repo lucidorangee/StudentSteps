@@ -11,6 +11,7 @@ import ManageUsers from './pages/ManageUsers.js';
 import ManageTutoringSessions from './pages/ManageTutoringSessions.js';
 import Layout from './pages/Layout.js';
 import CreateTutoringSession from './pages/CreateTutoringSession.js';
+import RemoveTutoringSessions from './pages/RemoveTutoringSessions.js';
 import CreateStudent from './pages/CreateStudent.js';
 import CreateTutor from './pages/CreateTutor.js';
 import CreateHomework from './pages/CreateHomework.js';
@@ -41,6 +42,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<ProtectedRouteWrapper element={Home} />}  />
           <Route path="/tutoringsessions" element={<ProtectedRouteWrapper element={ManageTutoringSessions} />} />
+          <Route path="/tutoringsessions/remove" element={<ProtectedRouteWrapper element={RemoveTutoringSessions} />} />
           
           <Route path="/admin/analysis/:date?" element={<ProtectedRouteWrapper element={AnalysisPage} />} />
           <Route path="/admin/users" element={<ProtectedRouteWrapper element={ManageUsers} />} />

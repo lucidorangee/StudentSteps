@@ -36,6 +36,11 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li className="nav-item">
+          <NavLink to={`/tutoringsessions/remove`} className="nav-link text-white" activeclassname="active">
+            <i className="bi bi-bookmark-plus me-2"></i> Remove Schedules
+          </NavLink>
+        </li>
+        <li className="nav-item">
           <NavLink to={`/students/create`} className="nav-link text-white" activeclassname="active">
             <i className="bi bi-person-fill-add me-2"></i> Add Student
           </NavLink>
