@@ -84,8 +84,6 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
   const [tutorOptions, setTutorOptions] = useState([]);
   const queryClient = useQueryClient();
 
-  const loading = false;
-
   const {
     data: students,
     isLoading: studentsLoading,
@@ -97,7 +95,6 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
     isLoading: tutorsLoading,
     error: tutorsError,
   } = useQuery({queryKey: ['tutors'], queryFn: fetchTutors});
-
 
   const {
     data: tutoringSessions,
@@ -142,7 +139,7 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
     }
   });
   
-  if (studentsLoading || tutorsLoading || tutoringSessions) return <div>Loading...</div>;
+  if (studentsLoading || tutorsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
   if (studentsError || tutorsError || tutoringSessionsError) return <div>Error loading data</div>;
 
   const handleStudentChange = (selectedOption) => setStudent(selectedOption ? selectedOption.value : -1);
