@@ -212,7 +212,7 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
                   timeFormat="h:mm aa"
                   timeIntervals={30}
                   dateFormat="yyyy/MM/dd h:mm aa"
-                  className="form-control"
+                  className="form-control me-3 flex-grow-1"
                   placeholderText="Select start date and time"
                 />
                 <FaCalendarAlt className="ms-2 text-secondary" />
@@ -227,7 +227,7 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
                   timeFormat="h:mm aa"
                   timeIntervals={30}
                   dateFormat="yyyy/MM/dd h:mm aa"
-                  className="form-control"
+                  className="form-control me-3 flex-grow-1"
                   placeholderText="Select end date and time"
                 />
                 <FaCalendarAlt className="ms-2 text-secondary" />
