@@ -124,6 +124,7 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
         }))
       ];
       setTutorOptions(tutorOptions);
+      setSelectedStudentID(defaultStudentId);
     }
   }, [tutors]);
 
@@ -137,6 +138,7 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
         }))
       ];
       setStudentOptions(options);
+      setSelectedStudentID(-1);
     }
   }, [students]);
 
@@ -167,7 +169,7 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
         })
       );
     }
-  }, [selectedStudentID, selectedTutorID, students, tutors])
+  }, [selectedStudentID, selectedTutorID])
 
   if (studentsLoading || tutorsLoading || assessmentsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
   if (studentsError || tutorsError || assessmentsError || tutoringSessionsError) {
