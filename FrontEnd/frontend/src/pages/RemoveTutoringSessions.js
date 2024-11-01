@@ -205,33 +205,38 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
 
               <div className="mb-3">
                 <label className="form-label">Start Date and Time</label>
-                <DatePicker
-                  selected={startDateTime}
-                  onChange={setStartDateTime}
-                  showTimeSelect
-                  timeFormat="h:mm aa"
-                  timeIntervals={30}
-                  dateFormat="yyyy/MM/dd h:mm aa"
-                  className="form-control me-3 flex-grow-1"
-                  placeholderText="Select start date and time"
-                />
-                <FaCalendarAlt className="ms-2 text-secondary" />
+                <div className="d-flex align-items-center">
+                  <DatePicker
+                    selected={startDateTime}
+                    onChange={setStartDateTime}
+                    showTimeSelect
+                    timeFormat="h:mm aa"
+                    timeIntervals={30}
+                    dateFormat="yyyy/MM/dd h:mm aa"
+                    className="form-control me-2"
+                    placeholderText="Select start date and time"
+                  />
+                  <FaCalendarAlt className="text-secondary" />
+                </div>
               </div>
 
               <div className="mb-3">
                 <label className="form-label">End Date and Time (optional)</label>
-                <DatePicker
-                  selected={endDateTime}
-                  onChange={setEndDateTime}
-                  showTimeSelect
-                  timeFormat="h:mm aa"
-                  timeIntervals={30}
-                  dateFormat="yyyy/MM/dd h:mm aa"
-                  className="form-control me-3 flex-grow-1"
-                  placeholderText="Select end date and time"
-                />
-                <FaCalendarAlt className="ms-2 text-secondary" />
+                <div className="d-flex align-items-center">
+                  <DatePicker
+                    selected={endDateTime}
+                    onChange={setEndDateTime}
+                    showTimeSelect
+                    timeFormat="h:mm aa"
+                    timeIntervals={30}
+                    dateFormat="yyyy/MM/dd h:mm aa"
+                    className="form-control me-2"
+                    placeholderText="Select end date and time"
+                  />
+                  <FaCalendarAlt className="text-secondary" />
+                </div>
               </div>
+
 
               <div className="text-end">
                 <button type="submit" className="btn btn-primary">
