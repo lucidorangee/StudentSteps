@@ -124,7 +124,7 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
         }))
       ];
       setTutorOptions(tutorOptions);
-      setSelectedStudentID(defaultStudentId);
+      setSelectedTutorID(-1);
     }
   }, [tutors]);
 
@@ -138,7 +138,7 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
         }))
       ];
       setStudentOptions(options);
-      setSelectedStudentID(-1);
+      setSelectedStudentID(defaultStudentId);
     }
   }, [students]);
 
