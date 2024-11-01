@@ -7,7 +7,7 @@ import DatePicker from 'react-datepicker';
 import { FaCalendarAlt, FaPlus, FaTrash } from 'react-icons/fa';
 import Select from 'react-select';
 import TimePicker from 'react-time-picker';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 
 const fetchStudents = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
@@ -74,14 +74,15 @@ const postTutoringSession = async (formData) => {
 
 const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
 
-  const [student_id, setStudent] = useState(defaultStudentId);
-  const [tutor_id, setTutor] = useState(-1);
+  const [studentId, setStudent] = useState(defaultStudentId);
+  const [tutorId, setTutor] = useState(-1);
   const [alert, setAlert] = useState('');
   const [startDateTime, setStartDateTime] = useState(null);
   const [endDateTime, setEndDateTime] = useState(null);
 
   const [studentOptions, setStudentOptions] = useState([]);
   const [tutorOptions, setTutorOptions] = useState([]);
+  const queryClient = useQueryClient();
 
   const loading = false;
 
@@ -144,8 +145,8 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
   if (studentsLoading || tutorsLoading || tutoringSessions) return <div>Loading...</div>;
   if (studentsError || tutorsError || tutoringSessionsError) return <div>Error loading data</div>;
 
-  const handleStudentChange = (selectedOption) => setStudentId(selectedOption ? selectedOption.value : -1);
-  const handleTutorChange = (selectedOption) => setTutorId(selectedOption ? selectedOption.value : -1);
+  const handleStudentChange = (selectedOption) => setStudent(selectedOption ? selectedOption.value : -1);
+  const handleTutorChange = (selectedOption) => setTutor(selectedOption ? selectedOption.value : -1);
 
   const handleSubmit = (e) => {
     e.preventDefault();
