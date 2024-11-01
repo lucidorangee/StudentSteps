@@ -350,6 +350,7 @@ const StudentList = () => {
               name={key}
               value={student[key]}
               onChange={handleBooleanChange}
+              className="form-control"
             >
               <option value="true">Yes</option>
               <option value="false">No</option>
@@ -363,7 +364,17 @@ const StudentList = () => {
             />
           )
         ) : (
-          <p>{key === "date_of_birth" ? new Intl.DateTimeFormat('en-US').format(new Date(student[key])) : student[key]}</p>
+          <p>
+            {isBoolean
+              ? student[key] === true
+                ? "Yes"
+                : student[key] === false
+                ? "No"
+                : "N/A"
+              : key === "date_of_birth"
+              ? new Intl.DateTimeFormat('en-US').format(new Date(student[key]))
+              : student[key] || "N/A"}
+          </p>
         )}
       </div>
     ));
