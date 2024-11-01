@@ -22,8 +22,16 @@ const fetchStudent = async (id) => {
     throw err;
   }
 
-  console.log("successfully fetched student");
-  return await response.json();
+  const data = await response.json();
+  
+  if (Object.keys(data).length === 0) {
+    const err = new Error('Student data is empty');
+    err.status = response.status;
+    throw err;
+  }
+
+  console.log("Successfully fetched student");
+  return data;
 };
 
 const fetchComments = async() => {
@@ -206,6 +214,11 @@ const StudentList = () => {
     {
       console.log("unathorized");
       return <Navigate to="/login" />;
+    }
+    if(initStudentsError?.status === 404)
+    {
+      console.log("no student found");
+      return <div>No such student found. Try refreshing the page.</div>;
     }
     return <div>Error loading data</div>;
   }

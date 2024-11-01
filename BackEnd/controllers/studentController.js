@@ -17,12 +17,21 @@ const getStudents = (req, res) => {
 };
 
 const getStudentById = (req, res) => {
-    const id = parseInt(req.params.id);
-    pool.query(queries.getStudentById, [id], (error, results) => {
-        if(error) throw error;
-        res.status(200).json(results.rows);
-    });
+  const id = parseInt(req.params.id);
+  pool.query(queries.getStudentById, [id], (error, results) => {
+      if (error) {
+          console.error("Database query error:", error);
+          return res.status(500).json({ error: "Internal server error" });
+      }
+
+      if (results.rows.length === 0) {
+          return res.status(404).json({ message: "Student not found" });
+      }
+
+      res.status(200).json(results.rows[0]);
+  });
 };
+
 // student_id | first_name | last_name | student_photo | date_of_birth | grade_level | student_phone | 
 // student_email | emergency_name | emergency_relationship | emergency_phone | emergency_email | user_id | 
 // stamps | school | caregiver | secondary_phone | work_phone | address | postalcode | signed | marketing_agreement | can_email
