@@ -6,10 +6,10 @@ import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 import { Modal, Button, Tabs, Tab  } from 'react-bootstrap';
 import StudentInfoField from '../components/StudentInfoField';
+import Accordion from 'react-bootstrap/Accordion';
 
-const fetchStudents = async () => {
-
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
+const fetchStudent = async (id) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json'
@@ -17,12 +17,12 @@ const fetchStudents = async () => {
   });
 
   if (!response.ok) {
-    const err = new Error('Failed to fetch students');
+    const err = new Error('Failed to fetch student');
     err.status = response.status;
     throw err;
   }
 
-  console.log("successfully fetched students");
+  console.log("successfully fetched student");
   return await response.json();
 };
 
@@ -42,6 +42,22 @@ const fetchComments = async() => {
 
   console.log("successfully fetched comments");
   return await response.json();
+}
+
+const fetchTutoringSessions = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch tutoring sessions');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
 }
 
 const requestDataDownload = async (student) => {
@@ -156,10 +172,15 @@ const StudentList = () => {
     isLoading: isInitStudentsLoading,
     error: initStudentsError,
   } = useQuery({
-    queryKey: ['students'],
-    queryFn: fetchStudents,
-    select: (data) => data.find((s) => s.student_id.toString() === id),
+    queryKey: ['students', id],
+    queryFn: () => fetchStudent(id),
   });
+
+  const {
+    data: tutoringSessions,
+    isLoading: tutoringSessionsLoading,
+    error: tutoringSessionsError,
+  } = useQuery({queryKey: ['tutoringSessions'], queryFn: () => fetchTutoringSessions()});
 
   useEffect(() => {    
     if(tempInitStudent) 
@@ -179,14 +200,9 @@ const StudentList = () => {
     select: (data) => data.filter((comment) => comment.student_id.toString() === id), // Select specific student
   });
 
-  if (isInitStudentsLoading || isCommentsLoading || !student) return <div>Loading...</div>;
-  if (initStudentsError || commentsError) {
-    if(commentsError && commentsError.status === 401) //unauthorized
-    {
-      console.log("unathorized");
-      return <Navigate to="/login" />;
-    }
-    if(initStudentsError && initStudentsError.status === 401) //unauthorized
+  if (isInitStudentsLoading || isCommentsLoading || !student || !tutoringSessions) return <div>Loading...</div>;
+  if (initStudentsError || commentsError || tutoringSessionsError) {
+    if(commentsError?.status === 401 || initStudentsError?.status === 401 || tutoringSessionsError.status === 401) //unauthorized
     {
       console.log("unathorized");
       return <Navigate to="/login" />;
@@ -350,7 +366,6 @@ const StudentList = () => {
               name={key}
               value={student[key]}
               onChange={handleBooleanChange}
-              className="form-control"
             >
               <option value="true">Yes</option>
               <option value="false">No</option>
@@ -379,6 +394,41 @@ const StudentList = () => {
       </div>
     ));
   };
+
+
+  const renderScheduling = () => (
+    <Accordion defaultActiveKey="0">
+      <Accordion.Item eventKey="0">
+        <Accordion.Header>Appointments</Accordion.Header>
+        <Accordion.Body>
+          <p>Content for Appointments</p>
+          {/* Insert appointment-related components here */}
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="1">
+        <Accordion.Header>Availability</Accordion.Header>
+        <Accordion.Body>
+          <p>Content for Availability</p>
+          {/* Insert availability-related components here */}
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="2">
+        <Accordion.Header>Calendar</Accordion.Header>
+        <Accordion.Body>
+          <p>Content for Calendar</p>
+          {/* Insert calendar-related components here */}
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="3">
+        <Accordion.Header>Notifications</Accordion.Header>
+        <Accordion.Body>
+          <p>Content for Notifications</p>
+          {/* Insert notification-related components here */}
+        </Accordion.Body>
+      </Accordion.Item>
+    </Accordion>
+  );
+  
 
   return (
     <div>
@@ -429,7 +479,7 @@ const StudentList = () => {
           <div className="card">
             <div className="card-body">
               <div className="mt-3">
-                <p>Nothing here yet</p>
+                {renderScheduling()}
               </div>
             </div>
           </div>
