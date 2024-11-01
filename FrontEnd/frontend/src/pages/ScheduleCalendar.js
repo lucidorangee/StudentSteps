@@ -70,7 +70,7 @@ const fetchAssessments = async () => {
   return response.json();
 }
 
-const CalendarPage = () => {
+const CalendarPage = ({ defaultStudentId = -1 }) => {
   
   //const [tutors, setTutors] = useState(null);
   //const [students, setStudents] = useState(null);
@@ -82,7 +82,7 @@ const CalendarPage = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   
   const [studentOptions, setStudentOptions] = useState([]);
-  const [selectedStudentID, setSelectedStudentID] = useState(-1);
+  const [selectedStudentID, setSelectedStudentID] = useState(defaultStudentId);
   const [tutorOptions, setTutorOptions] = useState([]);
   const [selectedTutorID, setSelectedTutorID] = useState(-1);
 

@@ -416,7 +416,7 @@ const StudentList = () => {
 
   const schedulingContent = {
     'Overview': 
-      (<ScheduleCalendar></ScheduleCalendar>),
+      (<ScheduleCalendar defaultStudentId = {id}></ScheduleCalendar>),
     'Add Schedule': 
       (<p>Content for Adding a Schedule</p>),
     'Remove Schedules': 
