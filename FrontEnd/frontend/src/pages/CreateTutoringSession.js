@@ -56,9 +56,9 @@ const postTutoringSession = async (formData) => {
   return responseText;
 }
 
-const CreateTutoringSession = () => {
+const CreateTutoringSession = ({defaultStudentId = -1}) => {
 
-  const [student_id, setStudent] = useState(-1);
+  const [student_id, setStudent] = useState(defaultStudentId);
   const [tutor_id, setTutor] = useState(-1);
   const [notes, setNotes] = useState('');
   const [alert, setAlert] = useState('');
@@ -92,7 +92,7 @@ const CreateTutoringSession = () => {
       }));
       setStudentOptions(studentOptionsTemp);
       if (studentOptionsTemp.length > 0) {
-        setStudent(studentOptionsTemp[0].value);
+        setStudent(defaultStudentId === -1? studentOptionsTemp[0].value : defaultStudentId);
       }
     }
   }, [students]);
@@ -217,6 +217,7 @@ const CreateTutoringSession = () => {
             )}
             <h1 className="mb-4">Add Session</h1>
             <form onSubmit={handleSubmit}>
+              {defaultStudentId === -1?
               <div className="mb-3">
                 <label className="form-label">Student</label>
                 {loading ? (
@@ -229,7 +230,7 @@ const CreateTutoringSession = () => {
                     classNamePrefix="react-select"
                   />
                 )}
-              </div>
+              </div>:null}
               <div className="mb-3">
                 <label className="form-label">Tutor</label>
                 {loading ? (

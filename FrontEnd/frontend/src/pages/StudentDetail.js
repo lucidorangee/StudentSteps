@@ -6,8 +6,7 @@ import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 import { Modal, Button, Tabs, Tab, Dropdown  } from 'react-bootstrap';
 import ScheduleCalendar from './ScheduleCalendar.js';
-import StudentInfoField from '../components/StudentInfoField';
-import Accordion from 'react-bootstrap/Accordion';
+import CreateTutoringSession from './CreateTutoringSession.js';
 
 const fetchStudent = async (id) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
@@ -418,7 +417,7 @@ const StudentList = () => {
     'Overview': 
       (<ScheduleCalendar defaultStudentId = {id}></ScheduleCalendar>),
     'Add Schedule': 
-      (<p>Content for Adding a Schedule</p>),
+      (<CreateTutoringSession defaultStudentId = {id}></CreateTutoringSession>),
     'Remove Schedules': 
       (<p>Content for Removing Schedules</p>),
   };
