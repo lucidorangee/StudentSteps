@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
-import { Modal, Button, Tabs, Tab  } from 'react-bootstrap';
+import { Modal, Button, Tabs, Tab, Dropdown  } from 'react-bootstrap';
 import StudentInfoField from '../components/StudentInfoField';
 import Accordion from 'react-bootstrap/Accordion';
 
@@ -148,6 +148,7 @@ const StudentList = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [commentType, setCommentType] = useState('admin');
+  const [selectedSchedulingTab, setSelectedSchedulingTab] = useState('Upcoming');
 
   const { mutate: putStudent, isStudentLoading, isStudentError, error } = useMutation({
     mutationFn: ({ id, student }) => updateStudent(id, student),
@@ -332,6 +333,10 @@ const StudentList = () => {
   }
 
   const handleClose = () => setShowModal(false);
+
+  const handleSchedulingTabSelect = (newTab) => {
+    setSelectedSchedulingTab(newTab);
+  };
   
   const renderPersonalInformation = () => {
     const fields = [
@@ -407,39 +412,47 @@ const StudentList = () => {
       </div>
     ));
   };
-
-
+  
   const renderScheduling = () => (
-    <Accordion defaultActiveKey="0">
-      <Accordion.Item eventKey="0">
-        <Accordion.Header>Appointments</Accordion.Header>
-        <Accordion.Body>
-          <p>Content for Appointments</p>
-          {/* Insert appointment-related components here */}
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="1">
-        <Accordion.Header>Availability</Accordion.Header>
-        <Accordion.Body>
-          <p>Content for Availability</p>
-          {/* Insert availability-related components here */}
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="2">
-        <Accordion.Header>Calendar</Accordion.Header>
-        <Accordion.Body>
-          <p>Content for Calendar</p>
-          {/* Insert calendar-related components here */}
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="3">
-        <Accordion.Header>Notifications</Accordion.Header>
-        <Accordion.Body>
-          <p>Content for Notifications</p>
-          {/* Insert notification-related components here */}
-        </Accordion.Body>
-      </Accordion.Item>
-    </Accordion>
+    <Tabs defaultActiveKey="appointments" id="main-tabs" className="mb-3">
+      <Tab eventKey="appointments" title="Appointments">
+        <Dropdown onSelect={handleSchedulingTabSelect}>
+          <Dropdown.Toggle variant="secondary">
+            {selectedSchedulingTab}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item eventKey="Upcoming">Upcoming</Dropdown.Item>
+            <Dropdown.Item eventKey="Past">Past</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+        <div className="mt-3">
+          {selectedSchedulingTab === 'Upcoming' ? (
+            <p>Content for Upcoming Appointments</p>
+          ) : (
+            <p>Content for Past Appointments</p>
+          )}
+        </div>
+      </Tab>
+      <Tab eventKey="availability" title="Availability">
+        <Dropdown onSelect={handleSchedulingTabSelect}>
+          <Dropdown.Toggle variant="secondary">
+            {selectedSchedulingTab}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item eventKey="Current">Current</Dropdown.Item>
+            <Dropdown.Item eventKey="Future">Future</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+        <div className="mt-3">
+          {selectedSchedulingTab === 'Current' ? (
+            <p>Content for Current Availability</p>
+          ) : (
+            <p>Content for Future Availability</p>
+          )}
+        </div>
+      </Tab>
+      {/* Add more tabs here as needed */}
+    </Tabs>
   );
   
 
