@@ -333,7 +333,7 @@ const StudentList = () => {
     return fields.map(({ label, key, isStatic, isDate, isBoolean }) => (
       <div className="col-md-4" key={key}>
         <p className="fw-bold">{label}</p>
-        {isEditing ? (
+        {isEditing && !isStatic ? (
           isDate ? (
             <div className="d-flex align-items-center">
               <DatePicker
