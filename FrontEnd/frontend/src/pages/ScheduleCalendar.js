@@ -243,6 +243,7 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
 
   return (
     <div className="container-fluid calendar-page">
+    {defaultStudentId===-1?(
       <div className="row ms-4 mt-2">
         <div className="col">
           <Select
@@ -262,7 +263,7 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
             classNamePrefix="react-select"
           />
         </div>
-      </div>
+      </div>):null}
       <div className="row ms-4 me-4 mt-3">
         <div className="col">
           <div className="d-flex justify-content-between align-items-center mb-3">
