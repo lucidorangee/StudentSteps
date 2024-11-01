@@ -83,7 +83,6 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
   
   const [studentOptions, setStudentOptions] = useState([]);
   const [selectedStudentID, setSelectedStudentID] = useState(defaultStudentId);
-  console.log(defaultStudentId);
   const [tutorOptions, setTutorOptions] = useState([]);
   const [selectedTutorID, setSelectedTutorID] = useState(-1);
 
@@ -125,7 +124,6 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
         }))
       ];
       setTutorOptions(tutorOptions);
-      setSelectedTutorID(-1);
     }
   }, [tutors]);
 
@@ -139,7 +137,6 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
         }))
       ];
       setStudentOptions(options);
-      setSelectedStudentID(-1);
     }
   }, [students]);
 
@@ -170,7 +167,7 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
         })
       );
     }
-  }, [selectedStudentID, selectedTutorID])
+  }, [selectedStudentID, selectedTutorID, students, tutors])
 
   if (studentsLoading || tutorsLoading || assessmentsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
   if (studentsError || tutorsError || assessmentsError || tutoringSessionsError) {
