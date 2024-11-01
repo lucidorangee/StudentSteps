@@ -5,6 +5,7 @@ import { FaCalendarAlt } from 'react-icons/fa';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
 import { Modal, Button, Tabs, Tab, Dropdown  } from 'react-bootstrap';
+import ScheduleCalendar from './ScheduleCalendar.js';
 import StudentInfoField from '../components/StudentInfoField';
 import Accordion from 'react-bootstrap/Accordion';
 
@@ -415,7 +416,7 @@ const StudentList = () => {
 
   const schedulingContent = {
     'Overview': 
-      (<p>Content for Overview</p>),
+      (<ScheduleCalendar></ScheduleCalendar>),
     'Add Schedule': 
       (<p>Content for Adding a Schedule</p>),
     'Remove Schedules': 
