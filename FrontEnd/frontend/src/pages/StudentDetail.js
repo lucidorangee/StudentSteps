@@ -387,7 +387,7 @@ const StudentList = () => {
                 ? "No"
                 : "N/A"
               : key === "date_of_birth"
-              ? new Intl.DateTimeFormat('en-US').format(new Date(student[key]))
+              ? student[key]/*new Intl.DateTimeFormat('en-US').format(new Date(student[key]))*/
               : student[key] || "N/A"}
           </p>
         )}
