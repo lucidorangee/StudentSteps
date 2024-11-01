@@ -148,7 +148,7 @@ const StudentList = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [commentType, setCommentType] = useState('admin');
-  const [selectedSchedulingTab, setSelectedSchedulingTab] = useState('Upcoming');
+  const [selectedSchedulingTab, setSelectedSchedulingTab] = useState('Overview');
 
   const { mutate: putStudent, isStudentLoading, isStudentError, error } = useMutation({
     mutationFn: ({ id, student }) => updateStudent(id, student),
@@ -412,47 +412,34 @@ const StudentList = () => {
       </div>
     ));
   };
-  
+
+  const schedulingContent = {
+    'Overview': 
+      (<p>Content for Overview</p>),
+    'Add Schedule': 
+      (<p>Content for Adding a Schedule</p>),
+    'Remove Schedules': 
+      (<p>Content for Removing Schedules</p>),
+  };
+
   const renderScheduling = () => (
-    <Tabs defaultActiveKey="appointments" id="main-tabs" className="mb-3">
-      <Tab eventKey="appointments" title="Appointments">
-        <Dropdown onSelect={handleSchedulingTabSelect}>
-          <Dropdown.Toggle variant="secondary">
-            {selectedSchedulingTab}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item eventKey="Upcoming">Upcoming</Dropdown.Item>
-            <Dropdown.Item eventKey="Past">Past</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-        <div className="mt-3">
-          {selectedSchedulingTab === 'Upcoming' ? (
-            <p>Content for Upcoming Appointments</p>
-          ) : (
-            <p>Content for Past Appointments</p>
-          )}
-        </div>
-      </Tab>
-      <Tab eventKey="availability" title="Availability">
-        <Dropdown onSelect={handleSchedulingTabSelect}>
-          <Dropdown.Toggle variant="secondary">
-            {selectedSchedulingTab}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item eventKey="Current">Current</Dropdown.Item>
-            <Dropdown.Item eventKey="Future">Future</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-        <div className="mt-3">
-          {selectedSchedulingTab === 'Current' ? (
-            <p>Content for Current Availability</p>
-          ) : (
-            <p>Content for Future Availability</p>
-          )}
-        </div>
-      </Tab>
-      {/* Add more tabs here as needed */}
-    </Tabs>
+    <div className="mb-3">
+      <Dropdown onSelect={handleSchedulingTabSelect}>
+        <Dropdown.Toggle variant="secondary">
+          {selectedSchedulingTab}
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          {Object.keys(schedulingContent).map((key) => (
+            <Dropdown.Item eventKey={key} key={key}>
+              {key}
+            </Dropdown.Item>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
+      <div className="mt-3">
+        {schedulingContent[selectedSchedulingTab] || <p>Select an option</p>}
+      </div>
+    </div>
   );
   
 
