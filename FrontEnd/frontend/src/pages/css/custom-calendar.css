@@ -30,15 +30,19 @@
   height: calc(100% - 30px); /* Adjust height to leave space for the date */
   position: absolute; /* Allow precise positioning */
   top: 50%; /* Center events container vertically */
+  left: 0; /* Start from the left edge */
+  right: 0; /* Expand to the right edge */
   transform: translateY(-50%); /* Adjust to align center */
-  padding: 5px; /* Add some padding */
+  padding: 0; /* Remove padding to prevent shifting */
   overflow: hidden; /* Hide overflow */
 }
 
 .calendar-container .calendar-grid .day .events .event {
   font-size: 0.9rem; /* Slightly smaller font size for events */
   margin: 2px 0; /* Minimal vertical spacing */
+  text-align: center; /* Center text within each event */
 }
+
 
 
 
