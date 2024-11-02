@@ -11,34 +11,31 @@
   
 .calendar-container .calendar-grid .day {
   height: 100px; /* Default cell height */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 5px; /* Minimal padding for a tight layout */
+  position: relative;
+  padding: 5px;
 }
 
 .calendar-container .calendar-grid .day .date {
-  font-size: 1rem; /* Keep normal font size */
-  margin-bottom: 2px; /* Very small space between day number and events */
+  position: absolute;
+  top: 5px; /* Position the date at the top */
+  left: 5px; /* Align to the left */
+  font-weight: bold; /* Make the date stand out */
 }
 
 .calendar-container .calendar-grid .day .events {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stack events vertically */
+  justify-content: center; /* Center events vertically */
   align-items: center; /* Center events horizontally */
-  font-size: 1rem; /* Normal font size for events */
-  line-height: 1.1rem; /* Slightly reduced line-height to fit more tightly */
-  max-height: 80%; /* Ensures events don’t exceed the cell height */
-  overflow-y: hidden; /* Prevent overflow for clean appearance */
+  height: 80%; /* Limit height for event area */
+  overflow: hidden; /* Hide overflow */
 }
 
 .calendar-container .calendar-grid .day .events .event {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 1px 0; /* Minimal margin for tight fit */
+  font-size: 1rem; /* Normal font size for events */
+  margin: 2px 0; /* Minimal vertical spacing */
 }
+
 
 
 
