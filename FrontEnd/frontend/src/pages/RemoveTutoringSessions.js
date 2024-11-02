@@ -157,7 +157,7 @@ const RemoveTutoringSessions = ({defaultStudentId = -1, passedDate = null}) => {
               )}
 
               <div
-                className={`mb-3 ${selectedRow === 0 ? 'bg-warning' : ''}`} // Highlight start time row if selected
+                className={`mb-3 p-2 ${selectedRow === 0 ? 'bg-warning' : ''}`} // Highlight start time row if selected
                 onClick={() => setSelectedRow(0)} // Set selected row on click
                 style={{ cursor: 'pointer' }} // Change cursor to pointer
               >
@@ -178,7 +178,7 @@ const RemoveTutoringSessions = ({defaultStudentId = -1, passedDate = null}) => {
               </div>
 
               <div
-                className={`mb-3 ${selectedRow === 1 ? 'bg-warning' : ''}`} // Highlight end time row if selected
+                className={`mb-3 p-2 ${selectedRow === 1 ? 'bg-warning' : ''}`} // Highlight end time row if selected
                 onClick={() => setSelectedRow(1)} // Set selected row on click
                 style={{ cursor: 'pointer' }} // Change cursor to pointer
               >

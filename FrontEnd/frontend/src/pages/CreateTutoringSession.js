@@ -264,7 +264,7 @@ const CreateTutoringSession = ({defaultStudentId = -1, passedDate = null}) => {
               {dateTimeList.map((entry, index) => (
                 <div
                     key={index}
-                    className={`d-flex align-items-center mb-3 ${selectedRow === index ? 'bg-warning' : ''}`} // Highlight selected row
+                    className={`d-flex align-items-center mb-3 p-2 ${selectedRow === index ? 'bg-warning' : ''}`} // Highlight selected row
                     onClick={() => setSelectedRow(index)} // Set selected row on click
                     style={{ cursor: 'pointer' }} // Change cursor to pointer for better UX
                 >
