@@ -57,12 +57,13 @@ const deleteTutoringSessions = async (formData) => {
   return responseText;
 }
 
-const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
+const RemoveTutoringSessions = ({defaultStudentId = -1, passedDate = null}) => {
 
   const [studentId, setStudent] = useState(defaultStudentId);
   const [alert, setAlert] = useState('');
   const [startDateTime, setStartDateTime] = useState(null);
   const [endDateTime, setEndDateTime] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(0);
 
   const [studentOptions, setStudentOptions] = useState([]);
   const queryClient = useQueryClient();
@@ -91,6 +92,13 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
       }
     }
   }, [students]);
+
+  useEffect(() => {
+    if (passedDate) {
+      if(selectedRow === 0) setStartDateTime(passedDate);
+      else setEndDateTime(passedDate);
+    }
+  }, [passedDate]);
 
   const { mutate: removeTutoringSessions, isLoading, isError, error } = useMutation({
     mutationFn: (formData) => deleteTutoringSessions(formData),
@@ -148,7 +156,11 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
                 </div>
               )}
 
-              <div className="mb-3">
+              <div
+                className={`mb-3 ${selectedRow === 0 ? 'bg-warning' : ''}`} // Highlight start time row if selected
+                onClick={() => setSelectedRow(0)} // Set selected row on click
+                style={{ cursor: 'pointer' }} // Change cursor to pointer
+              >
                 <label className="form-label">Start Date and Time</label>
                 <div className="d-flex align-items-center">
                   <DatePicker
@@ -165,7 +177,11 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
                 </div>
               </div>
 
-              <div className="mb-3">
+              <div
+                className={`mb-3 ${selectedRow === 1 ? 'bg-warning' : ''}`} // Highlight end time row if selected
+                onClick={() => setSelectedRow(1)} // Set selected row on click
+                style={{ cursor: 'pointer' }} // Change cursor to pointer
+              >
                 <label className="form-label">End Date and Time (optional)</label>
                 <div className="d-flex align-items-center">
                   <DatePicker

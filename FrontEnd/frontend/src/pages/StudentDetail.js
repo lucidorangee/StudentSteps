@@ -7,6 +7,7 @@ import { Navigate } from 'react-router-dom';
 import { Modal, Button, Tabs, Tab, Dropdown  } from 'react-bootstrap';
 import ScheduleCalendar from './ScheduleCalendar.js';
 import CreateTutoringSession from './CreateTutoringSession.js';
+import RemoveTutoringSessions from './RemoveTutoringSessions.js';
 
 const fetchStudent = async (id) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/${id}`, {
@@ -149,6 +150,7 @@ const StudentList = () => {
 
   const [commentType, setCommentType] = useState('admin');
   const [selectedSchedulingTab, setSelectedSchedulingTab] = useState('Overview');
+  const [startDate, setStartDate] = useState(new Date());
 
   const { mutate: putStudent, isStudentLoading, isStudentError, error } = useMutation({
     mutationFn: ({ id, student }) => updateStudent(id, student),
@@ -417,9 +419,19 @@ const StudentList = () => {
     'Overview': 
       (<ScheduleCalendar defaultStudentId = {id}></ScheduleCalendar>),
     'Add Schedule': 
-      (<CreateTutoringSession defaultStudentId = {id}></CreateTutoringSession>),
+      (
+      <div>
+        <CreateTutoringSession defaultStudentId = {id} passedDate = {startDate}></CreateTutoringSession>
+        <ScheduleCalendar defaultStudentId = {id} onDateClick = {setStartDate}></ScheduleCalendar>
+      </div>
+      ),
     'Remove Schedules': 
-      (<p>Content for Removing Schedules</p>),
+    (
+    <div>
+      <RemoveTutoringSessions defaultStudentId = {id} passedStartDate = {startDate}></RemoveTutoringSessions>
+      <ScheduleCalendar defaultStudentId = {id} onDateClick = {setStartDate}></ScheduleCalendar>
+    </div>
+    ),
   };
 
   const renderScheduling = () => (

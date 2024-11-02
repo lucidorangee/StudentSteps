@@ -56,7 +56,7 @@ const postTutoringSession = async (formData) => {
   return responseText;
 }
 
-const CreateTutoringSession = ({defaultStudentId = -1}) => {
+const CreateTutoringSession = ({defaultStudentId = -1, passedDate = null}) => {
 
   const [student_id, setStudent] = useState(defaultStudentId);
   const [tutor_id, setTutor] = useState(-1);
@@ -64,6 +64,7 @@ const CreateTutoringSession = ({defaultStudentId = -1}) => {
   const [alert, setAlert] = useState('');
   const [dateTimeList, setDateTimeList] = useState([{ date: new Date(), hour: 1, minute: 0 }]);
   const [repeatCount, setRepeatCount] = useState(1);
+  const [selectedRow, setSelectedRow] = useState(0);
 
   const [studentOptions, setStudentOptions] = useState([]);
   const [tutorOptions, setTutorOptions] = useState([]);
@@ -109,6 +110,14 @@ const CreateTutoringSession = ({defaultStudentId = -1}) => {
       }
     }
   }, [tutors]);
+
+  useEffect(() => {
+    if (passedDate) {
+      const updatedList = [...dateTimeList];
+      updatedList[selectedRow].date = passedDate;
+      setDateTimeList(updatedList);
+    }
+  }, [passedDate]);
 
   const { mutate: createTutoringSession, isLoading, isError, error } = useMutation({
     mutationFn: (formData) => postTutoringSession(formData),
@@ -199,6 +208,11 @@ const CreateTutoringSession = ({defaultStudentId = -1}) => {
   const handleRemoveDateTime = (index) => {
     const updatedList = dateTimeList.filter((_, i) => i !== index);
     setDateTimeList(updatedList);
+    if (selectedRow === index) {
+      setSelectedRow(null); // Deselect if the removed row was selected
+  } else if (selectedRow > index) {
+      setSelectedRow(selectedRow - 1); // Adjust selected row if a row above is removed
+  }
   };
   
   const handleRepeatCountChange = (e) => {
@@ -248,7 +262,12 @@ const CreateTutoringSession = ({defaultStudentId = -1}) => {
 
               <label className="form-label">Date and Time</label>
               {dateTimeList.map((entry, index) => (
-                <div className="d-flex align-items-center mb-3" key={index}>
+                <div
+                    key={index}
+                    className={`d-flex align-items-center mb-3 ${selectedRow === index ? 'bg-warning' : ''}`} // Highlight selected row
+                    onClick={() => setSelectedRow(index)} // Set selected row on click
+                    style={{ cursor: 'pointer' }} // Change cursor to pointer for better UX
+                >
                   <DatePicker
                     selected={entry.date}
                     onChange={(date) => handleDateChange(index, date)}
