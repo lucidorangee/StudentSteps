@@ -54,10 +54,10 @@ const fetchTutoringSessions = async () => {
   return response.json();
 }
 
-const postTutoringSession = async (formData) => {
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/add`, {
+const deleteTutoringSessions = async (formData) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/remove`, {
     credentials: 'include',
-    method: 'post',
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
     },
@@ -65,7 +65,7 @@ const postTutoringSession = async (formData) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to create tutoring session: ' + response); // Include responseText in the error for context
+    throw new Error('Failed to remove tutoring sessions: ' + response); // Include responseText in the error for context
   }
 
   const responseText = await response.text();
@@ -129,7 +129,7 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
   }, [tutors]);
 
   const { mutate: removeTutoringSessions, isLoading, isError, error } = useMutation({
-    mutationFn: (formData) => postTutoringSession(formData),
+    mutationFn: (formData) => deleteTutoringSessions(formData),
     onSuccess: () => {
       console.log('Tutoring session bulk deletion successful!');
       queryClient.invalidateQueries({ queryKey: ['tutoringSessions'] })

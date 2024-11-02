@@ -7,6 +7,7 @@ tutoringSessionRouter.get("/", controller.getTutoringSessions);
 tutoringSessionRouter.get("/:id", controller.getTutoringSessionById);
 tutoringSessionRouter.post("/add", controller.addTutoringSession);
 tutoringSessionRouter.delete("/:id", controller.removeTutoringSession);
+tutoringSessionRouter.delete("/remove", controller.removeTutoringSessionBulk);
 tutoringSessionRouter.put("/:id", controller.submitTutoringSession);
 tutoringSessionRouter.patch("/:id", controller.editTutoringSession);
 

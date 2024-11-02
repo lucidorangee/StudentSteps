@@ -165,7 +165,7 @@ const removeTutoringSession = (req, res) => {
         }
 
         else{
-            pool.query(queries.removeTutoringSession, [id], (error, result) => {
+            pool.query(queries.removeTutoringSessionById, [id], (error, result) => {
                 if (error) throw error;
                 res.status(200).send("Session "+id+" removed successfully");
             })
@@ -173,10 +173,32 @@ const removeTutoringSession = (req, res) => {
     });
 }
 
+const removeTutoringSessionBulk = async (req, res) => {
+    const { student_id, startDateTime, endDateTime } = req.body;
+
+    const client = await pool.connect();
+
+    try {
+        await client.query('BEGIN');
+
+        await client.query(queries.removeTutoringSessionsBetweenDates, [student_id, startDateTime, endDateTime]);
+
+        await client.query('COMMIT');
+        res.status(200).send("Tutoring sessions successfully removed");
+    } catch (error) {
+        await client.query('ROLLBACK');
+        console.error("Transaction failed:", error);
+        res.status(500).send("Error removing tutoring sessions");
+    } finally {
+        client.release();
+    }
+};
+
+
 const submitTutoringSession = (req, res) => {
     const id = parseInt(req.params.session_id);
     
-    pool.query(queries.TutoringSessionById, [id], (error, results) => {
+    pool.query(queries.getTutoringSessionById, [id], (error, results) => {
         if(!results.rows.length){
             res.send("The session does not exist in the database, could not update complete column");
         }
@@ -252,6 +274,7 @@ module.exports = {
     getTutoringSessionById,
     addTutoringSession,
     removeTutoringSession,
+    removeTutoringSessionBulk,
     submitTutoringSession,
     editTutoringSession,
 };
