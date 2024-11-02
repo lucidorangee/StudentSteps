@@ -27,7 +27,8 @@
   flex-direction: column; /* Stack events vertically */
   justify-content: center; /* Center events vertically */
   align-items: center; /* Center events horizontally */
-  height: 80%; /* Limit height for event area */
+  height: calc(100% - 30px); /* Adjust height to leave space for the date */
+  padding-top: 25px; /* Add padding to move events down */
   overflow: hidden; /* Hide overflow */
 }
 
@@ -35,6 +36,7 @@
   font-size: 1rem; /* Normal font size for events */
   margin: 2px 0; /* Minimal vertical spacing */
 }
+
 
 
 
