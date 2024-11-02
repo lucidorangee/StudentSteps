@@ -177,6 +177,7 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = () => {} }) => {
       const tutoringSessionsForDate = filteredTutoringSessions.filter(item => item.session_datetime.startsWith(date));
 
       const handleDayClick = () => {
+        console.log("handleDayClick");
         if (onDateClick !== (() => {})) {
           onDateClick(date);
         }
