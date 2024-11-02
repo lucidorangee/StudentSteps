@@ -216,7 +216,10 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
           <div className="calendar-container">
             <div className="calendar-grid">
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
-                <div className={`day-header ${day.toLowerCase() === 'sat' ? 'sat' : day.toLowerCase() === 'sun' ? 'sun' : ''}`} key={day}>
+                <div
+                  className={`day-header ${day === 'Sat' ? 'sat' : day === 'Sun' ? 'sun' : ''}`}
+                  key={day}
+                >
                   {day}
                 </div>
               ))}

@@ -7,18 +7,18 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     margin: 0 auto;
-  }
+}
   
-  /* Grid setup for the days */
-  .calendar-grid {
+/* Grid setup for the days */
+.calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 1px; /* Outline effect */
     background-color: #e0e0e0;
-  }
+}
   
-  /* Header styling for days of the week */
-  .day-header {
+/* Header styling for days of the week */
+.day-header {
     font-weight: 600;
     font-size: 0.9em;
     color: #5f6368;
@@ -26,10 +26,19 @@
     text-align: center;
     padding: 10px;
     border-bottom: 1px solid #e0e0e0;
-  }
+}
+
+/* Specific colors for Saturday and Sunday headers */
+.day-header.sat {
+    background-color: #d0e8ff; /* Light blue for Saturday */
+}
+
+.day-header.sun {
+    background-color: #ffd0d0; /* Light red for Sunday */
+}
   
-  /* Styling for each day cell */
-  .day {
+/* Styling for each day cell */
+.day {
     background-color: #fff;
     padding: 15px;
     border-right: 1px solid #e0e0e0;
@@ -41,51 +50,42 @@
     position: relative;
     cursor: pointer;
     transition: background-color 0.2s ease;
-  }
+}
   
-  /* Specific colors for Saturday and Sunday */
-  .day.sat {
-    background-color: #1e88e5; /* Light blue */
-  }
-  
-  .day.sun {
-    background-color: #d32f2f; /* Light red */
-  }
-  
-  /* Highlight effect on hover */
-  .day:hover {
+/* Highlight effect on hover */
+.day:hover {
     background-color: #f9f9f9;
-  }
+}
   
-  /* Current day styling */
-  .today {
+/* Current day styling */
+.today {
     border: 2px solid #3f51b5;
     border-radius: 6px;
     padding: 13px;
-  }
+}
   
-  /* Adjusted date position at the top left of each cell */
-  .date {
+/* Adjusted date position at the top left of each cell */
+.date {
     font-size: 1em;
     font-weight: 500;
     color: #333;
     margin-bottom: 5px;
     position: relative;
-    left: -4px;
-    top: -4px;
-  }
+    left: -2px; /* Slight shift to the left */
+    top: -2px;  /* Slight shift upward */
+}
   
-  /* Styling for events within each cell */
-  .events {
+/* Styling for events within each cell */
+.events {
     display: flex;
     flex-direction: column;
     gap: 4px;
     width: 100%;
     margin-top: 8px;
-  }
+}
   
-  /* Individual event style */
-  .event {
+/* Individual event style */
+.event {
     background-color: #e3f2fd;
     color: #1e88e5;
     font-size: 0.85em;
@@ -95,16 +95,16 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-  }
+}
   
-  /* A darker event color for a different type */
-  .event-secondary {
+/* A darker event color for a different type */
+.event-secondary {
     background-color: #ffebee;
     color: #d32f2f;
-  }
+}
   
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
+/* Responsive adjustments */
+@media (max-width: 768px) {
     .calendar-container {
       max-width: 100%;
       box-shadow: none;
@@ -114,5 +114,4 @@
     .day {
       padding: 10px;
     }
-  }
-  
+}
