@@ -105,7 +105,7 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
     isLoading: assessmentsLoading,
     error: assessmentsError,
   } = useQuery({queryKey: ['assessments'], queryFn: () => fetchAssessments()});
-  
+
   useEffect(() => {
     if (students) {
       setStudentOptions([
@@ -215,13 +215,11 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
           </div>
           <div className="calendar-container">
             <div className="calendar-grid">
-              <div className="day-header">Sun</div>
-              <div className="day-header">Mon</div>
-              <div className="day-header">Tue</div>
-              <div className="day-header">Wed</div>
-              <div className="day-header">Thu</div>
-              <div className="day-header">Fri</div>
-              <div className="day-header">Sat</div>
+              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
+                <div className={`day-header ${day.toLowerCase() === 'sat' ? 'sat' : day.toLowerCase() === 'sun' ? 'sun' : ''}`} key={day}>
+                  {day}
+                </div>
+              ))}
               {renderCalendarDays()}
             </div>
           </div>
