@@ -70,7 +70,7 @@ const fetchAssessments = async () => {
   return response.json();
 }
 
-const CalendarPage = ({ defaultStudentId = -1, onDateClick = () => {} }) => {
+const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -187,7 +187,7 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = () => {} }) => {
         <div 
           key={day} 
           className="day" 
-          onClick={onDateClick !== (() => {}) ? handleDayClick : null} // Day click only if onDateClick is not the default
+          onClick={onDateClick ? () => onDateClick(date) : null} // Day click only if onDateClick is not the default
         >
           <div className="date">{day}</div>
           <div className="events">
@@ -195,7 +195,7 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = () => {} }) => {
               <p 
                 key={`assess-${index}`} 
                 className="event" 
-                onClick={onDateClick === (() => {}) ? () => alert(`Assessment: ${assessment.title}`) : null} // Event click only if no onDateClick
+                onClick={onDateClick ? () => alert(`Assessment: ${assessment.title}`) : null} // Event click only if no onDateClick
               >
                 {assessment.title}
               </p>
@@ -204,7 +204,7 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = () => {} }) => {
               <p 
                 key={`session-${index}`} 
                 className="event" 
-                onClick={onDateClick === (() => {}) ? () => alert(`Session with ${session.student_name}`) : null} // Event click only if no onDateClick
+                onClick={onDateClick ? () => alert(`Session with ${session.student_name}`) : null} // Event click only if no onDateClick
               >
                 {session.student_name}
               </p>
