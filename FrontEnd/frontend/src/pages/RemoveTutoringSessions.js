@@ -23,21 +23,6 @@ const fetchStudents = async () => {
   return response.json();
 };
 
-const fetchTutors = async () => {
-  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors/`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch tutors');
-  }
-
-  return response.json();
-};
-
 const fetchTutoringSessions = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
     credentials: 'include',
@@ -91,12 +76,6 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
   } = useQuery({queryKey: ['students'], queryFn: fetchStudents});
 
   const {
-    data: tutors,
-    isLoading: tutorsLoading,
-    error: tutorsError,
-  } = useQuery({queryKey: ['tutors'], queryFn: fetchTutors});
-
-  const {
     data: tutoringSessions,
     isLoading: tutoringSessionsLoading,
     error: tutoringSessionsError,
@@ -115,19 +94,6 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
     }
   }, [students]);
 
-  useEffect(() => {
-    if (tutors) {
-      const tutorOptionsTemp = tutors.map(tutor => ({
-        value: tutor.tutor_id,
-        label: `${tutor.first_name} ${tutor.last_name} (ID: ${tutor.tutor_id})`,
-      }));
-      setTutorOptions(tutorOptionsTemp);
-      if (tutorOptionsTemp.length > 0) {
-        setTutor(tutorOptionsTemp[0].value);
-      }
-    }
-  }, [tutors]);
-
   const { mutate: removeTutoringSessions, isLoading, isError, error } = useMutation({
     mutationFn: (formData) => deleteTutoringSessions(formData),
     onSuccess: () => {
@@ -139,8 +105,8 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
     }
   });
   
-  if (studentsLoading || tutorsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
-  if (studentsError || tutorsError || tutoringSessionsError) return <div>Error loading data</div>;
+  if (studentsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
+  if (studentsError || tutoringSessionsError) return <div>Error loading data</div>;
 
   const handleStudentChange = (selectedOption) => setStudent(selectedOption ? selectedOption.value : -1);
   const handleTutorChange = (selectedOption) => setTutor(selectedOption ? selectedOption.value : -1);
@@ -156,18 +122,10 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
       setAlert("Please select a student");
       return;
     }
-    if (tutorId === -1) {
-      setAlert("Please select a tutor");
-      return;
-    }
 
-    const formData = { student_id: studentId, tutor_id: tutorId, startDateTime, endDateTime };
+    const formData = { student_id: studentId, startDateTime, endDateTime };
     removeTutoringSessions(formData);
   };
-
-  // Conditional loading and error displays
-  if (studentsLoading || tutorsLoading) return <div>Loading...</div>;
-  if (studentsError || tutorsError) return <div>Error loading data</div>;
 
   return (
     <div className="App">

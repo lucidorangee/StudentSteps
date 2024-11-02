@@ -157,7 +157,6 @@ const addTutoringSession = async (req, res) => {
 const removeTutoringSession = (req, res) => {
     const id = parseInt(req.params.id);
     
-    
     pool.query(queries.getTutoringSessionById, [id], (error, results) => {
         const noSessionFound = !results.rows.length;
         if(noSessionFound){
