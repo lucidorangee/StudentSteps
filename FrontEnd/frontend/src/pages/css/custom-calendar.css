@@ -19,7 +19,7 @@
   position: absolute;
   top: 5px; /* Position the date at the top */
   left: 5px; /* Align to the left */
-  font-weight: bold; /* Make the date stand out */
+  /*font-weight: bold; /* Make the date stand out */
 }
 
 .calendar-container .calendar-grid .day .events {
