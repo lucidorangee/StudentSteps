@@ -29,7 +29,8 @@
   align-items: center; /* Center events horizontally */
   height: calc(100% - 30px); /* Adjust height to leave space for the date */
   position: absolute; /* Allow precise positioning */
-  top: 35px; /* Move the events down to start below the date */
+  top: 50%; /* Center events container vertically */
+  transform: translateY(-50%); /* Adjust to align center */
   padding: 5px; /* Add some padding */
   overflow: hidden; /* Hide overflow */
 }
@@ -38,6 +39,7 @@
   font-size: 0.9rem; /* Slightly smaller font size for events */
   margin: 2px 0; /* Minimal vertical spacing */
 }
+
 
 
 
