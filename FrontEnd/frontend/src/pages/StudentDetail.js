@@ -420,7 +420,7 @@ const StudentList = () => {
       (<ScheduleCalendar defaultStudentId = {id}></ScheduleCalendar>),
     'Add Schedule': 
       (
-      <div>
+      <div className="row">
         <div className="col-6">
           <CreateTutoringSession defaultStudentId = {id} passedDate = {startDate}></CreateTutoringSession>
         </div>
@@ -432,7 +432,7 @@ const StudentList = () => {
       ),
     'Remove Schedules': 
     (
-    <div>
+    <div className="row">
       <RemoveTutoringSessions defaultStudentId = {id} passedStartDate = {startDate}></RemoveTutoringSessions>
       <ScheduleCalendar defaultStudentId = {id} onDateClick = {setStartDate}></ScheduleCalendar>
     </div>
