@@ -70,7 +70,7 @@ const fetchAssessments = async () => {
   return response.json();
 }
 
-const CalendarPage = ({ defaultStudentId = -1 }) => {
+const CalendarPage = ({ defaultStudentId = -1, onDateClick = () => {} }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -136,8 +136,6 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
   }, [assessments, tutoringSessions]);
 
   useEffect(() => {
-    console.log(`type of selectedstudentid is ${typeof selectedStudentID}`);
-
     if (tutoringSessions && assessments) {
       setFilteredTutoringSessions(
         tutoringSessions.filter(session =>
@@ -178,15 +176,37 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
       const assessmentsForDate = filteredAssessments.filter(item => item.date === date);
       const tutoringSessionsForDate = filteredTutoringSessions.filter(item => item.session_datetime.startsWith(date));
 
+      const handleDayClick = () => {
+        if (onDateClick !== (() => {})) {
+          onDateClick(date);
+        }
+      };
+
       cells.push(
-        <div key={day} className="day">
+        <div 
+          key={day} 
+          className="day" 
+          onClick={onDateClick !== (() => {}) ? handleDayClick : null} // Day click only if onDateClick is not the default
+        >
           <div className="date">{day}</div>
           <div className="events">
             {assessmentsForDate.map((assessment, index) => (
-              <p key={`assess-${index}`} className="event">{assessment.title}</p>
+              <p 
+                key={`assess-${index}`} 
+                className="event" 
+                onClick={onDateClick === (() => {}) ? () => alert(`Assessment: ${assessment.title}`) : null} // Event click only if no onDateClick
+              >
+                {assessment.title}
+              </p>
             ))}
             {tutoringSessionsForDate.map((session, index) => (
-              <p key={`session-${index}`} className="event">{session.student_name}</p>
+              <p 
+                key={`session-${index}`} 
+                className="event" 
+                onClick={onDateClick === (() => {}) ? () => alert(`Session with ${session.student_name}`) : null} // Event click only if no onDateClick
+              >
+                {session.student_name}
+              </p>
             ))}
           </div>
         </div>
