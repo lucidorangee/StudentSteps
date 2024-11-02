@@ -8,28 +8,28 @@
     max-width: 800px;
     margin: 0 auto;
 }
-  
+  /**
 .calendar-container .calendar-grid .day {
-    height: 100px; /* Default cell height */
-    overflow: hidden;
-    position: relative;
-    padding: 5px;
+  height: 100px; 
+  overflow: hidden;
+  position: relative;
+  padding: 5px;
 }
 
 .calendar-container .calendar-grid .day .events {
-font-size: 0.75rem; /* Smaller font size for events */
-line-height: 1rem; /* Tighter line height */
-max-height: 80%; /* Limit the height to fit more within the cell */
-overflow-y: hidden; /* Hide overflow for a clean look */
+  font-size: 0.75rem;
+  line-height: 1rem;
+  max-height: 80%; 
+  overflow-y: hidden; 
 }
 
 .calendar-container .calendar-grid .day .events .event {
-white-space: nowrap; /* Prevent line breaks within an event */
-overflow: hidden;
-text-overflow: ellipsis; /* Add ellipsis if the text is too long */
-margin: 2px 0; /* Minimal vertical spacing */
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  margin: 2px 0;
 }
-  
+*/
 
 /* Grid setup for the days */
 .calendar-grid {
