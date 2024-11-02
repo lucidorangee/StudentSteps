@@ -36,11 +36,20 @@
     border-bottom: 1px solid #e0e0e0;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     min-height: 100px;
     position: relative;
     cursor: pointer;
     transition: background-color 0.2s ease;
+  }
+  
+  /* Specific colors for Saturday and Sunday */
+  .day.sat {
+    background-color: #e0f7fa; /* Light blue */
+  }
+  
+  .day.sun {
+    background-color: #ffebee; /* Light red */
   }
   
   /* Highlight effect on hover */
@@ -55,13 +64,15 @@
     padding: 13px;
   }
   
-  /* Date number at the top of each cell */
+  /* Adjusted date position at the top left of each cell */
   .date {
     font-size: 1em;
     font-weight: 500;
     color: #333;
     margin-bottom: 5px;
-    align-self: flex-start;
+    position: relative;
+    left: -4px;
+    top: -4px;
   }
   
   /* Styling for events within each cell */
