@@ -60,13 +60,11 @@ const deleteTutoringSessions = async (formData) => {
 const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
 
   const [studentId, setStudent] = useState(defaultStudentId);
-  const [tutorId, setTutor] = useState(-1);
   const [alert, setAlert] = useState('');
   const [startDateTime, setStartDateTime] = useState(null);
   const [endDateTime, setEndDateTime] = useState(null);
 
   const [studentOptions, setStudentOptions] = useState([]);
-  const [tutorOptions, setTutorOptions] = useState([]);
   const queryClient = useQueryClient();
 
   const {
@@ -109,7 +107,6 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
   if (studentsError || tutoringSessionsError) return <div>Error loading data</div>;
 
   const handleStudentChange = (selectedOption) => setStudent(selectedOption ? selectedOption.value : -1);
-  const handleTutorChange = (selectedOption) => setTutor(selectedOption ? selectedOption.value : -1);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -150,16 +147,6 @@ const RemoveTutoringSessions = ({defaultStudentId = -1}) => {
                   />
                 </div>
               )}
-              <div className="mb-3">
-                <label className="form-label">Tutor</label>
-                <Select
-                  options={tutorOptions}
-                  onChange={handleTutorChange}
-                  placeholder="Select a tutor"
-                  isClearable
-                  classNamePrefix="react-select"
-                />
-              </div>
 
               <div className="mb-3">
                 <label className="form-label">Start Date and Time</label>
