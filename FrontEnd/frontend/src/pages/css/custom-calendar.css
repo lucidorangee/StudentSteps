@@ -1,48 +1,107 @@
+/* Outer container for calendar */
 .calendar-container {
-    border: 1px solid #ccc; /* Outer border for the entire calendar */
-    border-radius: 8px; /* Optional: Rounded corners */
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
     overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
   }
   
+  /* Grid setup for the days */
   .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 1px; /* Small gap for grid outlines */
-    background-color: #ccc; /* Outline color */
+    gap: 1px; /* Outline effect */
+    background-color: #e0e0e0;
   }
   
-  .day-header,
+  /* Header styling for days of the week */
+  .day-header {
+    font-weight: 600;
+    font-size: 0.9em;
+    color: #5f6368;
+    background-color: #f1f3f4;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  /* Styling for each day cell */
   .day {
     background-color: #fff;
-    padding: 10px;
-    border: 1px solid #ccc; /* Border around each day cell */
+    padding: 15px;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 100px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
   }
   
-  .day-header {
-    font-weight: bold;
-    background-color: #f8f9fa; /* Slightly different color for headers */
+  /* Highlight effect on hover */
+  .day:hover {
+    background-color: #f9f9f9;
   }
   
+  /* Current day styling */
+  .today {
+    border: 2px solid #3f51b5;
+    border-radius: 6px;
+    padding: 13px;
+  }
+  
+  /* Date number at the top of each cell */
   .date {
-    font-size: 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    color: #333;
     margin-bottom: 5px;
+    align-self: flex-start;
   }
   
+  /* Styling for events within each cell */
   .events {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
     width: 100%;
+    margin-top: 8px;
   }
   
+  /* Individual event style */
   .event {
-    background-color: #e9ecef;
+    background-color: #e3f2fd;
+    color: #1e88e5;
+    font-size: 0.85em;
+    padding: 4px 8px;
     border-radius: 4px;
-    padding: 2px 4px;
-    font-size: 0.9em;
-    color: #333;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  /* A darker event color for a different type */
+  .event-secondary {
+    background-color: #ffebee;
+    color: #d32f2f;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .calendar-container {
+      max-width: 100%;
+      box-shadow: none;
+      border-radius: 0;
+    }
+  
+    .day {
+      padding: 10px;
+    }
   }
   
