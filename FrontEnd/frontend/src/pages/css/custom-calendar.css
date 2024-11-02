@@ -9,26 +9,42 @@
     margin: 0 auto;
 }
   
+/* Style each day cell */
 .calendar-container .calendar-grid .day {
-  height: 100px; 
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  justify-content: flex-start; /* Align content to the top, if needed */
+  height: 100px; /* Default cell height */
+  padding: 5px; /* Padding for spacing within cell */
   position: relative;
-  padding: 5px;
 }
 
+/* Style for the day number */
+.calendar-container .calendar-grid .day .date {
+  font-size: 1rem;
+  margin-bottom: 2px; /* Minimal spacing below the day number */
+}
+
+/* Style for event list */
 .calendar-container .calendar-grid .day .events {
-  /*font-size: 0.75rem;*/
-  line-height: 1rem;
-  max-height: 80%; 
-  overflow-y: hidden; 
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center events within the cell */
+  font-size: 0.75rem; /* Smaller font size for events */
+  line-height: 1rem; /* Tighter line height */
+  max-height: 80%; /* Limit height to avoid expanding the cell */
+  overflow-y: hidden; /* Hide overflow for a clean look */
 }
 
+/* Individual event styling */
 .calendar-container .calendar-grid .day .events .event {
-  white-space: nowrap; 
+  white-space: nowrap; /* Prevent line breaks in each event */
   overflow: hidden;
-  text-overflow: ellipsis; 
-  margin: 2px 0;
+  text-overflow: ellipsis; /* Add ellipsis if the text is too long */
+  margin: 1px 0; /* Minimal spacing between events */
 }
+
 
 
 /* Grid setup for the days */
