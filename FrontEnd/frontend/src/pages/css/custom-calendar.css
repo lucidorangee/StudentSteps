@@ -19,7 +19,7 @@
   position: absolute;
   top: 5px; /* Position the date at the top */
   left: 5px; /* Align to the left */
-  /*font-weight: bold; /* Make the date stand out */
+  font-weight: bold; /* Make the date stand out */
 }
 
 .calendar-container .calendar-grid .day .events {
@@ -28,17 +28,17 @@
   justify-content: center; /* Center events vertically */
   align-items: center; /* Center events horizontally */
   height: calc(100% - 30px); /* Adjust height to leave space for the date */
-  padding-top: 25px; /* Space between date and events */
-  overflow: hidden; /* Hide overflow */
-  position: absolute; /* Allow precise vertical centering */
+  position: absolute; /* Allow precise positioning */
   top: 35px; /* Move the events down to start below the date */
-  bottom: 0; /* Extend to the bottom of the cell */
+  padding: 5px; /* Add some padding */
+  overflow: hidden; /* Hide overflow */
 }
 
 .calendar-container .calendar-grid .day .events .event {
   font-size: 0.9rem; /* Slightly smaller font size for events */
   margin: 2px 0; /* Minimal vertical spacing */
 }
+
 
 
 
