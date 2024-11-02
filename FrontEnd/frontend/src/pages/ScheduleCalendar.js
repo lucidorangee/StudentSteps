@@ -136,6 +136,8 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
   }, [assessments, tutoringSessions]);
 
   useEffect(() => {
+    console.log(`selectedstudentid is ${selectedStudentID}`);
+
     if (tutoringSessions && assessments) {
       setFilteredTutoringSessions(
         tutoringSessions.filter(session =>
