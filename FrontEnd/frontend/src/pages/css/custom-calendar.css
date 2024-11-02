@@ -27,7 +27,7 @@
   flex-direction: column; /* Stack events vertically */
   justify-content: center; /* Center events vertically */
   align-items: center; /* Center events horizontally */
-  height: calc(100% - 30px); /* Adjust height to leave space for the date */
+  height: calc(100% - 35px); /* Adjust height to leave space for the date */
   position: absolute; /* Allow precise positioning */
   top: 50%; /* Center events container vertically */
   left: 0; /* Start from the left edge */
@@ -42,15 +42,6 @@
   margin: 2px 0; /* Minimal vertical spacing */
   text-align: center; /* Center text within each event */
 }
-
-
-
-
-
-
-
-
-
 
 /* Grid setup for the days */
 .calendar-grid {
