@@ -9,6 +9,28 @@
     margin: 0 auto;
 }
   
+.calendar-container .calendar-grid .day {
+    height: 100px; /* Default cell height */
+    overflow: hidden;
+    position: relative;
+    padding: 5px;
+}
+
+.calendar-container .calendar-grid .day .events {
+font-size: 0.75rem; /* Smaller font size for events */
+line-height: 1rem; /* Tighter line height */
+max-height: 80%; /* Limit the height to fit more within the cell */
+overflow-y: hidden; /* Hide overflow for a clean look */
+}
+
+.calendar-container .calendar-grid .day .events .event {
+white-space: nowrap; /* Prevent line breaks within an event */
+overflow: hidden;
+text-overflow: ellipsis; /* Add ellipsis if the text is too long */
+margin: 2px 0; /* Minimal vertical spacing */
+}
+  
+
 /* Grid setup for the days */
 .calendar-grid {
     display: grid;
@@ -72,7 +94,7 @@
     margin-bottom: 5px;
     position: relative;
     left: -2px; /* Slight shift to the left */
-    top: -5px;  /* Slight shift upward */
+    top: -6px;  /* Slight shift upward */
 }
   
 /* Styling for events within each cell */
