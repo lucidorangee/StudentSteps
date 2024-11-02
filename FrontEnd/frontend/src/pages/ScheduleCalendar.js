@@ -187,7 +187,7 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
         <div 
           key={day} 
           className="day" 
-          onClick={onDateClick ? () => onDateClick(date) : null} // Day click only if onDateClick is not the default
+          onClick={onDateClick ? () => onDateClick(date) : null} 
         >
           <div className="date">{day}</div>
           <div className="events">
@@ -195,7 +195,7 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
               <p 
                 key={`assess-${index}`} 
                 className="event" 
-                onClick={onDateClick ? () => alert(`Assessment: ${assessment.title}`) : null} // Event click only if no onDateClick
+                onClick={onDateClick ? null : () => alert(`Assessment: ${assessment.title}`)} 
               >
                 {assessment.title}
               </p>
@@ -204,7 +204,7 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
               <p 
                 key={`session-${index}`} 
                 className="event" 
-                onClick={onDateClick ? () => alert(`Session with ${session.student_name}`) : null} // Event click only if no onDateClick
+                onClick={onDateClick ? null : () => alert(`Session with ${session.student_name}`)} 
               >
                 {session.student_name}
               </p>
