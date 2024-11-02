@@ -173,15 +173,11 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
 
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day).toISOString().split('T')[0];
-      const assessmentsForDate = filteredAssessments.filter(item => item.date === date);
+      const assessmentsForDate = filteredAssessments.filter(item => {
+        const itemDate = new Date(item.date).toISOString().split('T')[0];
+        return itemDate === date;
+      });
       const tutoringSessionsForDate = filteredTutoringSessions.filter(item => item.session_datetime.startsWith(date));
-
-      const handleDayClick = () => {
-        console.log("handleDayClick");
-        if (onDateClick !== (() => {})) {
-          onDateClick(date);
-        }
-      };
 
       cells.push(
         <div 
