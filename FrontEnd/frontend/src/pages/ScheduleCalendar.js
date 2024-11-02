@@ -76,7 +76,7 @@ const CalendarPage = ({ defaultStudentId = -1 }) => {
 
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [studentOptions, setStudentOptions] = useState([]);
-  const [selectedStudentID, setSelectedStudentID] = useState(defaultStudentId);
+  const [selectedStudentID, setSelectedStudentID] = useState(Number(defaultStudentId) || -1);
   const [tutorOptions, setTutorOptions] = useState([]);
   const [selectedTutorID, setSelectedTutorID] = useState(-1);
   const [filteredTutoringSessions, setFilteredTutoringSessions] = useState([]);
