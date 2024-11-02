@@ -72,7 +72,7 @@
     margin-bottom: 5px;
     position: relative;
     left: -2px; /* Slight shift to the left */
-    top: -2px;  /* Slight shift upward */
+    top: -5px;  /* Slight shift upward */
 }
   
 /* Styling for events within each cell */
