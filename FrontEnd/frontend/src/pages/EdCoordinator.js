@@ -86,12 +86,6 @@ const EdCoordinator = () => {
     error: studentsError,
   } = useQuery({queryKey: ['students'], refetchOnMount: 'always',queryFn: () => fetchStudents()});
 
-  useEffect(() => {
-    if (students) {
-      setFilteredStudents(students); // Initialize filteredStudents with the fetched data
-    }
-  }, [students]);
-
   const {
     data: comments,
     isLoading: commentsLoading,
@@ -109,6 +103,12 @@ const EdCoordinator = () => {
     isLoading: tutoringSessionsLoading,
     error: tutoringSessionsError,
   } = useQuery({queryKey: ['tutoringSessions'], refetchOnMount: 'always', queryFn: () => fetchTutoringSessions()});
+
+  useEffect(() => {
+    if (students && comments && assessments && tutoringSessions) {
+      filterAssessments();
+    }
+  }, [students, comments, assessments, tutoringSessions]);
 
   if (studentsLoading || commentsLoading || assessmentsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
   if (studentsError || commentsError || assessmentsError || tutoringSessionsError) {
@@ -134,9 +134,7 @@ const EdCoordinator = () => {
     setFilterGrade(parseInt(value) || 0);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
+  const filterAssessments = () => {
     let temp = [];
   
     // Filter students based on name and grade criteria
@@ -168,6 +166,12 @@ const EdCoordinator = () => {
   
     // Set the filtered assessments for display
     setFilteredAssessments(filteredAssessments);
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    filterAssessments();
   };  
 
   return (
