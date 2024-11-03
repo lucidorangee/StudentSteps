@@ -149,3 +149,18 @@
       padding: 10px;
     }
 }
+
+/* Hide the spinner arrows in number input */
+input[type="number"] {
+    appearance: textfield; /* Standard property for most browsers */
+    -moz-appearance: textfield; /* For Firefox */
+    -webkit-appearance: none; /* For Chrome, Safari, and Edge */
+  }
+  
+  /* Hide the spinner controls specifically */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    appearance: none; /* Standard property for most browsers */
+    -webkit-appearance: none; /* For WebKit browsers */
+    margin: 0; /* Remove default margin */
+  }
