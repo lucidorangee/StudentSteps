@@ -218,12 +218,12 @@ const CreateTutoringSession = ({defaultStudentId = -1, passedDate = null}) => {
   const handleRepeatCountChange = (e) => {
     setRepeatCount(parseInt(e.target.value));
   };
-
+//col-md-10 col-lg-8
   return (
     <div className="App">
       <header className="App-header">
         <div className="d-flex justify-content-center mt-5 mb-5">
-          <div className={(passedDate?`col-12 col-md-10 col-lg-8 shadow p-4 bg-body-tertiary rounded`:`col-12 shadow p-4 bg-body-tertiary rounded`) }>
+          <div className="col-12 shadow p-4 bg-body-tertiary rounded"> 
             {alert && (
               <div className="alert alert-danger" role="alert">
                 {alert}
