@@ -23,6 +23,7 @@ const Topbar = () => {
                     <Nav.Link as={NavLink} to='/admin/homework/due'>Homework List</Nav.Link>
                     <Nav.Link as={NavLink} to='/comments' exact>Comments</Nav.Link>
                     <Nav.Link as={NavLink} to='/tutoringsessions' exact>Sessions</Nav.Link>
+                    <Nav.Link as={NavLink} to='/edcoordinator' exact>Ed Coord</Nav.Link>
                 </div>
                 <div className="navbar-nav ms-auto">
                     <Nav.Link as={NavLink} to='/register' exact>Register</Nav.Link>

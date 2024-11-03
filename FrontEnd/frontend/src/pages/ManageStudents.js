@@ -22,6 +22,22 @@ const fetchStudents = async () => {
   return response.json();
 };
 
+const fetchAssessments = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/assessments/`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    const err = new Error('Failed to fetch students');
+    err.status = response.status;
+    throw err;
+  }
+  return response.json();
+};
+
 const fetchComments = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/`, {
     credentials: 'include',
@@ -67,14 +83,19 @@ const ManageStudents = () => {
     error: commentsError,
   } = useQuery({queryKey: ['comments'], refetchOnMount: 'always', queryFn: () => fetchComments()});
 
-  if (studentsLoading) return <div>Loading...</div>;
-  if (studentsError) {
-    if(studentsError.status === 401) //unauthorized
+  const {
+    data: assessments,
+    isLoading: assessmentsLoading,
+    error: assessmentsError,
+  } = useQuery({queryKey: ['assessments'], refetchOnMount: 'always', queryFn: () => fetchAssessments()});
+
+  if (studentsLoading ||commentsLoading || assessmentsLoading) return <div>Loading...</div>;
+  if (studentsError || commentsError || assessmentsError) {
+    if(studentsError?.status === 401 || commentsError?.status === 401 || assessmentsError?.status === 401) //unauthorized
     {
       console.log("unathorized");
       return <Navigate to="/login" />;
     }
-    console.log(studentsError.status);
     return <div>Error loading data</div>;
   }
 
