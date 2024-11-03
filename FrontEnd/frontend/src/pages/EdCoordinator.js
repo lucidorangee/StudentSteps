@@ -135,38 +135,23 @@ const EdCoordinator = () => {
   };
 
   const filterAssessments = () => {
-    let temp = [];
-  
-    // Filter students based on name and grade criteria
-    for (let i = 0; i < students.length; i++) {
-      if (
-        (students[i].first_name.includes(filterName) || students[i].last_name.includes(filterName)) &&
-        (filterGrade === 0 || students[i].grade_level === filterGrade)
-      ) {
-        temp.push(students[i]);
-      }
-    }
-  
     const today = new Date();
+    today.setUTCHours(0, 0, 0, 0); // Set time to midnight UTC for date-only comparison
+  
     const sevenDaysFromNow = new Date(today);
-    sevenDaysFromNow.setDate(today.getDate() + 7);
+    sevenDaysFromNow.setDate(today.getDate() + 7); // Adds 7 days to today's date (date-only)
   
-    // Filter assessments within the next 7 days, excluding those in the past, and sorted by closest date
-    const tempAssessments = assessments
-      .filter(
-        assessment =>
-          new Date(assessment.date) >= today && new Date(assessment.date) <= sevenDaysFromNow
-      )
-      .sort((a, b) => new Date(a.date) - new Date(b.date));
+    const filteredAssessments = assessments.filter(assessment => {
+      const assessmentDate = new Date(assessment.date); // Date-only format (UTC date)
   
-    // Only keep assessments related to the filtered students
-    const filteredAssessments = tempAssessments.filter(assessment =>
-      temp.some(student => student.student_id === assessment.student_id)
-    );
+      return (
+        assessmentDate >= today && assessmentDate <= sevenDaysFromNow
+      );
+    });
   
-    // Set the filtered assessments for display
     setFilteredAssessments(filteredAssessments);
-  }
+  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -242,8 +227,8 @@ const EdCoordinator = () => {
                   <td>{student.first_name} {student.last_name}</td>
                   <td>{assessment.title}</td>
                   <td>{assessment.description}</td>
-                  <td>{new Date(assessment.date).toLocaleString()}</td>
-                  <td>{upcomingSession ? new Date(upcomingSession.session_datetime).toLocaleString() : 'N/A'}</td>
+                  <td>{assessment.date}</td>
+                  <td>{upcomingSession ? upcomingSession.session_datetime : 'N/A'}</td>
                   <td>{latestComment ? latestComment.note : 'No comments available'}</td>
                 </tr>
               );
