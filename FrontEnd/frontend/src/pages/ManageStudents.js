@@ -45,6 +45,7 @@ const ManageStudents = () => {
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
   const [filterGrade, setFilterGrade] = useState(0);
+  const [upcomingAssessmentFilter, setUpcomingAssessmentFilter] = useState(false);
   
   const [filteredStudents, setFilteredStudents] = useState([]);
 
@@ -90,6 +91,10 @@ const ManageStudents = () => {
     const { value } = e.target;
     setFilterGrade(parseInt(value) || 0);
   };
+  
+  const handleAssessmentCheckboxChange = (event) => {
+    setUpcomingAssessmentFilter(event.target.checked);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -108,29 +113,49 @@ const ManageStudents = () => {
     <div className="App">
       <h2>Welcome, User!</h2>
       <form onSubmit={handleSubmit}>
-        <div className="container-fluid m-3">
-          <div className="row g-3">
-            <div className="col-3">
-              <label htmlFor="FormControlInput1" className="form-label">Name</label>
+      <div className="container-fluid m-3 p-3 border rounded bg-light">
+        <div className="row g-3 align-items-center">
+          <div className="col-md-3">
+            <label htmlFor="filterName" className="form-label">Name</label>
+            <input
+              type="text"
+              id="filterName"
+              className="form-control"
+              value={filterName}
+              onChange={handleFilterNameChange}
+              placeholder="Enter name"
+            />
+          </div>
+          <div className="col-md-3">
+            <label htmlFor="filterGrade" className="form-label">Grade</label>
+            <input
+              type="text"
+              id="filterGrade"
+              className="form-control"
+              value={filterGrade}
+              onChange={handleFilterGradeChange}
+              placeholder="Enter grade"
+            />
+          </div>
+          <div className="col-md-4">
+            <div className="form-check mt-4">
               <input
-                type="text"
-                value={filterName}
-                onChange={handleFilterNameChange}
+                type="checkbox"
+                id="assessmentUpcoming"
+                className="form-check-input"
+                onChange={handleAssessmentCheckboxChange}
               />
-            </div>
-            <div className="col-3">
-              <label htmlFor="FormControlInput2" className="form-label">Grade</label>
-              <input
-                type="text"
-                value={filterGrade}
-                onChange={handleFilterGradeChange}
-              />
-            </div>
-            <div className="col-3">
-              <button type="submit" className="btn btn-primary mb-3">Apply Filter</button>
+              <label htmlFor="assessmentUpcoming" className="form-check-label">
+                Students with an Assessment upcoming within 7 days
+              </label>
             </div>
           </div>
+          <div className="col-md-2 d-flex justify-content-end">
+            <button type="submit" className="btn btn-primary mt-4">Apply Filter</button>
+          </div>
         </div>
+      </div>
+
       </form>
       <table className="table table-hover">
         <thead>

@@ -171,86 +171,94 @@ const AnalysisPage = () => {
   const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
   const days = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
 
+  const noShowGraph = () => {
+    return (
+      <div>
+        <div className="d-flex align-items-center">
+          <select
+            className="form-control me-2 w-auto"
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+          >
+            <option value="">Year</option>
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="form-control me-2 w-auto"
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(e.target.value)}
+            disabled={!selectedYear} // Enable only after selecting the year
+          >
+            <option value="">Month</option>
+            {months.map((month) => (
+              <option key={month} value={month}>
+                {month}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="form-control me-2 w-auto"
+            value={selectedDay}
+            onChange={(e) => setSelectedDay(e.target.value)}
+            disabled={!selectedMonth} // Enable only after selecting the month
+          >
+            <option value="">Day</option>
+            {days.map((day) => (
+              <option key={day} value={day}>
+                {day}
+              </option>
+            ))}
+          </select>
+
+          <FaCalendarAlt className="me-2 text-secondary" />
+          <button type="button" className="btn btn-info px-4" onClick={setDateToToday}>
+            Today
+          </button>
+          <button type="button" className="btn btn-secondary ms-2 px-4" onClick={handleDateReset}>
+            Show All
+          </button>
+        </div>
+        {
+          noShowData[0].value === 0 && noShowData[1].value === 0?
+          (
+            <div>No approved tutoring session comments on this date</div>
+          )
+          :
+          (
+            <PieChart width={400} height={400}>
+              <Pie
+                data={noShowData}
+                dataKey="value"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                fill="#8884d8"
+                labelLine={false}
+                label={renderCustomizedLabel}
+              >
+                {noShowData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          )
+        }
+    </div>
+    )
+  }
+
   return (
     <div className="App">
       <h2>Welcome, User!</h2>
-      <div className="d-flex align-items-center">
-        <select
-          className="form-control me-2 w-auto"
-          value={selectedYear}
-          onChange={(e) => setSelectedYear(e.target.value)}
-        >
-          <option value="">Year</option>
-          {years.map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
-
-        <select
-          className="form-control me-2 w-auto"
-          value={selectedMonth}
-          onChange={(e) => setSelectedMonth(e.target.value)}
-          disabled={!selectedYear} // Enable only after selecting the year
-        >
-          <option value="">Month</option>
-          {months.map((month) => (
-            <option key={month} value={month}>
-              {month}
-            </option>
-          ))}
-        </select>
-
-        <select
-          className="form-control me-2 w-auto"
-          value={selectedDay}
-          onChange={(e) => setSelectedDay(e.target.value)}
-          disabled={!selectedMonth} // Enable only after selecting the month
-        >
-          <option value="">Day</option>
-          {days.map((day) => (
-            <option key={day} value={day}>
-              {day}
-            </option>
-          ))}
-        </select>
-
-        <FaCalendarAlt className="me-2 text-secondary" />
-        <button type="button" className="btn btn-info px-4" onClick={setDateToToday}>
-          Today
-        </button>
-        <button type="button" className="btn btn-secondary ms-2 px-4" onClick={handleDateReset}>
-          Show All
-        </button>
-      </div>
-      {
-        noShowData[0].value === 0 && noShowData[1].value === 0?
-        (
-          <div>No approved tutoring session comments on this date</div>
-        )
-        :
-        (
-          <PieChart width={400} height={400}>
-            <Pie
-              data={noShowData}
-              dataKey="value"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              labelLine={false}
-              label={renderCustomizedLabel}
-            >
-              {noShowData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        )
-      }
+      <noShowGraph />
     </div>
     
   );
