@@ -421,11 +421,11 @@ const StudentList = () => {
     'Add Schedule': 
       (
       <div className="row">
-        <div className="col-6">
+        <div className="col-12 col-md-6">
           <CreateTutoringSession defaultStudentId = {id} passedDate = {startDate}></CreateTutoringSession>
         </div>
         
-        <div className="col-6">
+        <div className="col-12 col-md-6">
           <ScheduleCalendar defaultStudentId = {id} onDateClick = {setStartDate}></ScheduleCalendar>
         </div>
       </div>
