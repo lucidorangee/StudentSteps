@@ -136,7 +136,7 @@ const RemoveTutoringSessions = ({defaultStudentId = -1, passedDate = null}) => {
     <div className="App">
       <header className="App-header">
         <div className="d-flex justify-content-center mt-5 mb-5">
-          <div className="col-12 col-md-10 col-lg-8 shadow p-4 bg-body-tertiary rounded">
+          <div className="col-12 shadow p-4 bg-body-tertiary rounded">
             {alert && (
               <div className="alert alert-danger" role="alert">
                 {alert}
@@ -157,9 +157,9 @@ const RemoveTutoringSessions = ({defaultStudentId = -1, passedDate = null}) => {
               )}
 
               <div
-                className={`mb-3 p-2 ${selectedRow === 0 ? 'bg-warning' : ''}`} // Highlight start time row if selected
+                className={`mb-3 p-2`} // Highlight start time row if selected
                 onClick={() => setSelectedRow(0)} // Set selected row on click
-                style={{ cursor: 'pointer' }} // Change cursor to pointer
+                style={{ cursor: 'pointer', backgroundColor: selectedRow === 0 ? '#ffff99' : 'transparent' }} // Change cursor to pointer
               >
                 <label className="form-label">Start Date and Time</label>
                 <div className="d-flex align-items-center">
@@ -178,9 +178,9 @@ const RemoveTutoringSessions = ({defaultStudentId = -1, passedDate = null}) => {
               </div>
 
               <div
-                className={`mb-3 p-2 ${selectedRow === 1 ? 'bg-warning' : ''}`} // Highlight end time row if selected
+                className={`mb-3 p-2`} // Highlight end time row if selected
                 onClick={() => setSelectedRow(1)} // Set selected row on click
-                style={{ cursor: 'pointer' }} // Change cursor to pointer
+                style={{ cursor: 'pointer', backgroundColor: selectedRow === 1 ? '#ffff99' : 'transparent' }} // Change cursor to pointer
               >
                 <label className="form-label">End Date and Time (optional)</label>
                 <div className="d-flex align-items-center">

@@ -433,8 +433,13 @@ const StudentList = () => {
     'Remove Schedules': 
     (
     <div className="row">
-      <RemoveTutoringSessions defaultStudentId = {id} passedStartDate = {startDate}></RemoveTutoringSessions>
-      <ScheduleCalendar defaultStudentId = {id} onDateClick = {setStartDate}></ScheduleCalendar>
+        <div className="col-12 col-md-6">
+          <RemoveTutoringSessions defaultStudentId = {id} passedDate = {startDate}></RemoveTutoringSessions>
+        </div>
+
+        <div>
+          <ScheduleCalendar defaultStudentId = {id} onDateClick = {setStartDate}></ScheduleCalendar>
+        </div>
     </div>
     ),
   };
