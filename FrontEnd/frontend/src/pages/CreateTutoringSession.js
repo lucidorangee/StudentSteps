@@ -264,23 +264,26 @@ const CreateTutoringSession = ({defaultStudentId = -1, passedDate = null}) => {
               {dateTimeList.map((entry, index) => (
                 <div
                     key={index}
-                    className={`d-flex align-items-center mb-3 p-2`} // Highlight selected row
-                    onClick={() => setSelectedRow(index)} // Set selected row on click
-                    style={{ cursor: 'pointer' , backgroundColor: selectedRow === index ? '#ffff99' : 'transparent'}} // Change cursor to pointer for better UX
+                    className={`d-flex align-items-center mb-3 p-2`}
+                    onClick={() => setSelectedRow(index)} 
+                    style={{ cursor: 'pointer' , backgroundColor: selectedRow === index ? '#ffff99' : 'transparent'}} 
                 >
-                  <DatePicker
-                    selected={entry.date}
-                    onChange={(date) => handleDateChange(index, date)}
-                    showTimeSelect
-                    timeFormat="h:mm aa"
-                    timeIntervals={30}
-                    dateFormat="yyyy/MM/dd h:mm aa"
-                    className="form-control me-3 flex-grow-1"
-                    placeholderText="Select date and time"
-                  />
+                  <div className="me-3" style={{ flex: '6' }}>
+                    <DatePicker
+                      selected={entry.date}
+                      onChange={(date) => handleDateChange(index, date)}
+                      showTimeSelect
+                      timeFormat="h:mm aa"
+                      timeIntervals={30}
+                      dateFormat="yyyy/MM/dd h:mm aa"
+                      className="form-control me-3 flex-grow-1"
+                      placeholderText="Select date and time"
+                    />
+                  </div>
+                  
                   <FaCalendarAlt className="ms-2 text-secondary" />
 
-                  <div className="d-flex align-items-center ms-4">
+                  <div className="d-flex align-items-center ms-4" style={{ flex: '2' }}>
                     <label className="form-label me-2">Hour:</label>
                     <input
                       type="number"
@@ -296,10 +299,10 @@ const CreateTutoringSession = ({defaultStudentId = -1, passedDate = null}) => {
                     />
                   </div>
                   
-                  <div className="d-flex align-items-center ms-3">
+                  <div className="d-flex align-items-center ms-3" style={{ flex: '2' }}>
                     <label className="form-label me-2">Minutes:</label>
                     <input
-                      type="number" // Input type is number
+                      type="number"
                       className="form-control w-50"
                       value={entry.minute.toString().padStart(2, '0')}
                       onChange={(e) => {
@@ -316,6 +319,7 @@ const CreateTutoringSession = ({defaultStudentId = -1, passedDate = null}) => {
                     type="button"
                     className="btn btn-outline-danger ms-3"
                     onClick={() => handleRemoveDateTime(index)}
+                    style={{ flex: '2' }}
                   >
                     <FaTrash /> Remove
                   </button>
