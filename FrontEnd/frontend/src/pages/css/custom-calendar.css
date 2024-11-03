@@ -87,8 +87,8 @@
 }
   
 /* Highlight effect on hover */
-.day:hover {
-    background-color: #80bfff
+.day.clickable:hover {
+  background-color: #80bfff;
 }
   
 /* Current day styling */
