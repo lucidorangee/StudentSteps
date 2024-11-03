@@ -263,12 +263,12 @@ const CreateTutoringSession = ({defaultStudentId = -1, passedDate = null}) => {
               <label className="form-label">Date and Time</label>
               {dateTimeList.map((entry, index) => (
                 <div
-                    key={index}
-                    className={`d-flex align-items-center mb-3 p-2`}
-                    onClick={() => setSelectedRow(index)} 
-                    style={{ cursor: 'pointer' , backgroundColor: selectedRow === index ? '#ffff99' : 'transparent'}} 
+                  key={index}
+                  className="d-flex align-items-center mb-2 p-2"
+                  onClick={() => setSelectedRow(index)}
+                  style={{ cursor: 'pointer', backgroundColor: selectedRow === index ? '#ffff99' : 'transparent' }}
                 >
-                  <div className="me-3" style={{ flex: '6' }}>
+                  <div style={{ flex: '6', marginRight: '8px' }}>
                     <DatePicker
                       selected={entry.date}
                       onChange={(date) => handleDateChange(index, date)}
@@ -276,52 +276,52 @@ const CreateTutoringSession = ({defaultStudentId = -1, passedDate = null}) => {
                       timeFormat="h:mm aa"
                       timeIntervals={30}
                       dateFormat="yyyy/MM/dd h:mm aa"
-                      className="form-control me-3 flex-grow-1"
+                      className="form-control"
                       placeholderText="Select date and time"
                     />
                   </div>
-                  
-                  <FaCalendarAlt className="ms-2 text-secondary" />
 
-                  <div className="d-flex align-items-center ms-4" style={{ flex: '2' }}>
-                    <label className="form-label me-2">Hour:</label>
+                  <FaCalendarAlt className="text-secondary" style={{ marginRight: '8px' }} />
+
+                  <div className="d-flex align-items-center" style={{ flex: '2', marginRight: '8px' }}>
+                    <label className="form-label me-1">Hour:</label>
                     <input
                       type="number"
-                      className="form-control w-50"
+                      className="form-control"
                       value={entry.hour}
                       onChange={(e) => {
                         const updatedList = [...dateTimeList];
-                        const newHour = Math.max(0, Math.min(9, parseInt(e.target.value, 10) || 0)); // Convert to number
+                        const newHour = Math.max(0, Math.min(9, parseInt(e.target.value, 10) || 0));
                         updatedList[index].hour = newHour;
                         setDateTimeList(updatedList);
                       }}
-                      style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }}
+                      style={{ width: '40px', MozAppearance: 'textfield', WebkitAppearance: 'none' }}
                     />
                   </div>
-                  
-                  <div className="d-flex align-items-center ms-3" style={{ flex: '2' }}>
-                    <label className="form-label me-2">Minutes:</label>
+
+                  <div className="d-flex align-items-center" style={{ flex: '2', marginRight: '8px' }}>
+                    <label className="form-label me-1">Minutes:</label>
                     <input
                       type="number"
-                      className="form-control w-50"
+                      className="form-control"
                       value={entry.minute.toString().padStart(2, '0')}
                       onChange={(e) => {
                         const updatedList = [...dateTimeList];
-                        const newMinute = Math.max(0, Math.min(59, parseInt(e.target.value, 10) || 0)); // Convert to number
+                        const newMinute = Math.max(0, Math.min(59, parseInt(e.target.value, 10) || 0));
                         updatedList[index].minute = newMinute;
                         setDateTimeList(updatedList);
                       }}
-                      style={{ MozAppearance: 'textfield', WebkitAppearance: 'none' }} // To hide spinner
+                      style={{ width: '50px', MozAppearance: 'textfield', WebkitAppearance: 'none' }}
                     />
                   </div>
 
                   <button
                     type="button"
-                    className="btn btn-outline-danger ms-3"
+                    className="btn btn-outline-danger"
                     onClick={() => handleRemoveDateTime(index)}
-                    style={{ flex: '2' }}
+                    style={{ flex: '1', padding: '4px 6px' }}
                   >
-                    <FaTrash /> Remove
+                    <FaTrash />
                   </button>
                 </div>
               ))}
