@@ -279,9 +279,9 @@ const CreateTutoringSession = ({defaultStudentId = -1, passedDate = null}) => {
                       className="form-control"
                       placeholderText="Select date and time"
                     />
+                    <FaCalendarAlt className="text-secondary" style={{ marginRight: '8px' }} />
                   </div>
 
-                  <FaCalendarAlt className="text-secondary" style={{ marginRight: '8px' }} />
 
                   <div className="d-flex align-items-center" style={{ flex: '2', marginRight: '8px' }}>
                     <label className="form-label me-1">Hour:</label>
