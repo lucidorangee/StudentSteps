@@ -91,7 +91,7 @@ const ManageStudents = () => {
     const { value } = e.target;
     setFilterGrade(parseInt(value) || 0);
   };
-  
+
   const handleAssessmentCheckboxChange = (event) => {
     setUpcomingAssessmentFilter(event.target.checked);
   };
@@ -99,15 +99,29 @@ const ManageStudents = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    let temp = [];
-    for(let i = 0; i < students.length; i++)
+    let temp = students.filter(student =>
+      (student.first_name.includes(filterName) || student.last_name.includes(filterName)) &&
+      (filterGrade === 0 || student.grade_level === filterGrade)
+    );
+
+    if(upcomingAssessmentFilter)
     {
-      if((students[i].first_name.includes(filterName) || students[i].last_name.includes(filterName))
-        && (filterGrade === 0 || students[i].grade_level === filterGrade))
-          temp.push(students[i]);
+      const today = new Date();
+      const sevenDaysFromNow = new Date(today);
+      sevenDaysFromNow.setDate(today.getDate() + 7);
+    
+      temp = temp.filter(student =>
+        assessments.some(assessment =>
+          assessment.student_id === student.student_id &&
+          new Date(assessment.date) >= today &&
+          new Date(assessment.date) <= sevenDaysFromNow
+        )
+      );
     }
+    
     setFilteredStudents(temp);
   };
+  
 
   return (
     <div className="App">
