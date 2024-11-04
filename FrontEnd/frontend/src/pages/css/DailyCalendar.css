@@ -35,11 +35,7 @@ th {
   /*border: 1px solid #ddd;*/
   color: #aaa; /* Gray for no session indicator */
   font-style: italic;
-  background-color: #f4f4f4;
-}
-
-.session_cell {
-  background-color: #f4f4f4;
+  /*background-color: #f4f4f4;*/
 }
 
 .session-cell-container {
