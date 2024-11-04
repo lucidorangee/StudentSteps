@@ -81,6 +81,10 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
   const [selectedTutorID, setSelectedTutorID] = useState(-1);
   const [filteredTutoringSessions, setFilteredTutoringSessions] = useState([]);
   const [filteredAssessments, setFilteredAssessments] = useState([]);
+  
+  const [showModal, setShowModal] = useState(false);
+  const [selectedSessionId, setSelectedSessionId] = useState(null);
+  const [selectedTutor, setSelectedTutor] = useState(null);
 
   const {
     data: students,
@@ -105,6 +109,16 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
     isLoading: assessmentsLoading,
     error: assessmentsError,
   } = useQuery({queryKey: ['assessments'], queryFn: () => fetchAssessments()});
+
+  const datetimeSetting = {
+    timeZone: "America/New_York", // Eastern Time zone
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true, // Use 12-hour format
+  };
 
   useEffect(() => {
     if (students) {
@@ -200,9 +214,9 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
               <p 
                 key={`session-${index}`} 
                 className="event" 
-                onClick={onDateClick ? null : () => alert(`Session with ${session.student_name}`)} 
+                onClick={onDateClick ? null : () => handleShow(session.session_id)} 
               >
-                {session.student_name}
+                {new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(session.datetime))}
               </p>
             ))}
           </div>
@@ -213,8 +227,44 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
     return cells;
   };
 
+  
+
+  const handleShow = (sessionDataId) => {
+    console.log("sessiondataid");
+    console.log(sessionDataId);
+    setShowModal(true);
+    setSelectedSessionId(sessionDataId);
+  }
+
+  const handleClose = () => setShowModal(false);
+
+  const applySessionChange = () => {
+    return;
+  }
+
   return (
     <div className="container-fluid calendar-page">
+
+    
+      <Modal show={showModal} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Select Tutor</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Which tutor should I send this to?</p>
+          <select className="form-select" onChange={(e) => setSelectedTutor(e.target.value)}>
+            <option>Select a tutor</option>
+            {tutors.map((tutor) => (
+              <option key={tutor.tutor_id} value={tutor.tutor_id}>{tutor.first_name} {tutor.last_name}</option>
+            ))}
+          </select>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>Close</Button>
+          <Button variant="primary" onClick={applySessionChange}>Apply</Button>
+        </Modal.Footer>
+      </Modal>
+
       {defaultStudentId === -1 && (
         <div className="row ms-4 mt-2">
           <div className="col">

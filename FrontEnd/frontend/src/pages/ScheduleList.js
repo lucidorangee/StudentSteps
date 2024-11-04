@@ -605,7 +605,6 @@ const ScheduleList = () => {
   };
 
 
-
   return (
     <div className="App">
       <h2>Welcome to ScheduleList.js!</h2>
@@ -618,7 +617,6 @@ const ScheduleList = () => {
       ) : (
         <div></div>
       )}
-
 
       <div className="d-flex align-items-center gap-3">
         <DatePicker
