@@ -268,7 +268,7 @@ const EdCoordinator = () => {
                             className="form-control"
                             rows={Math.max(3, (assessment.notes?.split('\n').length || 1))}
                             value={assessment.notes || ''}
-                            onChange={(e) => handleNotesChange(assessment.assessment_id, e.target.value)}
+                            onChange={(e) => handleNotesChange(assessment, e.target.value)}
                             style={{ resize: 'none', overflowY: 'auto' }}
                           />
                         </div>
