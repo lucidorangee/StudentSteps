@@ -232,8 +232,8 @@ const EdCoordinator = () => {
           </tr>
         </thead>
         <tbody>
-          {Array.isArray(filterAssessments) && filterAssessments.length > 0 ? (
-            filterAssessments.map((assessment, index) => {
+          {Array.isArray(filteredAssessments) && filteredAssessments.length > 0 ? (
+            filteredAssessments.map((assessment, index) => {
               // Find student matching assessment.student_id
               const student = students.find(s => s.student_id === assessment.student_id);
               if (!student) return null;
