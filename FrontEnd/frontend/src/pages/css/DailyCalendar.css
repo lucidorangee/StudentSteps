@@ -38,13 +38,16 @@ th {
   background-color: #f4f4f4;
 }
 
+td.session_cell {
+  background-color: #f4f4f4;
+}
+
 .session-cell-container {
   display: flex; /* Align overlapping sessions horizontally */
   gap: 4px;
   padding: 8px;
   border: 1px solid #ddd;
   min-height: 40px; /* Minimum height for session cells */
-  background-color: #f4f4f4;
 }
 
 .session {
