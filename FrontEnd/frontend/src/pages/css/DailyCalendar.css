@@ -38,6 +38,11 @@ th {
   /*background-color: #f4f4f4;*/
 }
 
+.session_cell {
+  background-color: #f4f4f4;
+  color: #f4f4f4;
+}
+
 .session-cell-container {
   display: flex; /* Align overlapping sessions horizontally */
   gap: 4px;
@@ -49,7 +54,7 @@ th {
 .session {
   flex: 1;
   padding: 5px;
-  color: #ffe0b2; /* Light orange for sessions */
+  background-color: #ffe0b2; /* Light orange for sessions */
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   font-weight: bold;
