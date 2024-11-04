@@ -32,9 +32,10 @@ th {
 .time-cell, .no-session {
   text-align: center;
   padding: 8px;
-  border: 1px solid #ddd;
+  /*border: 1px solid #ddd;*/
   color: #aaa; /* Gray for no session indicator */
   font-style: italic;
+  background-color: #f4f4f4;
 }
 
 .session-cell-container {
