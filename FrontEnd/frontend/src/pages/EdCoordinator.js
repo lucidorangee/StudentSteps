@@ -73,6 +73,8 @@ const fetchTutoringSessions = async () => {
 const EdCoordinator = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const [expandedRow, setExpandedRow] = useState(null);
   
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
@@ -175,6 +177,14 @@ const EdCoordinator = () => {
     filterAssessments();
   };  
 
+  const toggleRow = (index) => {
+    setExpandedRow(expandedRow === index ? null : index);
+  };
+
+  const handleNotesChange = (assessment, newNotes) => {
+    assessment.notes = newNotes;
+  };
+
   return (
     <div className="App">
       <h2>Welcome, User!</h2>
@@ -222,31 +232,50 @@ const EdCoordinator = () => {
           </tr>
         </thead>
         <tbody>
-          {Array.isArray(filteredAssessments) && filteredAssessments.length > 0 ? (
-            filteredAssessments.map((assessment, index) => {
+          {Array.isArray(assessments) && assessments.length > 0 ? (
+            assessments.map((assessment, index) => {
               // Find student matching assessment.student_id
               const student = students.find(s => s.student_id === assessment.student_id);
-              if (!student) return null; // Skip if student not found
-  
+              if (!student) return null;
+
               // Find the latest comment for the student
               const latestComment = comments
                 .filter(comment => comment.student_id === assessment.student_id)
                 .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-  
+
               // Find the earliest upcoming tutoring session for the student
               const upcomingSession = tutoringSessions
                 .filter(session => session.student_id === assessment.student_id && new Date(session.session_datetime) > new Date())
                 .sort((a, b) => new Date(a.session_datetime) - new Date(b.session_datetime))[0];
-  
+
               return (
-                <tr key={index}>
-                  <td>{student.first_name} {student.last_name}</td>
-                  <td>{assessment.title}</td>
-                  <td>{assessment.description}</td>
-                  <td>{(new Intl.DateTimeFormat('en-US', dateonlySetting)).format(new Date(assessment.date))}</td>
-                  <td>{upcomingSession ? (new Intl.DateTimeFormat('en-US', datetimeSetting)).format(new Date(upcomingSession.session_datetime)) : 'N/A'}</td>
-                  <td>{latestComment ? latestComment.note : 'No comments available'}</td>
-                </tr>
+                <React.Fragment key={index}>
+                  <tr onClick={() => toggleRow(index)} style={{ cursor: 'pointer' }}>
+                    <td>{student.first_name} {student.last_name}</td>
+                    <td>{assessment.title}</td>
+                    <td>{assessment.description}</td>
+                    <td>{(new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' })).format(new Date(assessment.date))}</td>
+                    <td>{upcomingSession ? (new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' })).format(new Date(upcomingSession.session_datetime)) : 'N/A'}</td>
+                    <td>{latestComment ? latestComment.note : 'No comments available'}</td>
+                  </tr>
+                  {expandedRow === index && (
+                    <tr>
+                      <td colSpan="6">
+                        <div className="p-3">
+                          <label htmlFor={`notes-${assessment.assessment_id}`} className="form-label">Notes:</label>
+                          <textarea
+                            id={`notes-${assessment.assessment_id}`}
+                            className="form-control"
+                            rows={Math.max(3, (notes[assessment.assessment_id]?.split('\n').length || 1))}
+                            value={notes[assessment.assessment_id] || assessment.notes || ''}
+                            onChange={(e) => handleNotesChange(assessment.assessment_id, e.target.value)}
+                            style={{ resize: 'none', overflowY: 'auto' }}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
               );
             })
           ) : (
