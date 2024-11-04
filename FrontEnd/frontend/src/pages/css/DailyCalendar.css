@@ -44,6 +44,7 @@ th {
   padding: 8px;
   border: 1px solid #ddd;
   min-height: 40px; /* Minimum height for session cells */
+  background-color: #f4f4f4;
 }
 
 .session {
