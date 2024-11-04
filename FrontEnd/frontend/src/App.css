@@ -55,6 +55,8 @@ label{margin-left: 20px;}
 }
 
 @media print {
+  @page {size: landscape}
+  
   .no-print {
     display: none !important; /* Hide all elements with the .no-print class */
   }
