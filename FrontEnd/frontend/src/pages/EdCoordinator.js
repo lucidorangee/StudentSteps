@@ -110,6 +110,22 @@ const EdCoordinator = () => {
     }
   }, [students, comments, assessments, tutoringSessions]);
 
+  const dateonlySetting = {
+    timeZone: "UTC", // Eastern Time zone
+    month: "long",
+    day: "numeric",
+  };
+
+  const datetimeSetting = {
+    timeZone: "America/New_York", // Eastern Time zone
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true, // Use 12-hour format
+  };
+
   if (studentsLoading || commentsLoading || assessmentsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
   if (studentsError || commentsError || assessmentsError || tutoringSessionsError) {
     if(studentsError?.status === 401 || commentsError?.status === 401 || assessmentsError?.status === 401 || tutoringSessionsError?.status === 401) //unauthorized
@@ -227,8 +243,8 @@ const EdCoordinator = () => {
                   <td>{student.first_name} {student.last_name}</td>
                   <td>{assessment.title}</td>
                   <td>{assessment.description}</td>
-                  <td>{assessment.date}</td>
-                  <td>{upcomingSession ? upcomingSession.session_datetime : 'N/A'}</td>
+                  <td>{(new Intl.DateTimeFormat('en-US', dateonlySetting)).format(new Date(assessment.date))}</td>
+                  <td>{upcomingSession ? (new Intl.DateTimeFormat('en-US', datetimeSetting)).format(new Date(upcomingSession.session_datetime)) : 'N/A'}</td>
                   <td>{latestComment ? latestComment.note : 'No comments available'}</td>
                 </tr>
               );

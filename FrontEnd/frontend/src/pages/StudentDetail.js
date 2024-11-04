@@ -529,7 +529,7 @@ const StudentList = () => {
                     comments.map((comment, index) => (
                       <div key={index} className="card mb-2" style={{ width: '95%' }}>
                         <div className="card-body text-left">
-                          <h5 className="card-title">{new Intl.DateTimeFormat('en-US').format(new Date(comment.datetime))}</h5>
+                          <h5 className="card-title">{new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(comment.datetime))}</h5>
                           <div className="mb-3">
                             <p className="card-text d-block">Comment type: {comment.type}</p>
                             <p className="card-text d-block">Content: {comment.content}</p>
