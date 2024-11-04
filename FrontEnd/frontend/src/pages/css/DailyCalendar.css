@@ -49,7 +49,7 @@ th {
 .session {
   flex: 1;
   padding: 5px;
-  background-color: #ffe0b2; /* Light orange for sessions */
+  color: #ffe0b2; /* Light orange for sessions */
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   font-weight: bold;
