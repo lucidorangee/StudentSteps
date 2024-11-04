@@ -266,8 +266,8 @@ const EdCoordinator = () => {
                           <textarea
                             id={`notes-${assessment.assessment_id}`}
                             className="form-control"
-                            rows={Math.max(3, (notes[assessment.assessment_id]?.split('\n').length || 1))}
-                            value={notes[assessment.assessment_id] || assessment.notes || ''}
+                            rows={Math.max(3, (assessment.notes?.split('\n').length || 1))}
+                            value={assessment.notes || ''}
                             onChange={(e) => handleNotesChange(assessment.assessment_id, e.target.value)}
                             style={{ resize: 'none', overflowY: 'auto' }}
                           />
