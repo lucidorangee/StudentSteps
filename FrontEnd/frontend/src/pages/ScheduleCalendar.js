@@ -217,8 +217,8 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
                 className="event" 
                 onClick={onDateClick ? null : () => handleShow(session.session_id)} 
               >
-                {/*new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(session.datetime))*/}
-                {session.datetime}
+                {new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(session.session_datetime))}
+                {/*session.session_datetime*/}
               </p>
             ))}
           </div>
