@@ -5,6 +5,7 @@ import Select from 'react-select';
 import './css/custom-calendar.css'; // Import custom calendar CSS
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { Modal, Button, Tabs, Tab, Dropdown  } from 'react-bootstrap';
 
 const fetchTutors = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
