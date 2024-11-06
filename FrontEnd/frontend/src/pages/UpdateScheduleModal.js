@@ -83,7 +83,7 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
                     >
                         <option value="">None</option>
                         {tutors.map((tutor) => (
-                            <option key={tutor.tutor_id} value={tutor.tutor_id}>
+                            <option key={tutor.tutor_id} value={Number(tutor.tutor_id)}>
                                 {tutor.first_name} {tutor.last_name}
                             </option>
                         ))}
