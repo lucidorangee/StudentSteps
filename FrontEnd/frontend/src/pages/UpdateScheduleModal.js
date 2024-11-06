@@ -48,7 +48,6 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
     {
         const selectedSession = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(sessionId));
         const defaultTutorId = selectedSession.tutor_id;
-        const [selectedTutor, setSelectedTutor] = useState(defaultTutorId);
         const hasTutorChanged = selectedTutor !== defaultTutorId;
 
         return (
