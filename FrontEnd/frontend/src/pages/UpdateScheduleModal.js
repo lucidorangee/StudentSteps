@@ -44,7 +44,7 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
         handleClose();
       };
 
-    if(session)
+    if(sessionId)
     {
         return(
             <Modal show={showModal} onHide={handleClose} centered>
