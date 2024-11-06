@@ -1,6 +1,7 @@
 
 import { Modal, Button, Tabs, Tab, Dropdown  } from 'react-bootstrap';
 import React, { useState } from 'react';
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 
 const patchTutoringSession = async (id, changeData) => {
     const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/${id}`, {
@@ -20,7 +21,9 @@ const patchTutoringSession = async (id, changeData) => {
     return id;
 };
 
-const UpdateScheduleModal = ({ showModal, handleClose, tutors = [], session = null, assessment = null }) => {
+const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [], tutors = [], sessionId = null, assessmentId = null }) => {
+    const [selectedTutor, setSelectedTutor] = useState(null);
+    const queryClient = useQueryClient();
 
     const { mutate: updateTutoringSession, isLoading, isError, error } = useMutation({
         mutationFn: ({ id, changeData }) => patchTutoringSession(id, changeData),
@@ -35,7 +38,7 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutors = [], session = nu
     });
 
     const applySessionChange = () => {
-        const selectedSession = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(selectedSessionId));
+        const selectedSession = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(sessionId));
     
         updateTutoringSession({ id: selectedSession.session_id, changeData: { tutor_id: Number(selectedTutor) } });
         handleClose();

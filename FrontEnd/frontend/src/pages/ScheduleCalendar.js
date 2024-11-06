@@ -233,8 +233,6 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
   
 
   const handleShow = (sessionDataId) => {
-    console.log("sessiondataid");
-    console.log(sessionDataId);
     setShowModal(true);
     setSelectedSessionId(sessionDataId);
   }
@@ -251,7 +249,9 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
       <UpdateScheduleModal 
         showModal={showModal}
         handleClose={handleClose}
+        tutoringSessionData={tutoringSessions}
         tutors={tutors}
+        sessionId={selectedSessionId}
 
       />
 

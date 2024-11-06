@@ -75,13 +75,10 @@ const ScheduleDaily = () => {
   
   const [showModal, setShowModal] = useState(false);
   const [selectedSessionId, setSelectedSessionId] = useState(null);
-  const [selectedTutor, setSelectedTutor] = useState(null);
   
   const queryClient = useQueryClient();
 
   const handleShow = (sessionDataId) => {
-    console.log("sessiondataid");
-    console.log(sessionDataId);
     setShowModal(true);
     setSelectedSessionId(sessionDataId);
   }
@@ -270,6 +267,8 @@ const ScheduleDaily = () => {
         showModal={showModal}
         handleClose={handleClose}
         tutors={tutors}
+        tutoringSessionData={tutoringSessionData}
+        sessionId={selectedSessionId}
 
       />
       
