@@ -52,33 +52,34 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
         handleClose();
     };
 
+    const hasTutorChanged = selectedTutor !== defaultTutorId;
+
     if (sessionId) {
 
         console.log("are they the same?");
         console.log(`${selectedTutor} of ${typeof selectedTutor} and ${defaultTutorId} of ${typeof defaultTutorId}`);
-        console.log(selectedTutor === defaultTutorId);
+        console.log(hasTutorChanged);
         return (
             <Modal show={showModal} onHide={handleClose} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Change Session Detail</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p
-                        style={{
-                            backgroundColor: selectedTutor !== defaultTutorId ? '#d4edda' : 'transparent',
-                            padding: '5px',
-                            fontWeight: selectedTutor !== defaultTutorId ? 'bold' : 'normal'
-                        }}
-                    >
-                        Change Tutor?
-                    </p>
-                    
+            <Modal.Header closeButton>
+                <Modal.Title>Change Session Detail</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <div
+                    style={{
+                        backgroundColor: hasTutorChanged ? '#d4edda' : 'transparent',
+                        padding: '5px',
+                        fontWeight: hasTutorChanged ? 'bold' : 'normal',
+                        borderRadius: '5px' // Optional: to smooth the edges
+                    }}
+                >
+                    <p style={{ marginBottom: '8px' }}>Change Tutor?</p>
                     <select
                         className="form-select"
                         onChange={(e) => setSelectedTutor(Number(e.target.value))}
                         value={selectedTutor}
                         style={{
-                            backgroundColor: selectedTutor !== defaultTutorId ? '#d4edda' : 'transparent'
+                            backgroundColor: hasTutorChanged ? '#d4edda' : 'transparent'
                         }}
                     >
                         <option value="-1">None</option>
@@ -88,18 +89,18 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
                             </option>
                         ))}
                     </select>
+                </div>
 
-                    
-                    <p style={{ color: '#155724', textAlign: 'right', marginTop: '5px', fontSize: '0.9em' }}>
-                        {selectedTutor !== defaultTutorId?"changed":"not changed"}
-                    </p>
-                    
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>Close</Button>
-                    <Button variant="primary" onClick={applySessionChange}>Apply</Button>
-                </Modal.Footer>
-            </Modal>
+                <p style={{ color: `#155724`, textAlign: 'right', marginTop: '5px', fontSize: '0.9em', minHeight: '1em' }}>
+                    {hasTutorChanged ? "changed" : ""}
+                </p>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>Close</Button>
+                <Button variant="primary" onClick={applySessionChange}>Apply</Button>
+            </Modal.Footer>
+        </Modal>
+
         );
     }
 
