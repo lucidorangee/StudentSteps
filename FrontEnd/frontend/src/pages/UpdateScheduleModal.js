@@ -39,31 +39,60 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
 
     const applySessionChange = () => {
         const selectedSession = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(sessionId));
-    
+
         updateTutoringSession({ id: selectedSession.session_id, changeData: { tutor_id: Number(selectedTutor) } });
         handleClose();
-      };
+    };
 
     if(sessionId)
     {
-        return(
+        const selectedSession = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(sessionId));
+        const defaultTutorId = selectedSession.tutor_id;
+        const [selectedTutor, setSelectedTutor] = useState(defaultTutorId);
+        const hasTutorChanged = selectedTutor !== defaultTutorId;
+
+        return (
             <Modal show={showModal} onHide={handleClose} centered>
-                <Modal.Header closeButton>
-                <Modal.Title>Select Tutor</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>Which tutor should I send this to?</p>
-                    <select className="form-select" onChange={(e) => setSelectedTutor(e.target.value)}>
-                        <option>Select a tutor</option>
-                        {tutors.map((tutor) => (
-                        <option key={tutor.tutor_id} value={tutor.tutor_id}>{tutor.first_name} {tutor.last_name}</option>
-                        ))}
-                    </select>
-                </Modal.Body>
-                <Modal.Footer>
+              <Modal.Header closeButton>
+                <Modal.Title>Change Session Detail</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <p
+                  style={{
+                    backgroundColor: hasTutorChanged ? '#d4edda' : 'transparent',
+                    padding: '5px',
+                    fontWeight: hasTutorChanged ? 'bold' : 'normal'
+                  }}
+                >
+                  Change Tutor?
+                </p>
+                
+                <select
+                  className="form-select"
+                  onChange={(e) => setSelectedTutor(e.target.value)}
+                  value={selectedTutor}
+                  style={{
+                    backgroundColor: hasTutorChanged ? '#d4edda' : 'transparent'
+                  }}
+                >
+                  <option value="">Select a tutor</option>
+                  {tutors.map((tutor) => (
+                    <option key={tutor.tutor_id} value={tutor.tutor_id}>
+                      {tutor.first_name} {tutor.last_name}
+                    </option>
+                  ))}
+                </select>
+        
+                {hasTutorChanged && (
+                  <p style={{ color: '#155724', textAlign: 'right', marginTop: '5px', fontSize: '0.9em' }}>
+                    changed
+                  </p>
+                )}
+              </Modal.Body>
+              <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>Close</Button>
                 <Button variant="primary" onClick={applySessionChange}>Apply</Button>
-                </Modal.Footer>
+              </Modal.Footer>
             </Modal>
         );
     };
