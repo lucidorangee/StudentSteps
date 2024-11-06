@@ -22,7 +22,12 @@ const patchTutoringSession = async (id, changeData) => {
 };
 
 const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [], tutors = [], sessionId = null, assessmentId = null }) => {
-    const [selectedTutor, setSelectedTutor] = useState(null);
+    const defaultTutorId = useMemo(() => {
+        const session = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(sessionId));
+        return session?.tutor_id || null;
+      }, [sessionId, tutoringSessionData]);
+
+    const [selectedTutor, setSelectedTutor] = useState(defaultTutorId);
     const queryClient = useQueryClient();
 
     const { mutate: updateTutoringSession, isLoading, isError, error } = useMutation({
@@ -37,6 +42,8 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
         }
     });
 
+    
+
     const applySessionChange = () => {
         const selectedSession = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(sessionId));
 
@@ -46,8 +53,6 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
 
     if(sessionId)
     {
-        const selectedSession = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(sessionId));
-        const defaultTutorId = selectedSession.tutor_id;
         const hasTutorChanged = selectedTutor !== defaultTutorId;
 
         return (
