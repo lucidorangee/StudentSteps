@@ -75,25 +75,25 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
                     
                     <select
                         className="form-select"
-                        onChange={(e) => setSelectedTutor(e.target.value)}
+                        onChange={(e) => setSelectedTutor(Number(e.target.value))}
                         value={selectedTutor}
                         style={{
                             backgroundColor: selectedTutor !== defaultTutorId ? '#d4edda' : 'transparent'
                         }}
                     >
-                        <option value="">None</option>
+                        <option value="-1">None</option>
                         {tutors.map((tutor) => (
-                            <option key={tutor.tutor_id} value={Number(tutor.tutor_id)}>
+                            <option key={tutor.tutor_id} value={tutor.tutor_id}>
                                 {tutor.first_name} {tutor.last_name}
                             </option>
                         ))}
                     </select>
 
-                    {selectedTutor !== defaultTutorId && (
-                        <p style={{ color: '#155724', textAlign: 'right', marginTop: '5px', fontSize: '0.9em' }}>
-                            changed
-                        </p>
-                    )}
+                    
+                    <p style={{ color: '#155724', textAlign: 'right', marginTop: '5px', fontSize: '0.9em' }}>
+                        {selectedTutor !== defaultTutorId?"changed":"not changed"}
+                    </p>
+                    
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Close</Button>
