@@ -53,7 +53,6 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
     };
 
     if (sessionId) {
-        const hasTutorChanged = selectedTutor !== defaultTutorId;
 
         return (
             <Modal show={showModal} onHide={handleClose} centered>
@@ -63,9 +62,9 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
                 <Modal.Body>
                     <p
                         style={{
-                            backgroundColor: hasTutorChanged ? '#d4edda' : 'transparent',
+                            backgroundColor: selectedTutor !== defaultTutorId ? '#d4edda' : 'transparent',
                             padding: '5px',
-                            fontWeight: hasTutorChanged ? 'bold' : 'normal'
+                            fontWeight: selectedTutor !== defaultTutorId ? 'bold' : 'normal'
                         }}
                     >
                         Change Tutor?
@@ -76,7 +75,7 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
                         onChange={(e) => setSelectedTutor(e.target.value)}
                         value={selectedTutor}
                         style={{
-                            backgroundColor: hasTutorChanged ? '#d4edda' : 'transparent'
+                            backgroundColor: selectedTutor !== defaultTutorId ? '#d4edda' : 'transparent'
                         }}
                     >
                         <option value="">Select a tutor</option>
@@ -87,7 +86,7 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
                         ))}
                     </select>
 
-                    {hasTutorChanged && (
+                    {selectedTutor !== defaultTutorId && (
                         <p style={{ color: '#155724', textAlign: 'right', marginTop: '5px', fontSize: '0.9em' }}>
                             changed
                         </p>
