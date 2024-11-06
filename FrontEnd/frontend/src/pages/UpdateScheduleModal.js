@@ -55,7 +55,8 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
     if (sessionId) {
 
         console.log("are they the same?");
-        console.log(selectedTutor !== defaultTutorId);
+        console.log(`${selectedTutor} of ${typeof selectedTutor} and ${defaultTutorId} of ${typeof defaultTutorId}`);
+        console.log(selectedTutor === defaultTutorId);
         return (
             <Modal show={showModal} onHide={handleClose} centered>
                 <Modal.Header closeButton>
@@ -80,7 +81,7 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
                             backgroundColor: selectedTutor !== defaultTutorId ? '#d4edda' : 'transparent'
                         }}
                     >
-                        <option value="">Select a tutor</option>
+                        <option value="">None</option>
                         {tutors.map((tutor) => (
                             <option key={tutor.tutor_id} value={tutor.tutor_id}>
                                 {tutor.first_name} {tutor.last_name}
