@@ -5,6 +5,7 @@ import './css/DailyCalendar.css';
 import DatePicker from 'react-datepicker';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { Modal, Button } from 'react-bootstrap';
+import UpdateScheduleModal from './UpdateScheduleModal';
 
 // Fetch functions
 const fetchTutors = async () => {
@@ -260,40 +261,17 @@ const ScheduleDaily = () => {
 
     return hexValue;
   }
-
-
-  const applySessionChange = () => {
-    const selectedSession = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(selectedSessionId));
-
-    console.log(`The tutor id of ${selectedTutor} has been selected.`);
-    console.log(`The session selected: ${JSON.stringify(selectedSession)}.`);
-
-    updateTutoringSession({ id: selectedSession.session_id, changeData: { tutor_id: Number(selectedTutor) } });
-    handleClose();
-  };
   
   return (
     <div className="calendar">
       <h1>Schedule for {new Intl.DateTimeFormat('en-US', dateonlySetting).format(date)}</h1>
 
-      <Modal show={showModal} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Select Tutor</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>Which tutor should I send this to?</p>
-          <select className="form-select" onChange={(e) => setSelectedTutor(e.target.value)}>
-            <option>Select a tutor</option>
-            {tutors.map((tutor) => (
-              <option key={tutor.tutor_id} value={tutor.tutor_id}>{tutor.first_name} {tutor.last_name}</option>
-            ))}
-          </select>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="primary" onClick={applySessionChange}>Apply</Button>
-        </Modal.Footer>
-      </Modal>
+      <UpdateScheduleModal 
+        showModal={showModal}
+        handleClose={handleClose}
+        tutors={tutors}
+
+      />
       
       <div className="no-print">
         <button className="btn btn-secondary" onClick={() => window.print()}>Print Schedule</button>

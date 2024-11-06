@@ -6,6 +6,7 @@ import './css/custom-calendar.css'; // Import custom calendar CSS
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Modal, Button, Tabs, Tab, Dropdown  } from 'react-bootstrap';
+import UpdateScheduleModal from './UpdateScheduleModal';
 
 const fetchTutors = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutors`, {
@@ -247,25 +248,12 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
   return (
     <div className="container-fluid calendar-page">
 
-    
-      <Modal show={showModal} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Select Tutor</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>Which tutor should I send this to?</p>
-          <select className="form-select" onChange={(e) => setSelectedTutor(e.target.value)}>
-            <option>Select a tutor</option>
-            {tutors.map((tutor) => (
-              <option key={tutor.tutor_id} value={tutor.tutor_id}>{tutor.first_name} {tutor.last_name}</option>
-            ))}
-          </select>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="primary" onClick={applySessionChange}>Apply</Button>
-        </Modal.Footer>
-      </Modal>
+      <UpdateScheduleModal 
+        showModal={showModal}
+        handleClose={handleClose}
+        tutors={tutors}
+
+      />
 
       {defaultStudentId === -1 && (
         <div className="row ms-4 mt-2">
