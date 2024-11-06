@@ -54,6 +54,8 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
 
     if (sessionId) {
 
+        console.log("are they the same?");
+        console.log(selectedTutor !== defaultTutorId);
         return (
             <Modal show={showModal} onHide={handleClose} centered>
                 <Modal.Header closeButton>
