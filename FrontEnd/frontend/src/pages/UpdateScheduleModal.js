@@ -1,6 +1,6 @@
 
 import { Modal, Button, Tabs, Tab, Dropdown  } from 'react-bootstrap';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 
 const patchTutoringSession = async (id, changeData) => {
