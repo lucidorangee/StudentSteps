@@ -12,7 +12,7 @@
 .calendar-container .calendar-grid .day .date {
   position: absolute;
   top: 0.5rem;
-  left: 0.5rem; 
+  left: 0.3rem; 
   /*font-weight: bold; */
 }
 
@@ -30,7 +30,7 @@
   max-height: 60px; 
   overflow: hidden;
   width: 100%;
-  padding-top: 0.8rem;
+  padding-top: 1rem;
 }
 
 .calendar-container .calendar-grid .day .events .event {
@@ -44,7 +44,8 @@
   text-overflow: ellipsis;
 }
 
-/* "More" indicator for hidden events */
+/*
+/* "More" indicator for hidden events 
 .calendar-container .calendar-grid .day .events:after {
   content: "+ more";
   font-size: 0.7rem;
@@ -56,7 +57,7 @@
   width: 100%;
   background: #fff;
 }
-
+*/
 /* Fixed cell width using CSS Grid */
 .calendar-grid {
   display: grid;
