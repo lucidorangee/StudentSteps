@@ -11,9 +11,9 @@
 
 .calendar-container .calendar-grid .day .date {
   position: absolute;
-  top: 5px; /* Position the date at the top */
-  left: 5px; /* Align to the left */
-  /*font-weight: bold; /* Make the date stand out */
+  top: 0.5rem;
+  left: 0.5rem; 
+  /*font-weight: bold; */
 }
 
 .calendar-container .calendar-grid .day {
@@ -25,12 +25,12 @@
 
 .calendar-container .calendar-grid .day .events {
   display: flex;
-  flex-direction: column; /* Stack events vertically */
-  gap: 0; /* Remove gap between events */
-  max-height: 60px; /* Limit event container height */
-  overflow: hidden; /* Prevent overflow of events */
+  flex-direction: column; 
+  gap: 0; 
+  max-height: 60px; 
+  overflow: hidden;
   width: 100%;
-  padding: 0;
+  padding-top: 0.8rem;
 }
 
 .calendar-container .calendar-grid .day .events .event {
