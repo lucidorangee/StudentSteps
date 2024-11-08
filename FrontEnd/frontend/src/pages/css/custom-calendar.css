@@ -37,10 +37,21 @@
   overflow: hidden; /* Hide overflow */
 }
 
+/*
 .calendar-container .calendar-grid .day .events .event {
-  font-size: 0.9rem; /* Slightly smaller font size for events */
-  margin: 2px 0; /* Minimal vertical spacing */
-  text-align: center; /* Center text within each event */
+  font-size: 0.9rem; /* Slightly smaller font size for events 
+  margin: 2px 0; /* Minimal vertical spacing 
+  text-align: center; /* Center text within each event 
+}*/
+
+.calendar-container .calendar-grid .day .events .event {
+  font-size: 0.75rem; /* Smaller font size to fit better */
+  padding: 2px 4px; /* Reduce padding for a tighter fit */
+  border-radius: 3px; /* Smaller radius for more compact appearance */
+  max-width: 100%; /* Limit width to cell width */
+  overflow: hidden; /* Hide overflow text */
+  white-space: nowrap; /* Prevent wrapping */
+  text-overflow: ellipsis; /* Add ellipsis if the text overflows */
 }
 
 /* Grid setup for the days */
@@ -152,15 +163,15 @@
 
 /* Hide the spinner arrows in number input */
 input[type="number"] {
-    appearance: textfield; /* Standard property for most browsers */
-    -moz-appearance: textfield; /* For Firefox */
-    -webkit-appearance: none; /* For Chrome, Safari, and Edge */
-  }
-  
-  /* Hide the spinner controls specifically */
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    appearance: none; /* Standard property for most browsers */
-    -webkit-appearance: none; /* For WebKit browsers */
-    margin: 0; /* Remove default margin */
-  }
+  appearance: textfield; /* Standard property for most browsers */
+  -moz-appearance: textfield; /* For Firefox */
+  -webkit-appearance: none; /* For Chrome, Safari, and Edge */
+}
+
+/* Hide the spinner controls specifically */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none; /* Standard property for most browsers */
+  -webkit-appearance: none; /* For WebKit browsers */
+  margin: 0; /* Remove default margin */
+}
