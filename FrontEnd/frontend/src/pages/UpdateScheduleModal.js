@@ -2,6 +2,7 @@
 import { Modal, Button, Tabs, Tab, Dropdown  } from 'react-bootstrap';
 import React, { useState, useMemo, useEffect } from 'react';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+import DatePicker from 'react-datepicker';
 
 const patchTutoringSession = async (id, changeData) => {
     const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/${id}`, {
@@ -27,6 +28,12 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
         return session?.tutor_id || null;
     }, [sessionId, tutoringSessionData]);
 
+    const defaultDateTime = useMemo(() => {
+        const session = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(sessionId));
+        return session?.session_datetime || null;
+    }, [sessionId, tutoringSessionData]);
+
+    const [selectedDateTime, setSelectedDateTime] = useState(defaultDateTime);
     const [selectedTutor, setSelectedTutor] = useState(defaultTutorId);
     const queryClient = useQueryClient();
 
@@ -53,12 +60,10 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
     };
 
     const hasTutorChanged = selectedTutor !== defaultTutorId;
+    const hasDateTimeChanged = selectedDateTime !== defaultDateTime;
 
     if (sessionId) {
 
-        console.log("are they the same?");
-        console.log(`${selectedTutor} of ${typeof selectedTutor} and ${defaultTutorId} of ${typeof defaultTutorId}`);
-        console.log(hasTutorChanged);
         return (
             <Modal show={showModal} onHide={handleClose} centered>
             <Modal.Header closeButton>
@@ -90,9 +95,34 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
                         ))}
                     </select>
                 </div>
-
                 <p style={{ color: `#155724`, textAlign: 'right', marginTop: '5px', fontSize: '0.9em', minHeight: '1em' }}>
                     {hasTutorChanged ? "changed" : ""}
+                </p>
+
+                {/* Change Time */}
+                <div
+                    style={{
+                        backgroundColor: hasDateTimeChanged ? '#d4edda' : 'transparent',
+                        padding: '5px',
+                        fontWeight: hasDateTimeChanged ? 'bold' : 'normal',
+                        borderRadius: '5px' 
+                    }}
+                >
+                    <p style={{ marginBottom: '8px' }}>Change Date&Time?</p>
+                    <DatePicker
+                      selected={selectedDateTime}
+                      onChange={(date) => selectedDateTime(date)}
+                      showTimeSelect
+                      timeFormat="h:mm aa"
+                      timeIntervals={30}
+                      dateFormat="yyyy/MM/dd h:mm aa"
+                      className="form-control"
+                      placeholderText="Select date and time"
+                    />
+                    <FaCalendarAlt className="text-secondary" style={{ marginLeft: '8px' }} />
+                </div>
+                <p style={{ color: `#155724`, textAlign: 'right', marginTop: '5px', fontSize: '0.9em', minHeight: '1em' }}>
+                    {hasDateTimeChanged ? "changed" : ""}
                 </p>
             </Modal.Body>
             <Modal.Footer>
