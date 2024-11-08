@@ -3,6 +3,7 @@ import { Modal, Button, Tabs, Tab, Dropdown  } from 'react-bootstrap';
 import React, { useState, useMemo, useEffect } from 'react';
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import DatePicker from 'react-datepicker';
+import { FaCalendarAlt, FaPlus, FaTrash } from 'react-icons/fa';
 
 const patchTutoringSession = async (id, changeData) => {
     const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions/${id}`, {
