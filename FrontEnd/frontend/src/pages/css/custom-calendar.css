@@ -25,17 +25,15 @@
 .calendar-container .calendar-grid .day .events {
   display: flex;
   flex-direction: column; /* Stack events vertically */
-  justify-content: center; /* Center events vertically */
-  align-items: center; /* Center events horizontally */
-  height: calc(100% - 40px); /* Adjust height to leave space for the date */
-  position: absolute; /* Allow precise positioning */
-  top: 50%; /* Center events container vertically */
-  left: 0; /* Start from the left edge */
-  right: 0; /* Expand to the right edge */
-  transform: translateY(-50%); /* Adjust to align center */
+  gap: 0; /* Remove gap between events */
+  width: 100%; /* Expand to fit day cell */
+  height: auto; /* Adjust height based on content */
   padding: 0; /* Remove padding to prevent shifting */
   overflow: hidden; /* Hide overflow */
+  position: relative; /* Relative positioning for more flexibility */
 }
+
+
 
 /*
 .calendar-container .calendar-grid .day .events .event {
@@ -45,20 +43,16 @@
 }*/
 
 .calendar-container .calendar-grid .day .events .event {
-  font-size: 0.75rem; /* Smaller font size to fit better */
-  padding: 2px 4px; /* Reduce padding for a tighter fit */
-  border-radius: 3px; /* Smaller radius for more compact appearance */
-  max-width: 100%; /* Limit width to cell width */
-  overflow: hidden; /* Hide overflow text */
-  white-space: nowrap; /* Prevent wrapping */
-  text-overflow: ellipsis; /* Add ellipsis if the text overflows */
+  font-size: 0.75rem; /* Compact font size */
+  padding: 2px 4px;
+  border-radius: 3px;
+  margin: 0; /* Ensure no additional spacing */
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.calendar-container .calendar-grid .day .events {
-  max-height: 80px; /* Set a max height for each cell */
-  overflow: hidden;
-  position: relative;
-}
 
 /* Show "+ more" if there are hidden events */
 .calendar-container .calendar-grid .day .events:after {
