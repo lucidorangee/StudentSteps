@@ -234,7 +234,7 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
         <div 
           key={day} 
           className={`day ${onDateClick ? 'clickable' : 'non-clickable'}`}
-          onClick={onDateClick ? () => onDateClick(new Date(Date.parse(date + 'T00:00:00'))) : null}
+          onClick={onDateClick ? () => onDateClick(date) : null}
         >
           <div className="date">{day}</div>
           <div className="events">
