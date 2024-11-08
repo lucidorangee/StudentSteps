@@ -47,7 +47,7 @@
   padding: 2px 4px;
   border-radius: 3px;
   margin: 0; /* Ensure no additional spacing */
-  max-width: 100%;
+  width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
