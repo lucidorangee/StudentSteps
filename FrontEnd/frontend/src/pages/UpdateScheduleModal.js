@@ -105,14 +105,13 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
                     style={{
                         backgroundColor: hasDateTimeChanged ? '#d4edda' : 'transparent',
                         padding: '5px',
-                        fontWeight: hasDateTimeChanged ? 'bold' : 'normal',
                         borderRadius: '5px' 
                     }}
                 >
-                    <p style={{ marginBottom: '8px' }}>Change Date&Time?</p>
+                    <p style={{ marginBottom: '8px', fontWeight: hasDateTimeChanged ? 'bold' : 'normal', }}>Change Date&Time?</p>
                     <DatePicker
                       selected={selectedDateTime}
-                      onChange={(date) => selectedDateTime(date)}
+                      onChange={(date) => setSelectedDateTime(date)}
                       showTimeSelect
                       timeFormat="h:mm aa"
                       timeIntervals={30}
