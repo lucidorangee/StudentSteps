@@ -31,6 +31,7 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
 
     const defaultDateTime = useMemo(() => {
         const session = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(sessionId));
+        console.log(session?.session_datetime)
         return session?.session_datetime || null;
     }, [sessionId, tutoringSessionData]);
 
