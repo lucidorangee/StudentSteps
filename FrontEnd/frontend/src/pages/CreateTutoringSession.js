@@ -112,6 +112,7 @@ const CreateTutoringSession = ({defaultStudentId = -1, passedDate = null}) => {
   }, [tutors]);
 
   useEffect(() => {
+    console.log(`Passed Date is ${passedDate}`);
     if (passedDate) {
       const updatedList = [...dateTimeList];
       updatedList[selectedRow].date = passedDate;
@@ -218,7 +219,7 @@ const CreateTutoringSession = ({defaultStudentId = -1, passedDate = null}) => {
   const handleRepeatCountChange = (e) => {
     setRepeatCount(parseInt(e.target.value));
   };
-//col-md-10 col-lg-8
+
   return (
     <div className="App">
       <header className="App-header">
