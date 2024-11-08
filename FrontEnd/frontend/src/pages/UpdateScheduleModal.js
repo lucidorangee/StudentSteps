@@ -34,7 +34,7 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
         return session?.session_datetime || null;
     }, [sessionId, tutoringSessionData]);
 
-    const [selectedDateTime, setSelectedDateTime] = useState(defaultDateTime);
+    const [selectedDateTime, setSelectedDateTime] = useState(new Date(defaultDateTime));
     const [selectedTutor, setSelectedTutor] = useState(defaultTutorId);
     const queryClient = useQueryClient();
 
