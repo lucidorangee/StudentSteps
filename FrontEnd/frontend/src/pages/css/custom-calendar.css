@@ -54,6 +54,25 @@
   text-overflow: ellipsis; /* Add ellipsis if the text overflows */
 }
 
+.calendar-container .calendar-grid .day .events {
+  max-height: 80px; /* Set a max height for each cell */
+  overflow: hidden;
+  position: relative;
+}
+
+/* Show "+ more" if there are hidden events */
+.calendar-container .calendar-grid .day .events:after {
+  content: "+ more";
+  display: block;
+  font-size: 0.7rem;
+  color: #999;
+  text-align: center;
+  margin-top: 2px;
+  position: absolute;
+  bottom: 2px;
+  width: 100%;
+}
+
 /* Grid setup for the days */
 .calendar-grid {
     display: grid;
