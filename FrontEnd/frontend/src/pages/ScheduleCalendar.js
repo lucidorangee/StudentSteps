@@ -241,7 +241,7 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
             {eventsToDisplay.map((event, index) => (
               <p 
                 key={`${event.type}-${event.id}`} 
-                className="event" 
+                className={`event ${onDateClick ? 'clickable' : 'non-clickable'}`}
                 onClick={onDateClick ? null : () => handleShow(event.id)} // Pass the full event data for handling click
               >
                 {event.title}

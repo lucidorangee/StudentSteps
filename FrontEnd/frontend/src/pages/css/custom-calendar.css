@@ -65,6 +65,10 @@
   gap: 1px; /* Outline effect */
   background-color: #e0e0e0;
 }
+
+.clickable {
+  cursor: pointer;
+}
   
 /* Header styling for days of the week */
 .day-header {
@@ -97,7 +101,6 @@
     align-items: flex-start;
     min-height: 100px;
     position: relative;
-    cursor: pointer;
     transition: background-color 0.2s ease;
 }
   
