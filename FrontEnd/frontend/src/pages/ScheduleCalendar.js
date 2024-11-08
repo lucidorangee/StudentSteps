@@ -179,6 +179,8 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
   const handleNextMonth = () => setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
   const handlePrevMonth = () => setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
 
+  const getLocalDateString = (dateObj) => dateObj.toLocaleDateString('en-CA');
+
   const renderCalendarDays = () => {
     const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
     const startDay = startOfMonth.getDay();
@@ -188,12 +190,16 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
     for (let i = 0; i < startDay; i++) cells.push(<div key={`empty-${i}`} className="day empty"></div>);
 
     for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day).toISOString().split('T')[0];
+      const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+      const dateString = getLocalDateString(date);
+
       const assessmentsForDate = filteredAssessments.filter(item => {
-        const itemDate = new Date(item.date).toISOString().split('T')[0];
-        return itemDate === date;
+        return getLocalDateString(new Date(item.date)) === dateString;
+
       });
-      const tutoringSessionsForDate = filteredTutoringSessions.filter(item => item.session_datetime.startsWith(date));
+      const tutoringSessionsForDate = filteredTutoringSessions.filter(item => {
+        return getLocalDateString(new Date(item.session_datetime)) === dateString;
+      });
 
       cells.push(
         <div 
