@@ -67,8 +67,8 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
     };
 
     const hasTutorChanged = selectedTutor !== defaultTutorId;
-    const hasDateTimeChanged = selectedDateTime !== defaultDateTime;
-    console.log(`selectedDateTime ${typeof selectedDateTime} ${selectedDateTime} defaultDateTime ${typeof defaultDateTime} ${defaultDateTime}`)
+    const hasDateTimeChanged = selectedDateTime?.getTime() !== defaultDateTime?.getTime();
+    console.log(`selectedDateTime ${typeof selectedDateTime} ${selectedDateTime} defaultDateTime ${typeof defaultDateTime} ${defaultDateTime}`);
 
     if (sessionId) {
 
