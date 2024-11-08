@@ -485,6 +485,8 @@ const ScheduleList = () => {
                           <div>Subject: {assessment.title}</div>
                           <div>Date: {new Intl.DateTimeFormat('en-US', dateonlySetting).format(new Date(assessment.date))}</div>
                           <div>Description: {assessment.description}</div>
+                          <div>Notes: {assessment.notes}</div>
+                          <div>Reviewed?: {assessment.reviewed}</div>
                         </div>
                       ))}
                     </div>

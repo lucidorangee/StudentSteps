@@ -474,7 +474,7 @@ const ScheduleList = () => {
       ...tempComments,
       [session_id]: {
         ...tempComments[session_id],
-        new_assessments: [...currentAssessments, { title: '', date: '', description: '' }]
+        new_assessments: [...currentAssessments, { title: '', date: '', description: '', notes:'', reviewed: false }]
       }
     });
   };
@@ -855,7 +855,7 @@ const ScheduleList = () => {
                               placeholder="Title"
                               value={assessment.title}
                               onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'title')}
-                              style={{ width: '25%' }}
+                              style={{ width: '20%' }}
                             />
                             <input
                               type="date"
@@ -863,7 +863,7 @@ const ScheduleList = () => {
                               placeholder="Date"
                               value={assessment.date}
                               onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'date')}
-                              style={{ width: '25%' }}
+                              style={{ width: '15%' }}
                             />
                             <input
                               type="text"
@@ -871,8 +871,26 @@ const ScheduleList = () => {
                               placeholder="Description"
                               value={assessment.description}
                               onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'description')}
-                              style={{ width: '30%' }}
+                              style={{ width: '20%' }}
                             />
+                            <input
+                              type="text"
+                              className="form-control col-6"
+                              placeholder="Notes"
+                              value={assessment.notes}
+                              onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'notes')}
+                              style={{ width: '20%' }}
+                            />
+                            <div className="form-check" style={{ width: '10%' }}>
+                              <input
+                                type="checkbox"
+                                className="form-check-input"
+                                id={`reviewed-${asmtIndex}`}
+                                checked={assessment.reviewed || false}
+                                onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'reviewed')}
+                              />
+                              <label className="form-check-label" htmlFor={`reviewed-${asmtIndex}`}>Reviewed?</label>
+                            </div>
                             <button
                               className="btn btn-danger"
                               onClick={() => handleRemoveNewAssessment(tutoringSession.session_id, asmtIndex)}
