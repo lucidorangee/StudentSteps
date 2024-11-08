@@ -31,17 +31,22 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
 
     const defaultDateTime = useMemo(() => {
         const session = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(sessionId));
-        console.log(session?.session_datetime)
-        return session?.session_datetime || null;
+        return session?.session_datetime ? new Date(session.session_datetime) : null;
     }, [sessionId, tutoringSessionData]);
 
-    const [selectedDateTime, setSelectedDateTime] = useState(new Date(defaultDateTime));
+    const [selectedDateTime, setSelectedDateTime] = useState(defaultDateTime);
     const [selectedTutor, setSelectedTutor] = useState(defaultTutorId);
     const queryClient = useQueryClient();
 
     useEffect(() => {
         setSelectedTutor(defaultTutorId);
     }, [defaultTutorId]);
+
+    useEffect(() => {
+        if (defaultDateTime) {
+            setSelectedDateTime(defaultDateTime);
+        }
+    }, [defaultDateTime]);
 
     const { mutate: updateTutoringSession, isLoading, isError, error } = useMutation({
         mutationFn: ({ id, changeData }) => patchTutoringSession(id, changeData),
