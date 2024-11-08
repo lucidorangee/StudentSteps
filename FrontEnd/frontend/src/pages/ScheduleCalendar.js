@@ -185,22 +185,51 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
     const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
     const startDay = startOfMonth.getDay();
     const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
-
+  
     const cells = [];
     for (let i = 0; i < startDay; i++) cells.push(<div key={`empty-${i}`} className="day empty"></div>);
-
+  
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
       const dateString = getLocalDateString(date);
-
-      const assessmentsForDate = filteredAssessments.filter(item => {
-        return getLocalDateString(new Date(item.date)) === dateString;
-
-      });
+  
+      // Filter tutoring sessions and assessments for the current date
       const tutoringSessionsForDate = filteredTutoringSessions.filter(item => {
         return getLocalDateString(new Date(item.session_datetime)) === dateString;
       });
-
+  
+      const assessmentsForDate = filteredAssessments.filter(item => {
+        return getLocalDateString(new Date(item.date)) === dateString;
+      });
+  
+      // Combine tutoring sessions and assessments into one list of events
+      let events = [
+        ...tutoringSessionsForDate.map(session => ({ type: 'session', title: new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(session.session_datetime)), id: session.session_id, details: session })),
+        ...assessmentsForDate.map(assessment => ({ type: 'assessment', title: assessment.title, id: assessment.assessment_id, details: assessment })),
+      ];
+  
+      let eventsToDisplay = events;
+      let showMore = false;
+  
+      // If there are more than 3 events, show only 2 and append (+ more)
+      if (events.length > 3) {
+        showMore = true;
+        eventsToDisplay = [];
+  
+        // First, try to pick one session and one assessment
+        let session = events.find(event => event.type === 'session');
+        let assessment = events.find(event => event.type === 'assessment');
+  
+        if (session) eventsToDisplay.push(session);
+        if (assessment) eventsToDisplay.push(assessment);
+  
+        // If there's still space, fill the second spot with whatever remains
+        while (eventsToDisplay.length < 2 && events.length > eventsToDisplay.length) {
+          const nextEvent = events.find(event => !eventsToDisplay.includes(event));
+          eventsToDisplay.push(nextEvent);
+        }
+      }
+  
       cells.push(
         <div 
           key={day} 
@@ -209,30 +238,25 @@ const CalendarPage = ({ defaultStudentId = -1, onDateClick = null }) => {
         >
           <div className="date">{day}</div>
           <div className="events">
-            {assessmentsForDate.map((assessment, index) => (
+            {eventsToDisplay.map((event, index) => (
               <p 
-                key={`assess-${index}`} 
+                key={`${event.type}-${event.id}`} 
                 className="event" 
-                onClick={onDateClick ? null : () => alert(`Assessment: ${assessment.title}`)} 
+                onClick={() => handleEventClick(event)} // Pass the full event data for handling click
               >
-                {assessment.title}
+                {event.title}
               </p>
             ))}
-            {tutoringSessionsForDate.map((session, index) => (
-              <p 
-                key={`session-${index}`} 
-                className="event" 
-                onClick={onDateClick ? null : () => handleShow(session.session_id)} 
-              >
-                {new Intl.DateTimeFormat('en-US', datetimeSetting).format(new Date(session.session_datetime))}
-                {/*session.session_datetime*/}
-              </p>
-            ))}
+  
+            {/* If there are more than 3 events, show (+ more) */}
+            {showMore && (
+              <p className="event more">+ more</p>
+            )}
           </div>
         </div>
       );
     }
-
+  
     return cells;
   };
 
