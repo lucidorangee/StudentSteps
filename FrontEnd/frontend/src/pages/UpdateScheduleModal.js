@@ -62,13 +62,12 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
     const applySessionChange = () => {
         const selectedSession = tutoringSessionData.find(tutoring_session => String(tutoring_session.session_id) === String(sessionId));
 
-        updateTutoringSession({ id: selectedSession.session_id, changeData: { tutor_id: Number(selectedTutor) } });
+        updateTutoringSession({ id: selectedSession.session_id, changeData: { tutor_id: Number(selectedTutor), datetime: selectedDateTime.toISOString() } });
         handleClose();
     };
 
     const hasTutorChanged = selectedTutor !== defaultTutorId;
     const hasDateTimeChanged = selectedDateTime?.getTime() !== defaultDateTime?.getTime();
-    console.log(`selectedDateTime ${typeof selectedDateTime} ${selectedDateTime} defaultDateTime ${typeof defaultDateTime} ${defaultDateTime}`);
 
     if (sessionId) {
 
@@ -78,6 +77,7 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
                 <Modal.Title>Change Session Detail</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                {/* Change Tutor */}
                 <div
                     style={{
                         backgroundColor: hasTutorChanged ? '#d4edda' : 'transparent',
@@ -134,7 +134,7 @@ const UpdateScheduleModal = ({ showModal, handleClose, tutoringSessionData = [],
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>Close</Button>
-                <Button variant="primary" onClick={applySessionChange}>Apply</Button>
+                <Button variant="primary" onClick={applySessionChange} disabled={!(hasTutorChanged || hasDateTimeChanged)}>Apply</Button>
             </Modal.Footer>
         </Modal>
 

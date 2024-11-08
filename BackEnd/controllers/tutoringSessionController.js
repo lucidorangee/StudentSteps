@@ -213,7 +213,7 @@ const submitTutoringSession = (req, res) => {
 
 const editTutoringSession = (req, res) => {
     const session_id = parseInt(req.params.id); // Get session_id from the route params
-    const { student_id, tutor_id, date, duration, notes } = req.body;
+    const { student_id, tutor_id, datetime, duration, notes } = req.body;
 
     let updateFields = [];
     let updateValues = [];
@@ -228,9 +228,9 @@ const editTutoringSession = (req, res) => {
         updateFields.push(`tutor_id = $${queryIndex++}`);
         updateValues.push(tutor_id);
     }
-    if (date !== undefined) {
+    if (datetime !== undefined) {
         updateFields.push(`session_datetime = $${queryIndex++}`);
-        updateValues.push(date.replace("T", " ").replace("Z", "+00:00")); // Ensure date is formatted correctly
+        updateValues.push(datetime); // Ensure date is formatted correctly
     }
     if (duration !== undefined) {
         updateFields.push(`duration = $${queryIndex++}`);
