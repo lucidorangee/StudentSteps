@@ -8,12 +8,6 @@
     max-width: 800px;
     margin: 0 auto;
 }
-  
-.calendar-container .calendar-grid .day {
-  height: 100px; /* Default cell height */
-  position: relative;
-  padding: 5px;
-}
 
 .calendar-container .calendar-grid .day .date {
   position: absolute;
@@ -22,57 +16,53 @@
   /*font-weight: bold; /* Make the date stand out */
 }
 
+.calendar-container .calendar-grid .day {
+  height: 100px; /* Fixed cell height */
+  padding: 5px;
+  position: relative;
+  overflow: hidden; /* Prevent content overflow */
+}
+
 .calendar-container .calendar-grid .day .events {
   display: flex;
   flex-direction: column; /* Stack events vertically */
   gap: 0; /* Remove gap between events */
-  width: 100%; /* Expand to fit day cell */
-  height: auto; /* Adjust height based on content */
-  padding: 0; /* Remove padding to prevent shifting */
-  overflow: hidden; /* Hide overflow */
-  position: relative; /* Relative positioning for more flexibility */
+  max-height: 60px; /* Limit event container height */
+  overflow: hidden; /* Prevent overflow of events */
+  width: 100%;
+  padding: 0;
 }
 
-
-
-/*
 .calendar-container .calendar-grid .day .events .event {
-  font-size: 0.9rem; /* Slightly smaller font size for events 
-  margin: 2px 0; /* Minimal vertical spacing 
-  text-align: center; /* Center text within each event 
-}*/
-
-.calendar-container .calendar-grid .day .events .event {
-  font-size: 0.75rem; /* Compact font size */
+  font-size: 0.75rem;
   padding: 2px 4px;
   border-radius: 3px;
-  margin: 0; /* Ensure no additional spacing */
+  margin: 0;
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-
-/* Show "+ more" if there are hidden events */
+/* "More" indicator for hidden events */
 .calendar-container .calendar-grid .day .events:after {
   content: "+ more";
-  display: block;
   font-size: 0.7rem;
   color: #999;
   text-align: center;
-  margin-top: 2px;
+  display: block;
   position: absolute;
   bottom: 2px;
   width: 100%;
+  background: #fff;
 }
 
-/* Grid setup for the days */
+/* Fixed cell width using CSS Grid */
 .calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1px; /* Outline effect */
-    background-color: #e0e0e0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px; /* Outline effect */
+  background-color: #e0e0e0;
 }
   
 /* Header styling for days of the week */
