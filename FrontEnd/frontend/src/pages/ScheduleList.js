@@ -887,7 +887,12 @@ const ScheduleList = () => {
                                 className="form-check-input"
                                 id={`reviewed-${asmtIndex}`}
                                 checked={assessment.reviewed || false}
-                                onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'reviewed')}
+                                onChange={(e) => handleNewAssessmentChange(
+                                  tutoringSession.session_id, 
+                                  { ...e, target: { ...e.target, value: e.target.checked } }, // Pass checked state as value
+                                  asmtIndex, 
+                                  'reviewed'
+                                )}
                               />
                               <label className="form-check-label" htmlFor={`reviewed-${asmtIndex}`}>Reviewed?</label>
                             </div>
