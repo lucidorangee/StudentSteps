@@ -590,6 +590,7 @@ const ScheduleList = () => {
 
   const handleExistingAssessmentReviewedUpdate = (session_id, assessment_id, event) => {
     const previousAssessment = tempComments[session_id]?.prev_assessments || []; // Ensure an array exists
+    console.log(`is ${event.target.checked}`);
   
     // Check if assessment_id already exists
     const index = previousAssessment.findIndex(asmt => asmt.assessment_id === assessment_id);
