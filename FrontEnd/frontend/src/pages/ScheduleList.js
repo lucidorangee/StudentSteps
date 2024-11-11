@@ -544,6 +544,7 @@ const ScheduleList = () => {
             assessment_id,
             date: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.date || new Date().toISOString(),
             notes: event.target.value,
+            reviewed: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.reviewed || false,
           },
         ];
 
@@ -574,6 +575,7 @@ const ScheduleList = () => {
             assessment_id,
             date: event.target.value,
             notes: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.notes || '',
+            reviewed: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.reviewed || false,
           },
         ];
 
@@ -585,6 +587,37 @@ const ScheduleList = () => {
       },
     });
   };
+
+  const handleExistingAssessmentReviewedUpdate = (session_id, assessment_id, event) => {
+    const previousAssessment = tempComments[session_id]?.prev_assessments || []; // Ensure an array exists
+  
+    // Check if assessment_id already exists
+    const index = previousAssessment.findIndex(asmt => asmt.assessment_id === assessment_id);
+  
+    // If found, update the reviewed status; otherwise, add a new entry
+    const updatedAssessmentList = index !== -1
+      ? previousAssessment.map((asmt, idx) =>
+          idx === index ? { ...asmt, reviewed: event.target.checked } : asmt
+        )
+      : [
+          ...previousAssessment,
+          {
+            assessment_id,
+            date: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.date || new Date().toISOString(),
+            notes: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.notes || '',
+            reviewed: event.target.checked,
+          },
+        ];
+  
+    setTempComments({
+      ...tempComments,
+      [session_id]: {
+        ...tempComments[session_id],
+        prev_assessments: updatedAssessmentList,
+      },
+    });
+  };
+  
 
   const handleTutorChange = (selectedOption) => {
 
@@ -818,7 +851,7 @@ const ScheduleList = () => {
                               <div className="col-2">
                                 <strong>Title:</strong> {assessment.title}
                               </div>
-                              <div className="col-3">
+                              <div className="col-1">
                                 <input
                                   type="date"
                                   className="form-control"
@@ -832,7 +865,7 @@ const ScheduleList = () => {
                               <div className="col-4">
                                 <strong>Detail:</strong> {assessment.description}
                               </div>
-                              <div className="col-3">
+                              <div className="col-2">
                                 <input
                                   type="text"
                                   className="form-control"
@@ -840,6 +873,29 @@ const ScheduleList = () => {
                                   onChange={(e) => handleExistingAssessmentNoteUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
                                 />
                               </div>
+                              <div className="col-1">
+                                <div className="form-check">
+                                  <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    id={`reviewed-${assessment.assessment_id}`}
+                                    checked={
+                                      tempComments[tutoringSession.session_id]?.prev_assessments?.find(
+                                        asmt => asmt.assessment_id === assessment.assessment_id
+                                      )?.reviewed ?? assessment.reviewed
+                                    }
+                                    onChange={(e) => handleExistingAssessmentReviewedUpdate(
+                                      tutoringSession.session_id,
+                                      assessment.assessment_id,
+                                      e.target.checked
+                                    )}
+                                  />
+                                  <label className="form-check-label" htmlFor={`reviewed-${assessment.assessment_id}`}>
+                                    Reviewed?
+                                  </label>
+                                </div>
+                              </div>
+
                             </div>
                           );
                         })}
