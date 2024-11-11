@@ -887,7 +887,7 @@ const ScheduleList = () => {
                                     onChange={(e) => handleExistingAssessmentReviewedUpdate(
                                       tutoringSession.session_id,
                                       assessment.assessment_id,
-                                      e.target.checked
+                                      e
                                     )}
                                   />
                                   <label className="form-check-label" htmlFor={`reviewed-${assessment.assessment_id}`}>
