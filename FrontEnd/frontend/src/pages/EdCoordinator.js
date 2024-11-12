@@ -160,11 +160,13 @@ const EdCoordinator = () => {
     sevenDaysFromNow.setDate(today.getDate() + 7); // Adds 7 days to today's date (date-only)
   
     const filteredAssessments = assessments.filter(assessment => {
-      const assessmentDate = new Date(assessment.date); // Date-only format (UTC date)
+      const assessmentDate = new Date(assessment.date);
+
+      let shouldNotFilter = false;
+      if(assessmentDate >= today && assessmentDate <= sevenDaysFromNow) shouldNotFilter = true;
+      if(assessment.reviewed === false && assessment.notes !== "") shouldNotFilter = true;
   
-      return (
-        assessmentDate >= today && assessmentDate <= sevenDaysFromNow
-      );
+      return shouldNotFilter;
     });
   
     setFilteredAssessments(filteredAssessments);
