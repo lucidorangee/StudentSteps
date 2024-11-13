@@ -254,7 +254,7 @@ const EdCoordinator = () => {
                 <React.Fragment key={index}>
                   <tr onClick={() => toggleRow(index)} style={{ cursor: 'pointer' }}>
                     <td>{student.first_name} {student.last_name}</td>
-                    <td>{assessment.title}</td>
+                    <td>{assessment.title}{(assessment.reviewed === false && assessment.notes !== "")?"*":""}</td>
                     <td>{assessment.description}</td>
                     <td>{(new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' })).format(new Date(assessment.date))}</td>
                     <td>{upcomingSession ? (new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' })).format(new Date(upcomingSession.session_datetime)) : 'N/A'}</td>
