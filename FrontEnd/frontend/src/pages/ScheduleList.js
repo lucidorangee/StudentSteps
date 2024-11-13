@@ -728,7 +728,7 @@ const ScheduleList = () => {
                         </div>
                       </div>
 
-                      {/* Row 2: Date and Stamps */}
+                      {/* Row 2: Da te and Stamps */}
                       <div className="d-flex justify-content-between mt-3">
                         <h5 className="card-title">
                           Date: {`${new Intl.DateTimeFormat('en-US', datetimeSetting).format(sessionDateTime)} ~ ${new Intl.DateTimeFormat('en-US', timeonlySetting).format(endDateTime)}`}
@@ -852,7 +852,7 @@ const ScheduleList = () => {
                               <div className="col-2">
                                 <strong>Title:</strong> {assessment.title}
                               </div>
-                              <div className="col-1">
+                              <div className="col-2">
                                 <input
                                   type="date"
                                   className="form-control"
@@ -863,7 +863,7 @@ const ScheduleList = () => {
                                   onChange={(e) => handleExistingAssessmentDateUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
                                 />
                               </div>
-                              <div className="col-4">
+                              <div className="col-3">
                                 <strong>Detail:</strong> {assessment.description}
                               </div>
                               <div className="col-2">
