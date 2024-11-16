@@ -163,7 +163,7 @@ const completeAndAddComment = async (req, res) => {
         for(const assessment of assessments)
         {
             await client.query(assessmentQueries.addAssessment, [
-                assessment.title, assessment.description, assessment.date, student_id, 'empty subject', assessment.notes, assessment.reviewed
+                assessment.title, assessment.description, assessment.date, student_id, 'empty subject', assessment.outcome, assessment.reviewed
             ]);
         }
 
@@ -171,7 +171,7 @@ const completeAndAddComment = async (req, res) => {
         for(const assessment of assessments_update)
         {
             await client.query(assessmentQueries.updateAssessment, [
-                assessment.assessment_id, assessment.date, assessment.notes
+                assessment.assessment_id, assessment.date, assessment.outcome
             ]);
         }
 
