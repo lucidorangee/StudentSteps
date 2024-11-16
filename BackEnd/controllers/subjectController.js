@@ -1,5 +1,4 @@
 const pool = require('../db.js');
-const tutorQueries = require("../models/subjectQueries.js");
 
 const getSubjects = (req, res) => {
     pool.query("SELECT * FROM subjects", (error, results) => {

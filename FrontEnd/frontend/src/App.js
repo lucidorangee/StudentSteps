@@ -53,6 +53,7 @@ function App() {
           <Route path="/admin/tutors" element={<ProtectedRouteWrapper element={ManageTutors} />} />
           <Route path="/admin/students" element={<ProtectedRouteWrapper element={ManageStudents} />} />
           <Route path="/admin/roles" element={<ProtectedRouteWrapper element={ManageRoles} />} />
+          <Route path="/admin/homework/due" element={<ProtectedRouteWrapper element={ManageDueHomework} />} />
           <Route path="/admin/homework" element={<ProtectedRouteWrapper element={ManageHomework} />} />
 
           <Route path="/schedule/approval" element={<ProtectedRouteWrapper element={ApprovalList} />} />
@@ -63,7 +64,6 @@ function App() {
           <Route path="/schedule/create" element={<ProtectedRouteWrapper element={CreateTutoringSession} />} />
 
           <Route path="/homework/create" element={<ProtectedRouteWrapper element={CreateHomework} />} />
-          <Route path="/admin/homework/due" element={<ProtectedRouteWrapper element={ManageDueHomework} />} />
           
 
           <Route path="/students/create" element={<ProtectedRouteWrapper element={CreateStudent} />} />
