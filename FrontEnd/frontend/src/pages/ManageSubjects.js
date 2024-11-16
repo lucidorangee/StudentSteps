@@ -3,7 +3,6 @@ import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
-import { subWeeks } from 'react-datepicker/dist/date_utils';
 
 const fetchSubjects = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/subjects`, {
