@@ -156,7 +156,7 @@ const ManageSubjects = () => {
     e.preventDefault();
   
     let temp = [];
-    for(let i = 0; i < tutors.length; i++)
+    for(let i = 0; i < subjects.length; i++)
     {
       if((subjects[i].name.includes(filterName)))
           temp.push(subjects[i]);
