@@ -574,7 +574,7 @@ const ScheduleList = () => {
           {
             assessment_id,
             date: event.target.value,
-            notes: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.notes || '',
+            notes: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.outcome || '',
             reviewed: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.reviewed || false,
           },
         ];
@@ -605,7 +605,7 @@ const ScheduleList = () => {
           {
             assessment_id,
             date: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.date || new Date().toISOString(),
-            notes: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.notes || '',
+            notes: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.outcome || '',
             reviewed: event.target.checked,
           },
         ];
@@ -692,7 +692,7 @@ const ScheduleList = () => {
               // Fetch the student data and homework list based on student_id
               const studentData = students.find(student => student.student_id === tutoringSession.student_id);
               const studentHomeworkList = homeworkList.filter(homework => homework.student_id === tutoringSession.student_id && homework.is_completed === 0);
-              const studentAssessments = assessments.filter(assessment => assessment.student_id === tutoringSession.student_id && assessment.notes === '');
+              const studentAssessments = assessments.filter(assessment => assessment.student_id === tutoringSession.student_id && assessment.outcome === '');
               const latestComment = comments
                 .filter(comment => comment.student_id === tutoringSession.student_id)
                 .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))[0];
@@ -870,7 +870,7 @@ const ScheduleList = () => {
                                 <input
                                   type="text"
                                   className="form-control"
-                                  value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.notes ?? assessment.notes}
+                                  value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.outcome ?? assessment.outcome}
                                   onChange={(e) => handleExistingAssessmentNoteUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
                                 />
                               </div>
@@ -934,7 +934,7 @@ const ScheduleList = () => {
                               type="text"
                               className="form-control col-6"
                               placeholder="Notes"
-                              value={assessment.notes}
+                              value={assessment.outcome}
                               onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'notes')}
                               style={{ width: '20%' }}
                             />
