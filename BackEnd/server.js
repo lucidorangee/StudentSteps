@@ -18,6 +18,7 @@ const roleRoutes = require('./routes/roleRoutes.js');
 const homeworkRoutes = require('./routes/homeworkRoutes.js');
 const tutoringSessionRoutes = require('./routes/tutoringSessionRoutes.js');
 const tutoringSessionDraftRoutes = require('./routes/tutoringSessionDraftRoutes.js');
+const subjectRoutes = require('./routes/subjectRoutes.js');
 
 console.log("CORS_ORIGIN:", process.env.CORS_ORIGIN);
 console.log("environment: ", process.env.NODE_ENV);
@@ -67,6 +68,7 @@ app.use('/api/v1/students', authMiddleware, studentRoutes);
 app.use('/api/v1/tutors', authMiddleware, tutorRoutes);
 app.use('/api/v1/roles', authMiddleware, roleRoutes);
 app.use('/api/v1/homework', authMiddleware, homeworkRoutes);
+app.use('/api/v1/subjects', authMiddleware, subjectRoutes);
 app.use('/api/v1/tutoringsessions', authMiddleware, tutoringSessionRoutes);
 app.use('/api/v1/tutoringsessiondrafts', authMiddleware, tutoringSessionDraftRoutes);
 
