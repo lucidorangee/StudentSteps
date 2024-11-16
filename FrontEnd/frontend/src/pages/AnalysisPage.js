@@ -171,7 +171,7 @@ const AnalysisPage = () => {
   const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
   const days = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
 
-  const noShowGraph = () => {
+  const NoShowGraph = () => {
     return (
       <div>
         <div className="d-flex align-items-center">
@@ -258,7 +258,7 @@ const AnalysisPage = () => {
   return (
     <div className="App">
       <h2>Welcome, User!</h2>
-      <noShowGraph />
+      <NoShowGraph />
     </div>
     
   );
