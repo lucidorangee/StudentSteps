@@ -164,7 +164,7 @@ const EdCoordinator = () => {
 
       let shouldNotFilter = false;
       if(assessmentDate >= today && assessmentDate <= sevenDaysFromNow) shouldNotFilter = true;
-      if(assessment.reviewed === false && assessment.notes !== "") shouldNotFilter = true;
+      if(assessment.reviewed === false && assessment.outcome !== "") shouldNotFilter = true;
   
       return shouldNotFilter;
     });
@@ -184,7 +184,7 @@ const EdCoordinator = () => {
   };
 
   const handleNotesChange = (assessment, newNotes) => {
-    assessment.notes = newNotes;
+    assessment.outcome = newNotes;
   };
 
   return (
@@ -254,7 +254,7 @@ const EdCoordinator = () => {
                 <React.Fragment key={index}>
                   <tr onClick={() => toggleRow(index)} style={{ cursor: 'pointer' }}>
                     <td>{student.first_name} {student.last_name}</td>
-                    <td>{assessment.title}{(assessment.reviewed === false && assessment.notes !== "")?"*":""}</td>
+                    <td>{assessment.title}{(assessment.reviewed === false && assessment.outcome !== "")?"*":""}</td>
                     <td>{assessment.description}</td>
                     <td>{(new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' })).format(new Date(assessment.date))}</td>
                     <td>{upcomingSession ? (new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' })).format(new Date(upcomingSession.session_datetime)) : 'N/A'}</td>
@@ -268,8 +268,8 @@ const EdCoordinator = () => {
                           <textarea
                             id={`notes-${assessment.assessment_id}`}
                             className="form-control"
-                            rows={Math.max(3, (assessment.notes?.split('\n').length || 1))}
-                            value={assessment.notes || ''}
+                            rows={Math.max(3, (assessment.outcome?.split('\n').length || 1))}
+                            value={assessment.outcome || ''}
                             onChange={(e) => handleNotesChange(assessment, e.target.value)}
                             style={{ resize: 'none', overflowY: 'auto' }}
                           />

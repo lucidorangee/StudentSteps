@@ -31,6 +31,7 @@ import ScheduleDaily from './pages/ScheduleDaily.js';
 
 import AnalysisPage from './pages/AnalysisPage.js';
 import EdCoordinator from './pages/EdCoordinator.js';
+import ManageSubjects from './pages/ManageSubjects.js';
 
 function App() {  
   return (
@@ -55,6 +56,7 @@ function App() {
           <Route path="/admin/roles" element={<ProtectedRouteWrapper element={ManageRoles} />} />
           <Route path="/admin/homework/due" element={<ProtectedRouteWrapper element={ManageDueHomework} />} />
           <Route path="/admin/homework" element={<ProtectedRouteWrapper element={ManageHomework} />} />
+          <Route path="/admin/subjects" element={<ProtectedRouteWrapper element={ManageSubjects} />} />
 
           <Route path="/schedule/approval" element={<ProtectedRouteWrapper element={ApprovalList} />} />
           <Route path="/schedule/list/:date?" element={<ProtectedRouteWrapper element={ScheduleList} />} />
