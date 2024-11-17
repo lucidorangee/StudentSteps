@@ -202,7 +202,7 @@ const EdCoordinator = () => {
               const latestComment = comments
                 .filter(comment => comment.student_id === assessment.student_id)
                 .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-              console.log(`latest comment is ${latestComment}`);
+              console.log(`latest comment is ${JSON.stringify(latestComment)}`);
 
               const upcomingSession = tutoringSessions
                 .filter(session => session.student_id === assessment.student_id && new Date(session.session_datetime) > new Date())
