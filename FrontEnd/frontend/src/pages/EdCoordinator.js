@@ -135,7 +135,7 @@ const EdCoordinator = () => {
   };
 
   const handleNotesChange = (assessment, newNotes) => {
-    assessment.outcome = newNotes;
+    assessment.notes = newNotes;
   };
 
   const handleFilterNameChange = (e) => setFilterName(e.target.value);
