@@ -202,7 +202,6 @@ const EdCoordinator = () => {
               const latestComment = comments
                 .filter(comment => comment.student_id === assessment.student_id)
                 .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-              console.log(`latest comment is ${JSON.stringify(latestComment)}`);
 
               const upcomingSession = tutoringSessions
                 .filter(session => session.student_id === assessment.student_id && new Date(session.session_datetime) > new Date())
@@ -237,7 +236,7 @@ const EdCoordinator = () => {
                             value={
                               assessment.reviewed === false && assessment.outcome !== ""
                                 ? assessment.outcome || ""
-                                : latestComment?.note || "No comments available"
+                                : latestComment?.content || "No comments available"
                             }
                             disabled
                             aria-label="Read-only field for latest comment or outcome"
@@ -249,9 +248,7 @@ const EdCoordinator = () => {
                             className="form-control"
                             rows={4}
                             placeholder="Modify notes here..."
-                            value={assessment.reviewed === false && assessment.outcome !== "" ? 
-                              assessment.outcome || "" : latestComment?.note || ""
-                              }
+                            value={assessment.notes || ''}
                             onChange={(e) => handleNotesChange(assessment, e.target.value)}
                             aria-label="Editable notes field"
                             style={{ resize: 'none', overflowY: 'auto' }}
