@@ -218,9 +218,12 @@ const EdCoordinator = () => {
                   </tr>
                   {expandedRow === index && (
                     <tr>
-                      <td colSpan="5" className="p-3 bg-light">
+                      <td colSpan="5" className="p-3 bg-light border rounded">
                         <div className="mb-3">
-                          <label htmlFor={`notes-${assessment.assessment_id}`} className="form-label">
+                          <label 
+                            htmlFor={`disabled-${assessment.assessment_id}`} 
+                            className="form-label fw-bold"
+                          >
                             {assessment.reviewed === false && assessment.outcome !== ""
                               ? "Latest Comment"
                               : "Outcome"}
@@ -236,6 +239,7 @@ const EdCoordinator = () => {
                                 : assessment.outcome || ""
                             }
                             disabled
+                            aria-label="Read-only field for latest comment or outcome"
                             style={{ backgroundColor: "#f8f9fa", color: "#6c757d" }}
                           />
                           {/* Editable textarea for modifications */}
@@ -248,15 +252,21 @@ const EdCoordinator = () => {
                               latestComment?.note || "" : 
                               assessment.outcome || ""}
                             onChange={(e) => handleNotesChange(assessment, e.target.value)}
+                            aria-label="Editable notes field"
                             style={{ resize: 'none', overflowY: 'auto' }}
                           />
                         </div>
-                        <button className="btn btn-success w-100" onClick={() => null}>
+                        <button 
+                          className="btn btn-success w-100 mt-2" 
+                          onClick={() => null}
+                          aria-label="Submit changes"
+                        >
                           Submit Changes
                         </button>
                       </td>
                     </tr>
                   )}
+
 
                 </React.Fragment>
               );
