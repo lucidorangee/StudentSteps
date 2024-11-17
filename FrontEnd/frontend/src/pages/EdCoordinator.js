@@ -224,9 +224,9 @@ const EdCoordinator = () => {
                             htmlFor={`disabled-${assessment.assessment_id}`} 
                             className="form-label fw-bold"
                           >
-                            {assessment.reviewed === false && assessment.outcome !== ""
-                              ? `Latest Comment${assessment.reviewed}${assessment.outcome}`
-                              : "Outcome"}
+                            {assessment.reviewed === false && assessment.outcome !== "" && assessment.outcome !== null
+                              ? "Outcome"
+                              : "Latest Comment"}
                           </label>
                           {/* Grayed-out textbox for the existing value */}
                           <input
@@ -235,8 +235,8 @@ const EdCoordinator = () => {
                             className="form-control mb-2"
                             value={
                               assessment.reviewed === false && assessment.outcome !== ""
-                                ? latestComment?.note || "No comments available"
-                                : assessment.outcome || ""
+                                ? assessment.outcome || ""
+                                : latestComment?.note || "No comments available"
                             }
                             disabled
                             aria-label="Read-only field for latest comment or outcome"
@@ -249,8 +249,8 @@ const EdCoordinator = () => {
                             rows={4}
                             placeholder="Modify notes here..."
                             value={assessment.reviewed === false && assessment.outcome !== "" ? 
-                              latestComment?.note || "" : 
-                              assessment.outcome || ""}
+                              assessment.outcome || "" : latestComment?.note || ""
+                              }
                             onChange={(e) => handleNotesChange(assessment, e.target.value)}
                             aria-label="Editable notes field"
                             style={{ resize: 'none', overflowY: 'auto' }}
