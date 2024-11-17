@@ -198,15 +198,15 @@ const EdCoordinator = () => {
             filteredAssessments.map((assessment, index) => {
               const student = students.find(s => s.student_id === assessment.student_id);
               if (!student) return null;
-
+  
               const latestComment = comments
                 .filter(comment => comment.student_id === assessment.student_id)
                 .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-
+  
               const upcomingSession = tutoringSessions
                 .filter(session => session.student_id === assessment.student_id && new Date(session.session_datetime) > new Date())
                 .sort((a, b) => new Date(a.session_datetime) - new Date(b.session_datetime))[0];
-
+  
               return (
                 <React.Fragment key={index}>
                   <tr onClick={() => toggleRow(index)} style={{ cursor: 'pointer' }}>
@@ -219,26 +219,62 @@ const EdCoordinator = () => {
                   {expandedRow === index && (
                     <tr>
                       <td colSpan="5" className="p-3 bg-light">
+                        {/* Latest Comment */}
                         <div className="mb-3">
-                          <label htmlFor={`notes-${assessment.assessment_id}`} className="form-label">
-                            {assessment.reviewed === false && assessment.outcome !== ""
-                              ? "Latest Comment"
-                              : "Outcome"}
+                          <label htmlFor={`latest-comment-${assessment.assessment_id}`} className="form-label">
+                            Latest Comment
                           </label>
+                          <input
+                            type="text"
+                            id={`latest-comment-${assessment.assessment_id}`}
+                            className="form-control"
+                            value={latestComment?.note || "No comments available"}
+                            disabled
+                            style={{ backgroundColor: "#f8f9fa", color: "#6c757d" }}
+                          />
+                        </div>
+                        <div className="mb-3">
                           <textarea
                             id={`notes-${assessment.assessment_id}`}
                             className="form-control"
                             rows={4}
-                            value={
-                              assessment.reviewed === false && assessment.outcome !== ""
-                                ? latestComment?.note || "No comments available"
-                                : assessment.outcome || ""
-                            }
+                            placeholder="Modify notes here..."
+                            value={assessment.notes || ""}
                             onChange={(e) => handleNotesChange(assessment, e.target.value)}
                             style={{ resize: 'none', overflowY: 'auto' }}
                           />
                         </div>
-                        <button className="btn btn-success w-100" onClick={() => null}>
+  
+                        {/* Outcome */}
+                        <div className="mb-3">
+                          <label htmlFor={`outcome-${assessment.assessment_id}`} className="form-label">
+                            Outcome
+                          </label>
+                          <input
+                            type="text"
+                            id={`outcome-${assessment.assessment_id}`}
+                            className="form-control"
+                            value={assessment.outcome || ""}
+                            disabled
+                            style={{ backgroundColor: "#f8f9fa", color: "#6c757d" }}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <textarea
+                            id={`edit-outcome-${assessment.assessment_id}`}
+                            className="form-control"
+                            rows={4}
+                            placeholder="Modify outcome here..."
+                            value={assessment.editOutcome || ""}
+                            onChange={(e) => handleOutcomeChange(assessment, e.target.value)}
+                            style={{ resize: 'none', overflowY: 'auto' }}
+                          />
+                        </div>
+  
+                        <button
+                          className="btn btn-success w-100"
+                          onClick={() => handleSubmitChanges(assessment)}
+                        >
                           Submit Changes
                         </button>
                       </td>
@@ -256,6 +292,7 @@ const EdCoordinator = () => {
       </table>
     </div>
   );
+  
 };
 
 export default EdCoordinator;
