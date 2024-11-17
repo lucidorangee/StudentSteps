@@ -219,67 +219,45 @@ const EdCoordinator = () => {
                   {expandedRow === index && (
                     <tr>
                       <td colSpan="5" className="p-3 bg-light">
-                        {/* Latest Comment */}
                         <div className="mb-3">
-                          <label htmlFor={`latest-comment-${assessment.assessment_id}`} className="form-label">
-                            Latest Comment
+                          <label htmlFor={`notes-${assessment.assessment_id}`} className="form-label">
+                            {assessment.reviewed === false && assessment.outcome !== ""
+                              ? "Latest Comment"
+                              : "Outcome"}
                           </label>
+                          {/* Grayed-out textbox for the existing value */}
                           <input
                             type="text"
-                            id={`latest-comment-${assessment.assessment_id}`}
-                            className="form-control"
-                            value={latestComment?.note || "No comments available"}
+                            id={`disabled-${assessment.assessment_id}`}
+                            className="form-control mb-2"
+                            value={
+                              assessment.reviewed === false && assessment.outcome !== ""
+                                ? latestComment?.note || "No comments available"
+                                : assessment.outcome || ""
+                            }
                             disabled
                             style={{ backgroundColor: "#f8f9fa", color: "#6c757d" }}
                           />
-                        </div>
-                        <div className="mb-3">
+                          {/* Editable textarea for modifications */}
                           <textarea
                             id={`notes-${assessment.assessment_id}`}
                             className="form-control"
                             rows={4}
                             placeholder="Modify notes here..."
-                            value={assessment.notes || ""}
+                            value={assessment.reviewed === false && assessment.outcome !== "" ? 
+                              latestComment?.note || "" : 
+                              assessment.outcome || ""}
                             onChange={(e) => handleNotesChange(assessment, e.target.value)}
                             style={{ resize: 'none', overflowY: 'auto' }}
                           />
                         </div>
-  
-                        {/* Outcome */}
-                        <div className="mb-3">
-                          <label htmlFor={`outcome-${assessment.assessment_id}`} className="form-label">
-                            Outcome
-                          </label>
-                          <input
-                            type="text"
-                            id={`outcome-${assessment.assessment_id}`}
-                            className="form-control"
-                            value={assessment.outcome || ""}
-                            disabled
-                            style={{ backgroundColor: "#f8f9fa", color: "#6c757d" }}
-                          />
-                        </div>
-                        <div className="mb-3">
-                          <textarea
-                            id={`edit-outcome-${assessment.assessment_id}`}
-                            className="form-control"
-                            rows={4}
-                            placeholder="Modify outcome here..."
-                            value={assessment.editOutcome || ""}
-                            onChange={(e) => null/* handleOutcomeChange(assessment, e.target.value)*/}
-                            style={{ resize: 'none', overflowY: 'auto' }}
-                          />
-                        </div>
-  
-                        <button
-                          className="btn btn-success w-100"
-                          onClick={() => null/*handleSubmitChanges(assessment)*/}
-                        >
+                        <button className="btn btn-success w-100" onClick={() => null}>
                           Submit Changes
                         </button>
                       </td>
                     </tr>
                   )}
+
                 </React.Fragment>
               );
             })
