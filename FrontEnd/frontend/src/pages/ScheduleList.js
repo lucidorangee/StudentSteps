@@ -361,7 +361,7 @@ const ScheduleList = () => {
 
     for(const hmwk of new_homework)
     {
-      if(hmwk['subject'] === '' || hmwk['due_date'] === '' || hmwk['notes'] === '')
+      if(hmwk['subject'] === '' || hmwk['due_date'] === '')
       {
         setAlert("Please fill in all the information for non-empty homework rows");
         return;
@@ -370,9 +370,9 @@ const ScheduleList = () => {
 
     for(const asmt of new_assessments)
     {
-      if(asmt['subject'] === '' || asmt['due_date'] === '' || asmt['notes'] === '')
+      if(asmt['subject'] === '' || asmt['due_date'] === '')
       {
-        setAlert("Please fill in all the information for non-empty homework rows");
+        setAlert("Please fill in name and due date of new assessments");
         return;
       }
     }
