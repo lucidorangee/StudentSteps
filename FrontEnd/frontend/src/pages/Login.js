@@ -35,8 +35,8 @@ const Login = () => {
       mutationFn: (formData) => postLogin(formData),
       onSuccess: (formData) => {
         console.log('Login successful!');
-        const currentDate = new Date().toISOString().substring(0, 10);
-        navigate(`/schedule/list/${currentDate}`);
+        const redirectTo = new URLSearchParams(location.search).get('redirect') || `/schedule/list/${new Date().toISOString().substring(0, 10)}`;
+        navigate(redirectTo);
       },
       onError: (error) => {
         console.log('Error logging in', error.message);

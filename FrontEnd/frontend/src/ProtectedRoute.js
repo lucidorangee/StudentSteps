@@ -30,8 +30,11 @@ const ProtectedRoute = ({ element: Component, ...rest }) => {
         return <div>Loading...</div>;
     }
 
-    console.log('Authenticated:', authenticated);
-    return authenticated ? <Component {...rest} /> : <Navigate to="/login" />;
+    return authenticated ? (
+        <Component {...rest} />
+    ) : (
+        <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} />
+    );
 };
 
 export default ProtectedRoute;
