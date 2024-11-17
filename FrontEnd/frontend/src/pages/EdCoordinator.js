@@ -225,7 +225,7 @@ const EdCoordinator = () => {
                             className="form-label fw-bold"
                           >
                             {assessment.reviewed === false && assessment.outcome !== ""
-                              ? "Latest Comment"
+                              ? `Latest Comment${assessment.reviewed}${assessment.outcome}`
                               : "Outcome"}
                           </label>
                           {/* Grayed-out textbox for the existing value */}
