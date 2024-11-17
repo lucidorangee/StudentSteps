@@ -474,7 +474,7 @@ const ScheduleList = () => {
       ...tempComments,
       [session_id]: {
         ...tempComments[session_id],
-        new_assessments: [...currentAssessments, { title: '', date: '', description: '', notes:'', reviewed: false }]
+        new_assessments: [...currentAssessments, { title: '', date: '', description: '', notes:'', reviewed: false, outcome:'' }]
       }
     });
   };
@@ -544,6 +544,7 @@ const ScheduleList = () => {
             assessment_id,
             date: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.date || new Date().toISOString(),
             notes: event.target.value,
+            outcome: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.outcome || '',
             reviewed: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.reviewed || false,
           },
         ];
@@ -556,6 +557,38 @@ const ScheduleList = () => {
       },
     });
   };
+
+  const handleExistingAssessmentOutcomeUpdate = (session_id, assessment_id, event) => {
+    const previousAssessment = tempComments[session_id]?.prev_assessments || []; // Ensure an array exists
+
+    // Check if assessment_id already exists
+    const index = previousAssessment.findIndex(asmt => asmt.assessment_id === assessment_id);
+    
+    // If found, update the notes; otherwise, add a new entry
+    const updatedAssessmentList = index !== -1
+      ? previousAssessment.map((asmt, idx) =>
+          idx === index ? { ...asmt, outcome: String(event.target.value) } : asmt
+        )
+      : [
+          ...previousAssessment,
+          {
+            assessment_id,
+            date: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.date || new Date().toISOString(),
+            notes: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.notes || '',
+            outcome: event.target.value,
+            reviewed: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.reviewed || false,
+          },
+        ];
+
+    setTempComments({
+      ...tempComments,
+      [session_id]: {
+        ...tempComments[session_id],
+        prev_assessments: updatedAssessmentList,
+      },
+    });
+  };
+
 
 
   const handleExistingAssessmentDateUpdate = (session_id, assessment_id, event) => {
@@ -574,7 +607,8 @@ const ScheduleList = () => {
           {
             assessment_id,
             date: event.target.value,
-            notes: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.outcome || '',
+            notes: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.notes || '',
+            outcome: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.outcome || '',
             reviewed: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.reviewed || false,
           },
         ];
@@ -605,7 +639,8 @@ const ScheduleList = () => {
           {
             assessment_id,
             date: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.date || new Date().toISOString(),
-            notes: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.outcome || '',
+            notes: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.notes || '',
+            outcome: assessments.find((asmt) => asmt.assessment_id === assessment_id)?.outcome || '',
             reviewed: event.target.checked,
           },
         ];
@@ -864,14 +899,14 @@ const ScheduleList = () => {
                                 />
                               </div>
                               <div className="col-3">
-                                <strong>Detail:</strong> {assessment.description}
+                                <strong>Outcome:</strong> {assessment.description}
                               </div>
                               <div className="col-2">
                                 <input
                                   type="text"
                                   className="form-control"
                                   value={tempComments[tutoringSession.session_id]?.prev_assessments?.find(asmt => asmt.assessment_id === assessment.assessment_id)?.outcome ?? assessment.outcome}
-                                  onChange={(e) => handleExistingAssessmentNoteUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
+                                  onChange={(e) => handleExistingAssessmentOutcomeUpdate(tutoringSession.session_id, assessment.assessment_id, e)}
                                 />
                               </div>
                               <div className="col-1">
@@ -933,9 +968,9 @@ const ScheduleList = () => {
                             <input
                               type="text"
                               className="form-control col-6"
-                              placeholder="Notes"
+                              placeholder="Outcome"
                               value={assessment.outcome}
-                              onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'notes')}
+                              onChange={(e) => handleNewAssessmentChange(tutoringSession.session_id, e, asmtIndex, 'outcome')}
                               style={{ width: '20%' }}
                             />
                             <div className="form-check" style={{ width: '10%' }}>
