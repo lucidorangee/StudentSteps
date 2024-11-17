@@ -266,14 +266,14 @@ const EdCoordinator = () => {
                             rows={4}
                             placeholder="Modify outcome here..."
                             value={assessment.editOutcome || ""}
-                            onChange={(e) => handleOutcomeChange(assessment, e.target.value)}
+                            onChange={(e) => null/* handleOutcomeChange(assessment, e.target.value)*/}
                             style={{ resize: 'none', overflowY: 'auto' }}
                           />
                         </div>
   
                         <button
                           className="btn btn-success w-100"
-                          onClick={() => handleSubmitChanges(assessment)}
+                          onClick={() => null/*handleSubmitChanges(assessment)*/}
                         >
                           Submit Changes
                         </button>
