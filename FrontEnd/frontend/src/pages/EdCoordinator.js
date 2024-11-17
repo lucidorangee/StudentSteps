@@ -234,8 +234,8 @@ const EdCoordinator = () => {
                             id={`disabled-${assessment.assessment_id}`}
                             className="form-control mb-2"
                             value={
-                              assessment.reviewed === false && assessment.outcome !== ""
-                                ? assessment.outcome || ""
+                              assessment.reviewed === false && assessment.outcome !== "" && assessment.outcome !== null
+                                ? assessment.outcome || "No outcome available"
                                 : latestComment?.content || "No comments available"
                             }
                             disabled
