@@ -4,6 +4,7 @@ const queries = require("../models/assessmentQueries.js");
 const getAssessments = (req, res) => {
     pool.query(queries.getAssessments, (error, results) => {
         if(error) throw error;
+        console.log(results.rows);
         res.status(200).json(results.rows);            
     })
 };
