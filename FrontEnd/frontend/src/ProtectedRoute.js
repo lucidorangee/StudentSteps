@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 const ProtectedRoute = ({ element: Component, ...rest }) => {
     const [authenticated, setAuthenticated] = useState(null);
+    const location = useLocation();
 
     useEffect(() => {
         const fetchAuthStatus = async () => {

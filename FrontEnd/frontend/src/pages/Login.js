@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useState } from 'react';
-import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
 
@@ -30,6 +30,7 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
 
     const { mutate: attemptLogin, isLoading, isError, error } = useMutation({
       mutationFn: (formData) => postLogin(formData),
