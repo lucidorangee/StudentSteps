@@ -15,7 +15,13 @@ const Sidebar = () => {
   const menuItems = {
     admin: [
       { to: `/admin/analysis`, icon: 'bi-clipboard-data', label: 'Analysis' },
-      { to: `/admin/manage`, icon: 'bi-gear', label: 'Manage Admin' },
+      { to: `/admin/users`, icon: 'bi-people', label: 'Admin' },
+      { to: `/admin/tutors`, icon: 'bi-person-check', label: 'Tutors' },
+      { to: `/admin/students`, icon: 'bi-person-fill', label: 'Students' },
+      { to: `/admin/roles`, icon: 'bi-gear-fill', label: 'Roles' },
+      { to: `/admin/homework/due`, icon: 'bi-pencil-square', label: 'Homework List' },
+      { to: `/admin/homework`, icon: 'bi-pencil-fill', label: 'Homework' },
+      { to: `/admin/subjects`, icon: 'bi-book-half', label: 'Subjects' },
     ],
     schedule: [
       { to: `/schedule/list/${currentDate}`, icon: 'bi-house-door-fill', label: 'List View' },
@@ -24,12 +30,17 @@ const Sidebar = () => {
       { to: `/schedule/create`, icon: 'bi-bookmark-plus', label: 'Add Schedule' },
       { to: `/schedule/daily`, icon: 'bi-calendar-check', label: 'Daily Schedule' },
       { to: `/schedule/approval`, icon: 'bi-check2-square', label: 'Approve Comments' },
+      { to: `/tutoringsessions`, icon: 'bi-journal-arrow-up', label: 'Sessions' },
     ],
     edcoordinator: [
+      { to: `/edcoordinator`, icon: 'bi-person-badge', label: 'Ed Coord' },
       { to: `/students/create`, icon: 'bi-person-fill-add', label: 'Add Student' },
       { to: `/tutors/create`, icon: 'bi-person-add', label: 'Add Tutor' },
       { to: `/homework/create`, icon: 'bi-pencil-square', label: 'Add Homework' },
-      { to: `/edcoordinator/manage`, icon: 'bi-people-fill', label: 'Manage Students/Tutors' },
+      { to: `/comments`, icon: 'bi-chat-left-text', label: 'Comments' },
+    ],
+    finance: [
+      { href: `#`, icon: 'bi-cash-stack', label: 'Finance' },
     ],
     default: [
       { to: `/`, icon: 'bi-house', label: 'Home' },
@@ -45,9 +56,15 @@ const Sidebar = () => {
       <ul className="nav nav-pills flex-column mb-10">
         {itemsToShow.map((item, index) => (
           <li className="nav-item" key={index}>
-            <NavLink to={item.to} className="nav-link text-white" activeclassname="active">
-              <i className={`bi ${item.icon} me-2`}></i> {item.label}
-            </NavLink>
+            {item.to ? (
+              <NavLink to={item.to} className="nav-link text-white" activeclassname="active">
+                <i className={`bi ${item.icon} me-2`}></i> {item.label}
+              </NavLink>
+            ) : (
+              <a href={item.href} className="nav-link text-white">
+                <i className={`bi ${item.icon} me-2`}></i> {item.label}
+              </a>
+            )}
           </li>
         ))}
       </ul>
