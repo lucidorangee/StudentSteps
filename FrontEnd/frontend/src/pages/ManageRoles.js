@@ -2,44 +2,80 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, Link, NavLink } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 
+const fetchRoles = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/roles`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch homework');
+  }
+  return response.json();
+};
+
+const putRoles = async (roleStates) => {
+  const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/roles`, {
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(roleStates),
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    const responseText = await response.text();
+    throw new Error('Failed to edit roles: ' + responseText); // Include responseText in the error for context
+  }
+
+  return;
+}
+
 const ManageRoles = () => {
-  const [authenticated, setAuthenticated] = useState(true);
   const [userData, setUserData] = useState(null);
   const [roleStates, setRoleStates] = useState([]);
 
+  const {
+    data: roles,
+    isLoading: rolesLoading,
+    error: rolesError,
+  } = useQuery({queryKey: ['roles'], refetchOnMount: 'always', queryFn: () => fetchRoles()});
+
   useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/roles`, {
-          credentials: 'include',
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch roles');
-        }
-  
-        const data = await response.json();
-        console.log('Fetched roles:', data);
-        
-        const initialRoleStates = Array.isArray(data) ? data.map((role) => ({
-          ...role,
-          checked: false,
-        })) : [];
-        
-        setRoleStates(initialRoleStates);
-      } catch (error) {
-        console.error('Error fetching roles:', error);
-      } finally {
-        console.log('Fetching roles completed');
-      }
-    };
-  
-    fetchRoles();
-  }, []);
+    if(!roles) return;
+
+    const initialRoleStates = Array.isArray(data) ? data.map((role) => ({
+      ...role,
+      checked: false,
+    })) : [];
+    
+    setRoleStates(initialRoleStates);
+  }, [roles]);
+
+  const { mutate: handleConfirmChanges, isLoading, isError, error } = useMutation({
+    mutationFn: (roleStates) => putRoles(roleStates),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['roles']);
+      console.log("Successfully edited");
+    },
+    onError: (error) => {
+      console.log('Error editing roles:', error.message);
+    }
+  });
+
+  if (rolesLoading) return <div>Loading...</div>;
+  if (rolesError) {
+    if(rolesError.status === 401) //unauthorized
+    {
+      console.log("unathorized");
+      return <Navigate to="/login" />;
+    }
+    console.log(homeworkListError.status);
+    return <div>Error loading data</div>;
+  }
 
   const toggleActive = (name, permission) => {
     setRoleStates((prevRoleStates) =>
@@ -50,30 +86,6 @@ const ManageRoles = () => {
         } : role
       )
     );
-  };
-
-  const handleConfirmChanges = async (roleStates) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/roles`, {
-        method: 'put',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(roleStates),
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        // Request was successful
-        console.log('Put successful!');
-        window.location.reload();
-      } else {
-        // Request failed
-        console.error('Put failed', response);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
   };
   
   return (
