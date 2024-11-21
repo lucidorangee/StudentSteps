@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Link, NavLink } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
+import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+import { Navigate } from 'react-router-dom';
 
 const fetchRoles = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/roles`, {
@@ -47,7 +49,7 @@ const ManageRoles = () => {
   useEffect(() => {
     if(!roles) return;
 
-    const initialRoleStates = Array.isArray(data) ? data.map((role) => ({
+    const initialRoleStates = Array.isArray(roles) ? roles.map((role) => ({
       ...role,
       checked: false,
     })) : [];
@@ -73,7 +75,7 @@ const ManageRoles = () => {
       console.log("unathorized");
       return <Navigate to="/login" />;
     }
-    console.log(homeworkListError.status);
+    console.log(rolesError.status);
     return <div>Error loading data</div>;
   }
 
