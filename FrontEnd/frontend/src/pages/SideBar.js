@@ -24,9 +24,9 @@ const Sidebar = () => {
       { to: `/admin/subjects`, icon: 'bi-book-half', label: 'Subjects' },
     ],
     schedule: [
-      { to: `/schedule/list/${currentDate}`, icon: 'bi-house-door-fill', label: 'List View' },
-      { to: `/schedule/Weekly/${currentDate}`, icon: 'bi-journal-bookmark-fill', label: 'Weekly View' },
-      { to: `/schedule/Calendar/${currentDate}`, icon: 'bi-envelope-fill', label: 'Calendar View' },
+      { to: `/schedule/list`, icon: 'bi-house-door-fill', label: 'List View' },
+      { to: `/schedule/Weekly`, icon: 'bi-journal-bookmark-fill', label: 'Weekly View' },
+      { to: `/schedule/Calendar`, icon: 'bi-envelope-fill', label: 'Calendar View' },
       { to: `/schedule/create`, icon: 'bi-bookmark-plus', label: 'Add Schedule' },
       { to: `/schedule/daily`, icon: 'bi-calendar-check', label: 'Daily Schedule' },
       { to: `/schedule/approval`, icon: 'bi-check2-square', label: 'Approve Comments' },

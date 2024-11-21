@@ -35,7 +35,9 @@ const Login = () => {
     const { mutate: attemptLogin, isLoading, isError, error } = useMutation({
       mutationFn: (formData) => postLogin(formData),
       onSuccess: (formData) => {
-        console.log('Login successful!');
+        console.log(formData.message);
+        
+        console.log(`User data: ${JSON.stringify(formData.user)}`);
         const redirectTo = new URLSearchParams(location.search).get('redirect') || `/schedule/list/${new Date().toISOString().substring(0, 10)}`;
         navigate(redirectTo);
       },
@@ -76,7 +78,7 @@ const Login = () => {
                         {!isLoading ? <button type="submit" className="btn btn-primary mb-3">Log in</button>:<div></div>}
                       </div>
                       <div className="col-2">
-                        <Nav.Link as={NavLink} to='/' exact>Back</Nav.Link>
+                        <Nav.Link as={NavLink} to='/' exact>Back</Nav.Link> 
                       </div>
                       
 
