@@ -39,6 +39,7 @@ const putRoles = async (roleStates) => {
 const ManageRoles = () => {
   const [userData, setUserData] = useState(null);
   const [roleStates, setRoleStates] = useState([]);
+  const queryClient = useQueryClient();
 
   const {
     data: roles,
