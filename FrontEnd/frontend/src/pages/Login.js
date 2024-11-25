@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { Nav, Navbar } from 'react-bootstrap'
 import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
+import { useUser } from '../components/UserContext.js';
 
 const postLogin = async (formData) => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
@@ -26,17 +27,18 @@ const postLogin = async (formData) => {
 }
 
 const Login = () => {
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
 
+    const { setUser } = useUser();
+
     const { mutate: attemptLogin, isLoading, isError, error } = useMutation({
       mutationFn: (formData) => postLogin(formData),
       onSuccess: (formData) => {
         console.log(formData.message);
-        
+        setUser(formData.user);
         console.log(`User data: ${JSON.stringify(formData.user)}`);
         const redirectTo = new URLSearchParams(location.search).get('redirect') || `/schedule/list/${new Date().toISOString().substring(0, 10)}`;
         navigate(redirectTo);

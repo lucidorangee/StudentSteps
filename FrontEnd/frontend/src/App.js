@@ -32,6 +32,7 @@ import ScheduleDaily from './pages/ScheduleDaily.js';
 import AnalysisPage from './pages/AnalysisPage.js';
 import EdCoordinator from './pages/EdCoordinator.js';
 import ManageSubjects from './pages/ManageSubjects.js';
+import ProfilePage from './pages/Profile.js';
 
 function App() {  
   return (
@@ -47,6 +48,7 @@ function App() {
           <Route path="/tutoringsessions/remove" element={<ProtectedRouteWrapper element={RemoveTutoringSessions} />} />
 
           
+          <Route path="/profile" element={<ProtectedRouteWrapper element={ProfilePage} />} />
           <Route path="/edcoordinator" element={<ProtectedRouteWrapper element={EdCoordinator} />} />
           
           <Route path="/admin/analysis/:date?" element={<ProtectedRouteWrapper element={AnalysisPage} />} />
