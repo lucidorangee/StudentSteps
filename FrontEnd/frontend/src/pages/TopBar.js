@@ -1,5 +1,5 @@
 import React from 'react';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 import { useUser } from '../components/UserContext';
 
@@ -38,12 +38,33 @@ const Topbar = () => {
                                 >
                                     {user.name}
                                 </a>
-                                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <ul 
+                                    className="dropdown-menu dropdown-menu-end"
+                                    aria-labelledby="userDropdown"
+                                    style={{
+                                        backgroundColor: '#343a40', // Dark background
+                                        color: '#ffffff' // White text
+                                    }}
+                                >
                                     <li>
-                                        <Nav.Link as={NavLink} to='/profile' className="dropdown-item">Profile</Nav.Link>
+                                        <Nav.Link 
+                                            as={NavLink} 
+                                            to='/profile' 
+                                            className="dropdown-item"
+                                            style={{ color: '#ffffff' }}
+                                        >
+                                            Profile
+                                        </Nav.Link>
                                     </li>
                                     <li>
-                                        <Nav.Link as={NavLink} to='/logout' className="dropdown-item">Logout</Nav.Link>
+                                        <Nav.Link 
+                                            as={NavLink} 
+                                            to='/logout' 
+                                            className="dropdown-item"
+                                            style={{ color: '#ffffff' }}
+                                        >
+                                            Logout
+                                        </Nav.Link>
                                     </li>
                                 </ul>
                             </div>
