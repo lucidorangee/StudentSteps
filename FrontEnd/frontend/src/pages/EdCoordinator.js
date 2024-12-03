@@ -76,6 +76,8 @@ const EdCoordinator = () => {
   const [expandedRow, setExpandedRow] = useState(null);
   const [filterName, setFilterName] = useState("");
   const [filterGrade, setFilterGrade] = useState(0);
+  const [filterDate, setFilterDate] = useState(new Date().toISOString().slice(0, 10)); // Default to today
+  const [showWithoutAssessments, setShowWithoutAssessments] = useState(true);
   const [filteredAssessments, setFilteredAssessments] = useState([]);
 
   const { data: students, isLoading: studentsLoading, error: studentsError } = useQuery({
@@ -106,40 +108,73 @@ const EdCoordinator = () => {
     if (students && comments && assessments && tutoringSessions) {
       filterAssessments();
     }
-  }, [students, comments, assessments, tutoringSessions]);
+  }, [students, comments, assessments, tutoringSessions, filterDate, showWithoutAssessments]);
 
   const filterAssessments = () => {
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
-    const sevenDaysFromNow = new Date(today);
-    sevenDaysFromNow.setDate(today.getDate() + 7);
+    const selectedDate = filterDate ? new Date(filterDate) : null;
 
-    const filteredAssessments = assessments.filter((assessment) => {
-      const assessmentDate = new Date(assessment.date);
-      return (
-        (assessmentDate >= today && assessmentDate <= sevenDaysFromNow) ||
-        (assessment.reviewed === false && assessment.outcome !== "")
+    const filtered = students.map((student) => {
+      const studentAssessments = assessments.filter(
+        (assessment) => assessment.student_id === student.student_id
       );
+      const studentSessions = tutoringSessions
+        .filter(
+          (session) =>
+            session.student_id === student.student_id &&
+            (!selectedDate || new Date(session.session_datetime).toDateString() === selectedDate.toDateString())
+        )
+        .sort((a, b) => new Date(a.session_datetime) - new Date(b.session_datetime));
+
+      if (showWithoutAssessments && !studentAssessments.length && studentSessions.length) {
+        return {
+          student,
+          assessments: [
+            {
+              title: "-",
+              description: "-",
+              date: "-",
+              reviewed: false,
+              outcome: "",
+              notes: "",
+            },
+          ],
+          upcomingSession: studentSessions[0],
+        };
+      }
+
+      return {
+        student,
+        assessments: studentAssessments.filter(
+          (assessment) =>
+            assessment.reviewed === false ||
+            (!selectedDate || new Date(assessment.date).toDateString() === selectedDate.toDateString())
+        ),
+        upcomingSession: studentSessions[0],
+      };
     });
 
-    setFilteredAssessments(filteredAssessments);
+    setFilteredAssessments(filtered.flatMap((item) =>
+      item.assessments.map((assessment) => ({
+        student: item.student,
+        assessment,
+        upcomingSession: item.upcomingSession,
+      }))
+    ));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    filterAssessments();
+  const handleDateChange = (e) => {
+    setFilterDate(e.target.value);
   };
 
-  const toggleRow = (index) => {
-    setExpandedRow(expandedRow === index ? null : index);
+  const toggleShowWithoutAssessments = () => {
+    setShowWithoutAssessments((prev) => !prev);
+    if (!showWithoutAssessments) setFilterDate(new Date().toISOString().slice(0, 10));
   };
 
-  const handleNotesChange = (assessment, newNotes) => {
-    assessment.notes = newNotes;
+  const showAll = () => {
+    setFilterDate(null);
+    setShowWithoutAssessments(true);
   };
-
-  const handleFilterNameChange = (e) => setFilterName(e.target.value);
-  const handleFilterGradeChange = (e) => setFilterGrade(parseInt(e.target.value) || 0);
 
   if (studentsLoading || commentsLoading || assessmentsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
   if (studentsError || commentsError || assessmentsError || tutoringSessionsError) {
@@ -154,32 +189,35 @@ const EdCoordinator = () => {
   return (
     <div className="App container mt-4">
       <h2 className="text-center mb-4">Welcome, User!</h2>
-      <form onSubmit={handleSubmit} className="mb-4">
-        <div className="row g-3">
+      <form className="mb-4">
+        <div className="row g-3 align-items-end">
           <div className="col-md-4">
-            <label htmlFor="filterName" className="form-label">Name</label>
+            <label htmlFor="filterDate" className="form-label">Date</label>
             <input
-              type="text"
-              id="filterName"
+              type="date"
+              id="filterDate"
               className="form-control"
-              value={filterName}
-              onChange={handleFilterNameChange}
-              placeholder="Enter name"
+              value={filterDate || ""}
+              onChange={handleDateChange}
+              disabled={!showWithoutAssessments}
             />
           </div>
-          <div className="col-md-4">
-            <label htmlFor="filterGrade" className="form-label">Grade</label>
-            <input
-              type="number"
-              id="filterGrade"
-              className="form-control"
-              value={filterGrade}
-              onChange={handleFilterGradeChange}
-              placeholder="Enter grade"
-            />
-          </div>
-          <div className="col-md-4 d-flex align-items-end">
-            <button type="submit" className="btn btn-primary w-100">Apply Filter</button>
+          <div className="col-md-4 d-flex align-items-center">
+            <button type="button" className="btn btn-primary me-2" onClick={showAll} disabled={!showWithoutAssessments}>
+              Show All
+            </button>
+            <div className="form-check">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                id="showWithoutAssessments"
+                checked={showWithoutAssessments}
+                onChange={toggleShowWithoutAssessments}
+              />
+              <label htmlFor="showWithoutAssessments" className="form-check-label">
+                Show students without upcoming assessments
+              </label>
+            </div>
           </div>
         </div>
       </form>
@@ -195,77 +233,32 @@ const EdCoordinator = () => {
         </thead>
         <tbody>
           {filteredAssessments.length > 0 ? (
-            filteredAssessments.map((assessment, index) => {
-              const student = students.find(s => s.student_id === assessment.student_id);
-              if (!student) return null;
-  
+            filteredAssessments.map(({ student, assessment, upcomingSession }, index) => {
               const latestComment = comments
-                .filter(comment => comment.student_id === assessment.student_id)
+                .filter((comment) => comment.student_id === student.student_id)
                 .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
 
-              const upcomingSession = tutoringSessions
-                .filter(session => session.student_id === assessment.student_id && new Date(session.session_datetime) > new Date())
-                .sort((a, b) => new Date(a.session_datetime) - new Date(b.session_datetime))[0];
-  
               return (
                 <React.Fragment key={index}>
                   <tr onClick={() => toggleRow(index)} style={{ cursor: 'pointer' }}>
                     <td>{student.first_name} {student.last_name}</td>
                     <td>{assessment.title}</td>
                     <td>{assessment.description}</td>
-                    <td>{new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(new Date(assessment.date))}</td>
-                    <td>{upcomingSession ? new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(upcomingSession.session_datetime)) : 'N/A'}</td>
+                    <td>{assessment.date !== "-" ? new Date(assessment.date).toLocaleDateString() : "-"}</td>
+                    <td>{upcomingSession ? new Date(upcomingSession.session_datetime).toLocaleString() : "N/A"}</td>
                   </tr>
                   {expandedRow === index && (
                     <tr>
-                      <td colSpan="5" className="p-3 bg-light border rounded">
-                        <div className="mb-3">
-                          <label 
-                            htmlFor={`disabled-${assessment.assessment_id}`} 
-                            className="form-label fw-bold"
-                          >
-                            {assessment.reviewed === false && assessment.outcome !== "" && assessment.outcome !== null
-                              ? "Outcome"
-                              : "Latest Comment"}
-                          </label>
-                          {/* Grayed-out textbox for the existing value */}
-                          <input
-                            type="text"
-                            id={`disabled-${assessment.assessment_id}`}
-                            className="form-control mb-2"
-                            value={
-                              assessment.reviewed === false && assessment.outcome !== "" && assessment.outcome !== null
-                                ? assessment.outcome || "No outcome available"
-                                : latestComment?.content || "No comments available"
-                            }
-                            disabled
-                            aria-label="Read-only field for latest comment or outcome"
-                            style={{ backgroundColor: "#f8f9fa", color: "#6c757d" }}
-                          />
-                          {/* Editable textarea for modifications */}
-                          <textarea
-                            id={`notes-${assessment.assessment_id}`}
-                            className="form-control"
-                            rows={4}
-                            placeholder="Modify notes here..."
-                            value={assessment.notes || ''}
-                            onChange={(e) => handleNotesChange(assessment, e.target.value)}
-                            aria-label="Editable notes field"
-                            style={{ resize: 'none', overflowY: 'auto' }}
-                          />
-                        </div>
-                        <button 
-                          className="btn btn-success w-100 mt-2" 
-                          onClick={() => null}
-                          aria-label="Submit changes"
-                        >
-                          Submit Changes
-                        </button>
+                      <td colSpan="5">
+                        <textarea
+                          className="form-control"
+                          placeholder="Add notes"
+                          value={assessment.notes}
+                          onChange={(e) => handleNotesChange(assessment, e.target.value)}
+                        />
                       </td>
                     </tr>
                   )}
-
-
                 </React.Fragment>
               );
             })
@@ -278,7 +271,6 @@ const EdCoordinator = () => {
       </table>
     </div>
   );
-  
 };
 
 export default EdCoordinator;

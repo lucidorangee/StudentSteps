@@ -17,7 +17,7 @@ const Topbar = () => {
                     data-bs-target="#navbarCollapse"
                 >
                     <span className="navbar-toggler-icon"></span>
-                </button>
+                </button>yes 
                 <div className="collapse navbar-collapse" id="navbarCollapse">
                     <div className="navbar-nav">
                         <Nav.Link as={NavLink} to='/admin/analysis' exact>Admin</Nav.Link>
