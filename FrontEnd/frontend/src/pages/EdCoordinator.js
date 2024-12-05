@@ -162,6 +162,14 @@ const EdCoordinator = () => {
     ));
   };
 
+  const toggleRow = (index) => {
+    setExpandedRow(expandedRow === index ? null : index);
+  };
+
+  const handleNotesChange = (assessment, newNotes) => {
+    assessment.notes = newNotes;
+  };
+
   const handleDateChange = (e) => {
     setFilterDate(e.target.value);
   };
