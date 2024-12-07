@@ -32,7 +32,7 @@ const fetchComments = async () => {
 
   if (!response.ok) {
     const err = new Error('Failed to fetch comments');
-    err.status = response.status;
+    err.status = response.status; 
     throw err;
   }
   return response.json();
