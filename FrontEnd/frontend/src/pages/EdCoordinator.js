@@ -1,21 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Outlet, Link, NavLink, useNavigate } from "react-router-dom";
-import { Nav, Navbar } from 'react-bootstrap'
-import Select from 'react-select';
-import { useQuery,  useQueryClient, useMutation } from '@tanstack/react-query';
-import { Navigate } from 'react-router-dom';
-
+import React, { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 const fetchStudents = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/students/`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
   });
 
   if (!response.ok) {
-    const err = new Error('Failed to fetch students');
+    const err = new Error("Failed to fetch students");
     err.status = response.status;
     throw err;
   }
@@ -24,15 +18,13 @@ const fetchStudents = async () => {
 
 const fetchComments = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/comments/`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
   });
 
   if (!response.ok) {
-    const err = new Error('Failed to fetch comments');
-    err.status = response.status; 
+    const err = new Error("Failed to fetch comments");
+    err.status = response.status;
     throw err;
   }
   return response.json();
@@ -40,14 +32,12 @@ const fetchComments = async () => {
 
 const fetchAssessments = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/assessments/`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
   });
 
   if (!response.ok) {
-    const err = new Error('Failed to fetch students');
+    const err = new Error("Failed to fetch assessments");
     err.status = response.status;
     throw err;
   }
@@ -56,132 +46,69 @@ const fetchAssessments = async () => {
 
 const fetchTutoringSessions = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tutoringsessions`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
   });
 
   if (!response.ok) {
-    const err = new Error('Failed to fetch tutoring sessions');
+    const err = new Error("Failed to fetch tutoring sessions");
     err.status = response.status;
     throw err;
   }
   return response.json();
-}
+};
 
 const EdCoordinator = () => {
-  const navigate = useNavigate();
-
   const [expandedRow, setExpandedRow] = useState(null);
-  const [filterName, setFilterName] = useState("");
-  const [filterGrade, setFilterGrade] = useState(0);
-  const [filterDate, setFilterDate] = useState(new Date().toISOString().slice(0, 10)); // Default to today
-  const [showWithoutAssessments, setShowWithoutAssessments] = useState(true);
-  const [filteredAssessments, setFilteredAssessments] = useState([]);
+  const [filterDate, setFilterDate] = useState(new Date().toISOString().slice(0, 10));
+  const [showAll, setShowAll] = useState(true);
+  const [showWithoutAssessments, setShowWithoutAssessments] = useState(false);
 
   const { data: students, isLoading: studentsLoading, error: studentsError } = useQuery({
-    queryKey: ['students'],
-    refetchOnMount: 'always',
+    queryKey: ["students"],
+    refetchOnMount: "always",
     queryFn: fetchStudents,
   });
 
   const { data: comments, isLoading: commentsLoading, error: commentsError } = useQuery({
-    queryKey: ['comments'],
-    refetchOnMount: 'always',
+    queryKey: ["comments"],
+    refetchOnMount: "always",
     queryFn: fetchComments,
   });
 
   const { data: assessments, isLoading: assessmentsLoading, error: assessmentsError } = useQuery({
-    queryKey: ['assessments'],
-    refetchOnMount: 'always',
+    queryKey: ["assessments"],
+    refetchOnMount: "always",
     queryFn: fetchAssessments,
   });
 
   const { data: tutoringSessions, isLoading: tutoringSessionsLoading, error: tutoringSessionsError } = useQuery({
-    queryKey: ['tutoringSessions'],
-    refetchOnMount: 'always',
+    queryKey: ["tutoringSessions"],
+    refetchOnMount: "always",
     queryFn: fetchTutoringSessions,
   });
-
-  useEffect(() => {
-    if (students && comments && assessments && tutoringSessions) {
-      filterAssessments();
-    }
-  }, [students, comments, assessments, tutoringSessions, filterDate, showWithoutAssessments]);
-
-  const filterAssessments = () => {
-    const selectedDate = filterDate ? new Date(filterDate) : null;
-
-    const filtered = students.map((student) => {
-      const studentAssessments = assessments.filter(
-        (assessment) => assessment.student_id === student.student_id
-      );
-      const studentSessions = tutoringSessions
-        .filter(
-          (session) =>
-            session.student_id === student.student_id &&
-            (!selectedDate || new Date(session.session_datetime).toDateString() === selectedDate.toDateString())
-        )
-        .sort((a, b) => new Date(a.session_datetime) - new Date(b.session_datetime));
-
-      if (showWithoutAssessments && !studentAssessments.length && studentSessions.length) {
-        return {
-          student,
-          assessments: [
-            {
-              title: "-",
-              description: "-",
-              date: "-",
-              reviewed: false,
-              outcome: "",
-              notes: "",
-            },
-          ],
-          upcomingSession: studentSessions[0],
-        };
-      }
-
-      return {
-        student,
-        assessments: studentAssessments.filter(
-          (assessment) =>
-            assessment.reviewed === false ||
-            (!selectedDate || new Date(assessment.date).toDateString() === selectedDate.toDateString())
-        ),
-        upcomingSession: studentSessions[0],
-      };
-    });
-
-    setFilteredAssessments(filtered.flatMap((item) =>
-      item.assessments.map((assessment) => ({
-        student: item.student,
-        assessment,
-        upcomingSession: item.upcomingSession,
-      }))
-    ));
-  };
 
   const toggleRow = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
   };
 
-  const handleNotesChange = (assessment, newNotes) => {
-    assessment.notes = newNotes;
-  };
-
   const handleDateChange = (e) => {
-    setFilterDate(e.target.value);
+    const newDate = e.target.value;
+    setFilterDate(newDate);
+    setShowAll(false);
   };
 
   const toggleShowWithoutAssessments = () => {
-    setShowWithoutAssessments((prev) => !prev);
-    if (!showWithoutAssessments) setFilterDate(new Date().toISOString().slice(0, 10));
+    if (!showWithoutAssessments) {
+      setShowAll(false);
+    }
+    setShowWithoutAssessments(!showWithoutAssessments);
   };
 
-  const showAll = () => {
+  const handleShowAll = () => {
     setFilterDate(null);
-    setShowWithoutAssessments(true);
+    setShowAll(true);
+    setShowWithoutAssessments(false);
   };
 
   if (studentsLoading || commentsLoading || assessmentsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
@@ -194,33 +121,46 @@ const EdCoordinator = () => {
     return unauthorized ? <Navigate to="/login" /> : <div>Error loading data</div>;
   }
 
+  const filteredSessions = tutoringSessions.filter((session) => {
+    const sessionDate = new Date(session.session_datetime).toISOString().slice(0, 10);
+    return showAll || (filterDate && sessionDate === filterDate) || (showWithoutAssessments && sessionDate > filterDate);
+  });
+
   return (
     <div className="App container mt-4">
       <h2 className="text-center mb-4">Welcome, User!</h2>
       <form className="mb-4">
-        <div className="row g-3 align-items-end">
+        <div className="row g-3">
           <div className="col-md-4">
-            <label htmlFor="filterDate" className="form-label">Date</label>
+            <label htmlFor="filterDate" className="form-label">Filter Date</label>
             <input
               type="date"
               id="filterDate"
               className="form-control"
               value={filterDate || ""}
               onChange={handleDateChange}
-              disabled={!showWithoutAssessments}
+              disabled={showAll}
             />
           </div>
-          <div className="col-md-4 d-flex align-items-center">
-            <button type="button" className="btn btn-primary me-2" onClick={showAll} disabled={!showWithoutAssessments}>
+          <div className="col-md-4 d-flex align-items-end">
+            <button
+              type="button"
+              className="btn btn-secondary w-100"
+              onClick={handleShowAll}
+              disabled={!showAll && showWithoutAssessments}
+            >
               Show All
             </button>
-            <div className="form-check">
+          </div>
+          <div className="col-md-4 d-flex align-items-end">
+            <div className="form-check form-switch">
               <input
                 type="checkbox"
                 className="form-check-input"
                 id="showWithoutAssessments"
                 checked={showWithoutAssessments}
                 onChange={toggleShowWithoutAssessments}
+                disabled={!filterDate}
               />
               <label htmlFor="showWithoutAssessments" className="form-check-label">
                 Show students without upcoming assessments
@@ -240,29 +180,36 @@ const EdCoordinator = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredAssessments.length > 0 ? (
-            filteredAssessments.map(({ student, assessment, upcomingSession }, index) => {
+          {filteredSessions.length > 0 ? (
+            filteredSessions.map((session, index) => {
+              const student = students.find((s) => s.student_id === session.student_id);
+              const assessment = assessments.find((a) => a.student_id === session.student_id);
               const latestComment = comments
-                .filter((comment) => comment.student_id === student.student_id)
+                .filter((comment) => comment.student_id === session.student_id)
                 .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
 
               return (
                 <React.Fragment key={index}>
-                  <tr onClick={() => toggleRow(index)} style={{ cursor: 'pointer' }}>
-                    <td>{student.first_name} {student.last_name}</td>
-                    <td>{assessment.title}</td>
-                    <td>{assessment.description}</td>
-                    <td>{assessment.date !== "-" ? new Date(assessment.date).toLocaleDateString() : "-"}</td>
-                    <td>{upcomingSession ? new Date(upcomingSession.session_datetime).toLocaleString() : "N/A"}</td>
+                  <tr onClick={() => toggleRow(index)} style={{ cursor: "pointer" }}>
+                    <td>{student ? `${student.first_name} ${student.last_name}` : "Unknown"}</td>
+                    <td>{assessment ? assessment.title : "-"}</td>
+                    <td>{assessment ? assessment.description : "-"}</td>
+                    <td>{assessment ? assessment.date : "-"}</td>
+                    <td>{new Date(session.session_datetime).toLocaleString()}</td>
                   </tr>
                   {expandedRow === index && (
                     <tr>
-                      <td colSpan="5">
+                      <td colSpan="5" className="p-3 bg-light border rounded">
+                        <input
+                          type="text"
+                          className="form-control mb-2"
+                          value={assessment ? assessment.outcome || latestComment?.content || "No data" : "No data"}
+                          disabled
+                        />
                         <textarea
                           className="form-control"
-                          placeholder="Add notes"
-                          value={assessment.notes}
-                          onChange={(e) => handleNotesChange(assessment, e.target.value)}
+                          rows={4}
+                          placeholder="Add notes here..."
                         />
                       </td>
                     </tr>
@@ -272,7 +219,7 @@ const EdCoordinator = () => {
             })
           ) : (
             <tr>
-              <td colSpan="5" className="text-center">No data available</td>
+              <td colSpan="5" className="text-center">No sessions available</td>
             </tr>
           )}
         </tbody>
