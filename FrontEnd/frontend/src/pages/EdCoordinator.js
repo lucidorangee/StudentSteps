@@ -194,7 +194,7 @@ const EdCoordinator = () => {
                     <td>{student ? `${student.first_name} ${student.last_name}` : "Unknown"}</td>
                     <td>{assessment ? assessment.title : "-"}</td>
                     <td>{assessment ? assessment.description : "-"}</td>
-                    <td>{assessment ? assessment.date : "-"}</td>
+                    <td>{assessment ? new Date(assessment.date).toLocaleString() : "-"}</td>
                     <td>{new Date(session.session_datetime).toLocaleString()}</td>
                   </tr>
                   {expandedRow === index && (
