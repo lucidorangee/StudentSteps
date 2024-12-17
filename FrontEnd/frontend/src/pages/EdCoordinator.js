@@ -63,6 +63,7 @@ const EdCoordinator = () => {
   const [filterDate, setFilterDate] = useState(new Date().toISOString().slice(0, 10));
   const [showAll, setShowAll] = useState(true);
   const [showWithoutAssessments, setShowWithoutAssessments] = useState(false);
+  const [filteredSessions, setFilteredSessions] = useState([]);
 
   const { data: students, isLoading: studentsLoading, error: studentsError } = useQuery({
     queryKey: ["students"],
@@ -120,12 +121,56 @@ const EdCoordinator = () => {
       tutoringSessionsError?.status === 401;
     return unauthorized ? <Navigate to="/login" /> : <div>Error loading data</div>;
   }
-
+/*
   const filteredSessions = tutoringSessions.filter((session) => {
     const sessionDate = new Date(session.session_datetime).toISOString().slice(0, 10);
     return showAll || (filterDate && sessionDate === filterDate) || (showWithoutAssessments && sessionDate > filterDate);
-  });
+  });*/
 
+  useEffect(() => {
+    filterData();
+  }, [assessments, tutoringSessions, filterDate, showAll, showWithoutAssessments]);
+
+  const filterData = () => {
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    const sevenDaysFromNow = new Date(today);
+    sevenDaysFromNow.setDate(today.getDate() + 7);
+  
+    // Step 1: Filter assessments based on the next 7 days or unreviewed with outcome
+    const filteredAssessments = assessments.filter((assessment) => {
+      const assessmentDate = new Date(assessment.date);
+      return (
+        (assessmentDate >= today && assessmentDate <= sevenDaysFromNow) ||
+        (assessment.reviewed === false && assessment.outcome !== "")
+      );
+    });
+  
+    setFilteredAssessments(filteredAssessments);
+  
+    // Step 2: Filter tutoring sessions using your existing logic
+    const filteredSessions = tutoringSessions.filter((session) => {
+      const sessionDate = new Date(session.session_datetime).toISOString().slice(0, 10);
+  
+      // Your existing conditions
+      const matchesDateFilter =
+        showAll || (filterDate && sessionDate === filterDate) || (showWithoutAssessments && sessionDate > filterDate);
+  
+      // Additional logic: Check if the student has no valid assessment
+      const hasValidAssessment = filteredAssessments.some(
+        (assessment) => assessment.student_id === session.student_id
+      );
+  
+      // Add session only if it matches your existing conditions and lacks valid assessments
+      return matchesDateFilter && !hasValidAssessment;
+    });
+  
+    // Combine filtered assessments and tutoring sessions
+    const allFilteredData = [...filteredAssessments, ...filteredSessions];
+    setFilteredSessions(allFilteredData);
+  };
+
+  
   return (
     <div className="App container mt-4">
       <h2 className="text-center mb-4">Welcome, User!</h2>
