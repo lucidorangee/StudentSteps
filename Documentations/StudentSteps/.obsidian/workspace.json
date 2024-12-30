@@ -43,9 +43,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "6b9f0836a8b72d78",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "System Design Document.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
         ],
-        "currentTab": 2
+        "currentTab": 3
       },
       {
         "id": "a7e2301b37fde742",
@@ -187,11 +199,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "7a3e31ca80ec8070",
+  "active": "6b9f0836a8b72d78",
   "lastOpenFiles": [
-    "2024-03-11.md",
-    "System Design Document.md",
     "Untitled.md",
+    "System Design Document.md",
+    "2024-03-11.md",
     "[.md"
   ]
 }
