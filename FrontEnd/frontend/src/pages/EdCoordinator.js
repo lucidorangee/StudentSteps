@@ -64,6 +64,7 @@ const EdCoordinator = () => {
   const [showAll, setShowAll] = useState(true);
   const [showWithoutAssessments, setShowWithoutAssessments] = useState(false);
   const [filteredSessions, setFilteredSessions] = useState([]);
+  //const [filteredAssessments, setFilteredAssessments] = useState([]);
 
   const { data: students, isLoading: studentsLoading, error: studentsError } = useQuery({
     queryKey: ["students"],
@@ -111,16 +112,6 @@ const EdCoordinator = () => {
     setShowAll(true);
     setShowWithoutAssessments(false);
   };
-
-  if (studentsLoading || commentsLoading || assessmentsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
-  if (studentsError || commentsError || assessmentsError || tutoringSessionsError) {
-    const unauthorized =
-      studentsError?.status === 401 ||
-      commentsError?.status === 401 ||
-      assessmentsError?.status === 401 ||
-      tutoringSessionsError?.status === 401;
-    return unauthorized ? <Navigate to="/login" /> : <div>Error loading data</div>;
-  }
 /*
   const filteredSessions = tutoringSessions.filter((session) => {
     const sessionDate = new Date(session.session_datetime).toISOString().slice(0, 10);
@@ -146,7 +137,7 @@ const EdCoordinator = () => {
       );
     });
   
-    setFilteredAssessments(filteredAssessments);
+    //setFilteredAssessments(filteredAssessments);
   
     // Step 2: Filter tutoring sessions using your existing logic
     const filteredSessions = tutoringSessions.filter((session) => {
@@ -170,6 +161,16 @@ const EdCoordinator = () => {
     setFilteredSessions(allFilteredData);
   };
 
+
+  if (studentsLoading || commentsLoading || assessmentsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
+  if (studentsError || commentsError || assessmentsError || tutoringSessionsError) {
+    const unauthorized =
+      studentsError?.status === 401 ||
+      commentsError?.status === 401 ||
+      assessmentsError?.status === 401 ||
+      tutoringSessionsError?.status === 401;
+    return unauthorized ? <Navigate to="/login" /> : <div>Error loading data</div>;
+  }
   
   return (
     <div className="App container mt-4">
