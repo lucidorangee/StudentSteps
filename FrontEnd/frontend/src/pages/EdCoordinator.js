@@ -64,30 +64,25 @@ const EdCoordinator = () => {
   const [showAll, setShowAll] = useState(true);
   const [showWithoutAssessments, setShowWithoutAssessments] = useState(false);
   const [filteredSessions, setFilteredSessions] = useState([]);
-  //const [filteredAssessments, setFilteredAssessments] = useState([]);
 
   const { data: students, isLoading: studentsLoading, error: studentsError } = useQuery({
     queryKey: ["students"],
     refetchOnMount: "always",
-    queryFn: fetchStudents,
   });
 
   const { data: comments, isLoading: commentsLoading, error: commentsError } = useQuery({
     queryKey: ["comments"],
     refetchOnMount: "always",
-    queryFn: fetchComments,
   });
 
   const { data: assessments, isLoading: assessmentsLoading, error: assessmentsError } = useQuery({
     queryKey: ["assessments"],
     refetchOnMount: "always",
-    queryFn: fetchAssessments,
   });
 
   const { data: tutoringSessions, isLoading: tutoringSessionsLoading, error: tutoringSessionsError } = useQuery({
     queryKey: ["tutoringSessions"],
     refetchOnMount: "always",
-    queryFn: fetchTutoringSessions,
   });
 
   const toggleRow = (index) => {
@@ -95,8 +90,7 @@ const EdCoordinator = () => {
   };
 
   const handleDateChange = (e) => {
-    const newDate = e.target.value;
-    setFilterDate(newDate);
+    setFilterDate(e.target.value);
     setShowAll(false);
   };
 
@@ -112,14 +106,11 @@ const EdCoordinator = () => {
     setShowAll(true);
     setShowWithoutAssessments(false);
   };
-/*
-  const filteredSessions = tutoringSessions.filter((session) => {
-    const sessionDate = new Date(session.session_datetime).toISOString().slice(0, 10);
-    return showAll || (filterDate && sessionDate === filterDate) || (showWithoutAssessments && sessionDate > filterDate);
-  });*/
 
   useEffect(() => {
-    filterData();
+    if (assessments && tutoringSessions) {
+      filterData();
+    }
   }, [assessments, tutoringSessions, filterDate, showAll, showWithoutAssessments]);
 
   const filterData = () => {
@@ -127,51 +118,44 @@ const EdCoordinator = () => {
     today.setUTCHours(0, 0, 0, 0);
     const sevenDaysFromNow = new Date(today);
     sevenDaysFromNow.setDate(today.getDate() + 7);
-  
-    // Step 1: Filter assessments based on the next 7 days or unreviewed with outcome
+
     const filteredAssessments = assessments.filter((assessment) => {
       const assessmentDate = new Date(assessment.date);
       return (
         (assessmentDate >= today && assessmentDate <= sevenDaysFromNow) ||
-        (assessment.reviewed === false && assessment.outcome !== "")
+        (!assessment.reviewed && assessment.outcome)
       );
     });
-  
-    //setFilteredAssessments(filteredAssessments);
-  
-    // Step 2: Filter tutoring sessions using your existing logic
+
     const filteredSessions = tutoringSessions.filter((session) => {
       const sessionDate = new Date(session.session_datetime).toISOString().slice(0, 10);
-  
-      // Your existing conditions
       const matchesDateFilter =
         showAll || (filterDate && sessionDate === filterDate) || (showWithoutAssessments && sessionDate > filterDate);
-  
-      // Additional logic: Check if the student has no valid assessment
+
       const hasValidAssessment = filteredAssessments.some(
         (assessment) => assessment.student_id === session.student_id
       );
-  
-      // Add session only if it matches your existing conditions and lacks valid assessments
+
       return matchesDateFilter && !hasValidAssessment;
     });
-  
-    // Combine filtered assessments and tutoring sessions
-    const allFilteredData = [...filteredAssessments, ...filteredSessions];
-    setFilteredSessions(allFilteredData);
+
+    setFilteredSessions([...filteredAssessments, ...filteredSessions]);
   };
 
+  if (studentsLoading || commentsLoading || assessmentsLoading || tutoringSessionsLoading) {
+    return <div>Loading...</div>;
+  }
 
-  if (studentsLoading || commentsLoading || assessmentsLoading || tutoringSessionsLoading) return <div>Loading...</div>;
   if (studentsError || commentsError || assessmentsError || tutoringSessionsError) {
     const unauthorized =
       studentsError?.status === 401 ||
       commentsError?.status === 401 ||
       assessmentsError?.status === 401 ||
       tutoringSessionsError?.status === 401;
+
     return unauthorized ? <Navigate to="/login" /> : <div>Error loading data</div>;
   }
-  
+
   return (
     <div className="App container mt-4">
       <h2 className="text-center mb-4">Welcome, User!</h2>
@@ -193,7 +177,7 @@ const EdCoordinator = () => {
               type="button"
               className="btn btn-secondary w-100"
               onClick={handleShowAll}
-              disabled={!showAll && showWithoutAssessments}
+              disabled={showAll}
             >
               Show All
             </button>
