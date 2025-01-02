@@ -153,7 +153,7 @@ const EdCoordinator = () => {
       assessmentsError?.status === 401 ||
       tutoringSessionsError?.status === 401;
 
-    return unauthorized ? <Navigate to="/login" /> : <div>Error loading data</div>;
+    return unauthorized ? <Navigate to="/login" /> : <div>Error loading data {studentsError?.status}</div>;
   }
 
   return (
