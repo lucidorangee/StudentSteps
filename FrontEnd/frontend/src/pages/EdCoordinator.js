@@ -68,21 +68,25 @@ const EdCoordinator = () => {
   const { data: students, isLoading: studentsLoading, error: studentsError } = useQuery({
     queryKey: ["students"],
     refetchOnMount: "always",
+    queryFn: fetchStudents,
   });
 
   const { data: comments, isLoading: commentsLoading, error: commentsError } = useQuery({
     queryKey: ["comments"],
     refetchOnMount: "always",
+    queryFn: fetchComments,
   });
 
   const { data: assessments, isLoading: assessmentsLoading, error: assessmentsError } = useQuery({
     queryKey: ["assessments"],
     refetchOnMount: "always",
+    queryFn: fetchAssessments,
   });
 
   const { data: tutoringSessions, isLoading: tutoringSessionsLoading, error: tutoringSessionsError } = useQuery({
     queryKey: ["tutoringSessions"],
     refetchOnMount: "always",
+    queryFn: fetchTutoringSessions,
   });
 
   const toggleRow = (index) => {
